@@ -24,7 +24,6 @@ import {
 import { API_Character, ItemPermissionLevel } from "../apiCharacter";
 import { BC_Server_ChatRoomMessage, TBeepType } from "../logicEvent";
 import { CasinoStore, Player } from "./casino/casinostore";
-import { ROULETTE_WHEEL } from "./casino/rouletteWheelBundle";
 import { API_AppearanceItem, AssetGet, BC_AppearanceItem } from "../item";
 import { wait } from "../hub/utils";
 import { remainingTimeString } from "../util/time";
@@ -38,13 +37,11 @@ import {
 } from "./casino/forfeits";
 import { Cocktail, COCKTAILS } from "./casino/cocktails";
 import { generatePassword } from "../util/string";
+import { Game } from "./casino/game";
 
 const FREE_CHIPS = 20;
-const TIME_UNTIL_SPIN_MS = 60000;
-// const TIME_UNTIL_SPIN_MS = 6000;
-const BET_CANCEL_THRESHOLD_MS = 3000;
 
-function getItemsBlockingForfeit(
+export function getItemsBlockingForfeit(
     char: API_Character,
     items: BC_AppearanceItem[],
 ): API_AppearanceItem[] {
@@ -53,7 +50,7 @@ function getItemsBlockingForfeit(
     return char.Appearance.Appearance.filter((i) => slots.has(i.Group));
 }
 
-const makeBio = (leaderBoard: string) => `🎰🎰🎰 Welcome to the Casino! 🎰🎰🎰
+export const makeBio = (leaderBoard: string) => `🎰🎰🎰 Welcome to the Casino! 🎰🎰🎰
 
 All visitors will automatically ber awarded ${FREE_CHIPS} chips every day!
 You can bet with either chips or forefeits. If you win when betting with a forfeit, you gain the corresponding
@@ -100,22 +97,21 @@ export interface CasinoConfig {
 }
 
 export class Casino {
-    private rouletteGame: RouletteGame;
-    private commandParser: CommandParser;
-    private store: CasinoStore;
-    private willSpinAt: number | undefined;
-    private spinTimeout: NodeJS.Timeout | undefined;
-    private resetTimeout: NodeJS.Timeout | undefined;
+    private game: Game;
+    public commandParser: CommandParser;
+    public store: CasinoStore;
     private cocktailOfTheDay: Cocktail | undefined;
-    private multiplier = 1;
-    private lockedItems: Map<number, Map<AssetGroupName, number>> = new Map();
+    public multiplier = 1;
+    public lockedItems: Map<number, Map<AssetGroupName, number>> = new Map();
+
+    private currentGame: "Roulette" | "Blackjack" = "Roulette";
 
     public constructor(
         private conn: API_Connector,
         db: Db,
         config?: CasinoConfig,
     ) {
-        this.rouletteGame = new RouletteGame(conn);
+        this.game = new RouletteGame(conn, this);
         this.store = new CasinoStore(db);
         this.commandParser = new CommandParser(conn);
 
@@ -140,125 +136,7 @@ export class Casino {
         this.commandParser.register("give", this.onCommandGive);
         this.commandParser.register("bonus", this.onCommandBonusRound);
 
-        this.commandParser.register("wheel", (sender, msg, args) => {
-            this.getWheel();
-        });
-
-        this.commandParser.register("sign", (sender, msg, args) => {
-            const sign = this.getSign();
-
-            sign.setProperty("OverridePriority", { Text: 63 });
-            sign.setProperty("Text", "Place bets!");
-            sign.setProperty("Text2", " ");
-            this.setTextColor("#ffffff");
-        });
-
         this.conn.setItemPermission(ItemPermissionLevel.OwnerOnly);
-
-        // hack because otherwise an account update goes through after this item update and clears the text out
-        setTimeout(() => {
-            const wheel = this.getWheel();
-            wheel.setProperty("Texts", [
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-            ]);
-
-            const sign = this.getSign();
-            sign.setProperty("OverridePriority", { Text: 63 });
-            sign.setProperty("Text", "Place bets!");
-            sign.setProperty("Text2", " ");
-            this.setTextColor("#ffffff");
-
-            this.setBio().catch((e) => {
-                console.error("Failed to set bio.", e);
-            });
-
-            this.conn.setScriptPermissions(true, false);
-
-            const scriptItem = this.conn.Player.Appearance.AddItem(
-                AssetGet("ItemScript", "Script"),
-            );
-            scriptItem.setProperty("Hide", [
-                "Height",
-                "BodyUpper",
-                "ArmsLeft",
-                "ArmsRight",
-                "HandsLeft",
-                "HandsRight",
-                "BodyLower",
-                "HairFront",
-                "HairBack",
-                "Eyebrows",
-                "Eyes",
-                "Eyes2",
-                "Mouth",
-                "Nipples",
-                "Pussy",
-                "Pronouns",
-                "Head",
-                "Blush",
-                "Fluids",
-                "Emoticon",
-                "ItemNeck",
-                "ItemHead",
-                "Cloth",
-                "Bra",
-                "Socks",
-                "Shoes",
-                "ClothAccessory",
-                "Necklace",
-                "ClothLower",
-                "Panties",
-                "Suit",
-                "Gloves",
-            ]);
-        }, 500);
-    }
-
-    private getSign(): API_AppearanceItem {
-        let sign = this.conn.Player.Appearance.InventoryGet("ItemMisc");
-        if (!sign) {
-            sign = this.conn.Player.Appearance.AddItem(
-                AssetGet("ItemMisc", "WoodenSign"),
-            );
-            sign.setProperty("Text", "");
-            sign.setProperty("Text2", "");
-        }
-        return sign;
-    }
-
-    private getWheel(): API_AppearanceItem {
-        const wheel = this.conn.Player.Appearance.InventoryGet("ItemDevices");
-        if (wheel) {
-            return wheel;
-        }
-        this.conn.Player.Appearance.applyBundle(ROULETTE_WHEEL);
-        return this.conn.Player.Appearance.InventoryGet("ItemDevices");
-    }
-
-    private setTextColor(color: string): void {
-        this.getSign().SetColor(["Default", "Default", color]);
-    }
-
-    private async setBio(): Promise<void> {
-        const topPlayers = await this.store.getTopPlayers(50);
-        const unredeemed = await this.store.getUnredeemedPurchases();
-
-        this.conn.setBotDescription(
-            makeBio(
-                topPlayers
-                    .map((player, idx) => {
-                        return `${idx + 1}. ${player.name} (${player.memberNumber}): ${player.score} chips won`;
-                    })
-                    .join("\n"),
-            ),
-        );
     }
 
     private onCharacterEntered = async (character: API_Character) => {
@@ -335,102 +213,7 @@ export class Casino {
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
-        if (this.resetTimeout !== undefined) {
-            this.conn.reply(msg, "The next game hasn't started yet");
-            return;
-        }
-
-        const bet = this.rouletteGame.parseBetCommand(sender, msg, args);
-        if (bet === undefined) {
-            return;
-        }
-
-        const player = await this.store.getPlayer(sender.MemberNumber);
-
-        if (bet.stakeForfeit === undefined) {
-            if (player.credits - bet.stake < 0) {
-                this.conn.reply(msg, `You don't have enough chips.`);
-                return;
-            }
-
-            player.credits -= bet.stake;
-            await this.store.savePlayer(player);
-        } else {
-            const blockers = getItemsBlockingForfeit(
-                sender,
-                FORFEITS[bet.stakeForfeit].items(),
-            );
-            if (blockers.length > 0) {
-                console.log(
-                    `Blocked forfeit bet of ${bet.stakeForfeit} with blockers `,
-                    blockers,
-                );
-                this.conn.reply(
-                    msg,
-                    `You can't bet that while you have: ${blockers.map((i) => i.Name).join(", ")}`,
-                );
-                return;
-            }
-
-            const canInteract = await sender.GetAllowItem();
-            if (!canInteract) {
-                this.conn.reply(
-                    msg,
-                    "You'll need to open up your permissions or whitelist the bot to bet restraints.",
-                );
-                return;
-            }
-
-            const needItems = [...FORFEITS[bet.stakeForfeit].items()];
-            if (FORFEITS[bet.stakeForfeit].lock)
-                needItems.push(FORFEITS[bet.stakeForfeit].lock);
-            const blocked = needItems.filter(
-                (i) => !sender.IsItemPermissionAccessible(i),
-            );
-            if (blocked.length > 0) {
-                this.conn.reply(
-                    msg,
-                    `You can't bet that forfeit because you've blocked: ${blocked.map((i) => i.Name).join(", ")}.`,
-                );
-                return;
-            }
-
-            bet.stake *= this.multiplier;
-        }
-
-        if (FORFEITS[bet.stakeForfeit]?.items().length === 1) {
-            const forfeitItem = FORFEITS[bet.stakeForfeit].items()[0];
-            if (
-                Date.now() <
-                this.lockedItems
-                    .get(sender.MemberNumber)
-                    ?.get(forfeitItem.Group)
-            ) {
-                console.log(
-                    `CHEATER DETECTED: ${sender} tried to bet ${bet.stakeForfeit} which should be locked`,
-                );
-                ++player.cheatStrikes;
-                await this.store.savePlayer(player);
-
-                this.cheatPunishment(sender, player);
-
-                return;
-            }
-        }
-
-        this.rouletteGame.placeBet(bet);
-
-        if (this.willSpinAt === undefined) {
-            if (this.resetTimeout !== undefined) {
-                clearTimeout(this.resetTimeout);
-                this.resetTimeout = undefined;
-            }
-
-            this.willSpinAt = Date.now() + TIME_UNTIL_SPIN_MS;
-            this.spinTimeout = setInterval(() => {
-                this.onSpinTimeout();
-            }, 1000);
-        }
+        this.game.onCommandBet(sender, msg, args);
     };
 
     private onCommandCancel = async (
@@ -438,27 +221,7 @@ export class Casino {
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
-        if (
-            this.rouletteGame.getBetsForPlayer(sender.MemberNumber).length === 0
-        ) {
-            this.conn.reply(msg, "You don't have a bet in play.");
-            return;
-        }
-
-        const timeLeft = this.willSpinAt - Date.now();
-        if (timeLeft <= BET_CANCEL_THRESHOLD_MS) {
-            this.conn.reply(msg, "You can't cancel your bet now.");
-            return;
-        }
-
-        const player = await this.store.getPlayer(sender.MemberNumber);
-        this.rouletteGame.getBetsForPlayer(sender.MemberNumber).forEach(b => {
-            player.credits += b.stake;
-        });
-        await this.store.savePlayer(player);
-
-        this.rouletteGame.clearBetsForPlayer(sender.MemberNumber);
-        this.conn.reply(msg, "Bet cancelled.");
+        this.game.onCommandCancel(sender, msg, args);
     };
 
     private onCommandHelp = (
@@ -498,6 +261,21 @@ export class Casino {
             );
         }
     };
+
+    public async setBio(): Promise<void> {
+        const topPlayers = await this.store.getTopPlayers(50);
+        const unredeemed = await this.store.getUnredeemedPurchases();
+
+        this.conn.setBotDescription(
+            makeBio(
+                topPlayers
+                    .map((player, idx) => {
+                        return `${idx + 1}. ${player.name} (${player.memberNumber}): ${player.score} chips won`;
+                    })
+                    .join("\n"),
+            ),
+        );
+    }
 
     private onCommandAddFriend = (
         sender: API_Character,
@@ -767,7 +545,7 @@ export class Casino {
             return;
         }
 
-        if (this.rouletteGame.getBets().length > 0) {
+        if (this.game.getBets().length > 0) {
             this.conn.reply(msg, "There are already bets placed.");
             return;
         }
@@ -789,108 +567,7 @@ export class Casino {
         );
     };
 
-    private onSpinTimeout(): void {
-        if (!this.willSpinAt) return;
-
-        const sign = this.getSign();
-
-        const timeLeft = this.willSpinAt - Date.now();
-        if (timeLeft <= 0) {
-            sign.Extended.SetText("");
-            sign.setProperty("Text2", "");
-
-            clearInterval(this.spinTimeout);
-            this.spinWheel().catch((e) => {
-                console.error("Failed to spin wheel.", e);
-            });
-        } else {
-            this.setTextColor("#ffffff");
-            sign.setProperty("Text2", `${Math.ceil(timeLeft / 1000)}`);
-        }
-    }
-
-    private async spinWheel(): Promise<void> {
-        const wheel = this.getWheel();
-        const prevAngle = wheel.getData().Property.TargetAngle;
-
-        const winningNumber = this.rouletteGame.generateWinningNumber();
-
-        const prevSection = Math.ceil(prevAngle / (360 / 8));
-        let targetSection;
-        if ([0, 2, 4, 6].includes(prevSection)) {
-            // If it is on red
-            targetSection =
-                prevSection + (rouletteColors[winningNumber] === "Red" ? 2 : 1);
-        } else {
-            // if it is on black
-            targetSection =
-                prevSection +
-                (rouletteColors[winningNumber] === "Black" ? 2 : 1);
-        }
-        if (winningNumber === 0) {
-            if (prevSection === 0) {
-                targetSection = 7.5;
-            } else {
-                targetSection = 0.5;
-            }
-        }
-        const targetAngle = (targetSection * 45 - 22.5) % 360;
-
-        console.log(`Winning number: ${winningNumber}`);
-        console.log(`Prev angle: ${prevAngle}`);
-        console.log(`Prev section: ${prevSection}`);
-        console.log(`Target section: ${targetSection}`);
-        console.log(`Target angle: ${targetAngle}`);
-        console.log(`Spinning wheel from ${prevAngle} to ${targetAngle}`);
-
-        wheel.setProperty("TargetAngle", targetAngle);
-
-        await wait(10000);
-
-        this.resetTimeout = setTimeout(() => {
-            sign.setProperty("Text", "Place bets!");
-            sign.setProperty("Text2", " ");
-            this.willSpinAt = undefined;
-            this.resetTimeout = undefined;
-        }, 12000);
-
-        let message = `${this.rouletteGame.getWinningNumberText(winningNumber, true)} wins.`;
-
-        const sign = this.getSign();
-        sign.setProperty(
-            "Text",
-            this.rouletteGame.getWinningNumberText(winningNumber),
-        );
-        sign.setProperty("Text2", "");
-
-        await wait(2000);
-
-        for (const bet of this.rouletteGame.getBets()) {
-            let winnings = this.rouletteGame.getWinnings(winningNumber, bet);
-            if (winnings > 0) {
-                const winnerMemberData = await this.store.getPlayer(
-                    bet.memberNumber,
-                );
-                winnerMemberData.credits += winnings;
-                winnerMemberData.score += winnings;
-                await this.store.savePlayer(winnerMemberData);
-
-                message += `\n${bet.memberName} wins ${winnings} chips!`;
-            } else if (bet.stakeForfeit) {
-                this.applyForfeit(bet);
-                message += `\n${bet.memberName} lost and gets: ${FORFEITS[bet.stakeForfeit].name}!`;
-            }
-        }
-
-        this.multiplier = 1;
-
-        this.conn.SendMessage("Chat", message);
-
-        this.rouletteGame.clear();
-        await this.setBio();
-    }
-
-    private applyForfeit(rouletteBet: RouletteBet): void {
+    public applyForfeit(rouletteBet: RouletteBet): void {
         const char = this.conn.chatRoom.findMember(rouletteBet.memberNumber);
         if (!char) return;
 
@@ -947,7 +624,7 @@ export class Casino {
         }
     }
 
-    private cheatPunishment(char: API_Character, player: Player): void {
+    public cheatPunishment(char: API_Character, player: Player): void {
         if (player.cheatStrikes === 1) {
             char.Tell("Whisper", "Cheating in the casino, hmm?");
         } else if (player.cheatStrikes === 2) {

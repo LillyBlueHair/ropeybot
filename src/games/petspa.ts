@@ -77,7 +77,7 @@ export class PetSpa {
         "",
         "/bot residents - List the current residents of the spa",
         "/bot freeandleave - Immediately removes any restraints added and kicks you from the room",
-        "Code at https://github.com/LillyBlueHair/ropeybot",
+        "Code at https://github.com/FriendsOfBC/ropeybot",
     ].join("\n");
 
     private exitTime = new Map<number, number>();

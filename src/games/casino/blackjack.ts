@@ -2,6 +2,7 @@ import { API_Character } from "../../apiCharacter";
 import { API_Connector } from "../../apiConnector";
 import { BC_Server_ChatRoomMessage } from "../../logicEvent";
 import { FORFEITS } from "./forfeits";
+import { Bet, Game } from "./game";
 import { Card, createDeck, shuffleDeck } from "./pokerCards";
 
 export const BLACKJACKHELP = `
@@ -20,7 +21,7 @@ Blackjack bets:
 /bot help - Show this help
 `;
 
-export interface BlackjackBet {
+export interface BlackjackBet extends Bet {
     memberNumber: number;
     memberName: string;
     stake: number;
@@ -29,7 +30,7 @@ export interface BlackjackBet {
 
 type Hand = Card[];
 
-export class BlackjackGame {
+export class BlackjackGame implements Game {
     private deck: Card[] = [];
     private dealerHand: Hand = [];
     private playerHands: Hand[] = [];
@@ -37,62 +38,36 @@ export class BlackjackGame {
     private gameState: "waiting" | "betting" | "dealing" | "playing" =
         "waiting";
 
-    public constructor(private conn: API_Connector) {}
-
-    public parseBetCommand(
-        senderCharacter: API_Character,
-        msg: BC_Server_ChatRoomMessage,
-        args: string[],
-    ): BlackjackBet | undefined {
-        if (args.length !== 1) {
-            this.conn.reply(msg, "Usage: /bot bet <amount>");
-            return;
-        }
-
-        if (
-            this.bets.find(
-                (b) => b.memberNumber === senderCharacter.MemberNumber,
-            )
-        ) {
-            this.conn.reply(
-                msg,
-                "You already placed a bet for this round. Use /bot cancel to cancel it.",
-            );
-            return;
-        }
-
-        const stake = args[0];
-        let stakeValue: number;
-        let stakeForfeit: string;
-
-        if (FORFEITS[stake] !== undefined) {
-            stakeValue = FORFEITS[stake].value;
-            stakeForfeit = stake;
-        } else {
-            if (!/^\d+$/.test(stake)) {
-                this.conn.reply(msg, "Invalid stake.");
-                return;
-            }
-            stakeValue = parseInt(stake, 10);
-            if (isNaN(stakeValue) || stakeValue < 1) {
-                this.conn.reply(msg, "Invalid stake.");
-                return;
-            }
-        }
-        return {
-            memberNumber: senderCharacter.MemberNumber,
-            memberName: senderCharacter.toString(),
-            stake: stakeValue,
-            stakeForfeit,
-        };
+    constructor(private conn: API_Connector) {}
+    parseBetCommand(senderCharacter: API_Character, msg: BC_Server_ChatRoomMessage, args: string[]): Bet | undefined {
+        throw new Error("Method not implemented.");
     }
-
-    public parseHitCommand(): void {
-        // Implement the hit logic here
+    placeBet(bet: Bet): void {
+        throw new Error("Method not implemented.");
     }
-
-    public parseStandCommand(): void {
-        // Implement the stand logic here
+    textForBet(bet: Bet): string {
+        throw new Error("Method not implemented.");
+    }
+    getBets(): Bet[] {
+        throw new Error("Method not implemented.");
+    }
+    getBetsForPlayer(memberNumber: number): Bet[] {
+        throw new Error("Method not implemented.");
+    }
+    clearBetsForPlayer(memberNumber: number): undefined {
+        throw new Error("Method not implemented.");
+    }
+    onCommandBet(sender: API_Character, msg: BC_Server_ChatRoomMessage, args: string[]) {
+        throw new Error("Method not implemented.");
+    }
+    onCommandCancel(sender: API_Character, msg: BC_Server_ChatRoomMessage, args: string[]) {
+        throw new Error("Method not implemented.");
+    }
+    getWinnings(winningNumber: number, bet: Bet): number {
+        throw new Error("Method not implemented.");
+    }
+    clear(): void {
+        throw new Error("Method not implemented.");
     }
 
     private calculateHandValue(hand: Hand): number {

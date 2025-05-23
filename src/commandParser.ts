@@ -35,6 +35,14 @@ export class CommandParser {
         this.commands.set(cmd, cb);
     }
 
+    public unregister(cmd: string) {
+        this.commands.delete(cmd);
+    }
+    
+    public unregisterAll() {
+        this.commands.clear();
+    }
+
     private onMessage = (ev: MessageEvent) => {
         // trim any leading or trailing parentheses from the message
         const msg = ev.message.Content.replace(/^\(+/, "").replace(/\)+$/, "");
