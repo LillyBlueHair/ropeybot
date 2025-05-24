@@ -70,10 +70,14 @@ export class BlackjackGame implements Game {
         this.casino = casino;
         this.casino.commandParser.register("hit", this.onCommandHit);
         this.casino.commandParser.register("stand", this.onCommandStand);
+        this.casino.commandParser.register("double", this.onCommandDouble);
     }
 
     endGame(): void {
         this.gameState = "waiting";
+        this.casino.commandParser.unregister("hit");
+        this.casino.commandParser.unregister("stand");
+        this.casino.commandParser.unregister("double");
         this.bets = [];
         this.playerHands.clear();
         this.dealerHand = [];
@@ -174,8 +178,61 @@ export class BlackjackGame implements Game {
         }
     };
 
+    private onCommandDouble = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (this.gameState !== "playing") {
+            this.conn.reply(msg, "You can't double down right now.");
+            return;
+        }
+        const bet = this.getBetsForPlayer(sender.MemberNumber)[0];
+        if (!bet) {
+            this.conn.reply(msg, "You don't have a bet in play.");
+            return;
+        } else if (bet.standing) {
+            this.conn.reply(msg, "You are already standing.");
+            return;
+        } else if (this.playerHands.get(sender.MemberNumber) === undefined) {
+            this.conn.reply(msg, "You don't have a hand to double down on.");
+            return;
+        } else if (bet.stakeForfeit) {
+            this.conn.reply(msg, "You can't double down on a forfeit bet.");
+            return;
+        }
+        const hand = this.playerHands.get(sender.MemberNumber);
+        if (hand.length !== 2) {
+            this.conn.reply(
+                msg,
+                "You can only double down on your initial two cards.",
+            );
+            return;
+        }
+        const player = await this.casino.store.getPlayer(sender.MemberNumber);
+        if (player.credits < bet.stake) {
+            this.conn.reply(msg, "You don't have enough chips to double down.");
+            return;
+        }
+
+        player.credits -= bet.stake;
+        await this.casino.store.savePlayer(player);
+        bet.stake *= 2; // Double the stake
+        hand.push(this.deck.pop());
+        const playerValue = this.calculateHandValue(hand);
+        bet.standing = true; 
+        const handString = await this.buildHandString(true);
+        this.conn.reply(
+            msg,
+            `You doubled down and got a ${getCardString(hand[hand.length - 1])}.\n${handString}`,
+        );
+        if (this.allPlayersDone()) {
+            this.resolveGame();
+        }
+    };
+
     private async resolveGame(): Promise<void> {
-        while(this.calculateHandValue(this.dealerHand) < 17) {
+        while (this.calculateHandValue(this.dealerHand) < 17) {
             this.dealerHand.push(this.deck.pop());
         }
         this.gameState = "waiting";
@@ -210,10 +267,7 @@ export class BlackjackGame implements Game {
                 this.dealTimeout = undefined;
             }
         }
-        this.conn.SendMessage(
-            "Chat",
-            message
-        );
+        this.conn.SendMessage("Chat", message);
     }
 
     private onCommandStand = async (
