@@ -5,6 +5,9 @@ import { RouletteBet } from "./roulette";
 
 export interface Game {
 
+    HELPMESSAGE: string;
+    EXAMPLES: string;
+
     parseBetCommand(
         senderCharacter: API_Character,
         msg: BC_Server_ChatRoomMessage,

@@ -4,13 +4,18 @@ import { BC_Server_ChatRoomMessage } from "../../logicEvent";
 import { Casino, getItemsBlockingForfeit } from "../casino";
 import { FORFEITS } from "./forfeits";
 import { Bet, Game } from "./game";
-import { Card, createDeck, shuffleDeck } from "./pokerCards";
+import { Card, createDeck, getCardString, shuffleDeck } from "./pokerCards";
 
 export const BLACKJACKHELP = `
 Blackjack is a card game where the goal is to get as close to 21 as possible without going over.
 Each player is dealt two cards, and can choose to "hit" (take another card) or "stand" (keep their current hand).
 The dealer also has a hand, and must hit until they reach 17 or higher.
-Blackjack (21 with two cards) pays 3:2.
+Blackjack (21 with two cards) pays 3:2 rounding down to the nearest whole number.
+
+Every card has a value:
+- Number cards (2-10) are worth their face value.
+- Jacks, Queens, and Kings are worth 10.
+- Aces can be worth 1 or 11, depending on what is more beneficial for the hand.
 
 Blackjack bets:
 /bot bet <amount> - Bet on the current hand. Odds: 1:1.
@@ -22,7 +27,15 @@ Blackjack bets:
 /bot help - Show this help
 `;
 
-const TIME_UNTIL_DEAL_MS = 60000;
+const ROULETTEEXAMPLES = `
+/bot bet 10
+    bets 10 chips
+/bot bet 15
+    bets the 'leg binder' forfeit (worth 7 chips)
+`;
+
+// const TIME_UNTIL_DEAL_MS = 30000;
+const TIME_UNTIL_DEAL_MS = 6000;
 const BET_CANCEL_THRESHOLD_MS = 3000;
 
 export interface BlackjackBet extends Bet {
@@ -30,6 +43,7 @@ export interface BlackjackBet extends Bet {
     memberName: string;
     stake: number;
     stakeForfeit: string;
+    standing: boolean;
 }
 
 type Hand = Card[];
@@ -38,24 +52,30 @@ export class BlackjackGame implements Game {
     private casino: Casino;
     private deck: Card[] = [];
     private dealerHand: Hand = [];
-    private playerHands: Hand[] = [];
+    private playerHands: Map<number, Hand> = new Map();
     private willDealAt: number | undefined;
     private bets: BlackjackBet[] = [];
     private gameState: "waiting" | "betting" | "dealing" | "playing" =
         "waiting";
     private resetTimeout: NodeJS.Timeout | undefined;
+    private dealTimeout: NodeJS.Timeout | undefined;
+
+    public HELPMESSAGE = BLACKJACKHELP;
+    public EXAMPLES = ROULETTEEXAMPLES;
 
     constructor(
         private conn: API_Connector,
         casino: Casino,
     ) {
         this.casino = casino;
+        this.casino.commandParser.register("hit", this.onCommandHit);
+        this.casino.commandParser.register("stand", this.onCommandStand);
     }
 
     endGame(): void {
         this.gameState = "waiting";
         this.bets = [];
-        this.playerHands = [];
+        this.playerHands.clear();
         this.dealerHand = [];
         this.deck = [];
     }
@@ -65,7 +85,7 @@ export class BlackjackGame implements Game {
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ): BlackjackBet | undefined {
-        if (args.length !== 2) {
+        if (args.length !== 1) {
             this.conn.reply(
                 msg,
                 "I couldn't understand that bet. Try, eg. /bot bet 10 or /bot bet boots",
@@ -107,8 +127,123 @@ export class BlackjackGame implements Game {
             memberName: senderCharacter.toString(),
             stake: stakeValue,
             stakeForfeit,
+            standing: false,
         };
     }
+
+    private onCommandHit = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (this.gameState !== "playing") {
+            this.conn.reply(msg, "You can't hit right now.");
+            return;
+        }
+        const bet = this.getBetsForPlayer(sender.MemberNumber)[0];
+        if (!bet) {
+            this.conn.reply(msg, "You don't have a bet in play.");
+            return;
+        }
+        if (bet.standing) {
+            this.conn.reply(msg, "You can't hit, you're standing.");
+            return;
+        } else if (this.playerHands.get(sender.MemberNumber) === undefined) {
+            this.conn.reply(msg, "You don't have a hand to hit.");
+            return;
+        }
+        const hand = this.playerHands.get(sender.MemberNumber);
+        hand.push(this.deck.pop());
+        const playerValue = this.calculateHandValue(hand);
+        if (playerValue > 21) {
+            this.conn.SendMessage(
+                "Chat",
+                `${sender.toString()} busted with a hand of ${this.handToString(
+                    hand,
+                )} (${playerValue})!`,
+            );
+            bet.standing = true; // Player automatically stands after busting
+        }
+        const handString = await this.buildHandString(true);
+        this.conn.reply(
+            msg,
+            `You hit and got a ${getCardString(hand[hand.length - 1])}.\n${handString}`,
+        );
+        if (this.allPlayersDone()) {
+            this.resolveGame();
+        }
+    };
+
+    private async resolveGame(): Promise<void> {
+        while(this.calculateHandValue(this.dealerHand) < 17) {
+            this.dealerHand.push(this.deck.pop());
+        }
+        this.gameState = "waiting";
+        await this.showHands(false);
+        var message = `Dealer has a hand of ${this.calculateHandValue(this.dealerHand)}\n`;
+        for (const bet of this.bets) {
+            const playerHand = this.playerHands.get(bet.memberNumber);
+            if (!playerHand) {
+                console.error(
+                    `No hand found for player ${bet.memberName} (${bet.memberNumber})`,
+                );
+                continue;
+            }
+            const winnings = this.getWinnings(playerHand, bet);
+            if (winnings > 0) {
+                const winnerMemberData = await this.casino.store.getPlayer(
+                    bet.memberNumber,
+                );
+                winnerMemberData.credits += winnings;
+                winnerMemberData.score += winnings;
+                await this.casino.store.savePlayer(winnerMemberData);
+                message += `${bet.memberName} wins ${winnings} chips! \n`;
+            } else if (bet.stakeForfeit) {
+                this.casino.applyForfeit(bet);
+                message += `${bet.memberName} lost and gets ${FORFEITS[bet.stakeForfeit].name}! `;
+            }
+
+            this.clear();
+            this.willDealAt = undefined;
+            if (this.dealTimeout) {
+                clearInterval(this.dealTimeout);
+                this.dealTimeout = undefined;
+            }
+        }
+        this.conn.SendMessage(
+            "Chat",
+            message
+        );
+    }
+
+    private onCommandStand = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (this.gameState !== "playing") {
+            this.conn.reply(msg, "You can't stand right now.");
+            return;
+        }
+        const bet = this.getBetsForPlayer(sender.MemberNumber)[0];
+        if (!bet) {
+            this.conn.reply(msg, "You don't have a bet in play.");
+            return;
+        } else if (bet.standing) {
+            this.conn.reply(msg, "You are already standing.");
+            return;
+        }
+        bet.standing = true;
+        const handString = await this.buildHandString(true);
+        this.conn.reply(
+            msg,
+            `You are standing. \n
+            ${handString}`,
+        );
+        if (this.allPlayersDone()) {
+            this.resolveGame();
+        }
+    };
 
     placeBet(bet: BlackjackBet): void {
         this.bets.push(bet);
@@ -135,6 +270,7 @@ export class BlackjackGame implements Game {
     public clearBetsForPlayer(memberNumber: number): undefined {
         this.bets = this.bets.filter((b) => b.memberNumber !== memberNumber);
     }
+
     onCommandBet = async (
         sender: API_Character,
         msg: BC_Server_ChatRoomMessage,
@@ -230,13 +366,35 @@ export class BlackjackGame implements Game {
                 clearTimeout(this.resetTimeout);
                 this.resetTimeout = undefined;
             }
-
+            this.gameState = "betting";
             this.willDealAt = Date.now() + TIME_UNTIL_DEAL_MS;
-            // this.spinTimeout = setInterval(() => {
-            //     this.onSpinTimeout();
-            // }, 1000);
+            this.dealTimeout = setInterval(() => {
+                this.onDealTimeout();
+            }, 1000);
         }
     };
+
+    private onDealTimeout(): void {
+        if (!this.willDealAt) return;
+
+        const sign = this.casino.getSign();
+
+        const timeLeft = this.willDealAt - Date.now();
+        if (timeLeft <= 0) {
+            sign.Extended.SetText("");
+            sign.setProperty("Text2", "");
+
+            clearInterval(this.dealTimeout);
+            this.initialDeal();
+        } else {
+            this.casino.setTextColor("#ffffff");
+            sign.setProperty("Text2", `${Math.ceil(timeLeft / 1000)}`);
+        }
+    }
+
+    private allPlayersDone(): boolean {
+        return this.bets.every((b) => b.standing);
+    }
 
     onCommandCancel = async (
         sender: API_Character,
@@ -264,31 +422,86 @@ export class BlackjackGame implements Game {
         this.conn.reply(msg, "Bet cancelled.");
     };
 
-    getWinnings(playerHandValue: number, dealerHandValue, bet: BlackjackBet): number {
+    getWinnings(playerHand: Hand, bet: BlackjackBet): number {
+        var playerHandValue: number = this.calculateHandValue(playerHand);
+        var dealerHandValue: number = this.calculateHandValue(this.dealerHand);
         if (playerHandValue > 21) {
-            return;
+            return 0;
         }
         if (dealerHandValue > 21) {
-            return bet.stake * 2;
-        }
-        if (playerHandValue === 21) {
-            return bet.stake * 2.5;
-        }
-        if (playerHandValue > dealerHandValue) {
             return bet.stake * 2;
         }
         if (playerHandValue === dealerHandValue) {
             return bet.stake;
         }
+        if (playerHandValue === 21 && playerHand.length === 2) {
+            return Math.floor(bet.stake * 2.5);
+        }
+        if (playerHandValue > dealerHandValue) {
+            return bet.stake * 2;
+        }
+        return 0;
     }
 
     clear(): void {
         this.bets = [];
+        this.playerHands.clear();
+    }
+
+    private createShoe(): void {
+        this.deck = shuffleDeck(createDeck());
+    }
+
+    private initialDeal(): void {
+        this.gameState = "dealing";
+        if (this.deck.length < this.bets.length * 5 + 5) {
+            this.conn.SendMessage(
+                "Chat",
+                "The deck is running low, shuffling a new deck.",
+            );
+            this.createShoe();
+        }
+        this.dealerHand = [this.deck.pop(), this.deck.pop()];
+        for (const bet of this.bets) {
+            this.playerHands.set(bet.memberNumber, [
+                this.deck.pop(),
+                this.deck.pop(),
+            ]);
+        }
+        this.showHands(true);
+        this.gameState = "playing";
+    }
+
+    private async showHands(dealerHidden: boolean): Promise<void> {
+        const handString = await this.buildHandString(dealerHidden);
+        this.conn.SendMessage("Chat", handString);
+    }
+
+    private async buildHandString(dealerHidden: boolean): Promise<string> {
+        const dealerValue = this.calculateHandValue(this.dealerHand);
+        const dealerHandString = dealerHidden
+            ? `[${getCardString(this.dealerHand[0])}] [???]`
+            : this.handToString(this.dealerHand);
+        var string = `Dealer's hand: ${dealerHandString} (${dealerHidden ? "???" : dealerValue})\n`;
+        for (const [memberNumber, hand] of this.playerHands) {
+            const playerHandString = this.handToString(hand);
+            const playerValue = this.calculateHandValue(hand);
+            const player = await this.casino.store.getPlayer(memberNumber);
+            string += `${player.name} (${memberNumber}) hand: ${playerHandString} (${playerValue})\n`;
+        }
+        return string;
+    }
+
+    private handToString(hand: Hand): string {
+        return hand.map((card) => `[${getCardString(card)}]`).join(", ");
     }
 
     private calculateHandValue(hand: Hand): number {
         let value = 0;
         let aces = 0;
+        if (hand.length === 0) {
+            return 0; // No cards, value is 0
+        }
 
         for (const card of hand) {
             if (card.value === "A") {

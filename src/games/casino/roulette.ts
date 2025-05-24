@@ -18,12 +18,12 @@ import { API_Connector } from "../../apiConnector";
 import { wait, waitForCondition } from "../../hub/utils";
 import { API_AppearanceItem, AssetGet } from "../../item";
 import { BC_Server_ChatRoomMessage } from "../../logicEvent";
-import { Casino, getItemsBlockingForfeit, makeBio } from "../casino";
+import { Casino, getItemsBlockingForfeit } from "../casino";
 import { FORFEITS } from "./forfeits";
 import { Bet, Game } from "./game";
 import { ROULETTE_WHEEL } from "./rouletteWheelBundle";
 
-export const ROULETTEHELP = `
+const ROULETTEHELP = `
 There are 37 numbers on the roulette wheel, 0 - 36. 0 is green.
 
 Roulette bets:
@@ -43,7 +43,7 @@ Roulette bets:
 /bot help - Show this help
 `;
 
-export const ROULETTEEXAMPLES = `
+const ROULETTEEXAMPLES = `
 /bot bet red 10
     bets 10 chips on red
 /bot bet 15 legbinder
@@ -123,6 +123,8 @@ export class RouletteGame implements Game {
     private willSpinAt: number | undefined;
     private spinTimeout: NodeJS.Timeout | undefined;
     private resetTimeout: NodeJS.Timeout | undefined;
+    public HELPMESSAGE = ROULETTEHELP;
+    public EXAMPLES = ROULETTEEXAMPLES;
 
     private casino: Casino;
 
@@ -131,14 +133,17 @@ export class RouletteGame implements Game {
         casino: Casino,
     ) {
         this.casino = casino;
+        console.log("thsdacasino");
+        console.log(this.casino.multiplier);
+        console.log(this.casino);
 
         this.casino.commandParser.register("sign", (sender, msg, args) => {
-            const sign = this.getSign();
+            const sign = this.casino.getSign();
 
             sign.setProperty("OverridePriority", { Text: 63 });
             sign.setProperty("Text", "Place bets!");
             sign.setProperty("Text2", " ");
-            this.setTextColor("#ffffff");
+            this.casino.setTextColor("#ffffff");
         });
         this.casino.commandParser.register("wheel", (sender, msg, args) => {
             this.getWheel();
@@ -158,11 +163,11 @@ export class RouletteGame implements Game {
                 " ",
             ]);
 
-            const sign = this.getSign();
+            const sign = this.casino.getSign();
             sign.setProperty("OverridePriority", { Text: 63 });
             sign.setProperty("Text", "Place bets!");
             sign.setProperty("Text2", " ");
-            this.setTextColor("#ffffff");
+            this.casino.setTextColor("#ffffff");
 
             this.casino.setBio().catch((e) => {
                 console.error("Failed to set bio.", e);
@@ -208,22 +213,6 @@ export class RouletteGame implements Game {
                 "Gloves",
             ]);
         }, 500);
-    }
-
-    private getSign(): API_AppearanceItem {
-        let sign = this.conn.Player.Appearance.InventoryGet("ItemMisc");
-        if (!sign) {
-            sign = this.conn.Player.Appearance.AddItem(
-                AssetGet("ItemMisc", "WoodenSign"),
-            );
-            sign.setProperty("Text", "");
-            sign.setProperty("Text2", "");
-        }
-        return sign;
-    }
-
-    private setTextColor(color: string): void {
-        this.getSign().SetColor(["Default", "Default", color]);
     }
 
     public parseBetCommand(
@@ -547,7 +536,7 @@ export class RouletteGame implements Game {
     private onSpinTimeout(): void {
         if (!this.willSpinAt) return;
 
-        const sign = this.getSign();
+        const sign = this.casino.getSign();
 
         const timeLeft = this.willSpinAt - Date.now();
         if (timeLeft <= 0) {
@@ -559,7 +548,7 @@ export class RouletteGame implements Game {
                 console.error("Failed to spin wheel.", e);
             });
         } else {
-            this.setTextColor("#ffffff");
+            this.casino.setTextColor("#ffffff");
             sign.setProperty("Text2", `${Math.ceil(timeLeft / 1000)}`);
         }
     }
@@ -611,7 +600,7 @@ export class RouletteGame implements Game {
 
         let message = `${this.getWinningNumberText(winningNumber, true)} wins.`;
 
-        const sign = this.getSign();
+        const sign = this.casino.getSign();
         sign.setProperty("Text", this.getWinningNumberText(winningNumber));
         sign.setProperty("Text2", "");
 

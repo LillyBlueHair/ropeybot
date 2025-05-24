@@ -39,13 +39,13 @@ export function shuffleDeck(deck: Card[]): Card[] {
 
 export function getCardString(card: Card): string {
     if (card.suit === "Spades") {
-        return `${card.value} ♠`;
+        return `${card.value}♠`;
     } else if (card.suit === "Hearts") {
-        return `${card.value} ♥`;
+        return `${card.value}♥`;
     } else if (card.suit === "Diamonds") {
-        return `${card.value} ♦`;
+        return `${card.value}♦`;
     } else if (card.suit === "Clubs") {
-        return `${card.value} ♣`;
+        return `${card.value}♣`;
     }
-    return `${card.value} ?`;
+    return `${card.value}?`;
 }

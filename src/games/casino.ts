@@ -15,11 +15,7 @@
 import { Db } from "mongodb";
 import { API_Connector } from "../apiConnector";
 import { CommandParser } from "../commandParser";
-import {
-    ROULETTEEXAMPLES,
-    RouletteGame,
-    ROULETTEHELP,
-} from "./casino/roulette";
+import { RouletteGame } from "./casino/roulette";
 import { API_Character, ItemPermissionLevel } from "../apiCharacter";
 import { BC_Server_ChatRoomMessage, TBeepType } from "../logicEvent";
 import { CasinoStore, Player } from "./casino/casinostore";
@@ -49,7 +45,11 @@ export function getItemsBlockingForfeit(
     return char.Appearance.Appearance.filter((i) => slots.has(i.Group));
 }
 
-export const makeBio = (leaderBoard: string) => `🎰🎰🎰 Welcome to the Casino! 🎰🎰🎰
+export const makeBio = (
+    leaderBoard: string,
+    exampleString: string,
+    helpString: string,
+) => `🎰🎰🎰 Welcome to the Casino! 🎰🎰🎰
 
 All visitors will automatically ber awarded ${FREE_CHIPS} chips every day!
 You can bet with either chips or forefeits. If you win when betting with a forfeit, you gain the corresponding
@@ -57,11 +57,11 @@ amount of chips in the forfeits table. If you lose, the forfeit is applied. You 
 using the keyword in the table instead of a chip amount.
 
 Examples:
-${ROULETTEEXAMPLES}
+${exampleString}
 
 ℹ️ How To Play
 ==============
-${ROULETTEHELP}
+${helpString}
 🪢 Forfeit Table
 ================
 Restraints are for 20 minutes, unless otherwise stated.
@@ -108,9 +108,9 @@ export class Casino {
         config?: CasinoConfig,
     ) {
         // The default game is roulette
-        this.game = new RouletteGame(conn, this);
         this.store = new CasinoStore(db);
         this.commandParser = new CommandParser(conn);
+        this.game = new RouletteGame(conn, this);
 
         if (config?.cocktail) {
             this.cocktailOfTheDay = COCKTAILS[config.cocktail];
@@ -227,7 +227,7 @@ export class Casino {
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
-        this.conn.reply(msg, ROULETTEHELP);
+        this.conn.reply(msg, this.game.HELPMESSAGE);
     };
 
     private onCommandChips = async (
@@ -271,6 +271,8 @@ export class Casino {
                         return `${idx + 1}. ${player.name} (${player.memberNumber}): ${player.score} chips won`;
                     })
                     .join("\n"),
+                this.game.EXAMPLES,
+                this.game.HELPMESSAGE,
             ),
         );
     }
@@ -565,6 +567,22 @@ export class Casino {
         );
     };
 
+    public getSign(): API_AppearanceItem {
+        let sign = this.conn.Player.Appearance.InventoryGet("ItemMisc");
+        if (!sign) {
+            sign = this.conn.Player.Appearance.AddItem(
+                AssetGet("ItemMisc", "WoodenSign"),
+            );
+            sign.setProperty("Text", "");
+            sign.setProperty("Text2", "");
+        }
+        return sign;
+    }
+
+    public setTextColor(color: string): void {
+        this.getSign().SetColor(["Default", "Default", color]);
+    }
+
     public applyForfeit(bet: Bet): void {
         const char = this.conn.chatRoom.findMember(bet.memberNumber);
         if (!char) return;
@@ -610,8 +628,7 @@ export class Casino {
                         Hint: "Better luck next time!",
                         RemoveItem: true,
                         RemoveTimer:
-                            Date.now() +
-                            FORFEITS[bet.stakeForfeit].lockTimeMs,
+                            Date.now() + FORFEITS[bet.stakeForfeit].lockTimeMs,
                         ShowTimer: true,
                         LockSet: true,
                     },
@@ -640,7 +657,7 @@ export class Casino {
         }
     }
 
-    private  onCommandGame = async (
+    private onCommandGame = async (
         sender: API_Character,
         msg: BC_Server_ChatRoomMessage,
         args: string[],
@@ -666,6 +683,8 @@ export class Casino {
             this.conn.reply(msg, "Switched to blackjack.");
         } else {
             this.conn.reply(msg, `Unknown game: ${game}`);
+            return;
         }
-    }
+        this.setBio();
+    };
 }
