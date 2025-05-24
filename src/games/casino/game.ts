@@ -13,8 +13,6 @@ export interface Game {
 
     placeBet(bet: Bet): void;
 
-    textForBet(bet: Bet): string;
-
     getBets(): Bet[];
 
     getBetsForPlayer(memberNumber: number): Bet[];
@@ -33,7 +31,7 @@ export interface Game {
         args: string[],
     );
 
-    getWinnings(winningNumber: number, bet: Bet): number;
+    endGame(): void;
 
     clear(): void;
 }

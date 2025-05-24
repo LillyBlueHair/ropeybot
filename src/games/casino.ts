@@ -16,8 +16,7 @@ import { Db } from "mongodb";
 import { API_Connector } from "../apiConnector";
 import { CommandParser } from "../commandParser";
 import {
-    RouletteBet,
-    rouletteColors,
+    ROULETTEEXAMPLES,
     RouletteGame,
     ROULETTEHELP,
 } from "./casino/roulette";
@@ -25,7 +24,6 @@ import { API_Character, ItemPermissionLevel } from "../apiCharacter";
 import { BC_Server_ChatRoomMessage, TBeepType } from "../logicEvent";
 import { CasinoStore, Player } from "./casino/casinostore";
 import { API_AppearanceItem, AssetGet, BC_AppearanceItem } from "../item";
-import { wait } from "../hub/utils";
 import { remainingTimeString } from "../util/time";
 import { importBundle } from "../appearance";
 import {
@@ -37,7 +35,8 @@ import {
 } from "./casino/forfeits";
 import { Cocktail, COCKTAILS } from "./casino/cocktails";
 import { generatePassword } from "../util/string";
-import { Game } from "./casino/game";
+import { Bet, Game } from "./casino/game";
+import { BlackjackGame } from "./casino/blackjack";
 
 const FREE_CHIPS = 20;
 
@@ -58,10 +57,7 @@ amount of chips in the forfeits table. If you lose, the forfeit is applied. You 
 using the keyword in the table instead of a chip amount.
 
 Examples:
-/bot bet red 10
-    bets 10 chips on red
-/bot bet 15 legbinder
-    bets the 'leg binder' forfeit (worth 7 chips) on number 15
+${ROULETTEEXAMPLES}
 
 ℹ️ How To Play
 ==============
@@ -111,6 +107,7 @@ export class Casino {
         db: Db,
         config?: CasinoConfig,
     ) {
+        // The default game is roulette
         this.game = new RouletteGame(conn, this);
         this.store = new CasinoStore(db);
         this.commandParser = new CommandParser(conn);
@@ -135,6 +132,7 @@ export class Casino {
         this.commandParser.register("vouchers", this.onCommandVouchers);
         this.commandParser.register("give", this.onCommandGive);
         this.commandParser.register("bonus", this.onCommandBonusRound);
+        this.commandParser.register("game", this.onCommandGame);
 
         this.conn.setItemPermission(ItemPermissionLevel.OwnerOnly);
     }
@@ -567,22 +565,22 @@ export class Casino {
         );
     };
 
-    public applyForfeit(rouletteBet: RouletteBet): void {
-        const char = this.conn.chatRoom.findMember(rouletteBet.memberNumber);
+    public applyForfeit(bet: Bet): void {
+        const char = this.conn.chatRoom.findMember(bet.memberNumber);
         if (!char) return;
 
-        const applyFn = FORFEITS[rouletteBet.stakeForfeit].applyItems;
-        const items = FORFEITS[rouletteBet.stakeForfeit].items();
+        const applyFn = FORFEITS[bet.stakeForfeit].applyItems;
+        const items = FORFEITS[bet.stakeForfeit].items();
 
         if (items.length === 1) {
-            const lockTime = FORFEITS[rouletteBet.stakeForfeit].lockTimeMs;
+            const lockTime = FORFEITS[bet.stakeForfeit].lockTimeMs;
             if (lockTime) {
                 this.lockedItems.set(
-                    rouletteBet.memberNumber,
-                    this.lockedItems.get(rouletteBet.memberNumber) ?? new Map(),
+                    bet.memberNumber,
+                    this.lockedItems.get(bet.memberNumber) ?? new Map(),
                 );
                 this.lockedItems
-                    .get(rouletteBet.memberNumber)
+                    .get(bet.memberNumber)
                     ?.set(items[0].Group, Date.now() + lockTime);
             }
         }
@@ -597,13 +595,13 @@ export class Casino {
             added.SetColor(characterHairColor);
             added.SetDifficulty(20);
             added.SetCraft({
-                Name: `Pixie Casino ${FORFEITS[rouletteBet.stakeForfeit].name}`,
+                Name: `Pixie Casino ${FORFEITS[bet.stakeForfeit].name}`,
                 Description:
                     "This item is property of Pixie Casino. Better luck next time!",
                 MemberName: this.conn.Player.toString(),
                 MemberNumber: this.conn.Player.MemberNumber,
             });
-            if (FORFEITS[rouletteBet.stakeForfeit].lockTimeMs) {
+            if (FORFEITS[bet.stakeForfeit].lockTimeMs) {
                 added.lock(
                     "TimerPasswordPadlock",
                     this.conn.Player.MemberNumber,
@@ -613,7 +611,7 @@ export class Casino {
                         RemoveItem: true,
                         RemoveTimer:
                             Date.now() +
-                            FORFEITS[rouletteBet.stakeForfeit].lockTimeMs,
+                            FORFEITS[bet.stakeForfeit].lockTimeMs,
                         ShowTimer: true,
                         LockSet: true,
                     },
@@ -639,6 +637,35 @@ export class Casino {
             );
             sign.setProperty("Text", "Cheater");
             sign.setProperty("Text2", "");
+        }
+    }
+
+    private  onCommandGame = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (!sender.IsRoomAdmin()) {
+            this.conn.reply(msg, "Sorry, you need to be an admin");
+            return;
+        }
+        if (args.length < 1) {
+            this.conn.reply(msg, "Usage: /bot game <game>");
+            return;
+        }
+        const game = args[0].toLowerCase();
+        if (game === "roulette" && this.currentGame !== "Roulette") {
+            await this.game.endGame();
+            this.game = new RouletteGame(this.conn, this);
+            this.currentGame = "Roulette";
+            this.conn.reply(msg, "Switched to roulette.");
+        } else if (game === "blackjack" && this.currentGame !== "Blackjack") {
+            await this.game.endGame();
+            this.game = new BlackjackGame(this.conn, this);
+            this.currentGame = "Blackjack";
+            this.conn.reply(msg, "Switched to blackjack.");
+        } else {
+            this.conn.reply(msg, `Unknown game: ${game}`);
         }
     }
 }

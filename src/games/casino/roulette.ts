@@ -12,14 +12,13 @@
  * limitations under the License.
  */
 
+import { resolve } from "path";
 import { API_Character } from "../../apiCharacter";
 import { API_Connector } from "../../apiConnector";
-import { CommandParser } from "../../commandParser";
-import { wait } from "../../hub/utils";
+import { wait, waitForCondition } from "../../hub/utils";
 import { API_AppearanceItem, AssetGet } from "../../item";
 import { BC_Server_ChatRoomMessage } from "../../logicEvent";
 import { Casino, getItemsBlockingForfeit, makeBio } from "../casino";
-import { CasinoStore } from "./casinostore";
 import { FORFEITS } from "./forfeits";
 import { Bet, Game } from "./game";
 import { ROULETTE_WHEEL } from "./rouletteWheelBundle";
@@ -42,6 +41,13 @@ Roulette bets:
 /bot chips - Show your current chip balance.
 /bot give <name or member number> <amount> - Give chips to another player.
 /bot help - Show this help
+`;
+
+export const ROULETTEEXAMPLES = `
+/bot bet red 10
+    bets 10 chips on red
+/bot bet 15 legbinder
+    bets the 'leg binder' forfeit (worth 7 chips) on number 15
 `;
 
 const TIME_UNTIL_SPIN_MS = 60000;
@@ -228,7 +234,7 @@ export class RouletteGame implements Game {
         if (args.length !== 2) {
             this.conn.reply(
                 msg,
-                "I couldn't understand that bet. Try, eg. /bot bet red 10 or /bot bet red 1-12 boots",
+                "I couldn't understand that bet. Try, eg. /bot bet red 10 or /bot bet 1-12 boots",
             );
             return;
         }
@@ -504,7 +510,7 @@ export class RouletteGame implements Game {
         this.bets = this.bets.filter((b) => b.memberNumber !== memberNumber);
     }
 
-    public getWinnings(winningNumber: number, bet: RouletteBet): number {
+    private getWinnings(winningNumber: number, bet: RouletteBet): number {
         if (bet.kind === "single" && bet.number === winningNumber) {
             return bet.stake * 36;
         } else if (
@@ -558,7 +564,6 @@ export class RouletteGame implements Game {
         }
     }
 
-    // Move to roulette specifics?
     private async spinWheel(): Promise<void> {
         const wheel = this.getWheel();
         const prevAngle = wheel.getData().Property.TargetAngle;
@@ -644,5 +649,13 @@ export class RouletteGame implements Game {
         }
         this.conn.Player.Appearance.applyBundle(ROULETTE_WHEEL);
         return this.conn.Player.Appearance.InventoryGet("ItemDevices");
+    }
+
+    async endGame(): Promise<void> {
+        waitForCondition(() => this.willSpinAt === undefined);
+        clearTimeout(this.resetTimeout);
+        this.casino.commandParser.unregister("sign");
+        this.casino.commandParser.unregister("wheel");
+        resolve();
     }
 }
