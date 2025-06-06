@@ -122,19 +122,17 @@ interface OnlineFriendResult {
 }
 
 interface ConnectorEvents {
-    PoseChange: [{ character: API_Character }];
+    PoseChange: [character: API_Character];
     Message: [message: MessageEvent];
-    Beep: [{ payload: TBeepType }];
+    Beep: [beep: TBeepType];
     RoomJoin: [];
     RoomCreate: [];
     CharacterEntered: [character: API_Character];
     CharacterLeft: [
-        {
-            sourceMemberNumber: number;
-            character: API_Character;
-            leaveMessage: string | null;
-            intentional: boolean;
-        },
+        sourceMemberNumber: number,
+        character: API_Character,
+        leaveMessage: string | null,
+        intentional: boolean,
     ];
 }
 
@@ -425,23 +423,23 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         );
         if (!leftMember) return;
 
-        this.emit("CharacterLeft", {
-            sourceMemberNumber: resp.SourceMemberNumber,
-            character: leftMember,
-            leaveMessage: null,
-            intentional:
-                this.leaveReasons.get(resp.SourceMemberNumber) !==
-                LeaveReason.DISCONNECT,
-        });
+        const isIntentional =
+            this.leaveReasons.get(resp.SourceMemberNumber) !==
+            LeaveReason.DISCONNECT;
+        this.emit(
+            "CharacterLeft",
+            resp.SourceMemberNumber,
+            leftMember,
+            null,
+            isIntentional,
+        );
         this.bot?.onEvent({
             name: "CharacterLeft",
             connection: this,
             sourceMemberNumber: resp.SourceMemberNumber,
             character: leftMember,
             leaveMessage: "",
-            intentional:
-                this.leaveReasons.get(resp.SourceMemberNumber) !==
-                LeaveReason.DISCONNECT,
+            intentional: isIntentional,
         });
         this.bot?.onCharacterLeftPub(this, leftMember, true);
     };
@@ -518,9 +516,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         char.update({
             ActivePose: resp.Pose,
         });
-        this.emit("PoseChange", {
-            character: char,
-        });
+        this.emit("PoseChange", char);
         this.bot?.onCharacterEventPub(this, {
             name: "PoseChanged",
             character: char,
@@ -627,7 +623,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
             beep: payload,
         });
         // new
-        this.emit("Beep", { payload });
+        this.emit("Beep", payload);
     };
 
     private onAccountQueryResult = (payload: Record<string, any>) => {
