@@ -12,10 +12,10 @@
  * limitations under the License.
  */
 
-import { API_Chatroom } from "./apiChatroom";
-import { API_Connector, CoordObject, TellType } from "./apiConnector";
-import { AppearanceType } from "./appearance";
-import { BC_AppearanceItem } from "./item";
+import { API_Chatroom } from "./apiChatroom.ts";
+import { API_Connector, TellType } from "./apiConnector.ts";
+import { AppearanceType } from "./appearance.ts";
+import { BC_AppearanceItem } from "./item.ts";
 
 interface PoseObject {
     Name: string;
@@ -60,7 +60,7 @@ export interface API_Character_Data {
     OnlineSharedSettings: OnlineSharedSettingsType;
     ItemPermission: ItemPermissionLevel;
     FriendList: number[];
-    MapData?: CoordObject;
+    MapData?: ChatRoomMapPos;
     BlockItems: ItemPermissionList;
     LimitedItems: ItemPermissionList;
 }
@@ -136,7 +136,7 @@ export class API_Character {
         return this.data.MapData?.Y ?? 0;
     }
 
-    public get MapPos(): CoordObject {
+    public get MapPos(): ChatRoomMapPos {
         return this.data.MapData ?? { X: 0, Y: 0 };
     }
 

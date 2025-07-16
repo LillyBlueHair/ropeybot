@@ -12,9 +12,9 @@
  * limitations under the License.
  */
 
-import { API_Character } from "./apiCharacter";
-import { BundleApplyConfig, exportBundle, importBundle } from "./appearance";
-import { BC_AppearanceItem } from "./item";
+import { API_Character } from "./apiCharacter.ts";
+import { BundleApplyConfig, exportBundle, importBundle } from "./appearance.ts";
+import { BC_AppearanceItem } from "./item.ts";
 
 export function JMod_importAppearanceBundle(
     bundle: string,

@@ -12,9 +12,8 @@
  * limitations under the License.
  */
 
-import { API_Character } from "../../apiCharacter";
-import { AssetGet, BC_AppearanceItem } from "../../item";
-import { generatePassword } from "../../util/string";
+import { API_Character, AssetGet, BC_AppearanceItem } from "bc-bot";
+import { generatePassword } from "../../utils";
 import { PET_EARS } from "../petspa";
 
 interface Forfeit {

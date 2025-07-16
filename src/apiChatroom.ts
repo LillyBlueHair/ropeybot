@@ -13,10 +13,10 @@
  */
 
 import { EventEmitter } from "stream";
-import { API_Character, API_Character_Data } from "./apiCharacter";
-import { API_Connector, CoordObject, SingleItemUpdate } from "./apiConnector";
-import { API_Map } from "./apiMap";
-import { API_AppearanceItem } from "./item";
+import { API_Character, API_Character_Data } from "./apiCharacter.ts";
+import { API_Connector, SingleItemUpdate } from "./apiConnector.ts";
+import { API_Map } from "./apiMap.ts";
+import { API_AppearanceItem } from "./item.ts";
 
 export type ChatRoomAccessVisibility = "All" | "Whitelist" | "Admin";
 
@@ -40,7 +40,13 @@ export interface API_Chatroom_Data {
     MapData?: ServerChatRoomMapData;
 }
 
-export class API_Chatroom extends EventEmitter {
+interface ChatRoomEvents {
+    ItemAdd: [character: API_Character, item: API_AppearanceItem];
+    ItemRemove: [character: API_Character, items: API_AppearanceItem[]];
+    ItemChange: [character: API_Character, oldItem: API_AppearanceItem, newItem: API_AppearanceItem];
+}
+
+export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
     private characterCache = new Map<number, API_Character>();
 
     private reorderWatcher = new EventEmitter();
@@ -230,7 +236,7 @@ export class API_Chatroom extends EventEmitter {
         }
     }
 
-    public mapPositionUpdate(memberNumber: number, mapData: CoordObject) {
+    public mapPositionUpdate(memberNumber: number, mapData: ChatRoomMapPos) {
         const charData = this.data.Character.find(
             (x) => x.MemberNumber === memberNumber,
         );

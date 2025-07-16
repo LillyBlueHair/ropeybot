@@ -12,9 +12,9 @@
  * limitations under the License.
  */
 
-import { API_Character } from "./apiCharacter";
-import { API_Connector } from "./apiConnector";
-import { API_AppearanceItem } from "./item";
+import { API_Character } from "./apiCharacter.ts";
+import { API_Connector } from "./apiConnector.ts";
+import { API_AppearanceItem } from "./item.ts";
 
 export interface BC_Server_ChatRoomMessage {
     Type: "Hidden" | "Chat" | "Emote" | "Action" | "Activity" | "Whisper";

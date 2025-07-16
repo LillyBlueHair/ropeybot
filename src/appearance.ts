@@ -12,10 +12,10 @@
  * limitations under the License.
  */
 
-import { API_Character, API_Character_Data } from "./apiCharacter";
-import { isBind, isBody, isClothing, isCosplay } from "./assetHelpers";
-import { wait } from "./hub/utils";
-import { API_AppearanceItem, BC_AppearanceItem } from "./item";
+import { API_Character, API_Character_Data } from "./apiCharacter.ts";
+import { isBind, isBody, isClothing, isCosplay } from "./assetHelpers.ts";
+import { wait } from "./util/wait.ts";
+import { API_AppearanceItem, BC_AppearanceItem } from "./item.ts";
 import { decompressFromBase64, compressToBase64 } from "lz-string";
 
 /*

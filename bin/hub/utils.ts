@@ -64,4 +64,3 @@ function anyToString(data: unknown): string {
 		}) ?? "undefined"
 	);
 }
-

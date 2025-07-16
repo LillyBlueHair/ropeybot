@@ -9,10 +9,7 @@ import { AdministrationLogic } from "./administrationLogic";
 import { MatchmakingNotifier } from "../gameroomMatchmaking";
 
 import _ from "lodash";
-import { API_Character } from "../../apiCharacter";
-import { API_Connector } from "../../apiConnector";
-import { logger } from "../../api";
-import { AssetGet } from "../../item";
+import { API_Character, API_Connector, logger, AssetGet } from "bc-bot";
 import { ConfigFile } from "../../config";
 
 interface challenge {

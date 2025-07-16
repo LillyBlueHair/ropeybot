@@ -181,9 +181,9 @@ import {
 	InventoryItemNeckAccessoriesCollarAutoShockUnitDrawHook,
 	AssetsFaceMarkingsFaceWritingsAfterDrawHook,
 	ItemHeadDroneMaskValidateHook
-} from "./defs";
+} from "./defs.ts";
 
-import { E } from "./female3DCG";
+import { E } from "./female3DCG.js";
 
 
 

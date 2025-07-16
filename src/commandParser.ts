@@ -12,9 +12,9 @@
  * limitations under the License.
  */
 
-import { API_Character } from "./apiCharacter";
-import { API_Connector, MessageEvent } from "./apiConnector";
-import { BC_Server_ChatRoomMessage, TBeepType } from "./logicEvent";
+import { API_Character } from "./apiCharacter.ts";
+import { API_Connector, MessageEvent } from "./apiConnector.ts";
+import { BC_Server_ChatRoomMessage } from "./logicEvent.ts";
 
 type CommandCallback = (
     sender: API_Character,

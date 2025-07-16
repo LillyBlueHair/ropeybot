@@ -12,8 +12,8 @@
  * limitations under the License.
  */
 
+import { API_Connector } from "bc-bot";
 import { KidnappersGameRoom } from "./hub/logic/kidnappersGameRoom";
-import { API_Connector } from "./apiConnector";
 import { RoleplaychallengeGameRoom } from "./hub/logic/roleplaychallengeGameRoom";
 import { Dare } from "./games/dare";
 import { readFile } from "fs/promises";
@@ -133,9 +133,7 @@ export async function startBot(): Promise<RopeyBot> {
             new Casino(connector, db, config.casino);
             break;
         default:
-            console.log(config.game)
-            console.log("config.game")
-            console.log("No such game");
+            console.log("No such game " + config.game);
             process.exit(1);
     }
 
@@ -146,3 +144,17 @@ export async function startBot(): Promise<RopeyBot> {
         game: config.game,
     };
 }
+
+async function main() {
+    const { game } = await startBot();
+
+    if (!game) {
+        console.error("No game specified!");
+        process.exit(1);
+    }
+}
+
+main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+});

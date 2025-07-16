@@ -13,15 +13,16 @@
  */
 
 import { Db } from "mongodb";
-import { API_Connector } from "../apiConnector";
-import { CommandParser } from "../commandParser";
-import { RouletteGame } from "./casino/roulette";
-import { API_Character, ItemPermissionLevel } from "../apiCharacter";
-import { BC_Server_ChatRoomMessage, TBeepType } from "../logicEvent";
+import { API_Connector, CommandParser, API_Character, ItemPermissionLevel, BC_Server_ChatRoomMessage, TBeepType, API_AppearanceItem, AssetGet, BC_AppearanceItem, importBundle } from "bc-bot";
+import {
+    RouletteBet,
+    rouletteColors,
+    RouletteGame,
+} from "./casino/roulette";
 import { CasinoStore, Player } from "./casino/casinostore";
-import { API_AppearanceItem, AssetGet, BC_AppearanceItem } from "../item";
-import { remainingTimeString } from "../util/time";
-import { importBundle } from "../appearance";
+import { ROULETTE_WHEEL } from "./casino/rouletteWheelBundle";
+import { wait } from "../hub/utils";
+import { generatePassword, remainingTimeString } from "../utils";
 import {
     FORFEITS,
     forfeitsString,
@@ -30,7 +31,6 @@ import {
     servicesString,
 } from "./casino/forfeits";
 import { Cocktail, COCKTAILS } from "./casino/cocktails";
-import { generatePassword } from "../util/string";
 import { Bet, Game } from "./casino/game";
 import { BlackjackGame } from "./casino/blackjack";
 
