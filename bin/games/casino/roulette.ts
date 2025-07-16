@@ -632,8 +632,8 @@ export class RouletteGame implements Game {
     }
 
     async endGame(): Promise<void> {
-        await waitForCondition(() => this.resetTimeout !== undefined);
-        await wait(4000);
+        await waitForCondition(() => (this.willSpinAt === undefined));
+        await wait(2000);
         this.casino.commandParser.unregister("sign");
         this.casino.commandParser.unregister("wheel");
         this.clear();

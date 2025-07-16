@@ -161,7 +161,7 @@ export const FORFEITS: Record<string, Forfeit> = {
         lockTimeMs: 4 * 60 * 60 * 1000,
         applyItems: makePet.bind(null, 4),
     },
-    chastityBelt: {
+    chastitybelt: {
         name: "Chastity Belt",
         value: 15,
         items: () => [AssetGet("ItemPelvis", "ModularChastityBelt")],
@@ -178,11 +178,11 @@ interface Service {
 }
 
 export const SERVICES: Record<string, Service> = {
-    /*"cocktail": {
+    "cocktail": {
         name: "House Special Cocktail",
         description: "Hand crafted by our expert mixologist. Please drink responsibly.",
         value: 10,
-    },*/
+    },
     player: {
         name: "Buy a caged player",
         description: "Why waste their misfortune?",
@@ -231,7 +231,7 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
             Password: generatePassword(),
             Hint: "Better luck next time!",
             RemoveItem: true,
-            RemoveTimer: Date.now() + FORFEITS.chastityBelt.lockTimeMs,
+            RemoveTimer: Date.now() + FORFEITS.chastitybelt.lockTimeMs,
             ShowTimer: true,
             LockSet: true,
         });

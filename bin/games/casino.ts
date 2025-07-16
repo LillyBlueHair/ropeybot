@@ -214,12 +214,21 @@ export class Casino {
                     null,
                     "Ending game...",
                 );
+                this.conn.SendMessage(
+                    "Chat",
+                    `This is the last round, the game ends after.`,
+                );
                 this.game.endGame().then(() => {
                     this.conn.AccountBeep(
                         beep.MemberNumber,
                         null,
                         "Game ended.",
                     );
+                    this.conn.SendMessage(
+                        "Chat",
+                        `The game has ended, thank you for playing!`,
+                    );
+                    this.commandParser.unregisterAll();
                 });
             } else {
                 this.conn.AccountBeep(
@@ -705,16 +714,32 @@ export class Casino {
         }
         const game = args[0].toLowerCase();
         if (game === "roulette" && !(this.game instanceof RouletteGame)) {
+            this.conn.SendMessage(
+                "Chat",
+                "After this round the game will switch to roulette.",
+            );
             await this.game.endGame();
             this.game = new RouletteGame(this.conn, this);
             this.conn.reply(msg, "Switched to roulette.");
+            this.conn.SendMessage(
+                "Chat",
+                `The game has switched to roulette, please place your bets!`,
+            );
         } else if (
             game === "blackjack" &&
             !(this.game instanceof BlackjackGame)
         ) {
+            this.conn.SendMessage(
+                "Chat",
+                "After this round the game will switch to blackjack.",
+            );
             await this.game.endGame();
             this.game = new BlackjackGame(this.conn, this);
             this.conn.reply(msg, "Switched to blackjack.");
+            this.conn.SendMessage(
+                "Chat",
+                `The game has switched to blackjack, please place your bets!`,
+            );
         } else {
             this.conn.reply(msg, `Unknown game: ${game}`);
             return;
