@@ -13,15 +13,20 @@
  */
 
 import { Db } from "mongodb";
-import { API_Connector, CommandParser, API_Character, ItemPermissionLevel, BC_Server_ChatRoomMessage, TBeepType, API_AppearanceItem, AssetGet, BC_AppearanceItem, importBundle } from "bc-bot";
 import {
-    RouletteBet,
-    rouletteColors,
-    RouletteGame,
-} from "./casino/roulette";
+    API_Connector,
+    CommandParser,
+    API_Character,
+    ItemPermissionLevel,
+    BC_Server_ChatRoomMessage,
+    TBeepType,
+    API_AppearanceItem,
+    AssetGet,
+    BC_AppearanceItem,
+    importBundle,
+} from "bc-bot";
+import { RouletteGame } from "./casino/roulette";
 import { CasinoStore, Player } from "./casino/casinostore";
-import { ROULETTE_WHEEL } from "./casino/rouletteWheelBundle";
-import { wait } from "../hub/utils";
 import { generatePassword, remainingTimeString } from "../utils";
 import {
     FORFEITS,
@@ -100,8 +105,6 @@ export class Casino {
     public multiplier = 1;
     public lockedItems: Map<number, Map<AssetGroupName, number>> = new Map();
 
-    private currentGame: "Roulette" | "Blackjack" = "Roulette";
-
     public constructor(
         private conn: API_Connector,
         db: Db,
@@ -120,7 +123,7 @@ export class Casino {
         }
 
         conn.on("CharacterEntered", this.onCharacterEntered);
-        conn.on("Beep", this.onBeep);
+        conn.on("Beep", ({ payload }) => this.onBeep(payload));
 
         this.commandParser.register("bet", this.onCommandBet);
         this.commandParser.register("cancel", this.onCommandCancel);
@@ -159,6 +162,9 @@ export class Casino {
     };
 
     private onBeep = (beep: TBeepType) => {
+        if(beep.Message.includes("TypingStatus")) {
+            return;
+        }
         try {
             if (beep.Message?.startsWith("outfit add")) {
                 const parts = beep.Message.split(" ");
@@ -194,6 +200,27 @@ export class Casino {
                     );
                     return;
                 }
+            } else if (beep.Message?.startsWith("end game")) {
+                if (!this.game) {
+                    this.conn.AccountBeep(
+                        beep.MemberNumber,
+                        null,
+                        "No game is currently running.",
+                    );
+                    return;
+                }
+                this.conn.AccountBeep(
+                    beep.MemberNumber,
+                    null,
+                    "Ending game...",
+                );
+                this.game.endGame().then(() => {
+                    this.conn.AccountBeep(
+                        beep.MemberNumber,
+                        null,
+                        "Game ended.",
+                    );
+                });
             } else {
                 this.conn.AccountBeep(
                     beep.MemberNumber,
@@ -483,10 +510,12 @@ export class Casino {
         this.conn.reply(
             msg,
             purchases
-                .map(
-                    (p) =>
-                        `${p.memberName} (${p.memberNumber}): ${SERVICES[p.service].name}`,
-                )
+                .map((p) => {
+                    if (SERVICES[p.service] === undefined) {
+                        return `${p.memberName} (${p.memberNumber}): Unknown service ${p.service}`;
+                    }
+                    `${p.memberName} (${p.memberNumber}): ${SERVICES[p.service].name}`;
+                })
                 .join("\n"),
         );
     };
@@ -579,8 +608,12 @@ export class Casino {
         return sign;
     }
 
+    public setSignColor(colors: [string, string, string]): void {
+        this.getSign().SetColor(colors);
+    }
+
     public setTextColor(color: string): void {
-        this.getSign().SetColor(["Default", "Default", color]);
+        this.setSignColor(["Default", "Default", color]);
     }
 
     public applyForfeit(bet: Bet): void {
@@ -671,15 +704,16 @@ export class Casino {
             return;
         }
         const game = args[0].toLowerCase();
-        if (game === "roulette" && this.currentGame !== "Roulette") {
+        if (game === "roulette" && !(this.game instanceof RouletteGame)) {
             await this.game.endGame();
             this.game = new RouletteGame(this.conn, this);
-            this.currentGame = "Roulette";
             this.conn.reply(msg, "Switched to roulette.");
-        } else if (game === "blackjack" && this.currentGame !== "Blackjack") {
+        } else if (
+            game === "blackjack" &&
+            !(this.game instanceof BlackjackGame)
+        ) {
             await this.game.endGame();
             this.game = new BlackjackGame(this.conn, this);
-            this.currentGame = "Blackjack";
             this.conn.reply(msg, "Switched to blackjack.");
         } else {
             this.conn.reply(msg, `Unknown game: ${game}`);

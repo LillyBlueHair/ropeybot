@@ -1,5 +1,4 @@
-import { API_Character } from "../../apiCharacter";
-import { BC_Server_ChatRoomMessage } from "../../logicEvent";
+import { API_Character, BC_Server_ChatRoomMessage, } from "bc-bot";
 import { CasinoStore } from "./casinostore";
 import { RouletteBet } from "./roulette";
 
@@ -34,7 +33,7 @@ export interface Game {
         args: string[],
     );
 
-    endGame(): void;
+    endGame(): Promise<void>;
 
     clear(): void;
 }

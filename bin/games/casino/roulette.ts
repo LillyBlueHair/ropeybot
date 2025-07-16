@@ -13,12 +13,9 @@
  */
 
 import { resolve } from "path";
-import { API_Character } from "../../apiCharacter";
-import { API_Connector } from "../../apiConnector";
 import { wait, waitForCondition } from "../../hub/utils";
-import { API_AppearanceItem, AssetGet } from "../../item";
-import { BC_Server_ChatRoomMessage } from "../../logicEvent";
 import { Casino, getItemsBlockingForfeit } from "../casino";
+import { API_Character, API_Connector, BC_Server_ChatRoomMessage, API_AppearanceItem, AssetGet } from "bc-bot";
 import { FORFEITS } from "./forfeits";
 import { Bet, Game } from "./game";
 import { ROULETTE_WHEEL } from "./rouletteWheelBundle";
@@ -133,9 +130,6 @@ export class RouletteGame implements Game {
         casino: Casino,
     ) {
         this.casino = casino;
-        console.log("thsdacasino");
-        console.log(this.casino.multiplier);
-        console.log(this.casino);
 
         this.casino.commandParser.register("sign", (sender, msg, args) => {
             const sign = this.casino.getSign();
@@ -633,18 +627,16 @@ export class RouletteGame implements Game {
 
     public getWheel(): API_AppearanceItem {
         const wheel = this.conn.Player.Appearance.InventoryGet("ItemDevices");
-        if (wheel) {
-            return wheel;
-        }
         this.conn.Player.Appearance.applyBundle(ROULETTE_WHEEL);
         return this.conn.Player.Appearance.InventoryGet("ItemDevices");
     }
 
     async endGame(): Promise<void> {
-        waitForCondition(() => this.willSpinAt === undefined);
-        clearTimeout(this.resetTimeout);
+        await waitForCondition(() => this.resetTimeout !== undefined);
+        await wait(4000);
         this.casino.commandParser.unregister("sign");
         this.casino.commandParser.unregister("wheel");
+        this.clear();
         resolve();
     }
 }

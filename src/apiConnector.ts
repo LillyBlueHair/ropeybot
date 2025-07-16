@@ -530,9 +530,9 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
     };
 
     private onChatRoomMessage = (msg: BC_Server_ChatRoomMessage) => {
-        // Don't log BCX spam
-        if (msg.Type !== "Hidden" && !["BCXMsg", "BCEMsg", "LSCGMsg", "bctMsg", "MPA", "dogsMsg", "bccMsg", "ECHO_INFO2", "MoonCEBC"].includes(msg.Content) && msg.Sender !== this.Player.MemberNumber) {
-            // console.log("chat room message", msg);
+        // Don't log *.* spam
+        if (msg.Type !== "Hidden" && !["BCXMsg", "BCEMsg", "LSCGMsg", "bctMsg", "MPA", "dogsMsg", "bccMsg", "ECHO_INFO2", "MoonCEBC"].includes(msg.Content) && msg.Sender !== this.Player.MemberNumber && msg.Type != "Status" /*&& (msg.Type != "Action" || msg.Content == "ServerLeave")*/) {
+            console.log("chat room message", msg);
         }
 
         const char = this._chatRoom.getCharacter(msg.Sender);
@@ -777,7 +777,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
     }
 
     public updateCharacter(update: Partial<API_Character_Data>): void {
-        console.log("sending ChatRoomCharacterUpdate", JSON.stringify(update));
+        // console.log("sending ChatRoomCharacterUpdate", JSON.stringify(update));
         this.wrappedSock.emit("ChatRoomCharacterUpdate", update);
     }
 

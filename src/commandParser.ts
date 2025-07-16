@@ -80,7 +80,7 @@ export class CommandParser {
                 try {
                     const ret = cb(ev.sender, ev.message, parts);
                     const promiseRet = ret as Promise<void>;
-                    if (promiseRet.catch) {
+                    if (promiseRet && promiseRet.catch) { // I am not sure if a check for promiseRet makes sense but if the return of the command is no promise it would error otherwise
                         promiseRet.catch((e) => {
                             console.log("Command handler threw async exception", e);
                         });
