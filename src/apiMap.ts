@@ -13,15 +13,15 @@
  */
 
 import { decompressFromBase64 } from "lz-string";
-import { API_Character } from "./apiCharacter";
-import { API_Chatroom_Data } from "./apiChatroom";
-import { API_Connector, CoordObject } from "./apiConnector";
+import { API_Character } from "./apiCharacter.ts";
+import { API_Chatroom_Data } from "./apiChatroom.ts";
+import { API_Connector } from "./apiConnector.ts";
 import { EventEmitter } from "stream";
-import { ChatRoomMapViewObjectList, ChatRoomMapViewTileList } from "./bcdata/ChatRoomMap";
+import { ChatRoomMapViewObjectList, ChatRoomMapViewTileList } from "./bcdata/ChatRoomMap.ts";
 
 export interface MapRegion {
-    TopLeft: CoordObject;
-    BottomRight: CoordObject;
+    TopLeft: ChatRoomMapPos;
+    BottomRight: ChatRoomMapPos;
 }
 
 function mapTileByName(name: string): ChatRoomMapTile {
@@ -33,7 +33,7 @@ function mapObjectByName(name: string): ChatRoomMapObject {
 }
 
 interface TileTrigger {
-    prevPos?: CoordObject;
+    prevPos?: ChatRoomMapPos;
     callback: TriggerCallback;
 }
 
@@ -42,14 +42,14 @@ interface RegionTrigger {
     callback: TriggerCallback;
 }
 
-type TriggerCallback = (char: API_Character, prevPos: CoordObject) => void;
+type TriggerCallback = (char: API_Character, prevPos: ChatRoomMapPos) => void;
 
-export function positionEquals(a: CoordObject, b: CoordObject): boolean {
+export function positionEquals(a: ChatRoomMapPos, b: ChatRoomMapPos): boolean {
     return a.X === b.X && a.Y === b.Y;
 }
 
 export function positionIsInRegion(
-    pos: CoordObject,
+    pos: ChatRoomMapPos,
     region: MapRegion,
 ): boolean {
     return (
@@ -61,7 +61,7 @@ export function positionIsInRegion(
 }
 
 export function makeDoorRegion(
-    pos: CoordObject,
+    pos: ChatRoomMapPos,
     above: boolean,
     below: boolean,
 ): MapRegion {
@@ -76,7 +76,11 @@ export function makeDoorRegion(
     return region;
 }
 
-export class API_Map extends EventEmitter {
+interface MapEvents {
+    MapUpdate: [];
+}
+
+export class API_Map extends EventEmitter<MapEvents> {
     private updateTask: NodeJS.Immediate;
     private tileTriggers = new Map<number, TileTrigger[]>();
     private enterRegionTriggers: RegionTrigger[] = [];
@@ -108,9 +112,9 @@ export class API_Map extends EventEmitter {
     }
 
     public addTileTrigger(
-        where: CoordObject,
+        where: ChatRoomMapPos,
         callback: TriggerCallback,
-        prevPos?: CoordObject,
+        prevPos?: ChatRoomMapPos,
     ): void {
         const pos = where.X + where.Y * 40;
         const list = this.tileTriggers.get(pos) ?? [];
@@ -164,7 +168,7 @@ export class API_Map extends EventEmitter {
         }
     }
 
-    public setTile(pos: CoordObject, tileName: string): void {
+    public setTile(pos: ChatRoomMapPos, tileName: string): void {
         if (!this.mapData) return;
 
         const tile = mapTileByName(tileName);
@@ -178,7 +182,7 @@ export class API_Map extends EventEmitter {
         this.queueUpdate();
     }
 
-    public getObject(pos: CoordObject): string {
+    public getObject(pos: ChatRoomMapPos): string {
         if (!this.mapData) return "";
 
         const tileNum = pos.X + pos.Y * 40;
@@ -187,7 +191,7 @@ export class API_Map extends EventEmitter {
         return obj?.Style;
     }
 
-    public setObject(pos: CoordObject, objectName: string): void {
+    public setObject(pos: ChatRoomMapPos, objectName: string): void {
         if (!this.mapData) return;
 
         const tile = mapObjectByName(objectName);
@@ -203,7 +207,7 @@ export class API_Map extends EventEmitter {
 
     public onCharacterMove(
         character: API_Character,
-        prevPos: CoordObject,
+        prevPos: ChatRoomMapPos,
     ): void {
         // maybe? if necessary?
         //this.emit("CharacterMapMove", this.getCharacter(memberNumber));

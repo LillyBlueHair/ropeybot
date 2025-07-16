@@ -2,10 +2,8 @@
  * Copied from the original bot hub, with permission.
  */
 
-import { logger } from "../api";
+import { logger, API_Character, API_Connector } from "bc-bot";
 import promClient from "prom-client";
-import { API_Character } from "../apiCharacter";
-import { API_Connector } from "../apiConnector";
 
 // Metrics
 const metric_registered = new promClient.Counter({

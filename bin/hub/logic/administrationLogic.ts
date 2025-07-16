@@ -2,16 +2,15 @@
  * Copied from the original bot hub, with permission.
  */
 
-import { logger  } from "../../api";
+import { logger, API_Connector,
+API_Character,
+API_Chatroom,
+AnyBotEvent, AnyCharacterEvent, AnyLogicEvent, LogicEvent_Beep, LogicEvent_CharacterEntered, LogicEvent_CharacterLeft, LogicEvent_Message, LogicEvent_RoomForceLeave, LogicEvent_RoomUpdate,
+LogicBase } from "bc-bot";
 import promClient from "prom-client";
 
 import _ from "lodash";
 import fs from "fs";
-import { API_Connector } from "../../apiConnector";
-import { API_Character } from "../../apiCharacter";
-import { API_Chatroom } from "../../apiChatroom";
-import { AnyBotEvent, AnyCharacterEvent, AnyLogicEvent, LogicEvent_Beep, LogicEvent_CharacterEntered, LogicEvent_CharacterLeft, LogicEvent_Message, LogicEvent_RoomForceLeave, LogicEvent_RoomUpdate } from "../../logicEvent.js";
-import { LogicBase } from "../../logicBase";
 import { ConfigFile } from "../../config";
 
 export interface IAdminLogicSettings {

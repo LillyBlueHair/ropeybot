@@ -12,6 +12,17 @@
  * limitations under the License.
  */
 
+export function remainingTimeString(until: number): string {
+    const remaining = until - Date.now();
+    if (remaining < 0) return "0 seconds";
+    const hours = Math.floor(remaining / (1000 * 60 * 60));
+    const minutes = Math.floor(remaining / (1000 * 60));
+    const seconds = Math.ceil((remaining % (1000 * 60)) / 1000);
+    if (hours > 0) return `${hours} hours`;
+    if (minutes > 0) return `${minutes} minutes`;
+    return `${seconds} seconds`;
+}
+
 export function generatePassword() : string {
     const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let retVal = "";

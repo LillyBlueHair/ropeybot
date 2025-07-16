@@ -13,16 +13,16 @@
  */
 
 import { io } from "socket.io-client";
-import { API_Character, API_Character_Data, ItemPermissionLevel } from "./apiCharacter";
-import { API_Chatroom, API_Chatroom_Data, ChatRoomAccessVisibility } from "./apiChatroom";
+import { API_Character, API_Character_Data, ItemPermissionLevel } from "./apiCharacter.ts";
+import { API_Chatroom, API_Chatroom_Data, ChatRoomAccessVisibility } from "./apiChatroom.ts";
 import { Socket } from "socket.io-client";
-import { LogicBase } from "./logicBase";
-import { API_AppearanceItem, BC_AppearanceItem } from "./item";
+import { LogicBase } from "./logicBase.ts";
+import { API_AppearanceItem, BC_AppearanceItem } from "./item.ts";
 import { compressToUTF16 } from "lz-string";
 import { EventEmitter } from "stream";
-import { BC_Server_ChatRoomMessage, TBeepType } from "./logicEvent";
-import { SocketWrapper } from "./socketWrapper";
-import { wait } from "./hub/utils";
+import { BC_Server_ChatRoomMessage, TBeepType } from "./logicEvent.ts";
+import { SocketWrapper } from "./socketWrapper.ts";
+import { wait } from "./util/wait.ts";
 
 export enum LeaveReason {
     DISCONNECT = "ServerDisconnect",
@@ -60,14 +60,9 @@ export interface SyncItemPayload {
     Item: SingleItemUpdate;
 }
 
-export interface CoordObject {
-    X: number;
-    Y: number;
-}
-
 export interface SyncMapDataPayload {
     MemberNumber: number;
-    MapData: CoordObject;
+    MapData: ChatRoomMapData;
 }
 
 // What the bot advertises as its game version
@@ -118,7 +113,22 @@ interface OnlineFriendResult {
     Type: string;
 }
 
-export class API_Connector extends EventEmitter {
+interface ConnectorEvents {
+    PoseChange: [{character: API_Character}];
+    Message: [message: MessageEvent];
+    Beep: [{ payload: TBeepType }];
+    RoomJoin: [];
+    RoomCreate: [];
+    CharacterEntered: [character: API_Character];
+    CharacterLeft: [{
+        sourceMemberNumber: number,
+        character: API_Character,
+        leaveMessage: string | null,
+        intentional: boolean,
+    }];
+}
+
+export class API_Connector extends EventEmitter<ConnectorEvents> {
     private sock: Socket;
     private wrappedSock: SocketWrapper;
     private _player: API_Character | undefined;
@@ -516,7 +526,7 @@ export class API_Connector extends EventEmitter {
 
     private onChatRoomSyncMapData = (update: SyncMapDataPayload) => {
         console.log("chat room map data", update);
-        this._chatRoom.mapPositionUpdate(update.MemberNumber, update.MapData);
+        this._chatRoom.mapPositionUpdate(update.MemberNumber, update.MapData.Pos);
     };
 
     private onChatRoomMessage = (msg: BC_Server_ChatRoomMessage) => {
@@ -802,8 +812,11 @@ export class API_Connector extends EventEmitter {
 
     public moveOnMap(x: number, y: number): void {
         this.wrappedSock.emit("ChatRoomCharacterMapDataUpdate", {
-            X: x,
-            Y: y,
+            Pos: {
+                X: x,
+                Y: y,
+            },
+            PrivateState: {},
         });
     }
 }

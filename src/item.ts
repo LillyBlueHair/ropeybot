@@ -12,10 +12,10 @@
  * limitations under the License.
  */
 
-import { API_Character } from "./apiCharacter";
-import { AssetType } from "./appearance";
-import { AssetFemale3DCG, PoseFemale3DCG } from "./bcdata/female3DCG";
-import { AssetFemale3DCGExtended } from "./bcdata/Female3DCGExtended";
+import { API_Character } from "./apiCharacter.ts";
+import { AssetType } from "./appearance.ts";
+import { AssetFemale3DCG, PoseFemale3DCG } from "./bcdata/female3DCG.js";
+import { AssetFemale3DCGExtended } from "./bcdata/Female3DCGExtended.ts";
 
 // An item as it appears on the wire (similar to Item but instead of the Asset
 // there's just Name representing the asset name), plus a Group

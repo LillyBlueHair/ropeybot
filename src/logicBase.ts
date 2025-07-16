@@ -12,13 +12,13 @@
  * limitations under the License.
  */
 
-import { API_Character } from "./apiCharacter";
-import { API_Connector } from "./apiConnector";
+import { API_Character } from "./apiCharacter.ts";
+import { API_Connector } from "./apiConnector.ts";
 import {
     AnyCharacterEvent,
     AnyLogicEvent,
     BC_Server_ChatRoomMessage,
-} from "./logicEvent";
+} from "./logicEvent.ts";
 
 export class LogicBase {
     public onEvent(ev: AnyLogicEvent) {}

@@ -12,18 +12,23 @@
  * limitations under the License.
  */
 
-import { startBot } from "./bot";
+import { type RoomDefinition } from "bc-bot";
+import { type CasinoConfig } from "./games/casino";
 
-async function main() {
-    const { game } = await startBot();
+export interface ConfigFile {
+    user: string;
+    password: string;
+    env: "live" | "test";
+    url?: string;
+    game: string;
+    superusers: number[];
+    room: RoomDefinition;
+    mongo_uri?: string;
+    mongo_db?: string;
+    members: number[];
 
-    if (!game) {
-        console.error("No game specified!");
-        process.exit(1);
-    }
+    user2: string;
+    password2: string;
+
+    casino?: CasinoConfig;
 }
-
-main().catch((e) => {
-    console.error(e);
-    process.exit(1);
-});

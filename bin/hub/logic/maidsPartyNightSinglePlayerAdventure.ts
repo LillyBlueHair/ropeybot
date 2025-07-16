@@ -2,21 +2,14 @@
  * Copied from the original bot hub, with permission.
  */
 
-import promClient from "prom-client";
-
 import { wait } from "../utils";
-import * as JMod from "../../jmod"
 
 const SUPERUSERS: number[] = [];
 
 import _ from "lodash";
 import fs from "fs";
 import { LoggingLogic } from "./loggingLogic";
-import { API_Character } from "../../apiCharacter";
-import { API_AppearanceItem, AssetGet, BC_AppearanceItem } from "../../item";
-import { logger } from "../../api";
-import { API_Connector } from "../../apiConnector";
-import { AnyCharacterEvent, BC_Server_ChatRoomMessage } from "../../logicEvent";
+import { API_Character, API_AppearanceItem, AssetGet, BC_AppearanceItem, logger, API_Connector, AnyCharacterEvent, BC_Server_ChatRoomMessage, JMod_allowApplyAppearanceBundle, JMod_importAppearanceBundle, JMod_exportAppearanceBundle, JMod_applyAppearanceBundle } from "bc-bot";
 
 /** The following enums are structuring the overall story scene and have values that
  * mean "Chapter-Part-Branch" with nomenclature [C00-C99]-[P00-P99]-[A-Z]-[*] or END */
@@ -279,7 +272,7 @@ export class MaidsPartyNightSinglePlayerAdventure extends LoggingLogic {
 			hadWarnings = true;
 		}
 		const outfitsCannotUse = Object.entries(listOfAllPlayerOutfits).filter(([k, v]) => {
-			return !JMod.JMod_allowApplyAppearanceBundle(character, JMod.JMod_importAppearanceBundle(v), {
+			return !JMod_allowApplyAppearanceBundle(character, JMod_importAppearanceBundle(v), {
 				appearance: false,
 				bodyCosplay: false,
 				clothing: true,
@@ -1050,7 +1043,7 @@ export class MaidsPartyNightSinglePlayerAdventure extends LoggingLogic {
 		} else if (cmd.startsWith("exportoutfit") && sender.IsRoomAdmin()) {
 			// TODO: secret way for admins to export an outfit on the bot - can possibly be removed later on
 			const bundle = this.conn.Player.Appearance.MakeAppearanceBundle();
-			const str = JMod.JMod_exportAppearanceBundle(bundle);
+			const str = JMod_exportAppearanceBundle(bundle);
 			this.conn.SendMessage("Chat", str.substr(0, 990));
 			if (str.length > 990) {
 				this.conn.SendMessage("Chat", str.substr(990));
@@ -1272,7 +1265,7 @@ export class MaidsPartyNightSinglePlayerAdventure extends LoggingLogic {
 		if (character != null) {
 			this.freePlayerInItemSlots(character, listOfUsedItemGroups);
 		}
-		if (!JMod.JMod_applyAppearanceBundle(character, this.playerAppearanceStorage, {
+		if (!JMod_applyAppearanceBundle(character, this.playerAppearanceStorage, {
 			appearance: false,
 			bodyCosplay: false,
 			clothing: true,
@@ -1311,8 +1304,8 @@ export class MaidsPartyNightSinglePlayerAdventure extends LoggingLogic {
 			logger.error(`Unable to find outfit for npc ${npc}`);
 			return;
 		}
-		const newAppearance = JMod.JMod_importAppearanceBundle(listOfAllNPCsOutfits[npc]);
-		if (!JMod.JMod_applyAppearanceBundle(bot.Player, newAppearance)) {
+		const newAppearance = JMod_importAppearanceBundle(listOfAllNPCsOutfits[npc]);
+		if (!JMod_applyAppearanceBundle(bot.Player, newAppearance)) {
 			logger.warning(`Failed to set ${bot.Player.Name}'s appearance to ${npc}!`);
 		}
 	}
@@ -1337,9 +1330,9 @@ export class MaidsPartyNightSinglePlayerAdventure extends LoggingLogic {
 			logger.error(`Unable to find outfit ${playerOutfit} for the player ${this.player?.Name}`);
 			return;
 		}
-		const newAppearance = JMod.JMod_importAppearanceBundle(listOfAllPlayerOutfits[playerOutfit]);
+		const newAppearance = JMod_importAppearanceBundle(listOfAllPlayerOutfits[playerOutfit]);
 		if (this.player !== null) {
-			if (!JMod.JMod_applyAppearanceBundle(this.player, newAppearance, {
+			if (!JMod_applyAppearanceBundle(this.player, newAppearance, {
 				appearance: false,
 				bodyCosplay: false,
 				clothing: true,

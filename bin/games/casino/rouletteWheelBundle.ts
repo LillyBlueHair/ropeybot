@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import { BC_AppearanceItem } from "../../item";
+import { BC_AppearanceItem } from "bc-bot";
 
 export const ROULETTE_WHEEL: BC_AppearanceItem[] = [
     {

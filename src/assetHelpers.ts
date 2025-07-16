@@ -12,8 +12,8 @@
  * limitations under the License.
  */
 
-import { AssetFemale3DCG } from "./bcdata/female3DCG";
-import { BC_AppearanceItem, getAssetDef } from "./item";
+import { AssetFemale3DCG } from "./bcdata/female3DCG.js";
+import { BC_AppearanceItem, getAssetDef } from "./item.ts";
 
 function getAssetGroup(groupName: AssetGroupName): AssetGroupDefinition {
     return AssetFemale3DCG.find((g) => g.Group === groupName);

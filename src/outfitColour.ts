@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import { BC_AppearanceItem } from "./item";
+import { BC_AppearanceItem } from "./item.ts";
 
 function isMainColour(colour: string): boolean {
     return colour.toUpperCase() === "#FF00FF";
