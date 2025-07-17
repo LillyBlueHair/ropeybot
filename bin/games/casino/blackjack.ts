@@ -63,11 +63,12 @@ const FULLBLACKJACKHELP =  `${BLACKJACKHELP}
 ${BLACKJACKCOMMANDS}
 ` 
 
-// const TIME_UNTIL_DEAL_MS = 30000;
-const TIME_UNTIL_DEAL_MS = 6000;
+const TIME_UNTIL_DEAL_MS = 30000;
+// const TIME_UNTIL_DEAL_MS = 6000;
 const BET_CANCEL_THRESHOLD_MS = 3000;
-// const AUTO_STAND_TIMEOUT_MS = 45000;
-const AUTO_STAND_TIMEOUT_MS = 10000;
+const AUTO_STAND_TIMEOUT_MS = 45000;
+// const AUTO_STAND_TIMEOUT_MS = 10000;
+const RESET_TIMEOUT_MS = 10000; // Time after a game ends before a new game can start
 
 export interface BlackjackBet extends Bet {
     memberNumber: number;
@@ -191,7 +192,7 @@ export class BlackjackGame implements Game {
 
     async endGame(): Promise<void> {
         await waitForCondition(() => this.willDealAt === undefined);
-        await wait(2000);
+        // await wait(2000);
         this.casino.commandParser.unregister("hit");
         this.casino.commandParser.unregister("stand");
         this.casino.commandParser.unregister("double");
@@ -456,7 +457,7 @@ export class BlackjackGame implements Game {
             sign.setProperty("Text", "Place bets!");
             sign.setProperty("Text2", " ");
             this.casino.setTextColor("#ffffff");
-        }, 10000);
+        }, RESET_TIMEOUT_MS);
 
         this.conn.SendMessage("Chat", message);
     }
@@ -724,27 +725,27 @@ export class BlackjackGame implements Game {
             return 0;
         }
         if (bet.stakeForfeit) {
-            if (dealerHandValue > 21) {
-                return bet.stake;
-            }
             if (playerHandValue === dealerHandValue) {
                 return -100; // push for forfeits
             }
             if (playerHandValue === 21 && playerHand.length === 2) {
                 return Math.floor(bet.stake * 1.5);
             }
+            if (dealerHandValue > 21) {
+                return bet.stake;
+            }
             if (playerHandValue > dealerHandValue) {
                 return bet.stake;
             }
         } else {
-            if (dealerHandValue > 21) {
-                return bet.stake * 2;
-            }
             if (playerHandValue === dealerHandValue) {
                 return bet.stake;
             }
             if (playerHandValue === 21 && playerHand.length === 2) {
                 return Math.floor(bet.stake * 2.5);
+            }
+            if (dealerHandValue > 21) {
+                return bet.stake * 2;
             }
             if (playerHandValue > dealerHandValue) {
                 return bet.stake * 2;
@@ -796,6 +797,18 @@ export class BlackjackGame implements Game {
                     bet.memberNumber,
                 );
             }
+        }
+
+        if(this.calculateHandValue(this.dealerHand) === 21) {
+            this.conn.SendMessage(
+                "Chat",
+                `Dealer got a blackjack! All players lose their bets unless they have blackjack themselves.`,
+            );
+            this.bets.forEach((bet) => {
+                bet.standing = true;
+            });
+            this.resolveGame();
+            return;
         }
 
         this.willStandAt = Date.now() + AUTO_STAND_TIMEOUT_MS;

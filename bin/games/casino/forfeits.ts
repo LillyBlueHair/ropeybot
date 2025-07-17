@@ -161,10 +161,13 @@ export const FORFEITS: Record<string, Forfeit> = {
         lockTimeMs: 4 * 60 * 60 * 1000,
         applyItems: makePet.bind(null, 4),
     },
-    chastitybelt: {
-        name: "Chastity Belt",
+    chastity: {
+        name: "Chastity",
         value: 15,
         items: (sender) => {
+            if (!sender || !sender.Appearance) {
+                return [AssetGet("ItemPelvis", "ModularChastityBelt")];
+            }
             const item = sender.Appearance.InventoryGet("Pussy");
             if (item.Name == "Penis") {
                 return [AssetGet("ItemVulva", "PlasticChastityCage2")];
@@ -283,7 +286,6 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
             ShowTimer: true,
             LockSet: true,
         });
-        // chastityBelt.Extended.SetType("Classic");
     }
 }
 

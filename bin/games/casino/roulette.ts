@@ -360,7 +360,7 @@ export class RouletteGame implements Game {
         } else {
             const blockers = getItemsBlockingForfeit(
                 sender,
-                FORFEITS[bet.stakeForfeit].items(),
+                FORFEITS[bet.stakeForfeit].items(sender),
             );
             if (blockers.length > 0) {
                 console.log(
@@ -383,7 +383,7 @@ export class RouletteGame implements Game {
                 return;
             }
 
-            const needItems = [...FORFEITS[bet.stakeForfeit].items()];
+            const needItems = [...FORFEITS[bet.stakeForfeit].items(sender)];
             if (FORFEITS[bet.stakeForfeit].lock)
                 needItems.push(FORFEITS[bet.stakeForfeit].lock);
             const blocked = needItems.filter(
@@ -400,8 +400,8 @@ export class RouletteGame implements Game {
             bet.stake *= this.casino.multiplier;
         }
 
-        if (FORFEITS[bet.stakeForfeit]?.items().length === 1) {
-            const forfeitItem = FORFEITS[bet.stakeForfeit].items()[0];
+        if (FORFEITS[bet.stakeForfeit]?.items(sender).length === 1) {
+            const forfeitItem = FORFEITS[bet.stakeForfeit].items(sender)[0];
             if (
                 Date.now() <
                 this.casino.lockedItems
