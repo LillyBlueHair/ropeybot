@@ -19,7 +19,7 @@ import { PET_EARS } from "../petspa";
 interface Forfeit {
     name: string;
     value: number;
-    items: () => BC_AppearanceItem[];
+    items: (player: API_Character) => BC_AppearanceItem[];
     lock?: BC_AppearanceItem;
     lockTimeMs?: number;
     colourLayers?: number[];
@@ -164,7 +164,14 @@ export const FORFEITS: Record<string, Forfeit> = {
     chastitybelt: {
         name: "Chastity Belt",
         value: 15,
-        items: () => [AssetGet("ItemPelvis", "ModularChastityBelt")],
+        items: (sender) => {
+            const item = sender.Appearance.InventoryGet("Pussy");
+            if (item.Name == "Penis") {
+                return [AssetGet("ItemVulva", "PlasticChastityCage2")];
+            } else {
+                return [AssetGet("ItemPelvis", "ModularChastityBelt")];
+            }
+        },
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         applyItems: makeChaste.bind(null),
@@ -178,9 +185,10 @@ interface Service {
 }
 
 export const SERVICES: Record<string, Service> = {
-    "cocktail": {
+    cocktail: {
         name: "House Special Cocktail",
-        description: "Hand crafted by our expert mixologist. Please drink responsibly.",
+        description:
+            "Hand crafted by our expert mixologist. Please drink responsibly.",
         value: 10,
     },
     player: {
@@ -217,6 +225,34 @@ export const SERVICES: Record<string, Service> = {
 
 function makeChaste(character: API_Character, lockMemberNumber: number): void {
     if (character.Appearance.InventoryGet("Pussy").Name == "Penis") {
+        const chastityCage = character.Appearance.AddItem(
+            AssetGet("ItemVulva", "PlasticChastityCage2"),
+        );
+        chastityCage.SetCraft({
+            Name: `Pixie Casino Chastity Cage`,
+            Description:
+                `After betting and losing at the Pixie Casino, ${character} has lost the privilege to orgasm. ` +
+                `This chastity cage will ensure that the rule is followed.`,
+        });
+        console.log(character.Appearance.InventoryGet("HairFront").GetColor());
+        let hairColor = character.Appearance.InventoryGet("HairFront").GetColor();
+        if (hairColor.length > 1) {
+            hairColor = hairColor[0];
+        }
+        chastityCage.SetColor([
+            "Default",
+            hairColor + "",
+            hairColor + "",
+            "FFBC00",
+        ]);
+        chastityCage.lock("TimerPasswordPadlock", lockMemberNumber, {
+            Password: generatePassword(),
+            Hint: "Better luck next time!",
+            RemoveItem: true,
+            RemoveTimer: Date.now() + FORFEITS.chastitybelt.lockTimeMs,
+            ShowTimer: true,
+            LockSet: true,
+        });
     } else {
         const chastityBelt = character.Appearance.AddItem(
             AssetGet("ItemPelvis", "ModularChastityBelt"),
@@ -227,6 +263,18 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
                 `After betting and losing at the Pixie Casino, ${character} has lost her privileges to orgasm. ` +
                 `This chastity belt will ensure that she is kept chaste until her time is up.`,
         });
+        chastityBelt.SetColor(
+            character.Appearance.InventoryGet("HairFront").GetColor(),
+        );
+        chastityBelt.setProperty("TypeRecord", {
+            a: 1,
+            c: 1,
+            i: 0,
+            o: 0,
+            p: 0,
+            s: 0,
+            v: 0,
+        });
         chastityBelt.lock("TimerPasswordPadlock", lockMemberNumber, {
             Password: generatePassword(),
             Hint: "Better luck next time!",
@@ -235,10 +283,7 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
             ShowTimer: true,
             LockSet: true,
         });
-        chastityBelt.SetColor(
-            character.Appearance.InventoryGet("HairFront").GetColor(),
-        );
-        chastityBelt.Extended.SetType("Classic");
+        // chastityBelt.Extended.SetType("Classic");
     }
 }
 

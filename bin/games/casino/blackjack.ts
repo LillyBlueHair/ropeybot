@@ -12,22 +12,15 @@ import {
     AssetGet,
 } from "bc-bot";
 //TODOs:
+// + fix forfeit pushing 
+// + reconsider payouts for forfeits half as much makes more sense 
+// + (I'd recommend a /bot forfeits command or something to list that menu) + bot commands as help is too long
 // - Split hands
 // - insurance
-// - multiple decks per shoe
+// + multiple decks per shoe
 
-const BLACKJACKHELP = `
-Blackjack is a card game where the goal is to get as close to 21 as possible without going over.
-Each player is dealt two cards, and can choose to "hit" (take another card) or "stand" (keep their current hand).
-The dealer also has a hand, and must hit until they reach 17 or higher.
-Blackjack (21 with two cards) pays 3:2 rounding down to the nearest whole number.
 
-Every card has a value:
-- Number cards (2-10) are worth their face value.
-- Jacks, Queens, and Kings are worth 10.
-- Aces can be worth 1 or 11, depending on what is more beneficial for the hand.
-
-Blackjack bets:
+const BLACKJACKCOMMANDS = `Blackjack commands:
 /bot bet <amount> - Bet on the current hand. Odds: 1:1.
 /bot hit - Take another card from the deck.
 /bot stand - Keep your current hand
@@ -36,20 +29,45 @@ Blackjack bets:
 /bot chips - Show your current chip balance.
 /bot give <name or member number> <amount> - Give chips to another player.
 /bot help - Show this help
+/bot commands - Show all available commands.
+/bot forfeits - Show available forfeits.
+`
+
+const BLACKJACKHELP = `Blackjack is a card game where the goal is to get as close to 21 as possible without going over.
+Each player is dealt two cards, and can choose to "hit" (take another card) or "stand" (keep their current hand).
+The dealer also has a hand, and must hit until they reach 17 or higher.
+Blackjack (21 with two cards) pays 3:2 rounding down to the nearest whole number.
+
+Every card has a value:
+- Number cards (2-10) are worth their face value.
+- Jacks, Queens, and Kings are worth 10.
+- Aces can be worth 1 or 11, depending on what is more beneficial for the hand.
 `;
 
-const ROULETTEEXAMPLES = `
+const BLACKJACKHELPCOMMAND = `
+${BLACKJACKHELP}
+
+For more information on commands or forfeits, use the following commands:
+/bot commands - Show all available commands.
+/bot forfeits - Show available forfeits.
+`;
+
+const BLACKJACKEXAMPLES = `
 /bot bet 10
     bets 10 chips
 /bot bet 15
     bets the 'leg binder' forfeit (worth 7 chips)
 `;
+const FULLBLACKJACKHELP =  `${BLACKJACKHELP}
 
-const TIME_UNTIL_DEAL_MS = 30000;
-// const TIME_UNTIL_DEAL_MS = 6000;
+${BLACKJACKCOMMANDS}
+` 
+
+// const TIME_UNTIL_DEAL_MS = 30000;
+const TIME_UNTIL_DEAL_MS = 6000;
 const BET_CANCEL_THRESHOLD_MS = 3000;
-const AUTO_STAND_TIMEOUT_MS = 45000;
-// const AUTO_STAND_TIMEOUT_MS = 10000;
+// const AUTO_STAND_TIMEOUT_MS = 45000;
+const AUTO_STAND_TIMEOUT_MS = 10000;
 
 export interface BlackjackBet extends Bet {
     memberNumber: number;
@@ -73,8 +91,10 @@ export class BlackjackGame implements Game {
     private dealTimeout: NodeJS.Timeout | undefined; // after first bet until the deal
     private autoStandTimeout: NodeJS.Timeout; // after the deal until all players stand
 
-    public HELPMESSAGE = BLACKJACKHELP;
-    public EXAMPLES = ROULETTEEXAMPLES;
+    public HELPMESSAGE = FULLBLACKJACKHELP;
+    public EXAMPLES = BLACKJACKEXAMPLES;
+    public HELPCOMMANDMESSAGE = BLACKJACKHELPCOMMAND;
+    public COMMANDSMESSAGE = BLACKJACKCOMMANDS;
 
     constructor(
         private conn: API_Connector,
@@ -409,7 +429,7 @@ export class BlackjackGame implements Game {
                 continue;
             }
             const winnings = this.getWinnings(playerHand, bet);
-            if (winnings >= 0) {
+            if (winnings > 0) {
                 const winnerMemberData = await this.casino.store.getPlayer(
                     bet.memberNumber,
                 );
@@ -417,13 +437,15 @@ export class BlackjackGame implements Game {
                 winnerMemberData.score += winnings;
                 await this.casino.store.savePlayer(winnerMemberData);
                 message += `${bet.memberName} wins ${winnings} chips! \n`;
-            } else if (bet.stakeForfeit) {
+            } else if (bet.stakeForfeit && winnings !== -100) {
                 this.casino.applyForfeit(bet);
-                message += `${bet.memberName} lost and gets ${FORFEITS[bet.stakeForfeit].name}! `;
+                message += `${bet.memberName} lost and gets ${FORFEITS[bet.stakeForfeit].name}! \n`;
             }
         }
         this.clear();
         this.willDealAt = undefined;
+        this.casino.multiplier = 1;
+
         if (this.dealTimeout) {
             clearInterval(this.dealTimeout);
             this.dealTimeout = undefined;
@@ -542,7 +564,7 @@ export class BlackjackGame implements Game {
         } else {
             const blockers = getItemsBlockingForfeit(
                 sender,
-                FORFEITS[bet.stakeForfeit].items(),
+                FORFEITS[bet.stakeForfeit].items(sender),
             );
             if (blockers.length > 0) {
                 console.log(
@@ -565,7 +587,7 @@ export class BlackjackGame implements Game {
                 return;
             }
 
-            const needItems = [...FORFEITS[bet.stakeForfeit].items()];
+            const needItems = [...FORFEITS[bet.stakeForfeit].items(sender)];
             if (FORFEITS[bet.stakeForfeit].lock)
                 needItems.push(FORFEITS[bet.stakeForfeit].lock);
             const blocked = needItems.filter(
@@ -582,8 +604,8 @@ export class BlackjackGame implements Game {
             bet.stake *= this.casino.multiplier;
         }
 
-        if (FORFEITS[bet.stakeForfeit]?.items().length === 1) {
-            const forfeitItem = FORFEITS[bet.stakeForfeit].items()[0];
+        if (FORFEITS[bet.stakeForfeit]?.items(sender).length === 1) {
+            const forfeitItem = FORFEITS[bet.stakeForfeit].items(sender)[0];
             if (
                 Date.now() <
                 this.casino.lockedItems
@@ -698,24 +720,35 @@ export class BlackjackGame implements Game {
     getWinnings(playerHand: Hand, bet: BlackjackBet): number {
         let playerHandValue: number = this.calculateHandValue(playerHand);
         let dealerHandValue: number = this.calculateHandValue(this.dealerHand);
-        console.log(playerHand, playerHandValue, dealerHandValue);
         if (playerHandValue > 21) {
             return 0;
         }
-        if (dealerHandValue > 21) {
-            return bet.stake * 2;
-        }
-        if (playerHandValue === dealerHandValue) {
-            if (bet.stakeForfeit) {
-                return 0;
+        if (bet.stakeForfeit) {
+            if (dealerHandValue > 21) {
+                return bet.stake;
             }
-            return bet.stake;
-        }
-        if (playerHandValue === 21 && playerHand.length === 2) {
-            return Math.floor(bet.stake * 2.5);
-        }
-        if (playerHandValue > dealerHandValue) {
-            return bet.stake * 2;
+            if (playerHandValue === dealerHandValue) {
+                return -100; // push for forfeits
+            }
+            if (playerHandValue === 21 && playerHand.length === 2) {
+                return Math.floor(bet.stake * 1.5);
+            }
+            if (playerHandValue > dealerHandValue) {
+                return bet.stake;
+            }
+        } else {
+            if (dealerHandValue > 21) {
+                return bet.stake * 2;
+            }
+            if (playerHandValue === dealerHandValue) {
+                return bet.stake;
+            }
+            if (playerHandValue === 21 && playerHand.length === 2) {
+                return Math.floor(bet.stake * 2.5);
+            }
+            if (playerHandValue > dealerHandValue) {
+                return bet.stake * 2;
+            }
         }
         return 0;
     }
@@ -728,13 +761,13 @@ export class BlackjackGame implements Game {
     private calculateDeckCountForRound(activePlayers: number): number {
         const estimatedCards = activePlayers * 5 + 5; // If splitting is implemented, this should be adjusted
         return Math.max(1, Math.ceil(estimatedCards / 52));
-      }
+    }
 
     private createShoe(decks: number = 1): void {
         for (let i = 0; i < decks; i++) {
             if (this.deck.length > 0) {
                 this.deck.push(...createDeck());
-            }else {
+            } else {
                 this.deck = createDeck();
             }
         }
@@ -755,6 +788,14 @@ export class BlackjackGame implements Game {
                 this.deck.pop(),
                 this.deck.pop(),
             ]);
+            if (this.calculateHandValue(this.playerHands.get(bet.memberNumber)) === 21) {
+                bet.standing = true; // Automatically stand on blackjack
+                this.conn.SendMessage(
+                    "Whisper",
+                    `You got a blackjack! You automatically stand.`,
+                    bet.memberNumber,
+                );
+            }
         }
 
         this.willStandAt = Date.now() + AUTO_STAND_TIMEOUT_MS;

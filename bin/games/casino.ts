@@ -128,6 +128,8 @@ export class Casino {
         this.commandParser.register("bet", this.onCommandBet);
         this.commandParser.register("cancel", this.onCommandCancel);
         this.commandParser.register("help", this.onCommandHelp);
+        this.commandParser.register("forfeits", this.onCommandForfeits);
+        this.commandParser.register("commands", this.onCommandCommands);
         this.commandParser.register("chips", this.onCommandChips);
         this.commandParser.register("addfriend", this.onCommandAddFriend);
         this.commandParser.register("remove", this.onCommandRemove);
@@ -162,7 +164,7 @@ export class Casino {
     };
 
     private onBeep = (beep: TBeepType) => {
-        if(beep.Message.includes("TypingStatus")) {
+        if (beep.Message.includes("TypingStatus")) {
             return;
         }
         try {
@@ -263,7 +265,28 @@ export class Casino {
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
-        this.conn.reply(msg, this.game.HELPMESSAGE);
+        this.conn.reply(msg, this.game.HELPCOMMANDMESSAGE);
+    };
+
+    private onCommandForfeits = (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        let text = `Forfeit Table
+Restraints are for 20 minutes, unless otherwise stated.
+
+${forfeitsString()}
+`;
+        this.conn.reply(msg, text);
+    };
+
+    private onCommandCommands = (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        this.conn.reply(msg, this.game.COMMANDSMESSAGE);
     };
 
     private onCommandChips = async (
@@ -362,7 +385,7 @@ export class Casino {
             return;
         }
 
-        if (!sender.Appearance.InventoryGet(restraint.items()[0].Group)) {
+        if (!sender.Appearance.InventoryGet(restraint.items(sender)[0].Group)) {
             this.conn.reply(
                 msg,
                 `It doesn't look like you're wearing ${restraint.name}.`,
@@ -373,11 +396,11 @@ export class Casino {
         player.credits -= restraint.value * 4;
         await this.store.savePlayer(player);
 
-        sender.Appearance.RemoveItem(restraint.items()[0].Group);
+        sender.Appearance.RemoveItem(restraint.items(sender)[0].Group);
 
         this.lockedItems
             .get(sender.MemberNumber)
-            ?.delete(restraint.items()[0].Group);
+            ?.delete(restraint.items(sender)[0].Group);
 
         this.conn.SendMessage(
             "Chat",
@@ -457,6 +480,8 @@ export class Casino {
             );
             sign.setProperty("Text", "Property of");
             sign.setProperty("Text2", sender.toString());
+
+            this.lockedItems.get(target.MemberNumber)?.delete("ItemDevices");
 
             this.conn.SendMessage(
                 "Chat",
@@ -630,7 +655,7 @@ export class Casino {
         if (!char) return;
 
         const applyFn = FORFEITS[bet.stakeForfeit].applyItems;
-        const items = FORFEITS[bet.stakeForfeit].items();
+        const items = FORFEITS[bet.stakeForfeit].items(char);
 
         if (items.length === 1) {
             const lockTime = FORFEITS[bet.stakeForfeit].lockTimeMs;

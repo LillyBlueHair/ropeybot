@@ -5,6 +5,8 @@ import { RouletteBet } from "./roulette";
 export interface Game {
 
     HELPMESSAGE: string;
+    HELPCOMMANDMESSAGE: string;
+    COMMANDSMESSAGE: string;
     EXAMPLES: string;
 
     parseBetCommand(

@@ -20,10 +20,9 @@ import { FORFEITS } from "./forfeits";
 import { Bet, Game } from "./game";
 import { ROULETTE_WHEEL } from "./rouletteWheelBundle";
 
-const ROULETTEHELP = `
-There are 37 numbers on the roulette wheel, 0 - 36. 0 is green.
 
-Roulette bets:
+const ROULETTECOMMANDMESSAGE = `
+Available commands:
 /bot bet red <amount> - Bet on red. Odds: 1:1.
 /bot bet black <amount> - Bet on black. Odds: 1:1.
 /bot bet even <amount> - Bet on even. Odds: 1:1.
@@ -38,6 +37,14 @@ Roulette bets:
 /bot chips - Show your current chip balance.
 /bot give <name or member number> <amount> - Give chips to another player.
 /bot help - Show this help
+/bot commands - Show available commands.
+/bot forfeits - Show available forfeits.
+`;
+
+const ROULETTEHELP = `
+There are 37 numbers on the roulette wheel, 0 - 36. 0 is green.
+
+${ROULETTECOMMANDMESSAGE}
 `;
 
 const ROULETTEEXAMPLES = `
@@ -120,8 +127,11 @@ export class RouletteGame implements Game {
     private willSpinAt: number | undefined;
     private spinTimeout: NodeJS.Timeout | undefined;
     private resetTimeout: NodeJS.Timeout | undefined;
+
     public HELPMESSAGE = ROULETTEHELP;
     public EXAMPLES = ROULETTEEXAMPLES;
+    public HELPCOMMANDMESSAGE = ROULETTEHELP;
+    public COMMANDSMESSAGE = ROULETTECOMMANDMESSAGE;
 
     private casino: Casino;
 
