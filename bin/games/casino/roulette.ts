@@ -141,6 +141,7 @@ export class RouletteGame implements Game {
     ) {
         this.casino = casino;
 
+        this.casino.commandParser.register("bet", this.onCommandBet);
         this.casino.commandParser.register("sign", (sender, msg, args) => {
             const sign = this.casino.getSign();
 
@@ -644,6 +645,7 @@ export class RouletteGame implements Game {
     async endGame(): Promise<void> {
         await waitForCondition(() => (this.willSpinAt === undefined));
         await wait(2000);
+        this.casino.commandParser.unregister("bet");
         this.casino.commandParser.unregister("sign");
         this.casino.commandParser.unregister("wheel");
         this.clear();

@@ -22,7 +22,7 @@ interface Forfeit {
     items: (player: API_Character) => BC_AppearanceItem[];
     lock?: BC_AppearanceItem;
     lockTimeMs?: number;
-    colourLayers?: number[];
+    colourLayers?: number[]; // What is that for? 
     applyItems?: (char: API_Character, lockMemberNumber: number) => void;
 }
 
@@ -77,6 +77,18 @@ export const FORFEITS: Record<string, Forfeit> = {
         items: () => {
             const mittens = AssetGet("ItemHands", "LatexBondageMitts");
             mittens.Property = { TypeRecord: { t: 1, w: 1, r: 0, l: 0 } };
+            return [mittens];
+        },
+    },
+    paws: {
+        name: "Paws",
+        value: 9,
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 20 * 60 * 1000,
+        colourLayers: [2],
+        items: () => {
+            const mittens = AssetGet("ItemHands", "ElbowLengthMittens");
+            mittens.Property = { TypeRecord: { typed: 0 } };
             return [mittens];
         },
     },
@@ -252,7 +264,7 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
             Password: generatePassword(),
             Hint: "Better luck next time!",
             RemoveItem: true,
-            RemoveTimer: Date.now() + FORFEITS.chastitybelt.lockTimeMs,
+            RemoveTimer: Date.now() + FORFEITS.chastity.lockTimeMs,
             ShowTimer: true,
             LockSet: true,
         });
@@ -282,7 +294,7 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
             Password: generatePassword(),
             Hint: "Better luck next time!",
             RemoveItem: true,
-            RemoveTimer: Date.now() + FORFEITS.chastitybelt.lockTimeMs,
+            RemoveTimer: Date.now() + FORFEITS.chastity.lockTimeMs,
             ShowTimer: true,
             LockSet: true,
         });

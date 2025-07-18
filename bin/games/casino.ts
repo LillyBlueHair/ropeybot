@@ -113,7 +113,7 @@ export class Casino {
         // The default game is roulette
         this.store = new CasinoStore(db);
         this.commandParser = new CommandParser(conn);
-        this.game = new RouletteGame(conn, this);
+        this.game = new BlackjackGame(conn, this);
 
         if (config?.cocktail) {
             this.cocktailOfTheDay = COCKTAILS[config.cocktail];
@@ -125,7 +125,6 @@ export class Casino {
         conn.on("CharacterEntered", this.onCharacterEntered);
         conn.on("Beep", ({ payload }) => this.onBeep(payload));
 
-        this.commandParser.register("bet", this.onCommandBet);
         this.commandParser.register("cancel", this.onCommandCancel);
         this.commandParser.register("help", this.onCommandHelp);
         this.commandParser.register("forfeits", this.onCommandForfeits);
@@ -448,6 +447,11 @@ ${forfeitsString()}
             if (
                 target.Appearance.InventoryGet("ItemDevices")?.Name !== "Kennel"
             ) {
+                console.warn("This could have been a mistake")
+                console.log(target)
+                console.log(target.Appearance)
+                console.log(target.Appearance.InventoryGet("ItemDevices"))
+                console.log(target.Appearance.InventoryGet("ItemDevices")?.Name)
                 this.conn.reply(
                     msg,
                     "Sorry, that player is not for sale (yet...)",
