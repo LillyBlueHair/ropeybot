@@ -283,3 +283,14 @@ export const PoseAllKneeling = Object.freeze(["Kneel", "KneelingSpread"]);
 export const PoseAllStanding = Object.freeze(["BaseLower", "LegsOpen", "LegsClosed", "Spread"]);
 
 export const InterfaceTextGet = (x: string) => undefined;
+
+
+
+// from TextItem.js (stubbed)
+export const TextItem = undefined;
+
+// from Time.js I believe. exists in Timer.js as well(stubbed) 
+export const CurrentTime = undefined;
+
+// from ChatRoomMapView.js (stubbed)
+export const ChatRoomMapViewGetObjectAtPos = undefined;
