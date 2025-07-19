@@ -15,7 +15,7 @@ import {
 // + fix forfeit pushing
 // + reconsider payouts for forfeits half as much makes more sense
 // + (I'd recommend a /bot forfeits command or something to list that menu) + bot commands as help is too long
-// - Split hands...max once?
+// + Split hands...max once?
 // - insurance
 // + multiple decks per shoe
 
@@ -24,6 +24,7 @@ const BLACKJACKCOMMANDS = `Blackjack commands:
 /bot hit - Take another card from the deck.
 /bot stand - Keep your current hand
 /bot double - Double your bet and take one more card. Only available on your first two cards.
+/bot split - Split your hand into two hands if you have two cards of the same value. 
 /bot cancel - Cancel your bet. Only available before any cards are dealt.
 /bot chips - Show your current chip balance.
 /bot give <name or member number> <amount> - Give chips to another player.
@@ -66,12 +67,18 @@ const TIME_UNTIL_DEAL_MS = 30000;
 // const TIME_UNTIL_DEAL_MS = 6000;
 const BET_CANCEL_THRESHOLD_MS = 3000;
 const AUTO_STAND_TIMEOUT_MS = 45000;
+const SPLIT_TIMEOUT_INCREASE_MS = 10000; // Time added to the auto-stand timeout when a player splits their hand
 // const AUTO_STAND_TIMEOUT_MS = 10000;
 const RESET_TIMEOUT_MS = 10000; // Time after a game ends before a new game can start
 
-export interface BlackjackBet extends Bet {
+export interface BlackjackPlayer {
     memberNumber: number;
     memberName: string;
+    playingHand: number;
+    bets: BlackjackBet[];
+}
+
+export interface BlackjackBet extends Bet {
     stake: number;
     stakeForfeit: string;
     standing: boolean;
@@ -83,10 +90,10 @@ export class BlackjackGame implements Game {
     private casino: Casino;
     private deck: Card[] = [];
     private dealerHand: Hand = [];
-    private playerHands: Map<number, Hand> = new Map();
+    private playerHands: Map<BlackjackBet, Hand> = new Map();
     private willDealAt: number | undefined;
     private willStandAt: number | undefined;
-    private bets: BlackjackBet[] = [];
+    private players: BlackjackPlayer[] = [];
     private resetTimeout: NodeJS.Timeout | undefined; // after finishing a game
     private dealTimeout: NodeJS.Timeout | undefined; // after first bet until the deal
     private autoStandTimeout: NodeJS.Timeout; // after the deal until all players stand
@@ -105,6 +112,7 @@ export class BlackjackGame implements Game {
         this.casino.commandParser.register("hit", this.onCommandHit);
         this.casino.commandParser.register("stand", this.onCommandStand);
         this.casino.commandParser.register("double", this.onCommandDouble);
+        this.casino.commandParser.register("split", this.onCommandSplit);
         this.casino.commandParser.register("sign", (sender, msg, args) => {
             const sign = this.casino.getSign();
 
@@ -226,7 +234,7 @@ export class BlackjackGame implements Game {
         }
 
         if (
-            this.bets.find(
+            this.players.find(
                 (b) => b.memberNumber === senderCharacter.MemberNumber,
             )
         ) {
@@ -285,7 +293,12 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        const bet = this.getBetsForPlayer(sender.MemberNumber)[0];
+        const player = this.players.find(
+            (b) => b.memberNumber === sender.MemberNumber,
+        );
+        const bet = this.getBetsForPlayer(sender.MemberNumber)[
+            player.playingHand
+        ];
         if (!bet) {
             this.conn.SendMessage(
                 "Whisper",
@@ -301,7 +314,7 @@ export class BlackjackGame implements Game {
                 sender.MemberNumber,
             );
             return;
-        } else if (this.playerHands.get(sender.MemberNumber) === undefined) {
+        } else if (this.playerHands.get(bet) === undefined) {
             this.conn.SendMessage(
                 "Whisper",
                 "You don't have a hand to hit.",
@@ -309,13 +322,16 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        const hand = this.playerHands.get(sender.MemberNumber);
+        const hand = this.playerHands.get(bet);
         hand.push(this.deck.pop());
         const playerValue = this.calculateHandValue(hand);
         if (playerValue > 20) {
             bet.standing = true; // Player automatically stands after busting or on 21
+            if (player.bets.length > player.playingHand + 1) {
+                player.playingHand++;
+            }
         }
-        const handString = await this.buildHandString(true);
+        const handString = await this.buildHandString(true, player);
         this.conn.SendMessage(
             "Whisper",
             `You hit and got a ${getCardString(hand[hand.length - 1])}.\n${handString}`,
@@ -339,29 +355,33 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        const bet = this.getBetsForPlayer(sender.MemberNumber)[0];
-        if (!bet) {
+        const bets = this.getBetsForPlayer(sender.MemberNumber);
+        const player = this.players.find(
+            (b) => b.memberNumber === sender.MemberNumber,
+        );
+        const currentBet = bets[player.playingHand];
+        if (!bets) {
             this.conn.SendMessage(
                 "Whisper",
                 "You don't have a bet in play.",
                 sender.MemberNumber,
             );
             return;
-        } else if (bet.standing) {
+        } else if (currentBet.standing) {
             this.conn.SendMessage(
                 "Whisper",
                 "You are already standing.",
                 sender.MemberNumber,
             );
             return;
-        } else if (this.playerHands.get(sender.MemberNumber) === undefined) {
+        } else if (this.playerHands.get(currentBet) === undefined) {
             this.conn.SendMessage(
                 "Whisper",
                 "You don't have a hand to double down on.",
                 sender.MemberNumber,
             );
             return;
-        } else if (bet.stakeForfeit) {
+        } else if (currentBet.stakeForfeit) {
             this.conn.SendMessage(
                 "Whisper",
                 "You can't double down on a forfeit bet.",
@@ -369,7 +389,7 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        const hand = this.playerHands.get(sender.MemberNumber);
+        const hand = this.playerHands.get(currentBet);
         if (hand.length !== 2) {
             this.conn.SendMessage(
                 "Whisper",
@@ -378,8 +398,10 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        const player = await this.casino.store.getPlayer(sender.MemberNumber);
-        if (player.credits < bet.stake) {
+        const playerStore = await this.casino.store.getPlayer(
+            sender.MemberNumber,
+        );
+        if (playerStore.credits < currentBet.stake) {
             this.conn.SendMessage(
                 "Whisper",
                 "You don't have enough chips to double down.",
@@ -388,16 +410,142 @@ export class BlackjackGame implements Game {
             return;
         }
 
-        player.credits -= bet.stake;
-        await this.casino.store.savePlayer(player);
-        bet.stake *= 2; // Double the stake
+        playerStore.credits -= currentBet.stake;
+        await this.casino.store.savePlayer(playerStore);
+        currentBet.stake *= 2; // Double the stake
         hand.push(this.deck.pop());
-        bet.standing = true;
-        const handString = await this.buildHandString(true);
+        currentBet.standing = true;
+        if (player.bets.length > player.playingHand + 1) {
+            player.playingHand++;
+            const handString = await this.buildHandString(true, player);
+            this.conn.SendMessage(
+                "Whisper",
+                `You doubled down on hand ${player.playingHand} and got a ${getCardString(hand[hand.length - 1])}. You are now playing hand ${player.playingHand}\n${handString}`,
+                sender.MemberNumber,
+            );
+        } else {
+            const handString = await this.buildHandString(true, player);
+            this.conn.SendMessage(
+                "Whisper",
+                `You doubled down and got a ${getCardString(hand[hand.length - 1])}.\n${handString}`,
+                sender.MemberNumber,
+            );
+        }
+        if (this.allPlayersDone()) {
+            this.resolveGame();
+        }
+    };
+
+    private onCommandSplit = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (this.autoStandTimeout === undefined) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You can't split right now.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        const bets = this.getBetsForPlayer(sender.MemberNumber);
+        const player = this.players.find(
+            (b) => b.memberNumber === sender.MemberNumber,
+        );
+        const currentBet = bets[player.playingHand];
+        if (!bets) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You don't have a bet in play.",
+                sender.MemberNumber,
+            );
+            return;
+        } else if (currentBet.standing) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You are already standing.",
+                sender.MemberNumber,
+            );
+            return;
+        } else if (this.playerHands.get(currentBet) === undefined) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You don't have a hand to split.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        const hand = this.playerHands.get(currentBet);
+        if (hand.length !== 2) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You can only split your initial two cards.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        if (
+            hand[0].value !== hand[1].value &&
+            !(
+                ["10", "J", "Q", "K"].includes(hand[0].value) &&
+                ["10", "J", "Q", "K"].includes(hand[1].value)
+            )
+        ) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You can only split if your two cards have the same value.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        if (currentBet.stakeForfeit) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You can't split a forfeit bet.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        const playerStore = await this.casino.store.getPlayer(
+            sender.MemberNumber,
+        );
+        if (playerStore.credits < currentBet.stake) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You don't have enough chips to split.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        playerStore.credits -= currentBet.stake;
+        await this.casino.store.savePlayer(playerStore);
+        player.bets.push({
+            memberNumber: sender.MemberNumber,
+            memberName: sender.toString(),
+            stake: currentBet.stake,
+            stakeForfeit: currentBet.stakeForfeit,
+            standing: false,
+        });
+        const newBet = player.bets[player.bets.length - 1];
+        this.playerHands.set(newBet, [hand[1], this.deck.pop()]);
+        hand[1] = this.deck.pop();
+        if (this.calculateHandValue(hand) > 20) {
+            currentBet.standing = true; // Player automatically stands on 21
+            player.playingHand++;
+        }
+        if (this.calculateHandValue(this.playerHands.get(newBet)) > 20) {
+            newBet.standing = true; // Player automatically stands on 21
+        }
         this.conn.SendMessage(
             "Whisper",
-            `You doubled down and got a ${getCardString(hand[hand.length - 1])}.\n${handString}`,
+            `You split your hand and got a ${getCardString(hand[1])} on the first hand and a ${getCardString(this.playerHands.get(newBet)[1])} on the second hand.\n${await this.buildHandString(true, player)}`,
             sender.MemberNumber,
+        );
+        this.willStandAt = this.willStandAt + SPLIT_TIMEOUT_INCREASE_MS;
+        this.conn.SendMessage(
+            "Chat",
+            `${sender.toString()} has split their hand! Remaining time has been increased.`,
         );
         if (this.allPlayersDone()) {
             this.resolveGame();
@@ -420,26 +568,30 @@ export class BlackjackGame implements Game {
         );
         this.casino.setTextColor("#ffffff");
 
-        for (const bet of this.bets) {
-            const playerHand = this.playerHands.get(bet.memberNumber);
-            if (!playerHand) {
-                console.error(
-                    `No hand found for player ${bet.memberName} (${bet.memberNumber})`,
-                );
-                continue;
+        for (const player of this.players) {
+            let totalWinnings = 0;
+            for (const bet of player.bets) {
+                const playerHand = this.playerHands.get(bet);
+                if (!playerHand) {
+                    console.error(
+                        `No hand found for player ${player.memberName} (${player.memberNumber})`,
+                    );
+                    continue;
+                }
+                const winnings = this.getWinnings(playerHand, bet);
+                totalWinnings += winnings;
             }
-            const winnings = this.getWinnings(playerHand, bet);
-            if (winnings > 0) {
+            if (totalWinnings > 0) {
                 const winnerMemberData = await this.casino.store.getPlayer(
-                    bet.memberNumber,
+                    player.memberNumber,
                 );
-                winnerMemberData.credits += winnings;
-                winnerMemberData.score += winnings;
+                winnerMemberData.credits += totalWinnings;
+                winnerMemberData.score += totalWinnings;
                 await this.casino.store.savePlayer(winnerMemberData);
-                message += `${bet.memberName} wins ${winnings} chips! \n`;
-            } else if (bet.stakeForfeit && winnings !== -100) {
-                this.casino.applyForfeit(bet);
-                message += `${bet.memberName} lost and gets ${FORFEITS[bet.stakeForfeit].name}! \n`;
+                message += `${player.memberName} wins ${totalWinnings} chips! \n`;
+            } else if (player.bets[0].stakeForfeit && totalWinnings !== -100) {
+                this.casino.applyForfeit(player.bets[0]);
+                message += `${player.memberName} lost and gets ${FORFEITS[player.bets[0].stakeForfeit].name}! \n`;
             }
         }
         this.clear();
@@ -474,7 +626,12 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        const bet = this.getBetsForPlayer(sender.MemberNumber)[0];
+        const player = this.players.find(
+            (b) => b.memberNumber === sender.MemberNumber,
+        );
+        const bet = this.getBetsForPlayer(sender.MemberNumber)[
+            player.playingHand
+        ];
         if (!bet) {
             this.conn.SendMessage(
                 "Whisper",
@@ -491,19 +648,34 @@ export class BlackjackGame implements Game {
             return;
         }
         bet.standing = true;
-        const handString = await this.buildHandString(true);
-        this.conn.SendMessage(
-            "Whisper",
-            `You are standing. \n${handString}`,
-            sender.MemberNumber,
-        );
+        if (player.bets.length > player.playingHand + 1) {
+            player.playingHand++;
+            const handString = await this.buildHandString(true, player);
+            this.conn.SendMessage(
+                "Whisper",
+                `You are standing on hand ${player.playingHand} and are now playing hand ${player.playingHand + 1}. \n${handString}`,
+                sender.MemberNumber,
+            );
+        } else {
+            const handString = await this.buildHandString(true, player);
+            this.conn.SendMessage(
+                "Whisper",
+                `You are standing. \n${handString}`,
+                sender.MemberNumber,
+            );
+        }
         if (this.allPlayersDone()) {
             this.resolveGame();
         }
     };
 
     placeBet(bet: BlackjackBet): void {
-        this.bets.push(bet);
+        this.players.push({
+            memberNumber: bet.memberNumber,
+            memberName: bet.memberName,
+            playingHand: 0, // first hand played
+            bets: [bet],
+        });
         if (bet.stakeForfeit) {
             this.conn.SendMessage(
                 "Chat",
@@ -518,14 +690,19 @@ export class BlackjackGame implements Game {
     }
 
     getBets(): BlackjackBet[] {
-        return this.bets;
+        return this.players.map((b) => b.bets[0]);
     }
     public getBetsForPlayer(memberNumber: number): BlackjackBet[] {
-        return this.bets.filter((b) => b.memberNumber === memberNumber);
+        console.log(this.players.find((b) => b.memberNumber === memberNumber));
+        return this.players
+            .filter((b) => b.memberNumber === memberNumber)
+            .flatMap((b) => b.bets);
     }
 
     public clearBetsForPlayer(memberNumber: number): undefined {
-        this.bets = this.bets.filter((b) => b.memberNumber !== memberNumber);
+        this.players = this.players.filter(
+            (b) => b.memberNumber !== memberNumber,
+        );
     }
 
     onCommandBet = async (
@@ -674,8 +851,10 @@ export class BlackjackGame implements Game {
         const sign = this.casino.getSign();
         const timeLeft = this.willStandAt - Date.now();
         if (timeLeft <= 0) {
-            this.bets.forEach((bet) => {
-                bet.standing = true;
+            this.players.forEach((player) => {
+                player.bets.forEach((bet) => {
+                    bet.standing = true; // Automatically stand all bets
+                });
             });
             this.conn.SendMessage(
                 "Chat",
@@ -691,7 +870,9 @@ export class BlackjackGame implements Game {
     }
 
     private allPlayersDone(): boolean {
-        return this.bets.every((b) => b.standing);
+        return this.players.every((player) =>
+            player.bets.every((bet) => bet.standing),
+        );
     }
 
     onCommandCancel = async (
@@ -765,12 +946,12 @@ export class BlackjackGame implements Game {
     }
 
     clear(): void {
-        this.bets = [];
+        this.players = [];
         this.playerHands.clear();
     }
 
     private calculateDeckCountForRound(activePlayers: number): number {
-        return Math.max(1, Math.min(8, Math.floor((activePlayers + 1) / 2)))
+        return Math.max(1, Math.min(8, Math.floor((activePlayers + 1) / 2)));
     }
 
     private createShoe(decks: number = 1): void {
@@ -786,29 +967,34 @@ export class BlackjackGame implements Game {
     }
 
     private initialDeal(): void {
-        if (this.deck.length < this.bets.length * 7 + 5) { // splitting once and a calculation of 2
+        if (this.deck.length < this.players.length * 7 + 5) {
             this.conn.SendMessage(
                 "Chat",
                 "The deck is running low, shuffling a new deck.",
             );
-            this.createShoe(this.calculateDeckCountForRound(this.bets.length));
+            this.createShoe(
+                this.calculateDeckCountForRound(this.players.length),
+            );
         }
         this.dealerHand = [this.deck.pop(), this.deck.pop()];
-        for (const bet of this.bets) {
-            this.playerHands.set(bet.memberNumber, [
+        for (const player of this.players) {
+            // const LillyTestCard = this.deck.pop();
+            this.playerHands.set(player.bets[0], [
                 this.deck.pop(),
                 this.deck.pop(),
+                // LillyTestCard,
+                // LillyTestCard
             ]);
             if (
                 this.calculateHandValue(
-                    this.playerHands.get(bet.memberNumber),
+                    this.playerHands.get(player.bets[0]),
                 ) === 21
             ) {
-                bet.standing = true; // Automatically stand on blackjack
+                player.bets[0].standing = true; // Automatically stand on blackjack
                 this.conn.SendMessage(
                     "Whisper",
                     `You got a blackjack! You automatically stand.`,
-                    bet.memberNumber,
+                    player.memberNumber,
                 );
             }
         }
@@ -818,8 +1004,10 @@ export class BlackjackGame implements Game {
                 "Chat",
                 `Dealer got a blackjack! All players lose their bets unless they have blackjack themselves.`,
             );
-            this.bets.forEach((bet) => {
-                bet.standing = true;
+            this.players.forEach((player) => {
+                player.bets.forEach((bet) => {
+                    bet.standing = true; // Automatically stand all bets
+                });
             });
             this.resolveGame();
             return;
@@ -842,17 +1030,31 @@ export class BlackjackGame implements Game {
         this.conn.SendMessage("Chat", handString);
     }
 
-    private async buildHandString(dealerHidden: boolean): Promise<string> {
+    private async buildHandString(
+        dealerHidden: boolean,
+        requestingPlayer: BlackjackPlayer | undefined = undefined,
+    ): Promise<string> {
         const dealerValue = this.calculateHandValue(this.dealerHand);
         const dealerHandString = dealerHidden
             ? `[${getCardString(this.dealerHand[0])}] [???]`
             : this.handToString(this.dealerHand);
         let string = `Dealer's hand: ${dealerHandString} (${dealerHidden ? "???" : dealerValue})\n`;
-        for (const [memberNumber, hand] of this.playerHands) {
-            const playerHandString = this.handToString(hand);
-            const playerValue = this.calculateHandValue(hand);
-            const player = await this.casino.store.getPlayer(memberNumber);
-            string += `${player.name} (${memberNumber}) hand: ${playerHandString} (${playerValue})\n`;
+        for (const player of this.players) {
+            for (let i = 0; i < player.bets.length; i++) {
+                const bet = player.bets[i];
+                const hand = this.playerHands.get(bet);
+                const handString = this.handToString(hand);
+                const handValue = this.calculateHandValue(hand);
+                if (
+                    requestingPlayer &&
+                    player.memberNumber === requestingPlayer.memberNumber &&
+                    i === requestingPlayer.playingHand
+                ) {
+                    string += `> ${player.memberName} (${bet.memberNumber}) hand: ${handString} (${handValue})\n`;
+                } else {
+                    string += `${player.memberName} (${bet.memberNumber}) hand: ${handString} (${handValue})\n`;
+                }
+            }
         }
         return string;
     }
