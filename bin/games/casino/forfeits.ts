@@ -85,7 +85,7 @@ export const FORFEITS: Record<string, Forfeit> = {
         value: 9,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
-        colourLayers: [2],
+        colourLayers: [0],
         items: () => {
             const mittens = AssetGet("ItemHands", "ElbowLengthMittens");
             mittens.Property = { TypeRecord: { typed: 0 } };
@@ -191,6 +191,14 @@ export const FORFEITS: Record<string, Forfeit> = {
         lockTimeMs: 20 * 60 * 1000,
         applyItems: makeChaste.bind(null),
     },
+    hypnovisor: {
+        name: "Hypnotic Visor",
+        colourLayers: [2],
+        value: 6,
+        items: () => [AssetGet("ItemHead", "HypnoticVisor")],
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 20 * 60 * 1000,
+    },
 };
 
 interface Service {
@@ -249,7 +257,6 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
                 `After betting and losing at the Pixie Casino, ${character} has lost the privilege to orgasm. ` +
                 `This chastity cage will ensure that the rule is followed.`,
         });
-        console.log(character.Appearance.InventoryGet("HairFront").GetColor());
         let hairColor = character.Appearance.InventoryGet("HairFront").GetColor();
         if (hairColor.length > 1) {
             hairColor = hairColor[0];

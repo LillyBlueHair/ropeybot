@@ -665,6 +665,7 @@ ${forfeitsString()}
 
         const applyFn = FORFEITS[bet.stakeForfeit].applyItems;
         const items = FORFEITS[bet.stakeForfeit].items(char);
+        const colourLayers = FORFEITS[bet.stakeForfeit].colourLayers;
 
         if (items.length === 1) {
             const lockTime = FORFEITS[bet.stakeForfeit].lockTimeMs;
@@ -682,11 +683,33 @@ ${forfeitsString()}
         if (applyFn) {
             applyFn(char, this.conn.Player.MemberNumber);
         } else if (items.length === 1) {
-            const characterHairColor =
+            let characterHairColor =
                 char.Appearance.InventoryGet("HairFront").GetColor();
-
             const added = char.Appearance.AddItem(items[0]);
-            added.SetColor(characterHairColor);
+            try {
+                characterHairColor = characterHairColor[0];
+                let colors: string[] = [];
+                if (colourLayers) {
+                    for (let i = 0; i <= Math.max(...colourLayers); i++) {
+                        if (colourLayers.includes(i)) {
+                            colors.push(characterHairColor);
+                        } else {
+                            colors.push("Default");
+                        }
+                    }
+                    added.SetColor(colors);
+                }else {
+                    added.SetColor(characterHairColor);
+                }
+            } catch (e) {
+                console.error(
+                    `Failed to set color for item ${items[0].Name} on character ${char.MemberNumber}`,
+                    e,
+                );
+                // Fallback to default color if setting color fails
+                added.SetColor(characterHairColor);
+            }
+
             added.SetDifficulty(20);
             added.SetCraft({
                 Name: `Pixie Casino ${FORFEITS[bet.stakeForfeit].name}`,

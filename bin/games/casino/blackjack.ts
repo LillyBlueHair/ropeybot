@@ -17,6 +17,7 @@ import {
 // + (I'd recommend a /bot forfeits command or something to list that menu) + bot commands as help is too long
 // + Split hands...max once?
 // - insurance
+// - random bonus rounds
 // + multiple decks per shoe
 
 const BLACKJACKCOMMANDS = `Blackjack commands:
@@ -967,6 +968,9 @@ export class BlackjackGame implements Game {
     }
 
     private initialDeal(): void {
+        this.autoStandTimeout = setInterval(() => {
+            this.onStandTimeout();
+        }, 1000);
         if (this.deck.length < this.players.length * 7 + 5) {
             this.conn.SendMessage(
                 "Chat",
@@ -1018,9 +1022,6 @@ export class BlackjackGame implements Game {
         }
 
         this.willStandAt = Date.now() + AUTO_STAND_TIMEOUT_MS;
-        this.autoStandTimeout = setInterval(() => {
-            this.onStandTimeout();
-        }, 1000);
 
         this.showHands(true);
     }
@@ -1060,6 +1061,9 @@ export class BlackjackGame implements Game {
     }
 
     private handToString(hand: Hand): string {
+        if (!hand || hand.length === 0) {
+            return "";
+        }
         return hand.map((card) => `[${getCardString(card)}]`).join(", ");
     }
 
