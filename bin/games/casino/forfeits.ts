@@ -109,7 +109,7 @@ export const FORFEITS: Record<string, Forfeit> = {
     },
     cage: {
         name: "Cage",
-        value: 20,
+        value: 30,
         items: () => {
             const cage = AssetGet("ItemDevices", "Kennel");
             cage.Property = { TypeRecord: { d: 1, p: 1 } };
@@ -190,7 +190,7 @@ export const FORFEITS: Record<string, Forfeit> = {
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         applyItems: makeChaste.bind(null),
-    },
+    },/*
     hypnovisor: {
         name: "Hypnotic Visor",
         colourLayers: [2],
@@ -198,7 +198,7 @@ export const FORFEITS: Record<string, Forfeit> = {
         items: () => [AssetGet("ItemHead", "HypnoticVisor")],
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
-    },
+    }*/
 };
 
 interface Service {
@@ -219,6 +219,11 @@ export const SERVICES: Record<string, Service> = {
         description: "Why waste their misfortune?",
         value: 100,
     },
+    lap: {
+        name: "Sit in Lilly's lap",
+        description: "Enjoy sitting in Lilly's lap for an hour.",
+        value: 20000,
+    }
     /*"massage": {
         name: "Pixie Massage",
         description: "Let Miss Ellie melt away those tensions with a soothing massage.",

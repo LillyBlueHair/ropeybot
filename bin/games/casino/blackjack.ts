@@ -64,9 +64,9 @@ const FULLBLACKJACKHELP = `${BLACKJACKHELP}
 ${BLACKJACKCOMMANDS}
 `;
 
-const TIME_UNTIL_DEAL_MS = 30000;
+const TIME_UNTIL_DEAL_MS = 35000;
 // const TIME_UNTIL_DEAL_MS = 6000;
-const BET_CANCEL_THRESHOLD_MS = 3000;
+const BET_CANCEL_THRESHOLD_MS = 1000;
 const AUTO_STAND_TIMEOUT_MS = 45000;
 const SPLIT_TIMEOUT_INCREASE_MS = 10000; // Time added to the auto-stand timeout when a player splits their hand
 // const AUTO_STAND_TIMEOUT_MS = 10000;
@@ -719,7 +719,7 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        if (this.autoStandTimeout !== undefined) {
+        if (this.autoStandTimeout !== undefined || this.willDealAt - Date.now() < BET_CANCEL_THRESHOLD_MS) {
             this.conn.SendMessage(
                 "Whisper",
                 "You can't bet right now.",
@@ -1070,7 +1070,7 @@ export class BlackjackGame implements Game {
     private calculateHandValue(hand: Hand): number {
         let value = 0;
         let aces = 0;
-        if (hand.length === 0) {
+        if (!hand || hand.length === 0) {
             return 0; // No cards, value is 0
         }
 

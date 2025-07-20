@@ -698,7 +698,7 @@ ${forfeitsString()}
                         }
                     }
                     added.SetColor(colors);
-                }else {
+                } else {
                     added.SetColor(characterHairColor);
                 }
             } catch (e) {
@@ -719,6 +719,9 @@ ${forfeitsString()}
                 MemberNumber: this.conn.Player.MemberNumber,
             });
             if (FORFEITS[bet.stakeForfeit].lockTimeMs) {
+                console.log(
+                    `Locking item ${added.Name} for ${FORFEITS[bet.stakeForfeit].lockTimeMs}ms`,
+                );
                 added.lock(
                     "TimerPasswordPadlock",
                     this.conn.Player.MemberNumber,
@@ -731,6 +734,10 @@ ${forfeitsString()}
                         ShowTimer: true,
                         LockSet: true,
                     },
+                );
+            } else {
+                console.log(
+                    `Not locking item ${added.Name} as no lock time is set`,
                 );
             }
         } else {
