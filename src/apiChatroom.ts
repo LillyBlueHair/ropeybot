@@ -236,7 +236,7 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         }
     }
 
-    public mapPositionUpdate(memberNumber: number, mapData: ChatRoomMapPos) {
+    public mapPositionUpdate(memberNumber: number, mapData: ChatRoomMapData) {
         const charData = this.data.Character.find(
             (x) => x.MemberNumber === memberNumber,
         );
@@ -253,10 +253,10 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         }
 
         if (!charData.MapData) {
-            charData.MapData = { X: 0, Y: 0 };
+            charData.MapData = { Pos: { X: 0, Y: 0 }, PrivateState: {} };
         }
 
-        const prevPos = Object.assign({}, charData.MapData ?? { X: 0, Y: 0 });
+        const prevPos = Object.assign({}, charData.MapData?.Pos ?? { X: 0, Y: 0 });
         Object.assign(charData.MapData, mapData);
 
         const char = this.findMember(memberNumber);
