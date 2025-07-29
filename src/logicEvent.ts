@@ -17,7 +17,7 @@ import { API_Connector } from "./apiConnector.ts";
 import { API_AppearanceItem } from "./item.ts";
 
 export interface BC_Server_ChatRoomMessage {
-    Type: "Hidden" | "Chat" | "Emote" | "Action" | "Activity" | "Whisper";
+    Type: "Hidden" | "Chat" | "Emote" | "Action" | "Activity" | "Whisper" | "Status";
     Sender: number;
     Dictionary: Record<string, string>;
     Content: string;

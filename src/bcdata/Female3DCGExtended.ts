@@ -180,7 +180,8 @@ import {
 	PortalLinkTransmitterExitHook,
 	InventoryItemNeckAccessoriesCollarAutoShockUnitDrawHook,
 	AssetsFaceMarkingsFaceWritingsAfterDrawHook,
-	ItemHeadDroneMaskValidateHook
+	ItemHeadDroneMaskValidateHook,
+	TextItem
 } from "./defs.ts";
 
 import { E } from "./female3DCG.js";
@@ -632,6 +633,11 @@ export var AssetFemale3DCGExtended = {
 						{}, // t25 - Shibari
 						{}, // t26 - BullsEye
 						{}, // t27 - Keys?
+						{}, // t28 - VoidOrder
+						{}, // t29 - Malkuth
+						{}, // t30 - Amber Family
+						{}, // t31 - Luke's Chill Tent
+						{}, // t32 - Rat's Ass Tavern
 					],
 				},
 			],
@@ -754,9 +760,9 @@ export var AssetFemale3DCGExtended = {
 					Key: "l",
 					DrawImages: false,
 					Options: [
-						{}, //l0 - Cropped
-						{}, //l1 - Bolero
-						//{}, //l2 - Full Length - not yet implemented
+						{}, //l0 - Full Length
+						{}, //l1 - Cropped
+						{}, //l2 - Bolero
 					],
 				},
 				//{
@@ -6060,6 +6066,14 @@ export var AssetFemale3DCGExtended = {
 							// m6 - Subtle
 							Property: { Effect: [E.BlockMouth] },
 						},
+						{
+							// m7 - Thin
+							Property: { Effect: [E.BlockMouth] },
+						},
+						{
+							// m8 - Thin Oh
+							Property: { Effect: [E.BlockMouth] },
+						},
 					],
 				},
 				{
@@ -6119,12 +6133,22 @@ export var AssetFemale3DCGExtended = {
 								HideItem: ["ItemHeadDroneMask"],
 							},
 						}, // text
+						{}, // Machine
+						{}, // Fishnet
+						{}, // Hexpattern
+						{}, // Large Circle
+						{}, // Large Split Circle
+						{}, // Large Heart
+						{}, // Large Stylized Heart
+						{}, // Small Heart
+						{}, // Lock
+						{}, // Large X
 					],
 				},
 				{
 					Name: "Glow",
 					Key: "g",
-					Options: [{}, {}], // Glow Off, Glow On
+					Options: [{}, {}, {}, {}], // Glow Off, Glow Eyes, Mouth On, Glow Pattern On, Glow On
 				},
 				{
 					Name: "Sight",
@@ -6271,6 +6295,28 @@ export var AssetFemale3DCGExtended = {
 								Hide: [],
 							},
 						}, // Blindfold and all gags
+					],
+				},
+				{
+					Name: "Visibility",
+					Key: "b",
+					Options: [
+						{
+							Property: {
+								Hide: ["Blush"],
+								HideItem: [
+									"HatFacePaint",
+									"MaskFacePaint",
+									"ClothAccessoryFacePaint",
+								],
+							},
+						},
+						{
+							Property: {
+								Hide: [],
+								HideItem: [],
+							},
+						},
 					],
 				},
 			],
@@ -12931,6 +12977,94 @@ export var AssetFemale3DCGExtended = {
 			Archetype: ExtendedArchetype.TYPED,
 			CopyConfig: { GroupName: "Cloth", AssetName: "CorsetDress" },
 		}, // CorsetDress
+		BarrelCorset: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemTorso", AssetName: "BarrelCorset" },
+			DialogPrefix: {
+				Header: "ItemTorsoBarrelCorsetSelect",
+				Module: "ItemTorsoBarrelCorsetModule",
+				Option: "ItemTorsoBarrelCorsetOption",
+				Chat: "ItemTorsoBarrelCorsetSet",
+			},
+			// This is a copy, just because we don't want any item-type effects on that one
+			Modules: [
+				{
+					Name: "Priority",
+					Key: "z",
+					Options: [
+						{
+							// Under Clothes
+							Property: {
+								OverridePriority: {
+									Upper: 25,
+									Lower: 25,
+									Upper4: 25,
+									BellyB: 25,
+									BellyM: 25,
+									BellyLock: 25,
+									LegB: 25,
+									LegM: 25,
+									LegLock: 25,
+									Neck: 25,
+									NeckB: 25,
+									NeckM: 25,
+								},
+							},
+						},
+						{
+							// Over Clothes
+							Property: {
+								OverridePriority: {
+									Upper: 30,
+									Lower: 30,
+									Upper4: 30,
+									BellyB: 30,
+									BellyM: 30,
+									BellyLock: 30,
+									LegB: 30,
+									LegM: 30,
+									LegLock: 30,
+									Neck: 30,
+									NeckB: 30,
+									NeckM: 30,
+								},
+								Hide: ["ClothLower", "Panties", "Garters"],
+								HideItem: [
+									"ClothAccessoryLeatherBeltCloth",
+									"ClothFurCoat",
+									"CorsetCorsetDress",
+								],
+							},
+						},
+					],
+				},
+				{
+					Name: "NeckCollar",
+					Key: "y",
+					Options: [
+						{}, // None
+						{}, // Equipped
+						{}, // Equipped with straps
+					],
+				},
+				{
+					Name: "BellyBelt",
+					Key: "w",
+					Options: [
+						{}, // None
+						{}, // Equipped
+					],
+				},
+				{
+					Name: "LegBelts",
+					Key: "x",
+					Options: [
+						{}, // None
+						{}, // Equipped
+					],
+				},
+			],
+		}, // BarrelCorset
 	}, // Corset
 	ItemTorso: {
 		HeavyLatexCorset: {
@@ -15415,7 +15549,7 @@ export var AssetFemale3DCGExtended = {
 				{
 					Name: "Mouth",
 					Key: "m",
-					Options: [{}, {}, {}, {}, {}, {}, {}], // none, onahole, fleshlight, smile, holes, sculpted, subtle
+					Options: [{}, {}, {}, {}, {}, {}, {}, {}, {}], // none, onahole, fleshlight, smile, holes, sculpted, subtle, thin, thin oh
 				},
 				{
 					Name: "Eyes",
@@ -15445,12 +15579,22 @@ export var AssetFemale3DCGExtended = {
 								HideItem: ["ItemHeadDroneMask", "ItemHoodDroneMask"],
 							},
 						}, // text
+						{}, // Machine
+						{}, // Fishnet
+						{}, // Hexpattern
+						{}, // Large Circle
+						{}, // Large Split Circle
+						{}, // Large Heart
+						{}, // Large Stylized Heart
+						{}, // Small Heart
+						{}, // Lock
+						{}, // Large X
 					],
 				},
 				{
 					Name: "Glow",
 					Key: "g",
-					Options: [{}, {}], // Glow Off, Glow On
+					Options: [{}, {}, {}, {}], // Glow Off, Glow Eyes, Mouth On, Glow Pattern On, Glow On
 				},
 				{
 					Name: "Helmet",
@@ -15583,6 +15727,28 @@ export var AssetFemale3DCGExtended = {
 								Hide: [],
 							},
 						}, // Blindfold and all gags
+					],
+				},
+				{
+					Name: "Visibility",
+					Key: "b",
+					Options: [
+						{
+							Property: {
+								Hide: ["Blush"],
+								HideItem: [
+									"HatFacePaint",
+									"MaskFacePaint",
+									"ClothAccessoryFacePaint",
+								],
+							},
+						},
+						{
+							Property: {
+								Hide: [],
+								HideItem: [],
+							},
+						},
 					],
 				},
 			],
@@ -19423,6 +19589,64 @@ export var AssetFemale3DCGExtended = {
 				Exit: FuturisticAccessExit,
 			},
 		}, // InteractiveVRHeadset
+		HypnoticVisor: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Frame",
+					Key: "t",
+					Options: [
+						{}, // t0 - Frame A
+						{}, // t1 - Frame B
+					],
+				},
+				{
+					Name: "Pattern",
+					Key: "p",
+					Options: [
+						{}, // p0 - Opaque
+						{}, // p1 - Pattern 1
+						{}, // p2 - Pattern 2
+						{}, // p3 - Pattern 3
+					],
+				},
+				{
+					Name: "Decal",
+					Key: "d",
+					Options: [
+						{}, // d0 - None
+						{}, // d1 - Bunny
+						{}, // d2 - Cat
+						{}, // d3 - Snake
+						{}, // d4 - Fox
+						{}, // d5 - Pony
+						{}, // d6 - Xeno
+						{}, // d7 - Leaf
+					],
+				},
+				{
+					Name: "Text",
+					Key: "e",
+					Options: [
+						{
+							HasSubscreen: true,
+							ArchetypeConfig: {
+								Archetype: ExtendedArchetype.TEXT,
+								MaxLength: { Text: 16 },
+								Font: "sans-serif",
+								ScriptHooks: {
+									AfterDraw: (...args) =>
+										TextItem.GenericTextDrawHook(...args, {
+											YOffset: 10,
+											drawOptions: { fontSize: 12 },
+										}),
+								},
+							},
+						},
+					],
+				},
+			],
+		},
 		MedicalPatch: {
 			ChatSetting: ModularItemChatSetting.PER_MODULE,
 			Archetype: ExtendedArchetype.MODULAR,
@@ -19514,6 +19738,14 @@ export var AssetFemale3DCGExtended = {
 							// m6 - Subtle
 							Property: { Effect: [E.BlockMouth] },
 						},
+						{
+							// m7 - Thin
+							Property: { Effect: [E.BlockMouth] },
+						},
+						{
+							// m8 - Thin Oh
+							Property: { Effect: [E.BlockMouth] },
+						},
 					],
 				},
 				{
@@ -19570,12 +19802,22 @@ export var AssetFemale3DCGExtended = {
 								},
 							},
 						}, // text
+						{}, // Machine
+						{}, // Fishnet
+						{}, // Hexpattern
+						{}, // Large Circle
+						{}, // Large Split Circle
+						{}, // Large Heart
+						{}, // Large Stylized Heart
+						{}, // Small Heart
+						{}, // Lock
+						{}, // Large X
 					],
 				},
 				{
 					Name: "Glow",
 					Key: "g",
-					Options: [{}, {}], // Glow Off, Glow On
+					Options: [{}, {}, {}, {}], // Glow Off, Glow Eyes, Mouth On, Glow Pattern On, Glow On
 				},
 				{
 					Name: "Sight",
@@ -19698,6 +19940,28 @@ export var AssetFemale3DCGExtended = {
 						{}, // Blindfold items visible
 						{}, // Blindfold and highest layer gag
 						{}, // Blindfold and all gags
+					],
+				},
+				{
+					Name: "Visibility",
+					Key: "b",
+					Options: [
+						{
+							Property: {
+								Hide: ["Blush"],
+								HideItem: [
+									"HatFacePaint",
+									"MaskFacePaint",
+									"ClothAccessoryFacePaint",
+								],
+							},
+						},
+						{
+							Property: {
+								Hide: [],
+								HideItem: [],
+							},
+						},
 					],
 				},
 			],

@@ -305,6 +305,10 @@ export class AppearanceType {
         this.data = this.data.filter((i) => i.Group !== item.Group);
         this._items = this._items.filter((i) => i.Group !== item.Group);
 
+        /*console.log(
+            `Adding item ${item.Group} (${item.Name}) to character ${this.character.Name}`,
+        );*/
+
         const newItem = new API_AppearanceItem(this.character, item);
         this._items.push(newItem);
         this.data.push(newItem.getData());

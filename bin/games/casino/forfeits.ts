@@ -19,10 +19,10 @@ import { PET_EARS } from "../petspa";
 interface Forfeit {
     name: string;
     value: number;
-    items: () => BC_AppearanceItem[];
+    items: (player: API_Character) => BC_AppearanceItem[];
     lock?: BC_AppearanceItem;
     lockTimeMs?: number;
-    colourLayers?: number[];
+    colourLayers?: number[]; // What is that for? 
     applyItems?: (char: API_Character, lockMemberNumber: number) => void;
 }
 
@@ -75,8 +75,20 @@ export const FORFEITS: Record<string, Forfeit> = {
         lockTimeMs: 20 * 60 * 1000,
         colourLayers: [0],
         items: () => {
-            const mittens =  AssetGet("ItemHands", "LatexBondageMitts");
+            const mittens = AssetGet("ItemHands", "LatexBondageMitts");
             mittens.Property = { TypeRecord: { t: 1, w: 1, r: 0, l: 0 } };
+            return [mittens];
+        },
+    },
+    paws: {
+        name: "Paws",
+        value: 9,
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 20 * 60 * 1000,
+        colourLayers: [0],
+        items: () => {
+            const mittens = AssetGet("ItemHands", "ElbowLengthMittens");
+            mittens.Property = { TypeRecord: { typed: 0 } };
             return [mittens];
         },
     },
@@ -97,7 +109,7 @@ export const FORFEITS: Record<string, Forfeit> = {
     },
     cage: {
         name: "Cage",
-        value: 20,
+        value: 30,
         items: () => {
             const cage = AssetGet("ItemDevices", "Kennel");
             cage.Property = { TypeRecord: { d: 1, p: 1 } };
@@ -106,7 +118,9 @@ export const FORFEITS: Record<string, Forfeit> = {
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         applyItems: (character: API_Character, lockMemberNumber: number) => {
-            const cage = character.Appearance.AddItem(AssetGet("ItemDevices", "Kennel"));
+            const cage = character.Appearance.AddItem(
+                AssetGet("ItemDevices", "Kennel"),
+            );
             cage.setProperty("TypeRecord", { d: 1, p: 1 });
             cage.SetDifficulty(20);
             cage.lock("TimerPasswordPadlock", lockMemberNumber, {
@@ -119,11 +133,72 @@ export const FORFEITS: Record<string, Forfeit> = {
             });
         },
     },
-    pet: { name: "Pet", value: 12, items: () => [AssetGet("ItemArms", "ShinyPetSuit")], lock: AssetGet("ItemMisc", "TimerPasswordPadlock"), lockTimeMs: 20 * 60 * 1000, applyItems: makePet.bind(null, 0) },
-    pet1hour: { name: "Pet: 1 hour", value: 15, items: () => [AssetGet("ItemArms", "ShinyPetSuit")], lock: AssetGet("ItemMisc", "TimerPasswordPadlock"), lockTimeMs: 1 * 60 * 60 * 1000, applyItems: makePet.bind(null, 1) },
-    pet2hours: { name: "Pet: 2 hours", value: 20, items: () => [AssetGet("ItemArms", "ShinyPetSuit")], lock: AssetGet("ItemMisc", "TimerPasswordPadlock"), lockTimeMs: 2 * 60 * 60 * 1000, applyItems: makePet.bind(null, 2) },
-    pet3hours: { name: "Pet: 3 hours", value: 25, items: () => [AssetGet("ItemArms", "ShinyPetSuit")], lock: AssetGet("ItemMisc", "TimerPasswordPadlock"), lockTimeMs: 3 * 60 * 60 * 1000, applyItems: makePet.bind(null, 3) },
-    pet4hours: { name: "Pet: 4 hours", value: 30, items: () => [AssetGet("ItemArms", "ShinyPetSuit")], lock: AssetGet("ItemMisc", "TimerPasswordPadlock"), lockTimeMs: 4 * 60 * 60 * 1000, applyItems: makePet.bind(null, 4) },
+    pet: {
+        name: "Pet",
+        value: 12,
+        items: () => [AssetGet("ItemArms", "ShinyPetSuit")],
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 20 * 60 * 1000,
+        applyItems: makePet.bind(null, 0),
+    },
+    pet1hour: {
+        name: "Pet: 1 hour",
+        value: 15,
+        items: () => [AssetGet("ItemArms", "ShinyPetSuit")],
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 1 * 60 * 60 * 1000,
+        applyItems: makePet.bind(null, 1),
+    },
+    pet2hours: {
+        name: "Pet: 2 hours",
+        value: 20,
+        items: () => [AssetGet("ItemArms", "ShinyPetSuit")],
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 2 * 60 * 60 * 1000,
+        applyItems: makePet.bind(null, 2),
+    },
+    pet3hours: {
+        name: "Pet: 3 hours",
+        value: 25,
+        items: () => [AssetGet("ItemArms", "ShinyPetSuit")],
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 3 * 60 * 60 * 1000,
+        applyItems: makePet.bind(null, 3),
+    },
+    pet4hours: {
+        name: "Pet: 4 hours",
+        value: 30,
+        items: () => [AssetGet("ItemArms", "ShinyPetSuit")],
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 4 * 60 * 60 * 1000,
+        applyItems: makePet.bind(null, 4),
+    },
+    chastity: {
+        name: "Chastity",
+        value: 15,
+        items: (sender) => {
+            if (!sender || !sender.Appearance) {
+                return [AssetGet("ItemPelvis", "ModularChastityBelt")];
+            }
+            const item = sender.Appearance.InventoryGet("Pussy");
+            if (item.Name == "Penis") {
+                return [AssetGet("ItemVulva", "PlasticChastityCage2")];
+            } else {
+                return [AssetGet("ItemPelvis", "ModularChastityBelt")];
+            }
+        },
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 20 * 60 * 1000,
+        applyItems: makeChaste.bind(null),
+    },/*
+    hypnovisor: {
+        name: "Hypnotic Visor",
+        colourLayers: [2],
+        value: 6,
+        items: () => [AssetGet("ItemHead", "HypnoticVisor")],
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 20 * 60 * 1000,
+    }*/
 };
 
 interface Service {
@@ -133,16 +208,22 @@ interface Service {
 }
 
 export const SERVICES: Record<string, Service> = {
-    /*"cocktail": {
+    cocktail: {
         name: "House Special Cocktail",
-        description: "Hand crafted by our expert mixologist. Please drink responsibly.",
+        description:
+            "Hand crafted by our expert mixologist. Please drink responsibly.",
         value: 10,
-    },*/
-    "player": {
+    },
+    player: {
         name: "Buy a caged player",
         description: "Why waste their misfortune?",
         value: 100,
     },
+    lap: {
+        name: "Sit in Lilly's lap",
+        description: "Enjoy sitting in Lilly's lap for an hour.",
+        value: 20000,
+    }
     /*"massage": {
         name: "Pixie Massage",
         description: "Let Miss Ellie melt away those tensions with a soothing massage.",
@@ -170,7 +251,73 @@ export const SERVICES: Record<string, Service> = {
     },*/
 };
 
-function makePet(hours: number, character: API_Character, lockMemberNumber: number): void {
+function makeChaste(character: API_Character, lockMemberNumber: number): void {
+    if (character.Appearance.InventoryGet("Pussy").Name == "Penis") {
+        const chastityCage = character.Appearance.AddItem(
+            AssetGet("ItemVulva", "PlasticChastityCage2"),
+        );
+        chastityCage.SetCraft({
+            Name: `Pixie Casino Chastity Cage`,
+            Description:
+                `After betting and losing at the Pixie Casino, ${character} has lost the privilege to orgasm. ` +
+                `This chastity cage will ensure that the rule is followed.`,
+        });
+        let hairColor = character.Appearance.InventoryGet("HairFront").GetColor();
+        if (hairColor.length > 1) {
+            hairColor = hairColor[0];
+        }
+        chastityCage.SetColor([
+            "Default",
+            hairColor + "",
+            hairColor + "",
+            "FFBC00",
+        ]);
+        chastityCage.lock("TimerPasswordPadlock", lockMemberNumber, {
+            Password: generatePassword(),
+            Hint: "Better luck next time!",
+            RemoveItem: true,
+            RemoveTimer: Date.now() + FORFEITS.chastity.lockTimeMs,
+            ShowTimer: true,
+            LockSet: true,
+        });
+    } else {
+        const chastityBelt = character.Appearance.AddItem(
+            AssetGet("ItemPelvis", "ModularChastityBelt"),
+        );
+        chastityBelt.SetCraft({
+            Name: `Pixie Casino Chastity Belt`,
+            Description:
+                `After betting and losing at the Pixie Casino, ${character} has lost her privileges to orgasm. ` +
+                `This chastity belt will ensure that she is kept chaste until her time is up.`,
+        });
+        chastityBelt.SetColor(
+            character.Appearance.InventoryGet("HairFront").GetColor(),
+        );
+        chastityBelt.setProperty("TypeRecord", {
+            a: 1,
+            c: 1,
+            i: 0,
+            o: 0,
+            p: 0,
+            s: 0,
+            v: 0,
+        });
+        chastityBelt.lock("TimerPasswordPadlock", lockMemberNumber, {
+            Password: generatePassword(),
+            Hint: "Better luck next time!",
+            RemoveItem: true,
+            RemoveTimer: Date.now() + FORFEITS.chastity.lockTimeMs,
+            ShowTimer: true,
+            LockSet: true,
+        });
+    }
+}
+
+function makePet(
+    hours: number,
+    character: API_Character,
+    lockMemberNumber: number,
+): void {
     const characterHairColor =
         character.Appearance.InventoryGet("HairFront").GetColor();
 
@@ -189,7 +336,8 @@ function makePet(hours: number, character: API_Character, lockMemberNumber: numb
         Password: generatePassword(),
         Hint: "Better luck next time!",
         RemoveItem: true,
-        RemoveTimer: Date.now() + (hours > 0 ?  hours * 60 * 60 * 1000 : 20 * 60 * 1000),
+        RemoveTimer:
+            Date.now() + (hours > 0 ? hours * 60 * 60 * 1000 : 20 * 60 * 1000),
         ShowTimer: true,
         LockSet: true,
     });
@@ -230,7 +378,7 @@ function makePet(hours: number, character: API_Character, lockMemberNumber: numb
                 `This collar will remind them of their place until their time is up.`,
         });
     }
-};
+}
 
 export function forfeitsString(): string {
     return Object.entries(FORFEITS)
@@ -245,11 +393,17 @@ export function restraintsRemoveString(): string {
 }
 
 function commandForService(name: string): string {
-    return `/bot buy ${name}` + (name === "player" ? " <name or member number>" : "");
+    return (
+        `/bot buy ${name}` +
+        (name === "player" ? " <name or member number>" : "")
+    );
 }
 
 export function servicesString(): string {
     return Object.entries(SERVICES)
-        .map(([name, s]) => `${s.name}: ${s.value} chips\n${s.description}\n${commandForService(name)}\n`)
+        .map(
+            ([name, s]) =>
+                `${s.name}: ${s.value} chips\n${s.description}\n${commandForService(name)}\n`,
+        )
         .join("\n");
 }

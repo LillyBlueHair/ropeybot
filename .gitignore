@@ -1,6 +1,7 @@
 node_modules
 config.json
 dist/
+out
 
 config*.json
 !config.sample.json

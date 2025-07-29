@@ -9,6 +9,7 @@
       "declaration": true,
       "outDir": "./dist/",
       "rewriteRelativeImportExtensions": true,
+      "allowImportingTsExtensions": true
   },
   "extends": "@tsconfig/node18/tsconfig.json",
   "include": [

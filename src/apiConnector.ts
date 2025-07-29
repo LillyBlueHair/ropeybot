@@ -31,7 +31,7 @@ export enum LeaveReason {
     BAN = "ServerBan",
 }
 
-export type TellType = "Whisper" | "Chat" | "Emote" | "Activity";
+export type TellType = "Whisper" | "Chat" | "Emote" | "Activity" | "Hidden";
 
 export interface RoomDefinition {
     Name: string;
@@ -66,7 +66,7 @@ export interface SyncMapDataPayload {
 }
 
 // What the bot advertises as its game version
-const GAMEVERSION = "R116";
+const GAMEVERSION = "R118";
 const LZSTRING_MAGIC = "╬";
 
 class PromiseResolve<T> {
@@ -513,7 +513,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
     };
 
     private onChatRoomSyncItem = (update: SyncItemPayload) => {
-        console.log("Chat room sync item", update);
+        // console.log("Chat room sync item", update);
         this._chatRoom.characterItemUpdate(update.Item);
         if (update.Item.Target === this._player.MemberNumber) {
             const payload = {
@@ -526,12 +526,12 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
 
     private onChatRoomSyncMapData = (update: SyncMapDataPayload) => {
         console.log("chat room map data", update);
-        this._chatRoom.mapPositionUpdate(update.MemberNumber, update.MapData.Pos);
+        this._chatRoom.mapPositionUpdate(update.MemberNumber, update.MapData);
     };
 
     private onChatRoomMessage = (msg: BC_Server_ChatRoomMessage) => {
-        // Don't log BCX spam
-        if (msg.Type !== "Hidden" && !["BCXMsg", "BCEMsg", "LSCGMsg", "bctMsg", "MPA", "dogsMsg", "bccMsg", "ECHO_INFO2", "MoonCEBC"].includes(msg.Content) && msg.Sender !== this.Player.MemberNumber) {
+        // Don't log *.* spam
+        if (msg.Type !== "Hidden" && !["BCXMsg", "BCEMsg", "LSCGMsg", "bctMsg", "MPA", "dogsMsg", "bccMsg", "ECHO_INFO2", "MoonCEBC"].includes(msg.Content) && msg.Sender !== this.Player.MemberNumber && msg.Type != "Status" /*&& (msg.Type != "Action" || msg.Content == "ServerLeave")*/) {
             console.log("chat room message", msg);
         }
 
@@ -777,7 +777,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
     }
 
     public updateCharacter(update: Partial<API_Character_Data>): void {
-        console.log("sending ChatRoomCharacterUpdate", JSON.stringify(update));
+        // console.log("sending ChatRoomCharacterUpdate", JSON.stringify(update));
         this.wrappedSock.emit("ChatRoomCharacterUpdate", update);
     }
 

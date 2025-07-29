@@ -60,7 +60,7 @@ export interface API_Character_Data {
     OnlineSharedSettings: OnlineSharedSettingsType;
     ItemPermission: ItemPermissionLevel;
     FriendList: number[];
-    MapData?: ChatRoomMapPos;
+    MapData?: ChatRoomMapData;
     BlockItems: ItemPermissionList;
     LimitedItems: ItemPermissionList;
 }
@@ -130,14 +130,20 @@ export class API_Character {
     }
 
     public get X(): number {
-        return this.data.MapData?.X ?? 0;
+        return this.data.MapData?.Pos?.X ?? 0;
     }
     public get Y(): number {
-        return this.data.MapData?.Y ?? 0;
+        return this.data.MapData?.Pos?.Y ?? 0;
     }
 
     public get MapPos(): ChatRoomMapPos {
-        return this.data.MapData ?? { X: 0, Y: 0 };
+        return this.data.MapData?.Pos ?? { X: 0, Y: 0 };
+    }
+
+    public mapTeleport(pos: ChatRoomMapPos): void {
+        this.connection.SendMessage("Hidden", "ChatRoomMapViewTeleport", this.MemberNumber, [
+            {Tag: "MapViewTeleport", Position: pos}
+        ]);
     }
 
     public IsRoomAdmin(): boolean {
