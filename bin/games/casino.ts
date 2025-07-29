@@ -125,7 +125,6 @@ export class Casino {
         conn.on("CharacterEntered", this.onCharacterEntered);
         conn.on("Beep", ({ payload }) => this.onBeep(payload));
 
-        this.commandParser.register("cancel", this.onCommandCancel);
         this.commandParser.register("help", this.onCommandHelp);
         this.commandParser.register("forfeits", this.onCommandForfeits);
         this.commandParser.register("commands", this.onCommandCommands);
@@ -163,7 +162,10 @@ export class Casino {
     };
 
     private onBeep = (beep: TBeepType) => {
-        if (beep.Message.includes("TypingStatus")) {
+        if (
+            beep.Message.includes("TypingStatus") ||
+            beep.Message.includes("ReqRoom")
+        ) {
             return;
         }
         try {
@@ -240,26 +242,11 @@ export class Casino {
                     null,
                     "Unknown command",
                 );
+                // console.log(beep)
             }
         } catch (e) {
             console.error("Failed to process beep", e);
         }
-    };
-
-    private onCommandBet = async (
-        sender: API_Character,
-        msg: BC_Server_ChatRoomMessage,
-        args: string[],
-    ) => {
-        this.game.onCommandBet(sender, msg, args);
-    };
-
-    private onCommandCancel = async (
-        sender: API_Character,
-        msg: BC_Server_ChatRoomMessage,
-        args: string[],
-    ) => {
-        this.game.onCommandCancel(sender, msg, args);
     };
 
     private onCommandHelp = (
@@ -391,6 +378,19 @@ ${forfeitsString()}
             this.conn.reply(
                 msg,
                 `It doesn't look like you're wearing ${restraint.name}.`,
+            );
+            return;
+        }
+
+        if (
+            sender.Appearance.InventoryGet(
+                restraint.items(sender)[0].Group,
+            ).getData().Property.LockMemberNumber !==
+            this.conn.Player.MemberNumber
+        ) {
+            this.conn.reply(
+                msg,
+                `You can only buy yourself out of my restraints, not others.`,
             );
             return;
         }

@@ -513,7 +513,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
     };
 
     private onChatRoomSyncItem = (update: SyncItemPayload) => {
-        console.log("Chat room sync item", update);
+        // console.log("Chat room sync item", update);
         this._chatRoom.characterItemUpdate(update.Item);
         if (update.Item.Target === this._player.MemberNumber) {
             const payload = {

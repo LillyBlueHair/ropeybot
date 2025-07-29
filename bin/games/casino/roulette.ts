@@ -15,11 +15,16 @@
 import { resolve } from "path";
 import { wait, waitForCondition } from "../../hub/utils";
 import { Casino, getItemsBlockingForfeit } from "../casino";
-import { API_Character, API_Connector, BC_Server_ChatRoomMessage, API_AppearanceItem, AssetGet } from "bc-bot";
+import {
+    API_Character,
+    API_Connector,
+    BC_Server_ChatRoomMessage,
+    API_AppearanceItem,
+    AssetGet,
+} from "bc-bot";
 import { FORFEITS } from "./forfeits";
 import { Bet, Game } from "./game";
 import { ROULETTE_WHEEL } from "./rouletteWheelBundle";
-
 
 const ROULETTECOMMANDMESSAGE = `
 Available commands:
@@ -141,6 +146,7 @@ export class RouletteGame implements Game {
     ) {
         this.casino = casino;
 
+        this.casino.commandParser.register("cancel", this.onCommandCancel);
         this.casino.commandParser.register("bet", this.onCommandBet);
         this.casino.commandParser.register("sign", (sender, msg, args) => {
             const sign = this.casino.getSign();
@@ -451,12 +457,15 @@ export class RouletteGame implements Game {
             this.conn.reply(msg, "You can't cancel your bet now.");
             return;
         }
-
-        const player = await this.casino.store.getPlayer(sender.MemberNumber);
-        this.getBetsForPlayer(sender.MemberNumber).forEach((b) => {
-            player.credits += b.stake;
-        });
-        await this.casino.store.savePlayer(player);
+        if (this.getBetsForPlayer(sender.MemberNumber)[0].stakeForfeit) {
+            const player = await this.casino.store.getPlayer(
+                sender.MemberNumber,
+            );
+            this.getBetsForPlayer(sender.MemberNumber).forEach((b) => {
+                player.credits += b.stake;
+            });
+            await this.casino.store.savePlayer(player);
+        }
 
         this.clearBetsForPlayer(sender.MemberNumber);
         this.conn.reply(msg, "Bet cancelled.");
@@ -643,8 +652,9 @@ export class RouletteGame implements Game {
     }
 
     async endGame(): Promise<void> {
-        await waitForCondition(() => (this.willSpinAt === undefined));
+        await waitForCondition(() => this.willSpinAt === undefined);
         await wait(2000);
+        this.casino.commandParser.unregister("cancel");
         this.casino.commandParser.unregister("bet");
         this.casino.commandParser.unregister("sign");
         this.casino.commandParser.unregister("wheel");

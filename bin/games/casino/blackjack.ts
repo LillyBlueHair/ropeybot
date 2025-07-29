@@ -109,6 +109,7 @@ export class BlackjackGame implements Game {
         casino: Casino,
     ) {
         this.casino = casino;
+        this.casino.commandParser.register("cancel", this.onCommandCancel);
         this.casino.commandParser.register("bet", this.onCommandBet);
         this.casino.commandParser.register("hit", this.onCommandHit);
         this.casino.commandParser.register("stand", this.onCommandStand);
@@ -202,6 +203,8 @@ export class BlackjackGame implements Game {
     async endGame(): Promise<void> {
         await waitForCondition(() => this.willDealAt === undefined);
         // await wait(2000);
+
+        this.casino.commandParser.unregister("cancel");
         this.casino.commandParser.unregister("bet");
         this.casino.commandParser.unregister("hit");
         this.casino.commandParser.unregister("stand");
@@ -694,7 +697,7 @@ export class BlackjackGame implements Game {
         return this.players.map((b) => b.bets[0]);
     }
     public getBetsForPlayer(memberNumber: number): BlackjackBet[] {
-        console.log(this.players.find((b) => b.memberNumber === memberNumber));
+        // console.log(this.players.find((b) => b.memberNumber === memberNumber));
         return this.players
             .filter((b) => b.memberNumber === memberNumber)
             .flatMap((b) => b.bets);
@@ -719,7 +722,10 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        if (this.autoStandTimeout !== undefined || this.willDealAt - Date.now() < BET_CANCEL_THRESHOLD_MS) {
+        if (
+            this.autoStandTimeout !== undefined ||
+            this.willDealAt - Date.now() < BET_CANCEL_THRESHOLD_MS
+        ) {
             this.conn.SendMessage(
                 "Whisper",
                 "You can't bet right now.",
@@ -900,11 +906,16 @@ export class BlackjackGame implements Game {
             return;
         }
 
-        const player = await this.casino.store.getPlayer(sender.MemberNumber);
-        this.getBetsForPlayer(sender.MemberNumber).forEach((b) => {
-            player.credits += b.stake;
-        });
-        await this.casino.store.savePlayer(player);
+        if (!this.getBetsForPlayer(sender.MemberNumber)[0].stakeForfeit) {
+            const player = await this.casino.store.getPlayer(
+                sender.MemberNumber,
+            );
+
+            this.getBetsForPlayer(sender.MemberNumber).forEach((b) => {
+                player.credits += b.stake;
+            });
+            await this.casino.store.savePlayer(player);
+        }
 
         this.clearBetsForPlayer(sender.MemberNumber);
         this.conn.SendMessage("Whisper", "Bet cancelled.", sender.MemberNumber);

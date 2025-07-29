@@ -23,18 +23,6 @@ export interface Game {
 
     clearBetsForPlayer(memberNumber: number): undefined;
 
-    onCommandBet(
-        sender: API_Character,
-        msg: BC_Server_ChatRoomMessage,
-        args: string[],
-    );
-
-    onCommandCancel(
-        sender: API_Character,
-        msg: BC_Server_ChatRoomMessage,
-        args: string[],
-    );
-
     endGame(): Promise<void>;
 
     clear(): void;
