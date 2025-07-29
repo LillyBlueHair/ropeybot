@@ -22,7 +22,7 @@ interface Forfeit {
     items: (player: API_Character) => BC_AppearanceItem[];
     lock?: BC_AppearanceItem;
     lockTimeMs?: number;
-    colourLayers?: number[]; // What is that for? 
+    colourLayers?: number[];
     applyItems?: (char: API_Character, lockMemberNumber: number) => void;
 }
 
@@ -208,18 +208,18 @@ interface Service {
 }
 
 export const SERVICES: Record<string, Service> = {
-    cocktail: {
+    "cocktail": {
         name: "House Special Cocktail",
         description:
             "Hand crafted by our expert mixologist. Please drink responsibly.",
         value: 10,
     },
-    player: {
+    "player": {
         name: "Buy a caged player",
         description: "Why waste their misfortune?",
         value: 100,
     },
-    lap: {
+    "lap": {
         name: "Sit in Lilly's lap",
         description: "Enjoy sitting in Lilly's lap for an hour.",
         value: 20000,

@@ -497,11 +497,9 @@ ${forfeitsString()}
                 `${sender} has bought ${target} and is now the proud owner of an unfortunate gambler.`,
             );
         } else if (serviceName === "cocktail") {
-            const cocktail =
-                this.cocktailOfTheDay ??
-                COCKTAILS[
-                    Math.floor(Math.random() * Object.keys(COCKTAILS).length)
-                ];
+            const keys = Object.keys(COCKTAILS);
+            const randomKey = keys[Math.floor(Math.random() * keys.length)];
+            const cocktail = this.cocktailOfTheDay ?? COCKTAILS[randomKey];
 
             const cocktailItem = sender.Appearance.AddItem(
                 AssetGet("ItemHandheld", "GlassFilled"),
