@@ -14,8 +14,8 @@ jobs:
         with:
           version: 10
       - name: Install dependencies
-        run: "pnpm install"
-      - run: "pnpm publish --provenance --access public --no-git-checks"
+        run: "cd src && pnpm install"
+      - run: "cd src && pnpm publish --provenance --access public --no-git-checks"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.TEMP_NPM_TOKEN }}
 
