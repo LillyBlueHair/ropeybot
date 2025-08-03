@@ -134,10 +134,15 @@ export class Casino {
         this.commandParser.register("buy", this.onCommandBuy);
         this.commandParser.register("vouchers", this.onCommandVouchers);
         this.commandParser.register("give", this.onCommandGive);
+        this.commandParser.register(
+            "checkforfeits",
+            this.onCommandCheckForfeits,
+        );
+        this.commandParser.register("score", this.onCommandScore);
         this.commandParser.register("bonus", this.onCommandBonusRound);
         this.commandParser.register("game", this.onCommandGame);
 
-        this.conn.setItemPermission(ItemPermissionLevel.OwnerOnly);
+        this.conn.setItemPermission(ItemPermissionLevel.OwnerLoverWhitelist);
     }
 
     private onCharacterEntered = async (character: API_Character) => {
@@ -163,8 +168,8 @@ export class Casino {
 
     private onBeep = (beep: TBeepType) => {
         if (
-            beep.Message.includes("TypingStatus") ||
-            beep.Message.includes("ReqRoom")
+            beep?.Message?.includes("TypingStatus") ||
+            beep?.Message?.includes("ReqRoom")
         ) {
             return;
         }
@@ -450,17 +455,22 @@ ${forfeitsString()}
             if (
                 target.Appearance.InventoryGet("ItemDevices")?.Name !== "Kennel"
             ) {
-                console.warn("This could have been a mistake");
-                console.log(target);
-                console.log(target.Appearance);
-                console.log(target.Appearance.InventoryGet("ItemDevices"));
-                console.log(
-                    target.Appearance.InventoryGet("ItemDevices")?.Name,
-                );
                 this.conn.reply(
                     msg,
                     "Sorry, that player is not for sale (yet...)",
                 );
+                return;
+            }
+        }
+
+        if (serviceName === "bonus") {
+            if (this.multiplier != 1) {
+                this.conn.reply(msg, "There is already a bonus round active.");
+                return;
+            }
+
+            if (this.game.getBets().length > 0) {
+                this.conn.reply(msg, "There are already bets placed.");
                 return;
             }
         }
@@ -515,6 +525,12 @@ ${forfeitsString()}
             this.conn.SendMessage(
                 "Chat",
                 `Please enjoy your cocktail, ${sender}.`,
+            );
+        } else if (serviceName === "bonus") {
+            this.multiplier = 2;
+            this.conn.SendMessage(
+                "Chat",
+                `${sender} has bought a ⭐️⭐️⭐️ Bonus round! ⭐️⭐️⭐️ All forfeit bets are worth ${this.multiplier}x their normal value!`,
             );
         } else {
             await this.store.addPurchase({
@@ -605,6 +621,56 @@ ${forfeitsString()}
         );
     };
 
+    private onCommandScore = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (args.length > 0) {
+            if (!sender.IsRoomAdmin()) {
+                this.conn.reply(
+                    msg,
+                    "Only admins can see other people's scores.",
+                );
+                return;
+            }
+
+            const target = this.conn.chatRoom.findCharacter(args[0]);
+            if (!target) {
+                this.conn.reply(msg, "I can't find that person.");
+                return;
+            }
+            const player = await this.store.getPlayer(target.MemberNumber);
+            this.conn.reply(msg, `${target} has a score of ${player.score}.`);
+        } else {
+            const player = await this.store.getPlayer(sender.MemberNumber);
+            this.conn.reply(
+                msg,
+                `${sender}, you have a score of ${player.score}.`,
+            );
+        }
+    };
+
+    private onCommandCheckForfeits = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        let message = "";
+        this.lockedItems.get(sender.MemberNumber)?.forEach((expiry, group) => {
+            const item = sender.Appearance.InventoryGet(group);
+            if (expiry < Date.now()) {
+                this.lockedItems.get(sender.MemberNumber)?.delete(group);
+                return;
+            } else if (item) {
+                message += `${item.Name} (${group}): ${remainingTimeString(expiry)} remaining\n`;
+            } else {
+                message += `${group} (no item found): ${remainingTimeString(expiry)} remaining\n`;
+            }
+        });
+        this.conn.reply(msg, message || "You have no active forfeits.");
+    };
+
     private onCommandBonusRound = async (
         sender: API_Character,
         msg: BC_Server_ChatRoomMessage,
@@ -654,7 +720,14 @@ ${forfeitsString()}
     }
 
     public setTextColor(color: string): void {
-        this.setSignColor(["Default", "Default", color]);
+        let colors = this.getSign().GetColor();
+        if (Array.isArray(colors)) {
+            colors = [...colors];
+        } else {
+            colors = [colors, "Default", "Default"];
+        }
+        colors[colors.length - 1] = color;
+        this.getSign().SetColor(colors);
     }
 
     public applyForfeit(bet: Bet): void {
@@ -745,9 +818,15 @@ ${forfeitsString()}
 
     public cheatPunishment(char: API_Character, player: Player): void {
         if (player.cheatStrikes === 1) {
-            char.Tell("Whisper", "Cheating in the casino, hmm?");
+            char.Tell(
+                "Whisper",
+                "Cheating in the casino, hmm? Check your active forfeits with /bot checkforfeits.",
+            );
         } else if (player.cheatStrikes === 2) {
-            char.Tell("Whisper", `Still trying to cheat, ${char}?`);
+            char.Tell(
+                "Whisper",
+                `Still trying to cheat, ${char}? Check your active forfeits with /bot checkforfeits.`,
+            );
         } else {
             const dunceHat = char.Appearance.AddItem(
                 AssetGet("Hat", "CollegeDunce"),

@@ -223,6 +223,11 @@ export const SERVICES: Record<string, Service> = {
         name: "Sit in Lilly's lap",
         description: "Enjoy sitting in Lilly's lap for an hour.",
         value: 20000,
+    },
+    "bonus": {
+        name: "Bonus Round",
+        description: "Make all forfeits worth double for the next round.",
+        value: 200,
     }
     /*"massage": {
         name: "Pixie Massage",

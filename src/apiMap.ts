@@ -29,7 +29,7 @@ function mapTileByName(name: string): ChatRoomMapTile {
 }
 
 function mapObjectByName(name: string): ChatRoomMapObject {
-    return ChatRoomMapViewObjectList.find((tile) => tile.Style === name);
+    return ChatRoomMapViewObjectList.find((tile) => tile.Style === name) as ChatRoomMapObject;
 }
 
 interface TileTrigger {
