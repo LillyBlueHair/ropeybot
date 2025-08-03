@@ -19,7 +19,7 @@ import { Socket } from "socket.io-client";
 import { LogicBase } from "./logicBase.ts";
 import { API_AppearanceItem, BC_AppearanceItem } from "./item.ts";
 import lzString from "lz-string";
-import { EventEmitter } from "stream";
+import { EventEmitter } from "node:events";
 import { BC_Server_ChatRoomMessage, TBeepType } from "./logicEvent.ts";
 import { SocketWrapper } from "./socketWrapper.ts";
 import { wait } from "./util/wait.ts";
