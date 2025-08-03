@@ -3,11 +3,25 @@ on: [push]
 
 jobs:
   prettier:
+    if: "!contains(github.event.head_commit.message, 'chore: format code with Prettier')"
     runs-on: ubuntu-latest
+    permissions:
+      contents: write 
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Run Prettier
-        uses: creyD/prettier_action@v4.3
         with:
-          prettier_options: --check "**/*.{js,jsx,ts,tsx,json,css,md}"
+          fetch-depth: 0 
+
+      - name: Install Prettier globally
+        run: npm install -g prettier
+
+      - name: Run Prettier
+        run: prettier --write "**/*.{js,jsx,ts,tsx,json,css,md}"
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "chore: format code with Prettier"
+          git push
