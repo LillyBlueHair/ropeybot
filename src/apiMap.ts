@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import { decompressFromBase64 } from "lz-string";
+import lzString from "lz-string";
 import { API_Character } from "./apiCharacter.ts";
 import { API_Chatroom_Data } from "./apiChatroom.ts";
 import { API_Connector } from "./apiConnector.ts";
@@ -94,7 +94,7 @@ export class API_Map extends EventEmitter<MapEvents> {
     }
 
     public setMapFromString(mapDataBundle: string): void {
-        const mapData = JSON.parse(decompressFromBase64(mapDataBundle));
+        const mapData = JSON.parse(lzString.decompressFromBase64(mapDataBundle));
         this.setMapFromData(mapData);
     }
 

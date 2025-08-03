@@ -16,7 +16,7 @@ import { API_Character, API_Character_Data } from "./apiCharacter.ts";
 import { isBind, isBody, isClothing, isCosplay } from "./assetHelpers.ts";
 import { wait } from "./util/wait.ts";
 import { API_AppearanceItem, BC_AppearanceItem } from "./item.ts";
-import { decompressFromBase64, compressToBase64 } from "lz-string";
+import lzString from "lz-string";
 
 /*
 const CLOTHING_SLOTS = [
@@ -93,11 +93,11 @@ const DEFAULT_APPLY_CFG: BundleApplyConfig = {
 };
 
 export function importBundle(bundle: string): BC_AppearanceItem[] {
-    return JSON.parse(decompressFromBase64(bundle)) as BC_AppearanceItem[];
+    return JSON.parse(lzString.decompressFromBase64(bundle)) as BC_AppearanceItem[];
 }
 
 export function exportBundle(items: BC_AppearanceItem[]): string {
-    return compressToBase64(JSON.stringify(items));
+    return lzString.compressToBase64(JSON.stringify(items));
 }
 
 export class AssetType {

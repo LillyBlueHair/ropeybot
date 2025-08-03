@@ -18,7 +18,7 @@ import { API_Chatroom, API_Chatroom_Data, ChatRoomAccessVisibility } from "./api
 import { Socket } from "socket.io-client";
 import { LogicBase } from "./logicBase.ts";
 import { API_AppearanceItem, BC_AppearanceItem } from "./item.ts";
-import { compressToUTF16 } from "lz-string";
+import lzString from "lz-string";
 import { EventEmitter } from "stream";
 import { BC_Server_ChatRoomMessage, TBeepType } from "./logicEvent.ts";
 import { SocketWrapper } from "./socketWrapper.ts";
@@ -743,7 +743,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
 
     public setBotDescription(desc: string) {
         this.accountUpdate({
-            Description: LZSTRING_MAGIC + compressToUTF16(desc),
+            Description: LZSTRING_MAGIC + lzString.compressToUTF16(desc),
         });
     }
 
