@@ -16,7 +16,7 @@ import { decompressFromBase64 } from "lz-string";
 import { API_Character } from "./apiCharacter.ts";
 import { API_Chatroom_Data } from "./apiChatroom.ts";
 import { API_Connector } from "./apiConnector.ts";
-import { EventEmitter } from "stream";
+import { EventEmitter } from "node:events";
 import { ChatRoomMapViewObjectList, ChatRoomMapViewTileList } from "./bcdata/ChatRoomMap.ts";
 
 export interface MapRegion {
