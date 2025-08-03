@@ -15,13 +15,13 @@
  * @type {Record<"SOURCE_CHAR"|"DEST_CHAR"|"DEST_CHAR_NAME"|"TARGET_CHAR"|"TARGET_CHAR_NAME"|"ASSET_NAME"|"AUTOMATIC", CommonChatTags>}
  */
 export const CommonChatTags = {
-	SOURCE_CHAR: "SourceCharacter",
-	DEST_CHAR: "DestinationCharacter",
-	DEST_CHAR_NAME: "DestinationCharacterName",
-	TARGET_CHAR: "TargetCharacter",
-	TARGET_CHAR_NAME: "TargetCharacterName",
-	ASSET_NAME: "AssetName",
-	AUTOMATIC: "Automatic",
+    SOURCE_CHAR: "SourceCharacter",
+    DEST_CHAR: "DestinationCharacter",
+    DEST_CHAR_NAME: "DestinationCharacterName",
+    TARGET_CHAR: "TargetCharacter",
+    TARGET_CHAR_NAME: "TargetCharacterName",
+    ASSET_NAME: "AssetName",
+    AUTOMATIC: "Automatic",
 };
 
 // From ModularItem.js
@@ -34,8 +34,8 @@ export const CommonChatTags = {
  * @type {Record<"PER_MODULE"|"PER_OPTION", ModularItemChatSetting>}
  */
 export const ModularItemChatSetting = {
-	PER_OPTION: "default",
-	PER_MODULE: "perModule",
+    PER_OPTION: "default",
+    PER_MODULE: "perModule",
 };
 
 // dummy definitions for Hooks
@@ -86,10 +86,12 @@ export const InventoryItemDevicesWoodenBoxLoadHook = undefined;
 export const InventoryItemDevicesWoodenBoxPublishActionHook = undefined;
 export const InventoryItemMouthFuturisticPanelGagClickHook = undefined;
 export const InventoryItemMouthFuturisticPanelGagDrawHook = undefined;
-export const InventoryItemNeckAccessoriesCollarNameTagPublishActionHook = undefined;
+export const InventoryItemNeckAccessoriesCollarNameTagPublishActionHook =
+    undefined;
 export const InventoryItemNeckAccessoriesCollarShockUnitClickHook = undefined;
 export const InventoryItemNeckAccessoriesCollarShockUnitDrawHook = undefined;
-export const InventoryItemNeckAccessoriesCollarAutoShockUnitBeforeDrawHook = undefined;
+export const InventoryItemNeckAccessoriesCollarAutoShockUnitBeforeDrawHook =
+    undefined;
 export const InventoryItemPelvisFuturisticTrainingBeltClickHook = undefined;
 export const InventoryItemPelvisFuturisticTrainingBeltDrawHook = undefined;
 export const InventoryItemPelvisFuturisticTrainingBeltExitHook = undefined;
@@ -100,7 +102,8 @@ export const InventoryItemPelvisSciFiPleasurePantiesDrawHook = undefined;
 export const InventoryItemTorsoFuturisticHarnessClickHook = undefined;
 export const InventoryItemTorsoFuturisticHarnessDrawHook = undefined;
 export const InventoryItemVulvaClitAndDildoVibratorbeltDrawHook = undefined;
-export const InventoryItemVulvaClitAndDildoVibratorbeltSetOptionHook = undefined;
+export const InventoryItemVulvaClitAndDildoVibratorbeltSetOptionHook =
+    undefined;
 export const InventoryItemVulvaFuturisticVibratorClickHook = undefined;
 export const InventoryItemVulvaFuturisticVibratorDrawHook = undefined;
 export const InventoryItemVulvaFuturisticVibratorExitHook = undefined;
@@ -108,10 +111,14 @@ export const InventoryItemVulvaFuturisticVibratorLoadHook = undefined;
 export const InventoryItemVulvaLoversVibratorDrawHook = undefined;
 export const InventoryItemNeckAccessoriesCollarAutoShockUnitDraw = undefined;
 export const InventoryItemNeckAccessoriesCollarAutoShockUnitClick = undefined;
-export const InventoryItemNeckAccessoriesCollarAutoShockUnitDrawHook = undefined;
-export const InventoryItemNeckAccessoriesCollarAutoShockUnitClickHook = undefined;
-export const AssetsItemNeckAccessoriesCollarAutoShockUnitBeforeDrawHook = undefined;
-export const AssetsItemNeckAccessoriesCollarAutoShockUnitScriptDrawHook = undefined;
+export const InventoryItemNeckAccessoriesCollarAutoShockUnitDrawHook =
+    undefined;
+export const InventoryItemNeckAccessoriesCollarAutoShockUnitClickHook =
+    undefined;
+export const AssetsItemNeckAccessoriesCollarAutoShockUnitBeforeDrawHook =
+    undefined;
+export const AssetsItemNeckAccessoriesCollarAutoShockUnitScriptDrawHook =
+    undefined;
 
 export const InventoryItemMiscIntricatePadlockDrawHook = undefined;
 export const InventoryItemMiscHighSecurityPadlockInitHook = undefined;
@@ -180,22 +187,63 @@ export const PropertyOpacityDraw = undefined;
 export const PropertyOpacityExit = undefined;
 export const PropertyOpacityValidate = undefined;
 
-
 // from ExtendedItem.js (we don't care about the values, but the array needs to be the right size)
 /**
  * The X & Y co-ordinates of each option's button, based on the number to be displayed per page.
  * @type {[number, number][][]}
  */
 export const ExtendedXY = [
-	[], //0 placeholder
-	[[1385, 500]], //1 option per page
-	[[1185, 500], [1590, 500]], //2 options per page
-	[[1080, 500], [1385, 500], [1695, 500]], //3 options per page
-	[[1185, 400], [1590, 400], [1185, 700], [1590, 700]], //4 options per page
-	[[1080, 400], [1385, 400], [1695, 400], [1185, 700], [1590, 700]], //5 options per page
-	[[1080, 400], [1385, 400], [1695, 400], [1080, 700], [1385, 700], [1695, 700]], //6 options per page
-	[[1020, 400], [1265, 400], [1510, 400], [1755, 400], [1080, 700], [1385, 700], [1695, 700]], //7 options per page
-	[[1020, 400], [1265, 400], [1510, 400], [1755, 400], [1020, 700], [1265, 700], [1510, 700], [1755, 700]], //8 options per page
+    [], //0 placeholder
+    [[1385, 500]], //1 option per page
+    [
+        [1185, 500],
+        [1590, 500],
+    ], //2 options per page
+    [
+        [1080, 500],
+        [1385, 500],
+        [1695, 500],
+    ], //3 options per page
+    [
+        [1185, 400],
+        [1590, 400],
+        [1185, 700],
+        [1590, 700],
+    ], //4 options per page
+    [
+        [1080, 400],
+        [1385, 400],
+        [1695, 400],
+        [1185, 700],
+        [1590, 700],
+    ], //5 options per page
+    [
+        [1080, 400],
+        [1385, 400],
+        [1695, 400],
+        [1080, 700],
+        [1385, 700],
+        [1695, 700],
+    ], //6 options per page
+    [
+        [1020, 400],
+        [1265, 400],
+        [1510, 400],
+        [1755, 400],
+        [1080, 700],
+        [1385, 700],
+        [1695, 700],
+    ], //7 options per page
+    [
+        [1020, 400],
+        [1265, 400],
+        [1510, 400],
+        [1755, 400],
+        [1020, 700],
+        [1265, 700],
+        [1510, 700],
+        [1755, 700],
+    ], //8 options per page
 ];
 
 /**
@@ -205,14 +253,66 @@ export const ExtendedXY = [
 export const ExtendedXYWithoutImages = [
     [], //0 placeholder
     [[1385, 450]], //1 option per page
-    [[1260, 450], [1510, 450]], //2 options per page
-    [[1135, 450], [1385, 450], [1635, 450]], //3 options per page
-    [[1260, 450], [1510, 450], [1260, 525], [1510, 525]], //4 options per page
-    [[1135, 450], [1385, 450], [1635, 450], [1260, 525], [1510, 525]], //5 options per page
-    [[1135, 450], [1385, 450], [1635, 450], [1135, 525], [1385, 525], [1635, 525]], //6 options per page
-    [[1010, 450], [1260, 450], [1510, 450], [1760, 450], [1135, 525], [1385, 525], [1635, 525]], //7 options per page
-    [[1010, 450], [1260, 450], [1510, 450], [1760, 450], [1010, 525], [1260, 525], [1510, 525], [1760, 525]], //8 options per page
-    [[1135, 450], [1385, 450], [1635, 450], [1135, 525], [1385, 525], [1635, 525], [1135, 600], [1385, 600], [1635, 600]], //9 options per page
+    [
+        [1260, 450],
+        [1510, 450],
+    ], //2 options per page
+    [
+        [1135, 450],
+        [1385, 450],
+        [1635, 450],
+    ], //3 options per page
+    [
+        [1260, 450],
+        [1510, 450],
+        [1260, 525],
+        [1510, 525],
+    ], //4 options per page
+    [
+        [1135, 450],
+        [1385, 450],
+        [1635, 450],
+        [1260, 525],
+        [1510, 525],
+    ], //5 options per page
+    [
+        [1135, 450],
+        [1385, 450],
+        [1635, 450],
+        [1135, 525],
+        [1385, 525],
+        [1635, 525],
+    ], //6 options per page
+    [
+        [1010, 450],
+        [1260, 450],
+        [1510, 450],
+        [1760, 450],
+        [1135, 525],
+        [1385, 525],
+        [1635, 525],
+    ], //7 options per page
+    [
+        [1010, 450],
+        [1260, 450],
+        [1510, 450],
+        [1760, 450],
+        [1010, 525],
+        [1260, 525],
+        [1510, 525],
+        [1760, 525],
+    ], //8 options per page
+    [
+        [1135, 450],
+        [1385, 450],
+        [1635, 450],
+        [1135, 525],
+        [1385, 525],
+        [1635, 525],
+        [1135, 600],
+        [1385, 600],
+        [1635, 600],
+    ], //9 options per page
 ];
 
 // from TypedItem.js
@@ -224,12 +324,14 @@ export const ExtendedXYWithoutImages = [
  * @type {Record<"TO_ONLY"|"FROM_TO"|"SILENT", TypedItemChatSetting>}
  */
 export const TypedItemChatSetting = {
-	TO_ONLY: "default",
-	FROM_TO: "fromTo",
-	SILENT: "silent",
+    TO_ONLY: "default",
+    FROM_TO: "fromTo",
+    SILENT: "silent",
 };
 
-export function InventoryItemNeckAccessoriesCollarNameTagGetDrawData(x) { return null; };
+export function InventoryItemNeckAccessoriesCollarNameTagGetDrawData(x) {
+    return null;
+}
 
 export const DialogFocusItem = null;
 
@@ -239,10 +341,9 @@ export const DialogFocusItem = null;
  * @type {{STANDARD: "Standard", ADVANCED: "Advanced"}}
  */
 export const VibratorModeSet = {
-	STANDARD: "Standard",
-	ADVANCED: "Advanced",
+    STANDARD: "Standard",
+    ADVANCED: "Advanced",
 };
-
 
 /**
  * Parse the passed typed item draw data as passed via the extended item config
@@ -251,9 +352,13 @@ export const VibratorModeSet = {
  * @param {number} y - The y-coordinate at which to start drawing the controls
  * @return {ExtendedItemDrawData<ElementMetaData.Vibrating>} - The parsed draw data
  */
-export function VibratorModeGetDrawData(modeSet, drawData, y=450) { return null; }
+export function VibratorModeGetDrawData(modeSet, drawData, y = 450) {
+    return null;
+}
 
-export function CommonConvertArrayToString(x) { return ""; }
+export function CommonConvertArrayToString(x) {
+    return "";
+}
 export const ItemVulvaFuturisticVibratorTriggers = undefined;
 export const InventoryItemPelvisSciFiPleasurePantiesChatPrefix = undefined;
 export const AssetsBodyMarkingsBodyWritingsAfterDrawHook = undefined;
@@ -280,16 +385,19 @@ export const CommonNoop = undefined;
 export const CommonTime = () => 0;
 
 export const PoseAllKneeling = Object.freeze(["Kneel", "KneelingSpread"]);
-export const PoseAllStanding = Object.freeze(["BaseLower", "LegsOpen", "LegsClosed", "Spread"]);
+export const PoseAllStanding = Object.freeze([
+    "BaseLower",
+    "LegsOpen",
+    "LegsClosed",
+    "Spread",
+]);
 
 export const InterfaceTextGet = (x: string) => undefined;
-
-
 
 // from TextItem.js (stubbed)
 export const TextItem = undefined;
 
-// from Time.js I believe. exists in Timer.js as well(stubbed) 
+// from Time.js I believe. exists in Timer.js as well(stubbed)
 export const CurrentTime = undefined;
 
 // from ChatRoomMapView.js (stubbed)

@@ -13,7 +13,12 @@
  */
 
 import { readFile, writeFile } from "fs/promises";
-import { API_Connector, CommandParser,API_Character,BC_Server_ChatRoomMessage, } from "bc-bot";
+import {
+    API_Connector,
+    CommandParser,
+    API_Character,
+    BC_Server_ChatRoomMessage,
+} from "bc-bot";
 import { wait } from "../hub/utils";
 
 export class Dare {
@@ -153,12 +158,21 @@ Rules
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
-        this.conn.SendMessage("Emote", `*${senderCharacter} randomly selects a room member...`);
+        this.conn.SendMessage(
+            "Emote",
+            `*${senderCharacter} randomly selects a room member...`,
+        );
         await wait(2000);
 
-        const possibleMembers = this.conn.chatRoom.characters.filter((m) => ![senderCharacter.MemberNumber, this.conn.Player.MemberNumber].includes(m.MemberNumber));
+        const possibleMembers = this.conn.chatRoom.characters.filter(
+            (m) =>
+                ![
+                    senderCharacter.MemberNumber,
+                    this.conn.Player.MemberNumber,
+                ].includes(m.MemberNumber),
+        );
         const n = Math.floor(Math.random() * possibleMembers.length);
         const target = possibleMembers[n];
         this.conn.SendMessage("Emote", `*${target} has been selected!`);
-    }
+    };
 }

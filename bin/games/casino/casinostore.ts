@@ -81,7 +81,7 @@ export class CasinoStore {
         return this.players
             .find({
                 score: { $gt: 0 },
-                memberNumber: { $ne: 35982},
+                memberNumber: { $ne: 35982 },
                 $or: [
                     { cheatStrikes: { $lt: 3 } },
                     { cheatStrikes: { $exists: false } },

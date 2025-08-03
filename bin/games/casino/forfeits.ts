@@ -190,7 +190,7 @@ export const FORFEITS: Record<string, Forfeit> = {
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         applyItems: makeChaste.bind(null),
-    },/*
+    } /*
     hypnovisor: {
         name: "Hypnotic Visor",
         colourLayers: [2],
@@ -198,7 +198,7 @@ export const FORFEITS: Record<string, Forfeit> = {
         items: () => [AssetGet("ItemHead", "HypnoticVisor")],
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
-    }*/
+    }*/,
 };
 
 interface Service {
@@ -208,22 +208,22 @@ interface Service {
 }
 
 export const SERVICES: Record<string, Service> = {
-    "cocktail": {
+    cocktail: {
         name: "House Special Cocktail",
         description:
             "Hand crafted by our expert mixologist. Please drink responsibly.",
         value: 10,
     },
-    "player": {
+    player: {
         name: "Buy a caged player",
         description: "Why waste their misfortune?",
         value: 100,
     },
-    "lap": {
+    lap: {
         name: "Sit in Lilly's lap",
         description: "Enjoy sitting in Lilly's lap for an hour.",
         value: 20000,
-    }
+    },
     /*"massage": {
         name: "Pixie Massage",
         description: "Let Miss Ellie melt away those tensions with a soothing massage.",
@@ -262,7 +262,8 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
                 `After betting and losing at the Pixie Casino, ${character} has lost the privilege to orgasm. ` +
                 `This chastity cage will ensure that the rule is followed.`,
         });
-        let hairColor = character.Appearance.InventoryGet("HairFront").GetColor();
+        let hairColor =
+            character.Appearance.InventoryGet("HairFront").GetColor();
         if (hairColor.length > 1) {
             hairColor = hairColor[0];
         }

@@ -28,8 +28,8 @@ export interface API_Chatroom_Data {
     Admin: number[];
     Ban: number[];
     Private: boolean;
-    Access: ChatRoomAccessVisibility[]
-    Visibility: ChatRoomAccessVisibility[]
+    Access: ChatRoomAccessVisibility[];
+    Visibility: ChatRoomAccessVisibility[];
     Limit: number;
     Background: string;
     Locked: boolean;
@@ -43,7 +43,11 @@ export interface API_Chatroom_Data {
 interface ChatRoomEvents {
     ItemAdd: [character: API_Character, item: API_AppearanceItem];
     ItemRemove: [character: API_Character, items: API_AppearanceItem[]];
-    ItemChange: [character: API_Character, oldItem: API_AppearanceItem, newItem: API_AppearanceItem];
+    ItemChange: [
+        character: API_Character,
+        oldItem: API_AppearanceItem,
+        newItem: API_AppearanceItem,
+    ];
 }
 
 export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
@@ -256,7 +260,10 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
             charData.MapData = { Pos: { X: 0, Y: 0 }, PrivateState: {} };
         }
 
-        const prevPos = Object.assign({}, charData.MapData?.Pos ?? { X: 0, Y: 0 });
+        const prevPos = Object.assign(
+            {},
+            charData.MapData?.Pos ?? { X: 0, Y: 0 },
+        );
         Object.assign(charData.MapData, mapData);
 
         const char = this.findMember(memberNumber);
@@ -322,9 +329,7 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
     }
 
     public findMember(specifier: number): API_Character | undefined {
-        return this.characters.find(
-            (c) => c.MemberNumber == specifier
-        );
+        return this.characters.find((c) => c.MemberNumber == specifier);
     }
 
     public saveChanges(): void {
@@ -333,7 +338,9 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
 
     public findCharacter(specifier: string): API_Character | undefined {
         const nameMatches = this.characters.filter(
-            (c) => c.NickName?.toLowerCase() === specifier.toLowerCase() || c.Name?.toLowerCase() === specifier.toLowerCase(),
+            (c) =>
+                c.NickName?.toLowerCase() === specifier.toLowerCase() ||
+                c.Name?.toLowerCase() === specifier.toLowerCase(),
         );
         if (nameMatches.length === 1) return nameMatches[0];
 
@@ -360,18 +367,20 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         return char;
     }
 
-    public useMap(useMap: boolean)  {
+    public useMap(useMap: boolean) {
         if (useMap) {
             this.data.MapData.Type = "Always";
-        }else{
+        } else {
             this.data.MapData.Type = "Never";
         }
-        console.log
+        console.log;
         this.conn.ChatRoomUpdate({ MapData: this.data.MapData });
     }
 
     private pruneCharacterCache() {
-        const memberNumbers = new Set(this.data.Character.map((c) => c.MemberNumber));
+        const memberNumbers = new Set(
+            this.data.Character.map((c) => c.MemberNumber),
+        );
         for (const memberNumber of this.characterCache.keys()) {
             if (!memberNumbers.has(memberNumber)) {
                 this.characterCache.delete(memberNumber);

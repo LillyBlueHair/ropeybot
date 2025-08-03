@@ -13,7 +13,17 @@
  */
 
 import { decompressFromBase64 } from "lz-string";
-import { API_Connector, MessageEvent, makeDoorRegion, MapRegion, API_Character, AssetGet, BC_AppearanceItem, CommandParser, BC_Server_ChatRoomMessage } from "bc-bot";
+import {
+    API_Connector,
+    MessageEvent,
+    makeDoorRegion,
+    MapRegion,
+    API_Character,
+    AssetGet,
+    BC_AppearanceItem,
+    CommandParser,
+    BC_Server_ChatRoomMessage,
+} from "bc-bot";
 import { remainingTimeString } from "../utils";
 import { wait } from "../hub/utils";
 

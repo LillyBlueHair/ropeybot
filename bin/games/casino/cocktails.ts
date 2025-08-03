@@ -31,5 +31,5 @@ export const COCKTAILS: Record<string, Cocktail> = {
         colour: "#C65F9E",
         description:
             "A fuscia pink strawberry with fresh mint and sherbert. Sweet and zingy, but easily tamed with soda water.",
-    }
+    },
 };
