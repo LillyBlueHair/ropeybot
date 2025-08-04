@@ -11,6 +11,23 @@ export function wait(ms: number): Promise<void> {
 }
 
 /**
+ * Waits for a condition to be true, returning a promise
+ * @param condition The condition to wait for
+ * @param interval The time in ms to wait between checks
+ */
+export function waitForCondition(condition: () => boolean, interval = 100): Promise<void> {
+	return new Promise((resolve) => {
+		const timer = setInterval(() => {
+		  if (condition()) {
+			clearInterval(timer);
+			resolve();
+		  }
+		}, interval);
+	  });
+}
+
+
+/**
  * Shuffles an array in-place
  * @param array The array to shuffle
  */

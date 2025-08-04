@@ -94,6 +94,20 @@ declare namespace AllowTypes {
 	}
 }
 
+declare namespace ParentGroup {
+	/**
+	 * An object mapping pose names to group names from which to inherit body sizes.
+	 * The {@link PoseType.DEFAULT} singleton is used for defining the default inheritance behavior when used as key, and disables inheritance when used as value.
+	 */
+	type Data = Partial<Record<PoseTypeDefault | AssetPoseName, PoseTypeDefault | AssetGroupName>>;
+
+	/**
+	 * An object mapping pose names to group names from which to inherit body sizes or a singular group name to apply it to _all_ poses.
+	 * The {@link PoseType.DEFAULT} singleton is used for defining the default inheritance behavior when used as key, and disables inheritance when used as value.
+	 */
+	type Definition = AssetGroupName | Data;
+}
+
 /**
  * Properties common to groups, assets and layers
  *
@@ -129,8 +143,19 @@ interface AssetCommonPropertiesGroupAssetLayer {
 	/** The group the target should inherit its color from. */
 	InheritColor?: AssetGroupName;
 
-	/** A group identifier that will be used to inherit the body size */
-	ParentGroup?: AssetGroupName | null;
+	/**
+	 * A group identifier that will be used to inherit the body size.
+	 * Body sizes can be either be used for all poses (by passing a singular group) or on a pose-by-pose basis (via passing an object).
+	 * In the latter case {@link PoseType.DEFAULT} can be used to override the default for _all_ groups when used as key, or to disable inheritance when used as value.
+	 *
+	 * @example
+	 * // Inherit from the body sizes `BodyLower` by default, but do not inherit for the `AllFours` pose
+	 * ParentGroup: {
+	 *     [PoseType.DEFAULT]: "BodyLower",
+	 *     AllFours: PoseType.DEFAULT,
+	 * },
+	 */
+	ParentGroup?: ParentGroup.Definition | null;
 
 	/**
 	 * The poses that have pose-specific assets.
@@ -151,6 +176,13 @@ interface AssetCommonPropertiesGroupAssetLayer {
 	 * Poses that are absent from the mapping (or whose value is set to {@link PoseType.DEFAULT}) will use the default pose-agnostic path.
 	 */
 	PoseMapping?: AssetPoseMapping;
+
+	/**
+	 * Let assets inherit the group's pose mapping on an individual pose by pose basis, rather than inheriting the pose mapping as a whole (_i.e._ all or nothing).
+	 *
+	 * @default false
+	 */
+	InheritPoseMappingFields?: boolean;
 
 	/**
 	 * Whether that layer is colorized
@@ -254,6 +286,25 @@ interface AssetGroupDefinitionBase extends AssetCommonPropertiesGroupAsset, Asse
 	 * @default false
 	 */
 	Clothing?: boolean;
+
+	/**
+	 * Set to TRUE if all assets in that group should allow editing opacity, set value on asset level to override
+	 *
+	 * @default false
+	 */
+	EditOpacity?: boolean;
+
+	/**
+	 * The default minimum opacity for that group, set value on asset level to override
+	 * @default 1
+	 */
+	MinOpacity?: number;
+
+	/**
+	 * The default maximum opacity for that group, set value on asset level to override
+	 * @default 1
+	 */
+	MaxOpacity?: number;
 
 	/** Whether the group is considered underwear
 	 *
@@ -431,6 +482,7 @@ interface AssetCommonPropertiesAssetLayer {
 	Opacity?: number;
 	MinOpacity?: number;
 	MaxOpacity?: number;
+	EditOpacity?: boolean; // True if we can edit the opacity in the color picker
 }
 
 /** Input interface for constructing {@link Asset} objects. */
@@ -478,6 +530,18 @@ interface AssetDefinitionBase extends AssetCommonPropertiesGroupAsset, AssetComm
 
 	/** A list of screens where current asset won't be shown. */
 	NotVisibleOnScreen?: string[];
+
+	/** Specify body type overrides that live in the asset override folder */
+	StyleOverride?: string[];
+	CreateLayerTypesOverride?: number[];
+
+	DrawOffset?: {
+		Group?: AssetGroupName;
+		Asset?: string;
+		Layer?: string[]
+		X?: number;
+		Y?: number;
+	}[];
 
 	/**
 	 * Whether the asset can be worn.
@@ -547,7 +611,7 @@ interface AssetDefinitionBase extends AssetCommonPropertiesGroupAsset, AssetComm
 	 * A value of -1 makes the asset unavailable, a value of 0 makes it always available.
 	 */
 	Value?: number;
-	
+
 	/**
 	 * Whether an item should never be able to be sold.
 	 *
@@ -555,40 +619,52 @@ interface AssetDefinitionBase extends AssetCommonPropertiesGroupAsset, AssetComm
 	 */
 	NeverSell?: boolean;
 
-	/** A measure of how hard it is to remove the asset. Defaults to 0. */
+	/** A measure of how hard it is to remove the restraint. Defaults to 0. */
 	Difficulty?: number;
 
+	/** The required self bondage skill level for equipping a restraint on oneself. */
 	SelfBondage?: number;
+	/** Whether the player can remove any applied locks to the item */
 	SelfUnlock?: boolean;
+	/** Whether only a specific set of characters can unlock the applied lock */
 	ExclusiveUnlock?: boolean;
 
 	/** Whether the asset gets removed automatically when the character log in. Defaults to false. */
 	RemoveAtLogin?: boolean;
 
+	/** The base time required for equipping an item. */
 	Time?: number;
 	/** Enables advanced layer visibility on the asset. See {@link AssetLayerDefinition.Visibility} for more information. */
 	LayerVisibility?: boolean;
+	/** The base time required for removing a restraint. */
 	RemoveTime?: number;
+	/** The default time for a timer lock */
 	RemoveTimer?: number;
+	/** The maximum allowed time for a timer lock */
 	MaxTimer?: number;
 
 	Height?: number;
 	Zoom?: number;
 	Prerequisite?: AssetPrerequisite | AssetPrerequisite[];
 	Extended?: boolean;
+	/** Whether the restraint's extended item menu can always be accessed, even if it would be otherwise blocked */
 	AlwaysExtend?: boolean;
+	/** Whether the restraint's extended item menu can always be accessed, even if the player's hands are otherwise restrained */
 	AlwaysInteract?: boolean;
+	/** Whether the restraint can be locked */
 	AllowLock?: boolean;
+	/** Whether the restraint is a lock (see {@link AssetLockType}) */
 	IsLock?: boolean;
+	/** The lock picking difficulty for those locks that can be picked */
 	PickDifficulty?: number | null;
 
-	/** Whether the asset is only available to owners. */
+	/** Whether the restraint is only available to owners. */
 	OwnerOnly?: boolean;
 
-	/** Whether the asset is only available to lovers. */
+	/** Whether the restraint is only available to lovers. */
 	LoverOnly?: boolean;
 
-	/** Whether the asset is only available to the family. */
+	/** Whether the restraint is only available to the family. */
 	FamilyOnly?: boolean;
 
 	/** A list of facial expression using the asset causes to the character */
@@ -603,6 +679,7 @@ interface AssetDefinitionBase extends AssetCommonPropertiesGroupAsset, AssetComm
 	AllowHideItem?: string[];
 	/** @deprecated */
 	AllowTypes?: never;
+	/** A list of {@link TypeRecord} keys for which a single layer expects multiple type-specific .png files. */
 	CreateLayerTypes?: string[];
 	/**
 	 * Whether an item can be tightened or not.
@@ -640,8 +717,10 @@ interface AssetDefinitionBase extends AssetCommonPropertiesGroupAsset, AssetComm
 	 * When the asset is added to a character, the member number of the character using the
 	 * asset will be stored along in its properties, and all subsequent modifications will
 	 * only be possible for that character.
+	 *
+	 * @deprecated Discontinued in favor of the {@link FamilyOnly}/{@link LoverOnly}/{@link OwnerOnly} trio
 	 */
-	CharacterRestricted?: boolean;
+	CharacterRestricted?: never;
 	AllowRemoveExclusive?: boolean;
 
 	DynamicBeforeDraw?: boolean;
@@ -675,6 +754,8 @@ interface AssetDefinitionBase extends AssetCommonPropertiesGroupAsset, AssetComm
 
 	/** The list of layers for the asset. */
 	Layer?: AssetLayerDefinition[];
+
+	Attribution?: AttributionDefinition;
 
 	/** A list of attributes the asset has */
 	Attribute?: AssetAttribute[];
@@ -714,25 +795,29 @@ declare namespace AssetDefinition {
 	/** An {@link AssetDefinition} subtype for assets whose group is of the `Appearance` category. */
 	interface Appearance extends AssetDefinitionBase {
 		AllowLock?: false;
-		IsLock?: false;
-		PickDifficulty?: never;
-		OwnerOnly?: false;
-		LoverOnly?: false;
-		FamilyOnly?: false;
-		AllowTighten?: false;
-		DrawLocks?: false;
-		CustomBlindBackground?: never;
-		CraftGroup?: never;
 		AllowLockType?: never;
-		CharacterRestricted?: false;
 		AllowRemoveExclusive?: false;
+		AllowTighten?: false;
+		AlwaysExtend?: false;
+		AlwaysInteract?: false;
 		ArousalZone?: never;
+		CraftGroup?: never;
+		CustomBlindBackground?: never;
 		Difficulty?: never;
+		DrawLocks?: false;
+		ExclusiveUnlock?: false;
+		FamilyOnly?: false;
+		IsLock?: false;
+		IsRestraint?: false;
+		LoverOnly?: false;
+		MaxTimer?: never;
+		OwnerOnly?: false;
+		PickDifficulty?: never;
+		RemoveTime?: never;
+		RemoveTimer?: never;
 		SelfBondage?: never;
 		SelfUnlock?: false;
-		RemoveTime?: never;
-		AlwaysInteract?: false;
-		IsRestraint?: false;
+		Time?: never;
 	}
 	/** An {@link AssetDefinition} subtype for assets whose group is of the `Script` category. */
 	interface Script extends AssetDefinitionBase {
@@ -745,6 +830,18 @@ type AssetDefinition = (
 	| AssetDefinition.Script
 );
 
+interface AssetLayerMaskTexureDefinition {
+	/** The groups that will be affected */
+	Groups?: AssetGroupName[];
+	/** If true, the texture mask will apply to all layers in the groups specified, event if their priority is higher than the mask layer */
+	ApplyToAbove?: boolean;
+}
+
+interface AttributionDefinition {
+	Author?: string;
+	Email?: string;
+	License?: string;
+}
 
 interface AssetLayerDefinition extends AssetCommonPropertiesGroupAssetLayer, AssetCommonPropertiesAssetLayer {
 	/** The layer's name */
@@ -759,7 +856,7 @@ interface AssetLayerDefinition extends AssetCommonPropertiesGroupAssetLayer, Ass
 	/** Whether the layer is hidden in the Color Picker UI. Defaults to false. */
 	HideColoring?: boolean;
 
-	/** A record (or a list thereof) with all screen names + option indices that should make the layer visible */
+	/** A record (or a list thereof) with all screen names + option indices, _i.e._ {@link TypeRecord} keys + values, that should make the layer visible */
 	AllowTypes?: AllowTypes.Definition;
 
 	/**
@@ -788,6 +885,15 @@ interface AssetLayerDefinition extends AssetCommonPropertiesGroupAssetLayer, Ass
 	 */
 	BlendingMode?: GlobalCompositeOperation;
 
+
+	/**
+	 * Mark the layer as a mask layer, which will be used to apply alpha masks to other layers.
+	 * Only the alpha channel of the image, and positioning are concerned for a mask layer.
+	 * The color, priority and alpha are ignored for mask layers.
+	 * The blending mode of the mask layer must be set to "destination-in" or "destination-out".
+	 */
+	TextureMask?: AssetLayerMaskTexureDefinition;
+
 	/**
 	 * Specify that this is (one of) the asset's lock layer.
 	 *
@@ -795,8 +901,29 @@ interface AssetLayerDefinition extends AssetCommonPropertiesGroupAssetLayer, Ass
 	 */
 	LockLayer?: boolean;
 
+	/**
+	 * Specify body type overrides that live in the asset override folder
+	 */
+	StyleOverride?: string[];
+	CreateLayerTypesOverride?: number[];
+
 	MirrorExpression?: AssetGroupName;
 	PoseMapping?: AssetPoseMapping;
+	/** Let layer inherit the asset's pose mapping on an individual pose by pose basis, rather than inheriting the pose mapping as a whole (_i.e._ all or nothing) */
+	InheritPoseMappingFields?: boolean;
+
+	/**
+	 * Copy the pose mapping of another layer.
+	 *
+	 * Serves as the pose mapping equivalent of {@link AssetLayerDefinition.CopyLayerColor}.
+	 */
+	CopyLayerPoseMapping?: string;
+
+	/**
+	 * A list of {@link TypeRecord} keys for which a single layer expects multiple type-specific .png files.
+	 *
+	 * By default files are expected for _all_ option indices associated with the key(s), unless the valid option set has been narrowed down according to {@link AssetLayerDefinition.AllowTypes}.
+	 */
 	CreateLayerTypes?: string[];
 	/* Specifies that this layer should not be drawn if the character is wearing any item with the given attributes */
 	HideForAttribute?: AssetAttribute[];
@@ -1145,8 +1272,6 @@ interface ModularItemOptionConfig extends Omit<ExtendedItemOptionConfig, "Name">
 	HeightModifier?: number;
 	/** Whether that option applies effects */
 	Effect?: EffectName[];
-	/** Whether the option forces a given pose */
-	SetPose?: AssetPoseName;
 	/** A list of activities enabled by that module */
 	AllowActivity?: ActivityName[];
 	Property?: Omit<ItemProperties, "TypeRecord">;
