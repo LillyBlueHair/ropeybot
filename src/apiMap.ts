@@ -17,7 +17,10 @@ import { API_Character } from "./apiCharacter.ts";
 import { API_Chatroom_Data } from "./apiChatroom.ts";
 import { API_Connector } from "./apiConnector.ts";
 import { EventEmitter } from "node:events";
-import { ChatRoomMapViewObjectList, ChatRoomMapViewTileList } from "./bcdata/ChatRoomMap.ts";
+import {
+    ChatRoomMapViewObjectList,
+    ChatRoomMapViewTileList,
+} from "./bcdata/ChatRoomMap.ts";
 
 export interface MapRegion {
     TopLeft: ChatRoomMapPos;
@@ -94,7 +97,9 @@ export class API_Map extends EventEmitter<MapEvents> {
     }
 
     public setMapFromString(mapDataBundle: string): void {
-        const mapData = JSON.parse(lzString.decompressFromBase64(mapDataBundle));
+        const mapData = JSON.parse(
+            lzString.decompressFromBase64(mapDataBundle),
+        );
         this.setMapFromData(mapData);
     }
 

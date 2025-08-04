@@ -10,7 +10,9 @@
     "main": "dist/index.js",
     "type": "module",
     "types": "dist/index.d.ts",
-    "files": ["dist/**"],
+    "files": [
+        "dist/**"
+    ],
     "scripts": {
         "prepare": "pnpm compile",
         "compile": "rm -rf dist/* && tsc -p tsconfig.json"

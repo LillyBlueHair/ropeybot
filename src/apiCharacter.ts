@@ -22,7 +22,7 @@ interface PoseObject {
 }
 
 interface SingleScriptPermission {
-    permission: 1|0;
+    permission: 1 | 0;
 }
 
 interface ScriptPermissionsType {
@@ -141,9 +141,12 @@ export class API_Character {
     }
 
     public mapTeleport(pos: ChatRoomMapPos): void {
-        this.connection.SendMessage("Hidden", "ChatRoomMapViewTeleport", this.MemberNumber, [
-            {Tag: "MapViewTeleport", Position: pos}
-        ]);
+        this.connection.SendMessage(
+            "Hidden",
+            "ChatRoomMapViewTeleport",
+            this.MemberNumber,
+            [{ Tag: "MapViewTeleport", Position: pos }],
+        );
     }
 
     public IsRoomAdmin(): boolean {
@@ -170,7 +173,10 @@ export class API_Character {
         if (this.data.BlockItems[asset.Group]?.[asset.Name]) {
             return false;
         }
-        if (this.data.LimitedItems[asset.Group]?.[asset.Name] && !this.WhiteList.includes(this.connection.Player.MemberNumber)) {
+        if (
+            this.data.LimitedItems[asset.Group]?.[asset.Name] &&
+            !this.WhiteList.includes(this.connection.Player.MemberNumber)
+        ) {
             return false;
         }
         return true;

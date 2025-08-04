@@ -93,7 +93,9 @@ const DEFAULT_APPLY_CFG: BundleApplyConfig = {
 };
 
 export function importBundle(bundle: string): BC_AppearanceItem[] {
-    return JSON.parse(lzString.decompressFromBase64(bundle)) as BC_AppearanceItem[];
+    return JSON.parse(
+        lzString.decompressFromBase64(bundle),
+    ) as BC_AppearanceItem[];
 }
 
 export function exportBundle(items: BC_AppearanceItem[]): string {

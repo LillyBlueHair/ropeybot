@@ -23,7 +23,7 @@ export function remainingTimeString(until: number): string {
     return `${seconds} seconds`;
 }
 
-export function generatePassword() : string {
+export function generatePassword(): string {
     const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let retVal = "";
     for (let i = 0, n = charset.length; i < 8; ++i) {

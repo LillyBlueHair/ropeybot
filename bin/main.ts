@@ -35,8 +35,6 @@ export interface RopeyBot {
     game: string;
 }
 
-
-
 export async function startBot(): Promise<RopeyBot> {
     process.on("SIGINT", () => {
         console.log("SIGINT received, exiting");
@@ -113,7 +111,8 @@ export async function startBot(): Promise<RopeyBot> {
                 config.password2,
                 config.env,
             );
-            const maidsPartyNightGame = new MaidsPartyNightSinglePlayerAdventure(connector, connector2);
+            const maidsPartyNightGame =
+                new MaidsPartyNightSinglePlayerAdventure(connector, connector2);
             connector.startBot(maidsPartyNightGame);
             break;
         case "dare":
