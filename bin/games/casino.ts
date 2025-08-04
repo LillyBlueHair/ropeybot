@@ -450,13 +450,6 @@ ${forfeitsString()}
             if (
                 target.Appearance.InventoryGet("ItemDevices")?.Name !== "Kennel"
             ) {
-                console.warn("This could have been a mistake");
-                console.log(target);
-                console.log(target.Appearance);
-                console.log(target.Appearance.InventoryGet("ItemDevices"));
-                console.log(
-                    target.Appearance.InventoryGet("ItemDevices")?.Name,
-                );
                 this.conn.reply(
                     msg,
                     "Sorry, that player is not for sale (yet...)",
