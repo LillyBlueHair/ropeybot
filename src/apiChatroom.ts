@@ -26,6 +26,7 @@ export interface API_Chatroom_Data {
     Description: string;
     Character: API_Character_Data[];
     Admin: number[];
+    Whitelist: number[];
     Ban: number[];
     Private: boolean;
     Access: ChatRoomAccessVisibility[]
@@ -72,6 +73,9 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
     }
     public get Admin(): number[] {
         return this.data.Admin;
+    }
+    public get Whitelist(): number[] {
+        return this.data.Whitelist;
     }
     public get Ban(): number[] {
         return this.data.Ban;

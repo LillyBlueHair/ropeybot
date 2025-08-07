@@ -262,9 +262,9 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
             AssetGet("ItemVulva", "PlasticChastityCage2"),
         );
         chastityCage.SetCraft({
-            Name: `Pixie Casino Chastity Cage`,
+            Name: `CC Casino Chastity Cage`,
             Description:
-                `After betting and losing at the Pixie Casino, ${character} has lost the privilege to orgasm. ` +
+                `After betting and losing at the Cotton Candy Casino, ${character} has lost the privilege to orgasm. ` +
                 `This chastity cage will ensure that the rule is followed.`,
         });
         let hairColor = character.Appearance.InventoryGet("HairFront").GetColor();
@@ -290,9 +290,9 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
             AssetGet("ItemPelvis", "ModularChastityBelt"),
         );
         chastityBelt.SetCraft({
-            Name: `Pixie Casino Chastity Belt`,
+            Name: `CC Casino Chastity Belt`,
             Description:
-                `After betting and losing at the Pixie Casino, ${character} has lost her privileges to orgasm. ` +
+                `After betting and losing at the Cotton Candy Casino, ${character} has lost her privileges to orgasm. ` +
                 `This chastity belt will ensure that she is kept chaste until her time is up.`,
         });
         chastityBelt.SetColor(
@@ -330,9 +330,9 @@ function makePet(
         AssetGet("ItemArms", "ShinyPetSuit"),
     );
     petSuitItem.SetCraft({
-        Name: `Pixie Casino Pet Suit`,
+        Name: `CC Casino Pet Suit`,
         Description:
-            `A bold but unfortunate bet from ${character} means that they are now an official Pixie Casino Pet, ` +
+            `A bold but unfortunate bet from ${character} means that they are now an official Cotton Candy Casino Pet, ` +
             `here to be adorable for all our patrons. Please enjoy their helplessness!`,
     });
     petSuitItem.SetColor(characterHairColor);
@@ -377,9 +377,9 @@ function makePet(
             LockSet: true,
         });*/
         collar.SetCraft({
-            Name: `Pixie Casino Pet Collar`,
+            Name: `CC Casino Pet Collar`,
             Description:
-                `A bold but unfortunate bet from ${character} means that they are now an official Pixie Casino Pet. ` +
+                `A bold but unfortunate bet from ${character} means that they are now an official Cotton Candy Casino Pet. ` +
                 `This collar will remind them of their place until their time is up.`,
         });
     }

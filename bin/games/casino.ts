@@ -141,6 +141,7 @@ export class Casino {
         this.commandParser.register("score", this.onCommandScore);
         this.commandParser.register("bonus", this.onCommandBonusRound);
         this.commandParser.register("game", this.onCommandGame);
+        this.commandParser.register("scoreboard", this.onCommandScoreboard);
 
         this.conn.setItemPermission(ItemPermissionLevel.OwnerLoverWhitelist);
     }
@@ -168,8 +169,9 @@ export class Casino {
 
     private onBeep = (beep: TBeepType) => {
         if (
-            beep?.Message?.includes("TypingStatus") ||
-            beep?.Message?.includes("ReqRoom")
+            typeof beep?.Message !== "string" ||
+            beep.Message.includes("TypingStatus") ||
+                beep.Message.includes("ReqRoom")
         ) {
             return;
         }
@@ -783,9 +785,9 @@ ${forfeitsString()}
 
             added.SetDifficulty(20);
             added.SetCraft({
-                Name: `Pixie Casino ${FORFEITS[bet.stakeForfeit].name}`,
+                Name: `CC Casino ${FORFEITS[bet.stakeForfeit].name}`,
                 Description:
-                    "This item is property of Pixie Casino. Better luck next time!",
+                    "This item is property of Cotton Candy Casino. Better luck next time!",
                 MemberName: this.conn.Player.toString(),
                 MemberNumber: this.conn.Player.MemberNumber,
             });
@@ -886,5 +888,21 @@ ${forfeitsString()}
             return;
         }
         this.setBio();
+    };
+
+    private onCommandScoreboard = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (!sender.IsRoomWhitelist() && !sender.IsRoomAdmin()) {
+            this.conn.reply(msg, "Sorry, you need to be whitelisted");
+            return;
+        }
+        this.setBio();
+        this.conn.reply(
+            msg,
+            "Scoreboard updated, please check my bio for the latest scores.",
+        );
     };
 }

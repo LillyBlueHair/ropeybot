@@ -532,7 +532,12 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
     private onChatRoomMessage = (msg: BC_Server_ChatRoomMessage) => {
         // Don't log *.* spam
         if (msg.Type !== "Hidden" && !["BCXMsg", "BCEMsg", "LSCGMsg", "bctMsg", "MPA", "dogsMsg", "bccMsg", "ECHO_INFO2", "MoonCEBC"].includes(msg.Content) && msg.Sender !== this.Player.MemberNumber && msg.Type != "Status" /*&& (msg.Type != "Action" || msg.Content == "ServerLeave")*/) {
-            console.log("chat room message", msg);
+            // console.log("chat room message", msg);
+            if(msg.Type === "Chat" || msg.Type === "Emote") {
+                console.log("message", msg.Content, "from", msg.Sender, "type", msg.Type);
+            }else {
+                console.log("chat room message", msg);
+            }
         }
 
         const char = this._chatRoom.getCharacter(msg.Sender);
@@ -666,6 +671,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         } finally {
             this.roomCreatePromise = undefined;
         }
+            console.log("ChatRoomCreate emitted", roomDef);
 
         console.log("Room created");
 
