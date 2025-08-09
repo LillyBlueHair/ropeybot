@@ -578,6 +578,10 @@ ${forfeitsString()}
             this.conn.reply(msg, "I can't find that person.");
             return;
         }
+        if (target.MemberNumber === sender.MemberNumber) {
+            this.conn.reply(msg, "You can't give yourself chips.");
+            return;
+        }
 
         const sourcePlayer = await this.store.getPlayer(sender.MemberNumber);
         if (sourcePlayer.credits < amount) {
