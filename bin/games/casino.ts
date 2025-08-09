@@ -734,8 +734,6 @@ ${forfeitsString()}
 
     public applyForfeit(bet: Bet): void {
         const char = this.conn.chatRoom.findMember(bet.memberNumber);
-        if (!char) return;
-
         const applyFn = FORFEITS[bet.stakeForfeit].applyItems;
         const items = FORFEITS[bet.stakeForfeit].items(char);
         const colourLayers = FORFEITS[bet.stakeForfeit].colourLayers;
@@ -752,6 +750,8 @@ ${forfeitsString()}
                     ?.set(items[0].Group, Date.now() + lockTime);
             }
         }
+
+        if (!char) return;
 
         if (applyFn) {
             applyFn(char, this.conn.Player.MemberNumber);

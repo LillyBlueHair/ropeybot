@@ -13,8 +13,16 @@
  */
 
 import { io } from "socket.io-client";
-import { API_Character, API_Character_Data, ItemPermissionLevel } from "./apiCharacter.ts";
-import { API_Chatroom, API_Chatroom_Data, ChatRoomAccessVisibility } from "./apiChatroom.ts";
+import {
+    API_Character,
+    API_Character_Data,
+    ItemPermissionLevel,
+} from "./apiCharacter.ts";
+import {
+    API_Chatroom,
+    API_Chatroom_Data,
+    ChatRoomAccessVisibility,
+} from "./apiChatroom.ts";
 import { Socket } from "socket.io-client";
 import { LogicBase } from "./logicBase.ts";
 import { API_AppearanceItem, BC_AppearanceItem } from "./item.ts";
@@ -114,18 +122,20 @@ interface OnlineFriendResult {
 }
 
 interface ConnectorEvents {
-    PoseChange: [{character: API_Character}];
+    PoseChange: [{ character: API_Character }];
     Message: [message: MessageEvent];
     Beep: [{ payload: TBeepType }];
     RoomJoin: [];
     RoomCreate: [];
     CharacterEntered: [character: API_Character];
-    CharacterLeft: [{
-        sourceMemberNumber: number,
-        character: API_Character,
-        leaveMessage: string | null,
-        intentional: boolean,
-    }];
+    CharacterLeft: [
+        {
+            sourceMemberNumber: number;
+            character: API_Character;
+            leaveMessage: string | null;
+            intentional: boolean;
+        },
+    ];
 }
 
 export class API_Connector extends EventEmitter<ConnectorEvents> {
@@ -306,9 +316,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         }
 
         const result = await this.onlineFriendsPromise.prom;
-        return result.map((m) =>
-            this._chatRoom.findMember(m.MemberNumber),
-        );
+        return result.map((m) => this._chatRoom.findMember(m.MemberNumber));
     }
 
     private onSocketConnect = async () => {
@@ -531,11 +539,34 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
 
     private onChatRoomMessage = (msg: BC_Server_ChatRoomMessage) => {
         // Don't log *.* spam
-        if (msg.Type !== "Hidden" && !["BCXMsg", "BCEMsg", "LSCGMsg", "bctMsg", "MPA", "dogsMsg", "bccMsg", "ECHO_INFO2", "MoonCEBC"].includes(msg.Content) && msg.Sender !== this.Player.MemberNumber && msg.Type != "Status" /*&& (msg.Type != "Action" || msg.Content == "ServerLeave")*/) {
+        if (
+            msg.Type !== "Hidden" &&
+            ![
+                "BCXMsg",
+                "BCEMsg",
+                "LSCGMsg",
+                "bctMsg",
+                "MPA",
+                "dogsMsg",
+                "bccMsg",
+                "ECHO_INFO2",
+                "MoonCEBC",
+            ].includes(msg.Content) &&
+            msg.Sender !== this.Player.MemberNumber &&
+            msg.Type !=
+                "Status" /*&& (msg.Type != "Action" || msg.Content == "ServerLeave")*/
+        ) {
             // console.log("chat room message", msg);
-            if(msg.Type === "Chat" || msg.Type === "Emote") {
-                console.log("message", msg.Content, "from", msg.Sender, "type", msg.Type);
-            }else {
+            if (msg.Type === "Chat" || msg.Type === "Emote") {
+                console.log(
+                    "message",
+                    msg.Content,
+                    "from",
+                    msg.Sender,
+                    "type",
+                    msg.Type,
+                );
+            } else {
                 console.log("chat room message", msg);
             }
         }
@@ -587,7 +618,8 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
     };
 
     private onAccountBeep = (payload: TBeepType) => {
-        if (payload?.Message && typeof payload.Message === "string") payload.Message = payload.Message.split("\n\n")[0];
+        if (payload?.Message && typeof payload.Message === "string")
+            payload.Message = payload.Message.split("\n\n")[0];
         // legacy
         this.bot?.onEvent({
             name: "Beep",
@@ -671,7 +703,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         } finally {
             this.roomCreatePromise = undefined;
         }
-            console.log("ChatRoomCreate emitted", roomDef);
+        console.log("ChatRoomCreate emitted", roomDef);
 
         console.log("Room created");
 
@@ -758,13 +790,13 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
             OnlineSharedSettings: {
                 GameVersion: GAMEVERSION,
                 ScriptPermissions: {
-                    "Hide": {
-                        "permission": hide ? 1 : 0,
+                    Hide: {
+                        permission: hide ? 1 : 0,
                     },
-                    "Block": {
-                        "permission": block ? 1 : 0,
-                    }
-                }
+                    Block: {
+                        permission: block ? 1 : 0,
+                    },
+                },
             },
         });
     }
@@ -808,9 +840,10 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
     }
 
     public accountUpdate(update: Partial<API_Character_Data>): void {
-        const actualUpdate = { ... update };
+        const actualUpdate = { ...update };
         if (actualUpdate.Appearance === undefined) {
-            actualUpdate.Appearance = this.Player.Appearance.getAppearanceData();
+            actualUpdate.Appearance =
+                this.Player.Appearance.getAppearanceData();
         }
         //console.log("Sending account update", actualUpdate);
         this.wrappedSock.emit("AccountUpdate", actualUpdate);
