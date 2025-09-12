@@ -107,7 +107,7 @@ export const ChatRoomMapViewTileList: ChatRoomMapTile[] = [
     },
 ];
 
-export const ChatRoomMapViewObjectList = [
+export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
     { ID: 100, Type: "FloorDecoration", Style: "Blank" },
     {
         ID: 110,
