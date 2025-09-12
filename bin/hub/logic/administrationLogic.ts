@@ -1280,9 +1280,9 @@ Please be nice to other people that want to just enjoy themselves. Thank you!
                     }
                 } else {
                     try {
-                        // @ts-ignore
                         const result = commandInfo.callback(
                             event.connection,
+                        // @ts-ignore
                             args,
                             event.Sender,
                         );
