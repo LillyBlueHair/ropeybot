@@ -32,6 +32,7 @@ function mapTileByName(name: string): ChatRoomMapTile {
 }
 
 function mapObjectByName(name: string): ChatRoomMapObject {
+    // @ts-ignore
     return ChatRoomMapViewObjectList.find((tile) => tile.Style === name);
 }
 
