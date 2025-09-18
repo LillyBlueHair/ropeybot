@@ -74,7 +74,7 @@ export interface SyncMapDataPayload {
 }
 
 // What the bot advertises as its game version
-const GAMEVERSION = "R118";
+const GAMEVERSION = "R120";
 const LZSTRING_MAGIC = "╬";
 
 class PromiseResolve<T> {
