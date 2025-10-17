@@ -650,6 +650,8 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
             return result === "JoinedRoom";
         }
 
+        await this.loggedIn.prom;
+
         this.roomJoinPromise = new PromiseResolve();
 
         try {
@@ -681,6 +683,8 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
             const result = await this.roomCreatePromise.prom;
             return result === "ChatRoomCreated";
         }
+
+        await this.loggedIn.prom;
 
         console.log("creating room");
         this.roomCreatePromise = new PromiseResolve();
