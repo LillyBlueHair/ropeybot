@@ -258,14 +258,15 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
 
     public AccountBeep(
         memberNumber: number,
-        beepType: null,
-        message: string,
+        beepType: ServerBeepType,
+        message?: string,
     ): void {
-        this.wrappedSock.emit("AccountBeep", {
-            BeepType: beepType ?? "",
+        const beep: ServerAccountBeepRequest = {
+            BeepType: beepType,
             MemberNumber: memberNumber,
             Message: message,
-        });
+        };
+        this.wrappedSock.emit("AccountBeep", beep);
     }
 
     public async QueryOnlineFriends(): Promise<API_Character[]> {
