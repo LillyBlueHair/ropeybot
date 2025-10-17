@@ -689,10 +689,11 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         console.log("creating room");
         this.roomCreatePromise = new PromiseResolve();
 
+        const admins = [this._player!.MemberNumber, ...roomDef.Admin];
         try {
             this.wrappedSock.emit("ChatRoomCreate", {
-                Admin: [this._player.MemberNumber],
                 ...roomDef,
+                Admin: admins,
             });
 
             const createResult = await this.roomCreatePromise.prom;
