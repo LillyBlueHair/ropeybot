@@ -12,9 +12,8 @@
  * Additionally, sending the following tags will ensure that asset names in messages are correctly translated by
  * recipients:
  * ASSET_NAME: (substituted with the localized name of the asset, if available)
- * @type {Record<"SOURCE_CHAR"|"DEST_CHAR"|"DEST_CHAR_NAME"|"TARGET_CHAR"|"TARGET_CHAR_NAME"|"ASSET_NAME"|"AUTOMATIC", CommonChatTags>}
  */
-export const CommonChatTags = {
+export const CommonChatTags: Record<"SOURCE_CHAR"|"DEST_CHAR"|"DEST_CHAR_NAME"|"TARGET_CHAR"|"TARGET_CHAR_NAME"|"ASSET_NAME"|"AUTOMATIC", CommonChatTags> = {
 	SOURCE_CHAR: "SourceCharacter",
 	DEST_CHAR: "DestinationCharacter",
 	DEST_CHAR_NAME: "DestinationCharacterName",
@@ -31,119 +30,326 @@ export const CommonChatTags = {
  * the same)
  * - PER_OPTION - The item has one chatroom message per option (for finer granularity - each individual option within a
  * module can have its own chatroom message)
- * @type {Record<"PER_MODULE"|"PER_OPTION", ModularItemChatSetting>}
  */
-export const ModularItemChatSetting = {
+export const ModularItemChatSetting: Record<"PER_MODULE"|"PER_OPTION", ModularItemChatSetting> = {
 	PER_OPTION: "default",
 	PER_MODULE: "perModule",
 };
 
 // dummy definitions for Hooks
-export const AssetsClothAccessoryBibAfterDrawHook = undefined;
-export const AssetsClothCheerleaderTopAfterDrawHook = undefined;
-export const AssetsItemDevicesDollBoxAfterDrawHook = undefined;
-export const AssetsItemDevicesFuckMachineBeforeDrawHook = undefined;
-export const AssetsItemDevicesFuckMachineScriptDrawHook = undefined;
-export const AssetsItemDevicesFuturisticCrateScriptDrawHook = undefined;
-export const AssetsItemDevicesKabeshiriWallAfterDrawHook = undefined;
-export const AssetsItemDevicesPetBowlAfterDrawHook = undefined;
-export const AssetsItemDevicesWoodenBoxAfterDrawHook = undefined;
-export const AssetsItemHeadDroneMaskAfterDrawHook = undefined;
-export const ItemHeadDroneMaskValidateHook = undefined;
-export const AssetsItemHoodCanvasHoodAfterDrawHook = undefined;
-export const AssetsItemMiscWoodenSignAfterDrawHook = undefined;
-export const AssetsItemMouthFuturisticPanelGagBeforeDrawHook = undefined;
-export const AssetsItemMouthFuturisticPanelGagScriptDrawHook = undefined;
-export const AssetsFaceMarkingsFaceWritingsAfterDrawHook = undefined;
-export const InventoryItemMouthFuturisticPanelGagSetOptionHook = undefined;
-export const AssetsItemNeckAccessoriesCustomCollarTagAfterDrawHook = undefined;
-export const AssetsItemNeckAccessoriesElectronicTagAfterDrawHook = undefined;
-export const AssetsItemNeckRestraintsPetPostAfterDrawHook = undefined;
-export const AssetsItemPelvisObedienceBeltAfterDrawHook = undefined;
-export const AssetsItemVulvaFuturisticVibratorScriptDrawHook = undefined;
-export const InventoryItemArmsFullLatexSuitClickHook = undefined;
-export const InventoryItemArmsFullLatexSuitDrawHook = undefined;
-export const InventoryItemArmsPrisonLockdownSuitClickHook = undefined;
-export const InventoryItemArmsPrisonLockdownSuitDrawHook = undefined;
-export const InventoryItemArmsTransportJacketDrawHook = undefined;
-export const InventoryItemArmsTransportJacketExitHook = undefined;
-export const InventoryItemArmsTransportJacketLoadHook = undefined;
-export const InventoryItemArmsTransportJacketPublishActionHook = undefined;
-export const InventoryItemBreastFuturisticBraDrawHook = undefined;
-export const InventoryItemButtAnalBeads2PublishActionHook = undefined;
-export const InventoryItemButtInflVibeButtPlugDrawHook = undefined;
-export const InventoryItemDevicesKabeshiriWallDrawHook = undefined;
-export const InventoryItemDevicesKabeshiriWallExitHook = undefined;
-export const InventoryItemDevicesKabeshiriWallLoadHook = undefined;
-export const InventoryItemDevicesKabeshiriWallPublishActionHook = undefined;
-export const InventoryItemDevicesLuckyWheelClickHook = undefined;
-export const InventoryItemDevicesLuckyWheelDrawHook = undefined;
-export const InventoryItemDevicesLuckyWheelInitHook = undefined;
-export const InventoryItemDevicesVacBedDeluxeDrawHook = undefined;
-export const InventoryItemDevicesWoodenBoxDrawHook = undefined;
-export const InventoryItemDevicesWoodenBoxExitHook = undefined;
-export const InventoryItemDevicesWoodenBoxLoadHook = undefined;
-export const InventoryItemDevicesWoodenBoxPublishActionHook = undefined;
-export const InventoryItemMouthFuturisticPanelGagClickHook = undefined;
-export const InventoryItemMouthFuturisticPanelGagDrawHook = undefined;
-export const InventoryItemNeckAccessoriesCollarNameTagPublishActionHook = undefined;
-export const InventoryItemNeckAccessoriesCollarShockUnitClickHook = undefined;
-export const InventoryItemNeckAccessoriesCollarShockUnitDrawHook = undefined;
-export const InventoryItemNeckAccessoriesCollarAutoShockUnitBeforeDrawHook = undefined;
-export const InventoryItemPelvisFuturisticTrainingBeltClickHook = undefined;
-export const InventoryItemPelvisFuturisticTrainingBeltDrawHook = undefined;
-export const InventoryItemPelvisFuturisticTrainingBeltExitHook = undefined;
-export const InventoryItemPelvisFuturisticTrainingBeltLoadHook = undefined;
-export const InventoryItemPelvisLoveChastityBeltSetOptionHook = undefined;
-export const InventoryItemPelvisSciFiPleasurePantiesClickHook = undefined;
-export const InventoryItemPelvisSciFiPleasurePantiesDrawHook = undefined;
-export const InventoryItemTorsoFuturisticHarnessClickHook = undefined;
-export const InventoryItemTorsoFuturisticHarnessDrawHook = undefined;
-export const InventoryItemVulvaClitAndDildoVibratorbeltDrawHook = undefined;
-export const InventoryItemVulvaClitAndDildoVibratorbeltSetOptionHook = undefined;
-export const InventoryItemVulvaFuturisticVibratorClickHook = undefined;
-export const InventoryItemVulvaFuturisticVibratorDrawHook = undefined;
-export const InventoryItemVulvaFuturisticVibratorExitHook = undefined;
-export const InventoryItemVulvaFuturisticVibratorLoadHook = undefined;
-export const InventoryItemVulvaLoversVibratorDrawHook = undefined;
-export const InventoryItemNeckAccessoriesCollarAutoShockUnitDraw = undefined;
-export const InventoryItemNeckAccessoriesCollarAutoShockUnitClick = undefined;
-export const InventoryItemNeckAccessoriesCollarAutoShockUnitDrawHook = undefined;
-export const InventoryItemNeckAccessoriesCollarAutoShockUnitClickHook = undefined;
-export const AssetsItemNeckAccessoriesCollarAutoShockUnitBeforeDrawHook = undefined;
-export const AssetsItemNeckAccessoriesCollarAutoShockUnitScriptDrawHook = undefined;
+export function AssetsClothAccessoryBibAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsClothCheerleaderTopAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemDevicesDollBoxAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemDevicesFuckMachineBeforeDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemDevicesFuckMachineScriptDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemDevicesFuturisticCrateScriptDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemDevicesKabeshiriWallAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemDevicesPetBowlAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemDevicesWoodenBoxAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemHeadDroneMaskAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function ItemHeadDroneMaskValidateHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemHoodCanvasHoodAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemMiscWoodenSignAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemMouthFuturisticPanelGagBeforeDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemMouthFuturisticPanelGagScriptDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsFaceMarkingsFaceWritingsAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemMouthFuturisticPanelGagSetOptionHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemNeckAccessoriesCustomCollarTagAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemNeckAccessoriesElectronicTagAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemNeckRestraintsPetPostAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemPelvisObedienceBeltAfterDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemVulvaFuturisticVibratorScriptDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemArmsFullLatexSuitClickHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemArmsFullLatexSuitDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemArmsPrisonLockdownSuitClickHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemArmsPrisonLockdownSuitDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemArmsTransportJacketDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemArmsTransportJacketExitHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemArmsTransportJacketLoadHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemArmsTransportJacketPublishActionHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemBreastFuturisticBraDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemButtAnalBeads2PublishActionHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemButtInflVibeButtPlugDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesKabeshiriWallDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesKabeshiriWallExitHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesKabeshiriWallLoadHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesKabeshiriWallPublishActionHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesLuckyWheelClickHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesLuckyWheelDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesLuckyWheelInitHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesVacBedDeluxeDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesWoodenBoxDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesWoodenBoxExitHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesWoodenBoxLoadHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemDevicesWoodenBoxPublishActionHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemMouthFuturisticPanelGagClickHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemMouthFuturisticPanelGagDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemNeckAccessoriesCollarNameTagPublishActionHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemNeckAccessoriesCollarShockUnitClickHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemNeckAccessoriesCollarShockUnitDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemNeckAccessoriesCollarAutoShockUnitBeforeDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemPelvisFuturisticTrainingBeltClickHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemPelvisFuturisticTrainingBeltDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemPelvisFuturisticTrainingBeltExitHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemPelvisFuturisticTrainingBeltLoadHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemPelvisLoveChastityBeltSetOptionHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemPelvisSciFiPleasurePantiesClickHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemPelvisSciFiPleasurePantiesDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemTorsoFuturisticHarnessClickHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemTorsoFuturisticHarnessDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemVulvaClitAndDildoVibratorbeltDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemVulvaClitAndDildoVibratorbeltSetOptionHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemVulvaFuturisticVibratorClickHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemVulvaFuturisticVibratorDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemVulvaFuturisticVibratorExitHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemVulvaFuturisticVibratorLoadHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemVulvaLoversVibratorDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemNeckAccessoriesCollarAutoShockUnitDraw(...args: any[]): any {
+	return null;
+}
+export function InventoryItemNeckAccessoriesCollarAutoShockUnitClick(...args: any[]): any {
+	return null;
+}
+export function InventoryItemNeckAccessoriesCollarAutoShockUnitDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemNeckAccessoriesCollarAutoShockUnitClickHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemNeckAccessoriesCollarAutoShockUnitBeforeDrawHook(...args: any[]): any {
+	return null;
+}
+export function AssetsItemNeckAccessoriesCollarAutoShockUnitScriptDrawHook(...args: any[]): any {
+	return null;
+}
 
-export const InventoryItemMiscIntricatePadlockDrawHook = undefined;
-export const InventoryItemMiscHighSecurityPadlockInitHook = undefined;
-export const InventoryItemMiscHighSecurityPadlockLoadHook = undefined;
-export const InventoryItemMiscHighSecurityPadlockDrawHook = undefined;
-export const InventoryItemMiscHighSecurityPadlockClickHook = undefined;
-export const InventoryItemMiscHighSecurityPadlockExitHook = undefined;
-export const InventoryItemMiscSafewordPadlockLoadHook = undefined;
-export const InventoryItemMiscSafewordPadlockDrawHook = undefined;
-export const InventoryItemMiscSafewordPadlockClickHook = undefined;
-export const InventoryItemMiscPasswordPadlockExitHook = undefined;
-export const InventoryItemMiscTimerPadlockDrawHook = undefined;
-export const InventoryItemMiscTimerPadlockClickHook = undefined;
-export const InventoryItemMiscMistressPadlockDrawHook = undefined;
-export const InventoryItemMiscOwnerTimerPadlockDrawHook = undefined;
-export const InventoryItemMiscOwnerTimerPadlockClickHook = undefined;
-export const InventoryItemMiscLoversTimerPadlockValidator = undefined;
-export const InventoryItemMiscPasswordPadlockLoadHook = undefined;
-export const InventoryItemMiscPasswordPadlockDrawHook = undefined;
-export const InventoryItemMiscPasswordPadlockClickHook = undefined;
-export const InventoryItemMiscOwnerPadlockDrawHook = undefined;
-export const InventoryItemMiscMistressTimerPadlockDrawHook = undefined;
-export const InventoryItemMiscMistressTimerPadlockClickHook = undefined;
-export const InventoryItemMiscFamilyPadlockDrawHook = undefined;
-export const InventoryItemMiscExclusivePadlockDrawHook = undefined;
-export const InventoryItemMiscCombinationPadlockLoadHook = undefined;
-export const InventoryItemMiscCombinationPadlockDrawHook = undefined;
-export const InventoryItemMiscCombinationPadlockClickHook = undefined;
-export const InventoryItemMiscCombinationPadlockExitHook = undefined;
-export const InventoryItemMiscTimerPasswordPadlockLoadHook = undefined;
-export const InventoryItemMiscTimerPasswordPadlockDrawHook = undefined;
-export const InventoryItemMiscTimerPasswordPadlockClickHook = undefined;
+export function InventoryItemMiscIntricatePadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscHighSecurityPadlockInitHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscHighSecurityPadlockLoadHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscHighSecurityPadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscHighSecurityPadlockClickHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscHighSecurityPadlockExitHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscSafewordPadlockLoadHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscSafewordPadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscSafewordPadlockClickHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscPasswordPadlockExitHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscTimerPadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscTimerPadlockClickHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscMistressPadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscOwnerTimerPadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscOwnerTimerPadlockClickHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscLoversTimerPadlockValidator(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscPasswordPadlockLoadHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscPasswordPadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscPasswordPadlockClickHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscOwnerPadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscMistressTimerPadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscMistressTimerPadlockClickHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscFamilyPadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscExclusivePadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscCombinationPadlockLoadHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscCombinationPadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscCombinationPadlockClickHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscCombinationPadlockExitHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscTimerPasswordPadlockLoadHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscTimerPasswordPadlockDrawHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscTimerPasswordPadlockClickHook(...args: any[]): any {
+	return null;
+};
 
 export const InventoryItemPelvisLoveChastityBeltDraw = undefined;
 export const InventoryItemPelvisLoveChastityBeltValidate = undefined;
@@ -158,7 +364,7 @@ export const InventoryItemPelvisModularChastityBeltClickHook = undefined;
 export const InventoryItemPelvisModularChastityBeltDrawHook = undefined;
 export const InventoryItemPelvisModularChastityBeltExitHook = undefined;
 export const InventoryItemPelvisModularChastityBeltScriptDrawHook = undefined;
-export const InventoryItemPelvisModularChastityBeltVoiceTriggers = undefined;
+export const InventoryItemPelvisModularChastityBeltVoiceTriggers = [];
 export const InventorySuitLatexCatsuitLoadHook = undefined;
 export const InventorySuitLatexCatsuitDrawHook = undefined;
 export const InventorySuitLatexCatsuitExitHook = undefined;
@@ -174,19 +380,28 @@ export const FuturisticAccessDraw = undefined;
 export const FuturisticAccessExit = undefined;
 export const FuturisticAccessValidate = undefined;
 
-export const PropertyOpacityInit = undefined;
-export const PropertyOpacityLoad = undefined;
-export const PropertyOpacityDraw = undefined;
-export const PropertyOpacityExit = undefined;
-export const PropertyOpacityValidate = undefined;
+export function PropertyOpacityInit(...args: any[]): any {
+	return null;
+};
+export function PropertyOpacityLoad(...args: any[]): any {
+	return null;
+};
+export function PropertyOpacityDraw(...args: any[]): any {
+	return null;
+};
+export function PropertyOpacityExit(...args: any[]): any {
+	return null;
+};
+export function PropertyOpacityValidate(...args: any[]): any {
+	return null;
+};
 
 
 // from ExtendedItem.js (we don't care about the values, but the array needs to be the right size)
 /**
  * The X & Y co-ordinates of each option's button, based on the number to be displayed per page.
- * @type {[number, number][][]}
  */
-export const ExtendedXY = [
+export const ExtendedXY: [number, number][][] = [
 	[], //0 placeholder
 	[[1385, 500]], //1 option per page
 	[[1185, 500], [1590, 500]], //2 options per page
@@ -200,9 +415,8 @@ export const ExtendedXY = [
 
 /**
  * The X & Y co-ordinates of each option's button, based on the number to be displayed per page.
- * @type {[number, number][][]}
  */
-export const ExtendedXYWithoutImages = [
+export const ExtendedXYWithoutImages: [number, number][][] = [
     [], //0 placeholder
     [[1385, 450]], //1 option per page
     [[1260, 450], [1510, 450]], //2 options per page
@@ -221,24 +435,25 @@ export const ExtendedXYWithoutImages = [
  * - TO_ONLY - The item has one chatroom message per type (indicating that the type has been selected)
  * - FROM_TO - The item has a chatroom message for from/to type pairing
  * - SILENT - The item doesn't publish an action when a type is selected.
- * @type {Record<"TO_ONLY"|"FROM_TO"|"SILENT", TypedItemChatSetting>}
  */
-export const TypedItemChatSetting = {
+export const TypedItemChatSetting: Record<"TO_ONLY"|"FROM_TO"|"SILENT", TypedItemChatSetting> = {
 	TO_ONLY: "default",
 	FROM_TO: "fromTo",
 	SILENT: "silent",
 };
 
-export function InventoryItemNeckAccessoriesCollarNameTagGetDrawData(x) { return null; };
+export function InventoryItemNeckAccessoriesCollarNameTagGetDrawData(x: number): ExtendedItemConfigDrawData<ElementMetaData.Typed> {
+	// @ts-expect-error we're mocking this
+	return null;
+};
 
-export const DialogFocusItem = null;
+export const DialogFocusItem: Item | null = null;
 
 // from VibratorMode.js (stubbed)
 /**
  * An enum for the vibrator configuration sets that a vibrator can have
- * @type {{STANDARD: "Standard", ADVANCED: "Advanced"}}
  */
-export const VibratorModeSet = {
+export const VibratorModeSet: {STANDARD: "Standard", ADVANCED: "Advanced"} = {
 	STANDARD: "Standard",
 	ADVANCED: "Advanced",
 };
@@ -251,10 +466,13 @@ export const VibratorModeSet = {
  * @param {number} y - The y-coordinate at which to start drawing the controls
  * @return {ExtendedItemDrawData<ElementMetaData.Vibrating>} - The parsed draw data
  */
-export function VibratorModeGetDrawData(modeSet, drawData, y=450) { return null; }
+export function VibratorModeGetDrawData(modeSet: readonly VibratorModeSet[], drawData: ExtendedItemConfigDrawData<{ drawImage?: false }> | undefined, y=450): ExtendedItemConfigDrawData<Partial<ElementMetaData.Vibrating>> {
+	// @ts-expect-error mocking
+	return null;
+}
 
-export function CommonConvertArrayToString(x) { return ""; }
-export const ItemVulvaFuturisticVibratorTriggers = undefined;
+export function CommonConvertArrayToString(x: any[]) { return ""; }
+export const ItemVulvaFuturisticVibratorTriggers = [];
 export const InventoryItemPelvisSciFiPleasurePantiesChatPrefix = undefined;
 export const AssetsBodyMarkingsBodyWritingsAfterDrawHook = undefined;
 export const InventoryItemBreastForbiddenChastityBraDrawHook = undefined;
@@ -279,8 +497,8 @@ export const InventoryItemDevicesWheelFortuneLoadHook = undefined;
 export const CommonNoop = undefined;
 export const CommonTime = () => 0;
 
-export const PoseAllKneeling = Object.freeze(["Kneel", "KneelingSpread"]);
-export const PoseAllStanding = Object.freeze(["BaseLower", "LegsOpen", "LegsClosed", "Spread"]);
+export const PoseAllKneeling: readonly AssetPoseName[] = Object.freeze(["Kneel", "KneelingSpread"]);
+export const PoseAllStanding: readonly AssetPoseName[] = Object.freeze(["BaseLower", "LegsOpen", "LegsClosed", "Spread"]);
 
 export const InterfaceTextGet = (x: string) => undefined;
 
@@ -289,8 +507,8 @@ export const InterfaceTextGet = (x: string) => undefined;
 // from TextItem.js (stubbed)
 export const TextItem = undefined;
 
-// from Time.js I believe. exists in Timer.js as well(stubbed) 
-export const CurrentTime = undefined;
+// from Time.js I believe. exists in Timer.js as well(stubbed)
+export const CurrentTime = 0;
 
 // from ChatRoomMapView.js (stubbed)
-export const ChatRoomMapViewGetObjectAtPos = undefined;
+export const ChatRoomMapViewGetObjectAtPos = (x: number, y: number): ChatRoomMapObject | null => null;

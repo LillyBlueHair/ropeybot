@@ -77,6 +77,9 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
     public get Admin(): number[] {
         return this.data.Admin;
     }
+    public set Admin(value: number[]) {
+        this.data.Admin = value;
+    }
     public get Ban(): number[] {
         return this.data.Ban;
     }
@@ -90,16 +93,90 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         return this.data.Character.length;
     }
 
-    public set Admin(value: number[]) {
-        this.data.Admin = value;
+    public usesMaps(): boolean {
+        if (this.data.MapData === undefined) return false;
+        return this.data.MapData.Type !== "Never";
     }
 
-    public update(data: Partial<API_Chatroom_Data>) {
+    public useMap(useMap: boolean) {
+        const data: ServerChatRoomMapData = {
+            Type: useMap ? "Always" : "Never",
+        };
         Object.assign(this.data, data);
+        this.conn.ChatRoomUpdate({ MapData: this.data.MapData });
+    }
+
+    // FIXME: might be private too
+    public ToInfo(): API_Chatroom_Data {
+        const info = structuredClone(this.data);
+
+        // @ts-expect-error that's wrong, but hey
+        delete info.Character;
+
+        return info;
+    }
+
+    public saveChanges(): void {
+        this.conn.ChatRoomUpdate(this.ToInfo());
+    }
+
+    // FIXME: this should be private
+    public update(data: Partial<API_Chatroom_Data>) {
+        this.data = Object.assign(this.data, structuredClone(data));
         if (data.MapData) {
             this.map.onMapUpdate();
         }
     }
+
+    // #region Character management
+
+    private pruneCharacterCache() {
+        const memberNumbers = new Set(
+            this.data.Character.map((c) => c.MemberNumber),
+        );
+        for (const memberNumber of this.characterCache.keys()) {
+            if (!memberNumbers.has(memberNumber)) {
+                this.characterCache.delete(memberNumber);
+            }
+        }
+    }
+
+    public findMember(specifier: number): API_Character | undefined {
+        return this.characters.find((c) => c.MemberNumber == specifier);
+    }
+
+    public findCharacter(specifier: string): API_Character | undefined {
+        const nameMatches = this.characters.filter(
+            (c) =>
+                c.NickName.toLowerCase() === specifier.toLowerCase() ||
+                c.Name.toLowerCase() === specifier.toLowerCase(),
+        );
+        if (nameMatches.length === 1) return nameMatches[0];
+
+        return this.characters.find(
+            (c: API_Character) => c.MemberNumber == parseInt(specifier, 10),
+        );
+    }
+
+    private cacheCharacter(char: API_Character): void {
+        this.characterCache.set(char.MemberNumber, char);
+    }
+
+    private characterFromCache(data: API_Character_Data) {
+        let char = this.characterCache.get(data.MemberNumber);
+        if (!char) {
+            char = new API_Character(data, this.conn, this);
+            this.characterCache.set(char.MemberNumber, char);
+
+            if (this.characterCache.size > 20) this.pruneCharacterCache();
+        } else {
+            char.update(data);
+        }
+
+        return char;
+    }
+
+    // #endregion
 
     public memberJoined(member: API_Character_Data) {
         this.data.Character.push(member);
@@ -123,6 +200,13 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
             );
             return;
         }
+        const sourceChar = this.getCharacter(sourceMemberNo);
+        if (!sourceChar) {
+            console.warn(
+                `Recieved ChatRoomCharacterSync from ${sourceMemberNo}, but they're not in the room?`,
+            );
+            return;
+        }
 
         const oldItems = char.Appearance.Appearance;
 
@@ -139,47 +223,37 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
 
                 this.conn.getBot()?.onCharacterEventPub(this.conn, {
                     name: "ItemRemove",
-                    character: this.getCharacter(memberNumber),
-                    source: this.getCharacter(sourceMemberNo),
+                    character: char,
+                    source: sourceChar,
                     item: oldItem,
                 });
             }
         }
-        if (removed.length > 0)
-            this.emit("ItemRemove", this.getCharacter(sourceMemberNo), removed);
+        if (removed.length > 0) this.emit("ItemRemove", sourceChar, removed);
 
         for (const newItem of char.Appearance.Appearance) {
             const oldItem = oldItems.find(
                 (oldItem) => oldItem.Group === newItem.Group,
             );
             if (!oldItem) {
-                this.emit(
-                    "ItemAdd",
-                    this.getCharacter(sourceMemberNo),
-                    newItem,
-                );
+                this.emit("ItemAdd", sourceChar, newItem);
 
                 this.conn.getBot()?.onCharacterEventPub(this.conn, {
                     name: "ItemAdd",
-                    character: this.getCharacter(memberNumber),
-                    source: this.getCharacter(sourceMemberNo),
+                    character: char,
+                    source: sourceChar,
                     item: newItem,
                 });
             } else if (
                 JSON.stringify(newItem.getData()) !==
                 JSON.stringify(oldItem.getData())
             ) {
-                this.emit(
-                    "ItemChange",
-                    this.getCharacter(sourceMemberNo),
-                    newItem,
-                    oldItem,
-                );
+                this.emit("ItemChange", sourceChar, newItem, oldItem);
 
                 this.conn.getBot()?.onCharacterEventPub(this.conn, {
                     name: "ItemChange",
-                    character: this.getCharacter(memberNumber),
-                    source: this.getCharacter(sourceMemberNo),
+                    character: char,
+                    source: sourceChar,
                     item: newItem,
                 });
             }
@@ -187,33 +261,31 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
     }
 
     public characterItemUpdate(itemUpdate: SingleItemUpdate) {
+        const charObject = this.getCharacter(itemUpdate.Target);
         const charData = this.data.Character.find(
             (x) => x.MemberNumber === itemUpdate.Target,
         );
-        if (charData === undefined) {
+        if (!charData || !charObject) {
             console.warn(
                 `Trying to update item on member number ${itemUpdate.Target} but can't find them!`,
             );
             return;
         }
 
-        const charObject = this.getCharacter(charData.MemberNumber);
-
         const oldItemIndex = charData.Appearance.findIndex(
             (i) => i.Group === itemUpdate.Group,
         );
         if (itemUpdate.Name) {
             // An item is being added or updated
-            if (oldItemIndex > -1) {
+            if (oldItemIndex !== -1) {
                 // The group was present previously: it's an update
-                const oldItemObject = charObject.Appearance.Appearance.find(
-                    (i) => itemUpdate.Group === i.Group,
-                );
+                const oldItemObject =
+                    charObject.Appearance.Appearance[oldItemIndex];
                 charData.Appearance[oldItemIndex] = itemUpdate;
                 charObject.rebuildAppearance();
                 const newItemObject = charObject.Appearance.Appearance.find(
                     (i) => itemUpdate.Group === i.Group,
-                );
+                )!;
                 this.emit(
                     "ItemChange",
                     charObject,
@@ -226,14 +298,12 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
                 charObject.rebuildAppearance();
                 const itemObject = charObject.Appearance.Appearance.find(
                     (i) => itemUpdate.Group === i.Group,
-                );
+                )!;
                 this.emit("ItemAdd", charObject, itemObject);
             }
-        } else if (oldItemIndex > -1) {
+        } else if (oldItemIndex !== -1) {
             // An item is being removed
-            const itemObject = charObject.Appearance.Appearance.find(
-                (i) => itemUpdate.Group === i.Group,
-            );
+            const itemObject = charObject.Appearance.Appearance[oldItemIndex];
             charData.Appearance.splice(oldItemIndex, 1);
             charObject.rebuildAppearance();
             this.emit("ItemRemove", charObject, [itemObject]);
@@ -252,7 +322,7 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         }
 
         if (!mapData) {
-            charData.MapData = null;
+            delete charData.MapData;
             return;
         }
 
@@ -266,7 +336,7 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         );
         Object.assign(charData.MapData, mapData);
 
-        const char = this.findMember(memberNumber);
+        const char = this.findMember(memberNumber)!;
         try {
             this.map.onCharacterMove(char, prevPos);
         } catch (e) {
@@ -275,8 +345,8 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
     }
 
     public onReorder(memberNos: number[]): void {
-        this.data.Character = memberNos.map((num) =>
-            this.data.Character.find((m) => m.MemberNumber === num),
+        this.data.Character = memberNos.map(
+            (num) => this.data.Character.find((m) => m.MemberNumber === num)!,
         );
         this.reorderWatcher.emit("reorder");
     }
@@ -313,78 +383,5 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         });
 
         return prom;
-    }
-
-    public usesMaps(): boolean {
-        if (this.data.MapData === undefined) return false;
-        return this.data.MapData.Type !== "Never";
-    }
-
-    public ToInfo(): API_Chatroom_Data {
-        const info = Object.assign({}, this.data);
-
-        delete info.Character;
-
-        return info;
-    }
-
-    public findMember(specifier: number): API_Character | undefined {
-        return this.characters.find((c) => c.MemberNumber == specifier);
-    }
-
-    public saveChanges(): void {
-        this.conn.ChatRoomUpdate(this.ToInfo());
-    }
-
-    public findCharacter(specifier: string): API_Character | undefined {
-        const nameMatches = this.characters.filter(
-            (c) =>
-                c.NickName?.toLowerCase() === specifier.toLowerCase() ||
-                c.Name?.toLowerCase() === specifier.toLowerCase(),
-        );
-        if (nameMatches.length === 1) return nameMatches[0];
-
-        return this.characters.find(
-            (c: API_Character) => c.MemberNumber == parseInt(specifier, 10),
-        );
-    }
-
-    private cacheCharacter(char: API_Character): void {
-        this.characterCache.set(char.MemberNumber, char);
-    }
-
-    private characterFromCache(data: API_Character_Data) {
-        let char = this.characterCache.get(data.MemberNumber);
-        if (!char) {
-            char = new API_Character(data, this.conn, this);
-            this.characterCache.set(char.MemberNumber, char);
-
-            if (this.characterCache.size > 20) this.pruneCharacterCache();
-        } else {
-            char.update(data);
-        }
-
-        return char;
-    }
-
-    public useMap(useMap: boolean) {
-        if (useMap) {
-            this.data.MapData.Type = "Always";
-        } else {
-            this.data.MapData.Type = "Never";
-        }
-        console.log;
-        this.conn.ChatRoomUpdate({ MapData: this.data.MapData });
-    }
-
-    private pruneCharacterCache() {
-        const memberNumbers = new Set(
-            this.data.Character.map((c) => c.MemberNumber),
-        );
-        for (const memberNumber of this.characterCache.keys()) {
-            if (!memberNumbers.has(memberNumber)) {
-                this.characterCache.delete(memberNumber);
-            }
-        }
     }
 }

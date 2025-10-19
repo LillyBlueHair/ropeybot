@@ -170,7 +170,7 @@ export class AppearanceType {
 
     public InventoryGet(
         groupName: AssetGroupName | ExpressionGroupName,
-    ): API_AppearanceItem {
+    ): API_AppearanceItem | null {
         const item = this.data.find((i) => i.Group === groupName);
         if (!item) return null;
 

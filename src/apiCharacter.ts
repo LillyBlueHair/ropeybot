@@ -87,7 +87,7 @@ export class API_Character {
     constructor(
         private readonly data: API_Character_Data,
         public readonly connection: API_Connector,
-        private _chatRoom: API_Chatroom,
+        private _chatRoom?: API_Chatroom,
     ) {
         this._appearance = new AppearanceType(this, data);
     }
@@ -122,7 +122,7 @@ export class API_Character {
         return 0; /* TODO */
     }
 
-    public get chatRoom() {
+    public get chatRoom(): API_Chatroom | undefined {
         return this._chatRoom;
     }
     public set chatRoom(room: API_Chatroom) {
@@ -150,7 +150,7 @@ export class API_Character {
     }
 
     public IsRoomAdmin(): boolean {
-        return this.chatRoom.Admin.includes(this.MemberNumber);
+        return this.chatRoom?.Admin.includes(this.MemberNumber) ?? false;
     }
 
     public Tell(msgType: TellType, msg: string): void {
@@ -183,17 +183,17 @@ export class API_Character {
     }
 
     public hasPenis(): boolean {
-        return this.Appearance.InventoryGet("Pussy").Name === "Penis";
+        return this.Appearance.InventoryGet("Pussy")?.Name === "Penis";
     }
 
     public upperBodyStyle(): "male" | "female" {
         const upperBody = this.Appearance.InventoryGet("BodyUpper");
-        return upperBody.Name.startsWith("Flat") ? "male" : "female";
+        return upperBody?.Name.startsWith("Flat") ? "male" : "female";
     }
 
     public lowerBodyStyle(): "male" | "female" {
         const upperBody = this.Appearance.InventoryGet("Pussy");
-        return upperBody.Name === "Penis" ? "male" : "female";
+        return upperBody?.Name === "Penis" ? "male" : "female";
     }
 
     public async Kick(): Promise<void> {
@@ -261,7 +261,7 @@ export class API_Character {
         return false;
     }
 
-    public SetHeightOverride(override: number | null): void {
+    public SetHeightOverride(override: number | undefined): void {
         const emoticon = this.Appearance.InventoryGet("Emoticon");
         if (!emoticon) {
             console.warn("No emoticon found for height override");
@@ -296,7 +296,7 @@ export class API_Character {
     }
 
     public MoveToPos(pos: number): void {
-        this._chatRoom.moveCharacterToPos(this.data.MemberNumber, pos);
+        this._chatRoom?.moveCharacterToPos(this.data.MemberNumber, pos);
     }
 
     public SetExpression(
