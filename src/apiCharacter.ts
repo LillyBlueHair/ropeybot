@@ -21,19 +21,6 @@ interface PoseObject {
     Name: string;
 }
 
-interface SingleScriptPermission {
-    permission: 1 | 0;
-}
-
-interface ScriptPermissionsType {
-    Block: SingleScriptPermission;
-    Hide: SingleScriptPermission;
-}
-
-interface ItemPermissionList {
-    [groupName: string]: Record<string, string>;
-}
-
 export enum ItemPermissionLevel {
     EveryoneNoExceptions = 0,
     EveryoneExceptBlacklist = 1,
@@ -43,11 +30,6 @@ export enum ItemPermissionLevel {
     OwnerOnly = 5,
 }
 
-export interface OnlineSharedSettingsType {
-    GameVersion: string;
-    ScriptPermissions?: ScriptPermissionsType;
-}
-
 export interface API_Character_Data {
     ID: string;
     Name: string;
@@ -55,14 +37,65 @@ export interface API_Character_Data {
     Description: string;
     Appearance: BC_AppearanceItem[];
     MemberNumber: number;
-    ActivePose: AssetPoseName[];
+    ActivePose: readonly AssetPoseName[];
     WhiteList: number[];
-    OnlineSharedSettings: OnlineSharedSettingsType;
+    OnlineSharedSettings: CharacterOnlineSharedSettings;
     ItemPermission: ItemPermissionLevel;
     FriendList: number[];
     MapData?: ChatRoomMapData;
-    BlockItems: ItemPermissionList;
-    LimitedItems: ItemPermissionList;
+    BlockItems: ServerItemPermissionsPacked;
+    LimitedItems: ServerItemPermissionsPacked;
+}
+
+export function transformToCharacterData(
+    character: ServerAccountDataSynced,
+): API_Character_Data {
+    const defaultOnlineSettings: CharacterOnlineSharedSettings = {
+        AllowFullWardrobeAccess: false,
+        BlockBodyCosplay: false,
+        AllowPlayerLeashing: false,
+        AllowRename: false,
+        DisablePickingLocksOnSelf: false,
+        GameVersion: "",
+        ItemsAffectExpressions: false,
+        ScriptPermissions: {
+            Hide: {
+                permission: 0,
+            },
+            Block: {
+                permission: 0,
+            },
+        },
+        WheelFortune: "",
+    };
+    let blockItems: ServerItemPermissionsPacked = {};
+    if (Array.isArray(character.BlockItems)) {
+        console.warn("character with unpacked blocked items?");
+    } else {
+        blockItems = character.BlockItems ?? {};
+    }
+    let limitedItems: ServerItemPermissionsPacked = {};
+    if (Array.isArray(character.LimitedItems)) {
+        console.warn("character with unpacked limited items?");
+    } else {
+        limitedItems = character.LimitedItems ?? {};
+    }
+    return {
+        ...character,
+        Nickname: character.Nickname ?? "",
+        Description: character.Description ?? "",
+        Appearance: character.Appearance ?? [],
+        ActivePose: character.ActivePose ?? [],
+        FriendList:
+            "FriendList" in character ? (character.FriendList as number[]) : [],
+        OnlineSharedSettings: Object.assign(
+            defaultOnlineSettings,
+            character.OnlineSharedSettings,
+        ),
+        MapData: character.MapData,
+        BlockItems: blockItems,
+        LimitedItems: limitedItems,
+    };
 }
 
 export function isNaked(character: API_Character): boolean {
@@ -112,7 +145,7 @@ export class API_Character {
     public get WhiteList(): number[] {
         return this.data.WhiteList;
     }
-    public get OnlineSharedSettings(): OnlineSharedSettingsType {
+    public get OnlineSharedSettings(): CharacterOnlineSharedSettings {
         return this.data.OnlineSharedSettings;
     }
     public get ItemPermission(): ItemPermissionLevel {
@@ -314,6 +347,8 @@ export class API_Character {
         this.connection.updateCharacterItem({
             Target: this.MemberNumber,
             ...data,
+            Color: data.Color ?? [],
+            Difficulty: data.Difficulty ?? 0,
         });
     }
 

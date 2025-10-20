@@ -17,18 +17,19 @@ import {
     API_Character,
     API_Character_Data,
     ItemPermissionLevel,
+    transformToCharacterData,
 } from "./apiCharacter.ts";
 import {
     API_Chatroom,
     API_Chatroom_Data,
-    ChatRoomAccessVisibility,
+    transformToChatRoomData,
 } from "./apiChatroom.ts";
 import { Socket } from "socket.io-client";
 import { LogicBase } from "./logicBase.ts";
 import { API_AppearanceItem, BC_AppearanceItem } from "./item.ts";
 import lzString from "lz-string";
 import { EventEmitter } from "node:events";
-import { BC_Server_ChatRoomMessage, TBeepType } from "./logicEvent.ts";
+import { BC_Server_ChatRoomMessage } from "./logicEvent.ts";
 import { SocketWrapper } from "./socketWrapper.ts";
 import { wait } from "./util/wait.ts";
 
@@ -47,8 +48,8 @@ export interface RoomDefinition {
     Background: string;
     Private?: boolean;
     Locked?: boolean | null;
-    Access: ChatRoomAccessVisibility[];
-    Visibility: ChatRoomAccessVisibility[];
+    Access: ServerChatRoomRole[];
+    Visibility: ServerChatRoomRole[];
     Space: ServerChatRoomSpace;
     Admin: number[];
     Ban: number[];
@@ -57,20 +58,6 @@ export interface RoomDefinition {
     Game: ServerChatRoomGame;
     Language: ServerChatRoomLanguage;
     MapData?: ServerChatRoomMapData;
-}
-
-export interface SingleItemUpdate extends BC_AppearanceItem {
-    Target: number;
-}
-
-export interface SyncItemPayload {
-    Source: number;
-    Item: SingleItemUpdate;
-}
-
-export interface SyncMapDataPayload {
-    MemberNumber: number;
-    MapData: ChatRoomMapData;
 }
 
 // What the bot advertises as its game version
@@ -88,43 +75,15 @@ class PromiseResolve<T> {
     }
 }
 
-interface ChatRoomAllowItem {
-    MemberNumber: number;
-}
-
-interface ChatRoomAllowItemResponse extends ChatRoomAllowItem {
-    AllowItem: boolean;
-}
-
-interface ReorderPlayers {
-    PlayerOrder: number[];
-}
-
-interface ChatRoomAdmin {
-    Action: "Update" | "MoveLeft" | "MoveRight" | "Kick";
-    MemberNumber?: number;
-    Publish?: boolean;
-    Room?: Partial<RoomDefinition>;
-}
-
-export interface MessageEvent {
+export interface API_Message {
     sender: API_Character;
     message: BC_Server_ChatRoomMessage;
 }
 
-interface OnlineFriendResult {
-    ChatRoomName: string;
-    ChatRoomSpace: string;
-    MemberName: string;
-    MemberNumber: number;
-    Private: boolean;
-    Type: string;
-}
-
 interface ConnectorEvents {
     PoseChange: [character: API_Character];
-    Message: [message: MessageEvent];
-    Beep: [beep: TBeepType];
+    Message: [message: API_Message];
+    Beep: [beep: ServerAccountBeepResponse];
     RoomJoin: [];
     RoomCreate: [];
     CharacterEntered: [character: API_Character];
@@ -137,8 +96,11 @@ interface ConnectorEvents {
 }
 
 export class API_Connector extends EventEmitter<ConnectorEvents> {
-    private sock: Socket;
-    private wrappedSock: SocketWrapper;
+    private sock: Socket<ServerToClientEvents, ClientToServerEvents>;
+    private wrappedSock: SocketWrapper<
+        ServerToClientEvents,
+        ClientToServerEvents
+    >;
     private _player: API_Character | undefined;
     public _chatRoom?: API_Chatroom;
 
@@ -150,13 +112,15 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
 
     private roomJoinPromise: PromiseResolve<string> | undefined;
     private roomCreatePromise: PromiseResolve<string> | undefined;
-    private roomSearchPromise: PromiseResolve<RoomDefinition[]> | undefined; // (type not quite right: has 'Creator', MemberCount, MemberLimit)
+    private roomSearchPromise:
+        | PromiseResolve<ServerChatRoomSearchData[]>
+        | undefined;
     private onlineFriendsPromise:
-        | PromiseResolve<OnlineFriendResult[]>
+        | PromiseResolve<ServerFriendInfo[]>
         | undefined;
     private itemAllowQueries = new Map<
         number,
-        PromiseResolve<ChatRoomAllowItemResponse>
+        PromiseResolve<ServerChatRoomAllowItemResponse>
     >();
 
     private leaveReasons = new Map<number, LeaveReason>();
@@ -215,6 +179,8 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         this.sock.on("ChatRoomMessage", this.onChatRoomMessage);
         this.sock.on("ChatRoomAllowItem", this.onChatRoomAllowItem);
         this.sock.on(
+            // FIXME: this is not actually a BC server-client message?
+            // @ts-expect-error
             "ChatRoomCharacterItemUpdate",
             this.onChatRoomCharacterItemUpdate,
         );
@@ -273,22 +239,20 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         }
     }
 
-    public ChatRoomUpdate(update: Record<string, any>): void {
-        this.chatRoom.update(update);
-        const payload: ChatRoomAdmin = {
+    public ChatRoomUpdate(update: Partial<API_Chatroom_Data>): void {
+        // @ts-expect-error We make a copy but remove the keys that aren't necessary
+        const roomInfo: ServerChatRoomSettings = structuredClone(update);
+        delete roomInfo.Character;
+        const payload: ServerChatRoomAdminUpdateRequest = {
             Action: "Update",
-            MemberNumber: 0,
-            Room: {
-                ...this.chatRoom.ToInfo(),
-            },
+            MemberNumber: this.Player.MemberNumber,
+            Room: roomInfo,
         };
-        if (payload.Room!.Limit !== undefined)
-            payload.Room!.Limit = payload.Room!.Limit;
         //console.log("Updating chat room", payload);
         this.chatRoomAdmin(payload);
     }
 
-    public chatRoomAdmin(payload: ChatRoomAdmin) {
+    public chatRoomAdmin(payload: ServerChatRoomAdminRequest) {
         this.wrappedSock.emit("ChatRoomAdmin", payload);
     }
 
@@ -307,7 +271,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
     public async QueryOnlineFriends(): Promise<API_Character[]> {
         if (!this.onlineFriendsPromise) {
             this.onlineFriendsPromise = new PromiseResolve<
-                OnlineFriendResult[]
+                ServerFriendInfo[]
             >();
             this.wrappedSock.emit("AccountQuery", {
                 Query: "OnlineFriends",
@@ -348,13 +312,19 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         this.roomSynced = new PromiseResolve<void>();
     };
 
-    private onServerInfo = (info: any) => {
+    private onServerInfo = (info: ServerInfoMessage) => {
         console.log("Server info: ", info);
     };
 
-    private onLoginResponse = (resp: API_Character_Data) => {
+    private onLoginResponse = (resp: ServerLoginResponse) => {
         console.log("Got login response", resp);
-        this._player = new API_Character(resp, this, undefined);
+        if (resp === "InvalidNamePassword") {
+            // FIXME: login failed;
+            return;
+        }
+        // FIXME:
+        const charData = resp as unknown as API_Character_Data;
+        this._player = new API_Character(charData, this, undefined);
         this.loggedIn.resolve();
     };
 
@@ -363,16 +333,17 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         this.roomCreatePromise?.resolve(resp);
     };
 
-    private onChatRoomUpdateResponse = (resp: any) => {
+    private onChatRoomUpdateResponse = (resp: ServerChatRoomUpdateResponse) => {
         console.log("Got chat room update response", resp);
     };
 
-    private onChatRoomSync = (resp: API_Chatroom_Data) => {
+    private onChatRoomSync = (resp: ServerChatRoomSyncMessage) => {
         //console.log("Got chat room sync", resp);
+        const chatRoom = transformToChatRoomData(resp);
         if (!this._chatRoom) {
-            this._chatRoom = new API_Chatroom(resp, this, this._player!);
+            this._chatRoom = new API_Chatroom(chatRoom, this, this._player!);
         } else {
-            this._chatRoom.update(resp);
+            this._chatRoom.update(chatRoom);
         }
         this.roomSynced.resolve();
         this.roomJoined = {
@@ -385,20 +356,20 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
             Admin: resp.Admin,
             Ban: resp.Ban,
             Limit: resp.Limit,
-            BlockCategory: resp.BlockCategories,
+            BlockCategory: resp.BlockCategory,
             Game: resp.Game,
             Language: resp.Language,
         };
     };
 
     private onChatRoomSyncMemberJoin = (
-        resp: any /* ServerChatRoomSyncMemberJoinResponse ? */,
+        resp: ServerChatRoomSyncMemberJoinResponse,
     ) => {
         console.log("Chat room member joined", resp.Character?.Name);
 
         this.leaveReasons.delete(resp.Character.MemberNumber);
 
-        this._chatRoom?.memberJoined(resp.Character);
+        this._chatRoom?.memberJoined(transformToCharacterData(resp.Character));
 
         const char = this._chatRoom?.getCharacter(resp.Character.MemberNumber);
         if (!char) return;
@@ -412,7 +383,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         this.bot?.onCharacterEnteredPub(this, char);
     };
 
-    private onChatRoomSyncMemberLeave = (resp: any) => {
+    private onChatRoomSyncMemberLeave = (resp: ServerChatRoomLeaveResponse) => {
         console.log(
             `chat room member left with reason ${this.leaveReasons.get(resp.SourceMemberNumber)}`,
             resp,
@@ -444,7 +415,9 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         this.bot?.onCharacterLeftPub(this, leftMember, true);
     };
 
-    private onChatRoomSyncRoomProperties = (resp: API_Chatroom_Data) => {
+    private onChatRoomSyncRoomProperties = (
+        resp: ServerChatRoomSyncPropertiesMessage,
+    ) => {
         //console.log("sync room properties", resp);
         this._chatRoom?.update(resp);
 
@@ -454,7 +427,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         this.roomJoined!.Visibility = resp.Visibility;
         this.roomJoined!.Ban = resp.Ban;
         this.roomJoined!.Limit = resp.Limit;
-        this.roomJoined!.BlockCategory = resp.BlockCategories;
+        this.roomJoined!.BlockCategory = resp.BlockCategory;
         this.roomJoined!.Game = resp.Game;
         this.roomJoined!.Name = resp.Name;
         this.roomJoined!.Description = resp.Description;
@@ -467,38 +440,46 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         delete this.roomJoined!.Locked;
     };
 
-    private onChatRoomSyncCharacter = (resp: any) => {
+    private onChatRoomSyncCharacter = (
+        resp: ServerChatRoomSyncCharacterResponse,
+    ) => {
         //console.log("sync character", resp);
         this._chatRoom?.characterSync(
             resp.Character.MemberNumber,
-            resp.Character,
+            transformToCharacterData(resp.Character),
             resp.SourceMemberNumber,
         );
     };
 
-    private onChatRoomSyncReorderPlayers = (resp: ReorderPlayers) => {
+    private onChatRoomSyncReorderPlayers = (
+        resp: ServerChatRoomReorderResponse,
+    ) => {
         //console.log("sync reorder players", resp);
         this._chatRoom?.onReorder(resp.PlayerOrder);
     };
 
-    private onChatRoomSyncSingle = (resp: any) => {
+    private onChatRoomSyncSingle = (
+        resp: ServerChatRoomSyncCharacterResponse,
+    ) => {
         //console.log("sync single", resp);
         this._chatRoom?.characterSync(
             resp.Character.MemberNumber,
-            resp.Character,
+            transformToCharacterData(resp.Character),
             resp.SourceMemberNumber,
         );
     };
 
-    private onChatRoomSyncExpression = (resp: any) => {
+    private onChatRoomSyncExpression = (
+        resp: ServerCharacterExpressionResponse,
+    ) => {
         //console.log("sync expression", resp);
         const char = this.chatRoom.getCharacter(resp.MemberNumber);
         if (!char) return;
         const item = new API_AppearanceItem(char, {
-            Group: resp.Group,
+            Group: resp.Group as AssetGroupName,
             Name: resp.Name,
             Property: {
-                Expression: resp.Name,
+                Expression: resp.Name as ExpressionName,
             },
         });
         this.bot?.onCharacterEventPub(this, {
@@ -509,12 +490,12 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         });
     };
 
-    private onChatRoomSyncPose = (resp: any) => {
+    private onChatRoomSyncPose = (resp: ServerCharacterPoseResponse) => {
         //console.log("got sync pose", resp);
         const char = this.chatRoom.getCharacter(resp.MemberNumber);
         if (!char) return;
         char.update({
-            ActivePose: resp.Pose,
+            ActivePose: resp.Pose as AssetPoseName[],
         });
         this.emit("PoseChange", char);
         this.bot?.onCharacterEventPub(this, {
@@ -523,11 +504,11 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         });
     };
 
-    private onChatRoomSyncArousal = (resp: any) => {
+    private onChatRoomSyncArousal = (resp: ServerCharacterArousalResponse) => {
         //console.log("Chat room sync arousal", resp);
     };
 
-    private onChatRoomSyncItem = (update: SyncItemPayload) => {
+    private onChatRoomSyncItem = (update: ServerChatRoomSyncItemResponse) => {
         // console.log("Chat room sync item", update);
         this._chatRoom?.characterItemUpdate(update.Item);
         if (update.Item.Target === this._player!.MemberNumber) {
@@ -539,33 +520,34 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         }
     };
 
-    private onChatRoomSyncMapData = (update: SyncMapDataPayload) => {
+    private onChatRoomSyncMapData = (update: ServerMapDataResponse) => {
         console.log("chat room map data", update);
         this._chatRoom?.mapPositionUpdate(update.MemberNumber, update.MapData);
     };
 
-    private onChatRoomMessage = (msg: BC_Server_ChatRoomMessage) => {
+    private ignoreMsgs = [
+        "BCXMsg",
+        "BCEMsg",
+        "LSCGMsg",
+        "bctMsg",
+        "MPA",
+        "dogsMsg",
+        "bccMsg",
+        "ECHO_INFO2",
+        "MoonCEBC",
+    ];
+
+    private onChatRoomMessage = (msg: ServerChatRoomMessage) => {
         // Don't log *.* spam
         if (
             msg.Type !== "Hidden" &&
-            ![
-                "BCXMsg",
-                "BCEMsg",
-                "LSCGMsg",
-                "bctMsg",
-                "MPA",
-                "dogsMsg",
-                "bccMsg",
-                "ECHO_INFO2",
-                "MoonCEBC",
-            ].includes(msg.Content) &&
-            msg.Sender !== this.Player.MemberNumber &&
-            msg.Type !=
-                "Status" /*&& (msg.Type != "Action" || msg.Content == "ServerLeave")*/
+            !this.ignoreMsgs.includes(msg.Content) &&
+            msg.Sender !== this.Player.MemberNumber
         ) {
             console.log("chat room message", msg);
         }
 
+        if (!msg.Sender) return;
         const char = this._chatRoom?.getCharacter(msg.Sender);
         if (!char) return;
 
@@ -582,7 +564,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         this.emit("Message", {
             sender: char,
             message: msg,
-        } as MessageEvent);
+        });
         this.bot?.onEvent({
             name: "Message",
             connection: this,
@@ -592,7 +574,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         this.bot?.onMessagePub(this, msg, char);
     };
 
-    private onChatRoomAllowItem = (resp: ChatRoomAllowItemResponse) => {
+    private onChatRoomAllowItem = (resp: ServerChatRoomAllowItemResponse) => {
         console.log("ChatRoomAllowItem", resp);
         const promResolve = this.itemAllowQueries.get(resp.MemberNumber);
         if (promResolve) {
@@ -601,7 +583,9 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         }
     };
 
-    private onChatRoomCharacterItemUpdate = (update: SingleItemUpdate) => {
+    private onChatRoomCharacterItemUpdate = (
+        update: ServerCharacterItemUpdate,
+    ) => {
         console.log("Chat room character item update", update);
         this._chatRoom?.characterItemUpdate(update);
         /*if (update.Target === this._player.MemberNumber) {
@@ -613,7 +597,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         }*/
     };
 
-    private onAccountBeep = (payload: TBeepType) => {
+    private onAccountBeep = (payload: ServerAccountBeepResponse) => {
         if (payload?.Message && typeof payload.Message === "string")
             payload.Message = payload.Message.split("\n\n")[0];
         // legacy
@@ -626,19 +610,23 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         this.emit("Beep", payload);
     };
 
-    private onAccountQueryResult = (payload: Record<string, any>) => {
+    private onAccountQueryResult = (payload: ServerAccountQueryResponse) => {
         if (payload.Query === "OnlineFriends") {
             this.onlineFriendsPromise?.resolve(payload.Result);
         }
     };
 
-    private onChatRoomSearchResult = (results: RoomDefinition[]) => {
+    private onChatRoomSearchResult = (
+        results: ServerChatRoomSearchResultResponse,
+    ) => {
         console.log("Chat room search result", results);
         if (!this.roomSearchPromise) return;
         this.roomSearchPromise.resolve(results);
     };
 
-    private onChatRoomSearchResponse = (result: string) => {
+    private onChatRoomSearchResponse = (
+        result: ServerChatRoomSearchResponse,
+    ) => {
         console.log("Chat room search (join) response", result);
         if (!this.roomJoinPromise) return;
         this.roomJoinPromise.resolve(result);
@@ -738,7 +726,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
     private searchRooms(
         q: string,
         space: ServerChatRoomSpace,
-    ): Promise<RoomDefinition[]> {
+    ): Promise<ServerChatRoomSearchData[]> {
         if (this.roomSearchPromise) return this.roomSearchPromise.prom;
 
         this.roomSearchPromise = new PromiseResolve();
@@ -757,11 +745,13 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         await this.loggedIn.prom;
         console.log("Logged in.");
 
-        this.accountUpdate({
-            OnlineSharedSettings: {
-                GameVersion: GAMEVERSION,
-            },
-        });
+        if (this.Player.OnlineSharedSettings.GameVersion !== GAMEVERSION) {
+            this.Player.OnlineSharedSettings.GameVersion = GAMEVERSION;
+
+            this.accountUpdate({
+                OnlineSharedSettings: this.Player.OnlineSharedSettings,
+            });
+        }
         console.log("Connector started.");
     }
 
@@ -793,11 +783,18 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
                         permission: block ? 1 : 0,
                     },
                 },
+                AllowFullWardrobeAccess: false,
+                BlockBodyCosplay: true,
+                AllowPlayerLeashing: false,
+                AllowRename: false,
+                DisablePickingLocksOnSelf: true,
+                ItemsAffectExpressions: false,
+                WheelFortune: "",
             },
         });
     }
 
-    public updateCharacterItem(update: SingleItemUpdate): void {
+    public updateCharacterItem(update: ServerCharacterItemUpdate): void {
         /*if (update.Target === this.Player.MemberNumber) {
             const payload = {
                 AssetFamily: "Female3DCG",
@@ -807,7 +804,6 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         } else {*/
         //console.log("sending ChatRoomCharacterItemUpdate", update);
         this.wrappedSock.emit("ChatRoomCharacterItemUpdate", update);
-        //}
     }
 
     public updateCharacter(update: Partial<API_Character_Data>): void {

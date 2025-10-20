@@ -13,12 +13,14 @@
  */
 
 import { EventEmitter } from "node:events";
-import { API_Character, API_Character_Data } from "./apiCharacter.ts";
-import { API_Connector, SingleItemUpdate } from "./apiConnector.ts";
+import {
+    API_Character,
+    API_Character_Data,
+    transformToCharacterData,
+} from "./apiCharacter.ts";
+import { API_Connector } from "./apiConnector.ts";
 import { API_Map } from "./apiMap.ts";
 import { API_AppearanceItem } from "./item.ts";
-
-export type ChatRoomAccessVisibility = "All" | "Whitelist" | "Admin";
 
 // This should be ServerChatRoomData
 export interface API_Chatroom_Data {
@@ -28,16 +30,27 @@ export interface API_Chatroom_Data {
     Admin: number[];
     Ban: number[];
     Private: boolean;
-    Access: ChatRoomAccessVisibility[];
-    Visibility: ChatRoomAccessVisibility[];
+    Access: ServerChatRoomRole[];
+    Visibility: ServerChatRoomRole[];
     Limit: number;
     Background: string;
     Locked: boolean;
     Space: ServerChatRoomSpace;
-    BlockCategories: ServerChatRoomBlockCategory[];
+    BlockCategory: ServerChatRoomBlockCategory[];
     Game: ServerChatRoomGame;
     Language: ServerChatRoomLanguage;
     MapData?: ServerChatRoomMapData;
+}
+
+export function transformToChatRoomData(
+    chatRoom: ServerChatRoomData,
+): API_Chatroom_Data {
+    return {
+        ...chatRoom,
+        Character: chatRoom.Character.map((data) =>
+            transformToCharacterData(data),
+        ),
+    };
 }
 
 interface ChatRoomEvents {
@@ -106,18 +119,8 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         this.conn.ChatRoomUpdate({ MapData: this.data.MapData });
     }
 
-    // FIXME: might be private too
-    public ToInfo(): API_Chatroom_Data {
-        const info = structuredClone(this.data);
-
-        // @ts-expect-error that's wrong, but hey
-        delete info.Character;
-
-        return info;
-    }
-
     public saveChanges(): void {
-        this.conn.ChatRoomUpdate(this.ToInfo());
+        this.conn.ChatRoomUpdate(this.data);
     }
 
     // FIXME: this should be private
@@ -126,6 +129,15 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         if (data.MapData) {
             this.map.onMapUpdate();
         }
+    }
+
+    public ToInfo(): API_Chatroom_Data {
+        const info = structuredClone(this.data);
+
+        // @ts-expect-error that's wrong, but hey
+        delete info.Character;
+
+        return info;
     }
 
     // #region Character management
@@ -260,7 +272,7 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         }
     }
 
-    public characterItemUpdate(itemUpdate: SingleItemUpdate) {
+    public characterItemUpdate(itemUpdate: ServerCharacterItemUpdate) {
         const charObject = this.getCharacter(itemUpdate.Target);
         const charData = this.data.Character.find(
             (x) => x.MemberNumber === itemUpdate.Target,
@@ -276,15 +288,19 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
             (i) => i.Group === itemUpdate.Group,
         );
         if (itemUpdate.Name) {
+            const item: ServerItemBundle = {
+                ...itemUpdate,
+                Name: itemUpdate.Name!,
+            };
             // An item is being added or updated
             if (oldItemIndex !== -1) {
                 // The group was present previously: it's an update
                 const oldItemObject =
                     charObject.Appearance.Appearance[oldItemIndex];
-                charData.Appearance[oldItemIndex] = itemUpdate;
+                charData.Appearance[oldItemIndex] = item;
                 charObject.rebuildAppearance();
                 const newItemObject = charObject.Appearance.Appearance.find(
-                    (i) => itemUpdate.Group === i.Group,
+                    (i) => item.Group === i.Group,
                 )!;
                 this.emit(
                     "ItemChange",
@@ -294,10 +310,10 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
                 );
             } else {
                 // An item is being added
-                charData.Appearance.push(itemUpdate);
+                charData.Appearance.push(item);
                 charObject.rebuildAppearance();
                 const itemObject = charObject.Appearance.Appearance.find(
-                    (i) => itemUpdate.Group === i.Group,
+                    (i) => item.Group === i.Group,
                 )!;
                 this.emit("ItemAdd", charObject, itemObject);
             }

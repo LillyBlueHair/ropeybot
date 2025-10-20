@@ -19,14 +19,8 @@ import { AssetFemale3DCGExtended } from "./bcdata/Female3DCGExtended.ts";
 
 // An item as it appears on the wire (similar to Item but instead of the Asset
 // there's just Name representing the asset name), plus a Group
-export interface BC_AppearanceItem {
-    Group: AssetGroupName;
-    Name: string;
-    Color?: ItemColor;
-    Difficulty?: number;
-    Craft?: CraftingItem;
-    Property?: ItemProperties;
-}
+
+export type BC_AppearanceItem = ServerItemBundle;
 
 interface PartialCraftingData {
     Name: string;

@@ -1208,7 +1208,7 @@ export class MaidsPartyNightSinglePlayerAdventure extends LoggingLogic {
 	 * @param character the current player
 	 * @param itemSlots an array of all item slots where the player should be freed
 	 */
-	freePlayerInItemSlots(character: API_Character, itemSlots: string[]) {
+	freePlayerInItemSlots(character: API_Character, itemSlots: AssetGroupName[]) {
 		for (const i of itemSlots) {
 			character.Appearance.RemoveItem(i);
 		}

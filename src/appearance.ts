@@ -151,7 +151,7 @@ export class AppearanceType {
         return newItem;
     }
 
-    public RemoveItem(slot: /*AssetGroupName*/ string): void {
+    public RemoveItem(slot: AssetGroupName): void {
         //const idx = this._items.findIndex((i) => i.Group === slot);
         const idx = this.data.findIndex((i) => i.Group === slot);
         if (idx === -1) return;
