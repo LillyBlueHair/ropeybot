@@ -21,6 +21,7 @@ import {
 import { API_Connector } from "./apiConnector.ts";
 import { API_Map } from "./apiMap.ts";
 import { API_AppearanceItem } from "./item.ts";
+import { API_PlayerCharacter } from "./playerCharacter.ts";
 
 // This should be ServerChatRoomData
 export interface API_Chatroom_Data {
@@ -73,12 +74,12 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
     constructor(
         private data: API_Chatroom_Data,
         private conn: API_Connector,
-        player: API_Character,
+        player: API_PlayerCharacter,
     ) {
         super();
 
         this.map = new API_Map(conn, data);
-        this.cacheCharacter(player);
+        this.cacheCharacter(player as unknown as API_Character);
     }
 
     public get Name(): string {

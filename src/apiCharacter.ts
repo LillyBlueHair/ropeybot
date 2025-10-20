@@ -118,7 +118,7 @@ export class API_Character {
     private _appearance: AppearanceType;
 
     constructor(
-        private readonly data: API_Character_Data,
+        protected readonly data: API_Character_Data,
         public readonly connection: API_Connector,
         private _chatRoom?: API_Chatroom,
     ) {
@@ -308,24 +308,24 @@ export class API_Character {
         // TODO
     }
 
-    public FriendListAdd(memberNum: number): void {
-        if (this.data.FriendList.includes(memberNum)) {
-            return;
-        }
-
-        this.data.FriendList.push(memberNum);
-        this.connection.accountUpdate({
-            FriendList: this.data.FriendList,
-        });
+    get isFriend(): boolean {
+        return this.connection.Player.friendList.includes(
+            this.data.MemberNumber,
+        );
     }
 
-    public FriendListRemove(memberNum: number): void {
-        this.data.FriendList = this.data.FriendList.filter(
-            (m) => m !== memberNum,
-        );
-        this.connection.accountUpdate({
-            FriendList: this.data.FriendList,
-        });
+    /**
+     * Add the character as a friend.
+     */
+    public friend(): void {
+        this.connection.Player.addFriends(this.data.MemberNumber);
+    }
+
+    /**
+     * Remove the character as a friend.
+     */
+    public unfriend(): void {
+        this.connection.Player.removeFriends(this.data.MemberNumber);
     }
 
     public MoveToPos(pos: number): void {

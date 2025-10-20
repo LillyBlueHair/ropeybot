@@ -32,6 +32,7 @@ import { EventEmitter } from "node:events";
 import { BC_Server_ChatRoomMessage } from "./logicEvent.ts";
 import { SocketWrapper } from "./socketWrapper.ts";
 import { wait } from "./util/wait.ts";
+import { API_PlayerCharacter } from "./playerCharacter.ts";
 
 export enum LeaveReason {
     DISCONNECT = "ServerDisconnect",
@@ -101,7 +102,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         ServerToClientEvents,
         ClientToServerEvents
     >;
-    private _player: API_Character | undefined;
+    private _player: API_PlayerCharacter | undefined;
     public _chatRoom?: API_Chatroom;
 
     private started = false;
@@ -198,7 +199,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         return this.bot;
     }
 
-    public get Player(): API_Character {
+    public get Player(): API_PlayerCharacter {
         return this._player!;
     }
 
@@ -325,7 +326,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         }
         // FIXME:
         const charData = resp as unknown as API_Character_Data;
-        this._player = new API_Character(charData, this, undefined);
+        this._player = new API_PlayerCharacter(charData, this, undefined);
         this.loggedIn.resolve();
     };
 

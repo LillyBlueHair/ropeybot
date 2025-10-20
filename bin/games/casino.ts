@@ -345,7 +345,7 @@ ${forfeitsString()}
             return;
         }
 
-        this.conn.Player.FriendListAdd(toAdd.MemberNumber);
+        toAdd.friend();
 
         this.conn.reply(msg, `I am now friends with ${toAdd}! I like friends!`);
     };
