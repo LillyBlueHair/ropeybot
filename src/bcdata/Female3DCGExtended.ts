@@ -190,23 +190,22 @@ import { E } from "./female3DCG.js";
 
 /**
  * An enum encapsulating the available extended item archetypes
- * @satisfies {Record<Uppercase<ExtendedArchetype>, ExtendedArchetype>}
  */
-const ExtendedArchetype = /** @type {const} */ ({
-	MODULAR: "modular",
-	TYPED: "typed",
-	VIBRATING: "vibrating",
-	VARIABLEHEIGHT: "variableheight",
-	TEXT: "text",
-	NOARCH: "noarch",
-});
+// const ExtendedArchetype: Record<Uppercase<ExtendedArchetype>, ExtendedArchetype> = ({
+enum ExtendedArchetype {
+	MODULAR = "modular",
+	TYPED = "typed",
+	VIBRATING = "vibrating",
+	VARIABLEHEIGHT = "variableheight",
+	TEXT = "text",
+	NOARCH = "noarch",
+}
 
 /**
  * An object containing all extended item configurations.
  * @type {ExtendedItemMainConfig}
- * @const
  */
-export var AssetFemale3DCGExtended = {
+export var AssetFemale3DCGExtended: ExtendedItemMainConfig = {
 	BodyUpper: {
 		// NOTE: Switch to the `MODULAR` archetype if we'd want to allow for the simultaneous use of multiple overlays
 		Small: {
@@ -19636,6 +19635,7 @@ export var AssetFemale3DCGExtended = {
 								Font: "sans-serif",
 								ScriptHooks: {
 									AfterDraw: (...args) =>
+										// @ts-expect-error stub
 										TextItem.GenericTextDrawHook(...args, {
 											YOffset: 10,
 											drawOptions: { fontSize: 12 },

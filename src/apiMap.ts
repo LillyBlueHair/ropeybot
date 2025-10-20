@@ -27,12 +27,14 @@ export interface MapRegion {
     BottomRight: ChatRoomMapPos;
 }
 
-function mapTileByName(name: string): ChatRoomMapTile {
-    return ChatRoomMapViewTileList.find((tile) => tile.Style === name);
+function mapTileByName(name: string): ChatRoomMapTile | null {
+    return ChatRoomMapViewTileList.find((tile) => tile.Style === name) ?? null;
 }
 
-function mapObjectByName(name: string): ChatRoomMapObject {
-    return ChatRoomMapViewObjectList.find((tile) => tile.Style === name);
+function mapObjectByName(name: string): ChatRoomMapObject | null {
+    return (
+        ChatRoomMapViewObjectList.find((tile) => tile.Style === name) ?? null
+    );
 }
 
 interface TileTrigger {
@@ -84,7 +86,7 @@ interface MapEvents {
 }
 
 export class API_Map extends EventEmitter<MapEvents> {
-    private updateTask: NodeJS.Immediate;
+    private updateTask: NodeJS.Immediate | undefined;
     private tileTriggers = new Map<number, TileTrigger[]>();
     private enterRegionTriggers: RegionTrigger[] = [];
     private leaveRegionTriggers: RegionTrigger[] = [];
@@ -177,35 +179,37 @@ export class API_Map extends EventEmitter<MapEvents> {
         if (!this.mapData) return;
 
         const tile = mapTileByName(tileName);
+        if (!tile) return;
 
         const tileNum = pos.X + pos.Y * 40;
         this.mapData.Tiles =
-            this.mapData.Tiles.substring(0, tileNum) +
+            this.mapData.Tiles?.substring(0, tileNum) +
             String.fromCharCode(tile.ID) +
-            this.mapData.Tiles.substring(tileNum + 1);
+            this.mapData.Tiles?.substring(tileNum + 1);
 
         this.queueUpdate();
     }
 
-    public getObject(pos: ChatRoomMapPos): string {
+    public getObject(pos: ChatRoomMapPos): string | null {
         if (!this.mapData) return "";
 
         const tileNum = pos.X + pos.Y * 40;
-        const objID = this.mapData.Objects.charCodeAt(tileNum);
+        const objID = this.mapData.Objects?.charCodeAt(tileNum);
         const obj = ChatRoomMapViewObjectList.find((o) => o.ID === objID);
-        return obj?.Style;
+        return obj?.Style ?? null;
     }
 
     public setObject(pos: ChatRoomMapPos, objectName: string): void {
         if (!this.mapData) return;
 
         const tile = mapObjectByName(objectName);
+        if (!tile) return;
 
         const tileNum = pos.X + pos.Y * 40;
         this.mapData.Objects =
-            this.mapData.Objects.substring(0, tileNum) +
+            this.mapData.Objects?.substring(0, tileNum) +
             String.fromCharCode(tile.ID) +
-            this.mapData.Objects.substring(tileNum + 1);
+            this.mapData.Objects?.substring(tileNum + 1);
 
         this.queueUpdate();
     }

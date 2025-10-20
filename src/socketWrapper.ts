@@ -67,7 +67,7 @@ export class SocketWrapper {
     private sendTail(): void {
         if (this.queue.length === 0) return;
 
-        const args = this.queue.shift();
+        const args = this.queue.shift()!;
         this.lastSendTimes.shift();
         this.lastSendTimes.push(Date.now());
 

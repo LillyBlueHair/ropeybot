@@ -15,8 +15,8 @@
 import { AssetFemale3DCG } from "./bcdata/female3DCG.js";
 import { BC_AppearanceItem, getAssetDef } from "./item.ts";
 
-function getAssetGroup(groupName: AssetGroupName): AssetGroupDefinition {
-    return AssetFemale3DCG.find((g) => g.Group === groupName);
+function getAssetGroup(groupName: AssetGroupName): AssetGroupDefinition | null {
+    return AssetFemale3DCG.find((g) => g.Group === groupName) ?? null;
 }
 
 export function isClothing(item: BC_AppearanceItem): boolean {
@@ -28,7 +28,7 @@ export function isClothing(item: BC_AppearanceItem): boolean {
         return false;
     return (
         group.Category === undefined &&
-        group.Clothing &&
+        !!group.Clothing &&
         (group.AllowNone ?? true)
     );
 }
@@ -40,15 +40,17 @@ export function isCosplay(item: BC_AppearanceItem): boolean {
         return true;
     const assetDef = getAssetDef(item);
     return (
+        !!group &&
         group.Category === undefined &&
-        group.Clothing &&
-        (group.BodyCosplay || assetDef?.BodyCosplay) &&
+        !!group.Clothing &&
+        (group.BodyCosplay || (assetDef?.BodyCosplay ?? false)) &&
         (group.AllowNone ?? true)
     );
 }
 
 export function isBody(item: BC_AppearanceItem): boolean {
     const group = getAssetGroup(item.Group);
+    if (!group) return false;
     return (
         (group.Category === undefined && !group.Clothing) ||
         group.AllowNone === false
