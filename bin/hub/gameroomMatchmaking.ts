@@ -42,7 +42,7 @@ export class MatchmakingNotifier {
 	 * @param sender the API_Character who used this function
 	 */
 	async addPlayerToTheMatchmakingQueue(sender: API_Character) {
-		this.connection.Player.FriendListAdd(sender.MemberNumber);
+		sender.friend();
 
 		const friendListOnlineInfo = await this.connection.QueryOnlineFriends();
 
@@ -52,7 +52,7 @@ export class MatchmakingNotifier {
 		}
 		// if sender is not one of the bot's friends online, bot will remove sender from FriendList again
 		if (!friendListOnlineInfo.some(f => f.MemberNumber === sender.MemberNumber)) {
-			this.connection.Player.FriendListRemove(sender.MemberNumber);
+			sender.unfriend();
 			sender.Tell("Whisper", `You need to add the Bot to your friend list first, so it can send you beep messages. After ` +
 				`you have done this, please use the '!beepme' command again.`
 			);
@@ -102,7 +102,7 @@ export class MatchmakingNotifier {
 				// beep everyone that there are enough for a game and then remove them from the friend list and queue
 				this.matchmaking_list.forEach(M => {
 					this.connection.AccountBeep(M.MemberNumber, null, beepMsg);
-					this.connection.Player.FriendListRemove(M.MemberNumber);
+					M.unfriend();
 				});
 				metric_success.labels({ roomName: this.connection.chatRoom.Name }).inc();
 				logger.alert(`Successful matchmaking with ${this.matchmaking_list.size} on the list.`);
@@ -122,7 +122,7 @@ export class MatchmakingNotifier {
 				this.matchmaking_list.delete(p);
 				// TODO: reduce to info in a few weeks
 				logger.alert(`${p} was removed from the matchmaking queue. There are now ${this.matchmaking_list.size} in it.`);
-				this.connection.Player.FriendListRemove(p.MemberNumber);
+				p.unfriend();
 			});
 	}
 }

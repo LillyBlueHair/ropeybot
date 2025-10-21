@@ -15,7 +15,7 @@
 import { decompressFromBase64 } from "lz-string";
 import {
     API_Connector,
-    MessageEvent,
+    API_Message,
     makeDoorRegion,
     MapRegion,
     API_Character,
@@ -191,7 +191,7 @@ export class PetSpa {
         this.conn.Player.SetActivePose(["Kneel"]);
     };
 
-    private onMessage = async (msg: MessageEvent) => {
+    private onMessage = async (msg: API_Message) => {
         if (
             msg.message.Type === "Chat" &&
             !msg.message.Content.startsWith("(")

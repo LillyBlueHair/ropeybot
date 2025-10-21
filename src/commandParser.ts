@@ -13,7 +13,7 @@
  */
 
 import { API_Character } from "./apiCharacter.ts";
-import { API_Connector, MessageEvent } from "./apiConnector.ts";
+import { API_Connector, API_Message } from "./apiConnector.ts";
 import { BC_Server_ChatRoomMessage } from "./logicEvent.ts";
 
 type CommandCallback = (
@@ -43,7 +43,7 @@ export class CommandParser {
         this.commands.clear();
     }
 
-    private onMessage = (ev: MessageEvent) => {
+    private onMessage = (ev: API_Message) => {
         // trim any leading or trailing parentheses from the message
         const msg = ev.message.Content.replace(/^\(+/, "").replace(/\)+$/, "");
 
@@ -66,7 +66,7 @@ export class CommandParser {
         }
     };
 
-    private processCmdString(ev: MessageEvent, cmdString: string): void {
+    private processCmdString(ev: API_Message, cmdString: string): void {
         const parts = cmdString.toLowerCase().split(" ");
         let cmd = [];
 
