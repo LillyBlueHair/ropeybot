@@ -273,6 +273,6 @@ export class API_Map extends EventEmitter<MapEvents> {
 
     private doUpdate = (): void => {
         this.updateTask = undefined;
-        this.conn.ChatRoomUpdate({ MapData: this.mapData });
+        this.conn.ChatRoomUpdate(this.roomData);
     };
 }

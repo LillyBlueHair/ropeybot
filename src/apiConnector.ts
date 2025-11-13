@@ -246,7 +246,9 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         delete roomInfo.Character;
         const payload: ServerChatRoomAdminUpdateRequest = {
             Action: "Update",
-            MemberNumber: this.Player.MemberNumber,
+            // This is the member number being moved, but this is a room update.
+            // The server still rejects it if it's not there though, so make it 0.
+            MemberNumber: 0,
             Room: roomInfo,
         };
         //console.log("Updating chat room", payload);
