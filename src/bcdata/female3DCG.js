@@ -1,8 +1,10 @@
 //@ts-check
 "use strict";
 
+/** @type {Record<"HIDE"|"DEFAULT", AssetPoseName | PoseType>} */
 const PoseType = {
-    Hide: "Hide",
+	HIDE: "Hide",
+	DEFAULT: "",
 };
 
 /** @type readonly ("Kneel" | "KneelingSpread")[] */
@@ -16,9 +18,20 @@ const PoseAllStanding = Object.freeze([
     "Spread",
 ]);
 
+/**
+ * @param {Character} x
+ */
 const InventoryItemDevicesKennelGetAudio = (x) => "";
 
+/**
+ * @param {Character} x 
+ * @param {FetishName} y 
+ */
 const PreferenceGetFetishFactor = (x, y) => 0;
+/**
+ * @param {Character} x 
+ * @param {FetishName} y 
+ */
 const ActivityFetishItemFactor = (x, y) => 0;
 
 // *** Item value guidelines ***

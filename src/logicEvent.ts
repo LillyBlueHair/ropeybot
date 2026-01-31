@@ -16,30 +16,7 @@ import { API_Character } from "./apiCharacter.ts";
 import { API_Connector } from "./apiConnector.ts";
 import { API_AppearanceItem } from "./item.ts";
 
-export interface BC_Server_ChatRoomMessage {
-    Type:
-        | "Hidden"
-        | "Chat"
-        | "Emote"
-        | "Action"
-        | "Activity"
-        | "Whisper"
-        | "Status";
-    Sender: number;
-    Dictionary: Record<string, string>;
-    Content: string;
-}
-
-export interface BC_Server_AccountBeep {}
-
-export interface TBeepType {
-    BeepType: string;
-    ChatRoomName: string;
-    ChatRoomSpace: string;
-    Message: string;
-    MemberNumber: number;
-    MemberName: string;
-}
+export type BC_Server_ChatRoomMessage = ServerChatRoomMessage;
 
 export type AnyLogicEvent =
     | LogicEvent_Message
@@ -92,7 +69,7 @@ export interface AnyCharacterEvent_Wrapper extends LogicEvent {
 
 export interface LogicEvent_Beep extends LogicEvent {
     name: "Beep";
-    beep: TBeepType;
+    beep: ServerAccountBeepResponse;
 }
 
 export interface AnyBotEvent {
@@ -121,3 +98,5 @@ export interface AnyBotEvent_Wrapper extends LogicEvent {
     name: "BotEvent";
     event: AnyBotEvent; // ?
 }
+
+export type BC_Server_AccountBeep = ServerAccountBeepResponse;

@@ -151,7 +151,7 @@ export class AppearanceType {
         return newItem;
     }
 
-    public RemoveItem(slot: /*AssetGroupName*/ string): void {
+    public RemoveItem(slot: AssetGroupName): void {
         //const idx = this._items.findIndex((i) => i.Group === slot);
         const idx = this.data.findIndex((i) => i.Group === slot);
         if (idx === -1) return;
@@ -170,7 +170,7 @@ export class AppearanceType {
 
     public InventoryGet(
         groupName: AssetGroupName | ExpressionGroupName,
-    ): API_AppearanceItem {
+    ): API_AppearanceItem | null {
         const item = this.data.find((i) => i.Group === groupName);
         if (!item) return null;
 

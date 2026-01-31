@@ -2562,15 +2562,59 @@ https://github.com/FriendsOfBC/ropeybot
         }
     }
 
-    /**
-     * Updates the current room the bot is in with a given background
-     * @param name the name of the background
-     */
-    changeRoomBackgroundTo(name: string): void {
-        void this.conn.ChatRoomUpdate({
-            Background: name,
-        });
-    }
+	private sendRoleMessage(character: API_Character): void {
+		if (this.persistent_copy_of_kidnappers.size === 1 && this.persistent_copy_of_kidnappers.has(character)) {
+			character.Tell("Whisper", solo_kidnapper_intro);
+		} else if (this.persistent_copy_of_kidnappers.has(character)) {
+			character.Tell("Whisper", `GAME: You are one of the two kidnappers. You need to prevent everyone else ` +
+				`from finding out what you are doing at night. The kidnapper team consists of: ` +
+				`${Array.from(this.persistent_copy_of_kidnappers.values()).map(A => A.toString()).join(", ")}. ` +
+				`You can discuss your joint approach by whispering. Please be careful not to MISWHISPER!!`
+			);
+		} else if (this.maid === character) {
+			character.Tell("Whisper", maid_intro);
+		} else if (this.switch === character) {
+			character.Tell("Whisper", switch_intro);
+		} else if (this.fan === character) {
+			character.Tell("Whisper", fan_intro);
+		} else if (this.masochist === character) {
+			character.Tell("Whisper", masochist_intro);
+		} else if (this.stalker === character) {
+			character.Tell("Whisper", stalker_intro);
+		} else if (this.mistress === character) {
+			character.Tell("Whisper", mistress_intro);
+		} else if (this.club_members.has(character)) {
+			character.Tell("Whisper", club_member_intro);
+		} else {
+			character.Tell("Whisper", `GAME: Please wait for the next game round to start in order to get a new role assignment.`);
+		}
+	}
+
+	/**
+	 * Frees the player from the slots given in the function
+	 * @param character the current player
+	 * @param itemSlots an array of all item slots where the player should be freed
+	 */
+	freePlayerInItemSlots(character: API_Character, itemSlots: AssetGroupName[]) {
+		for (const i of itemSlots) {
+			character.Appearance.RemoveItem(i);
+		}
+	}
+
+	/**
+	 * Updates the current room the bot is in with a given background
+	 * @param name the name of the background
+	 */
+	changeRoomBackgroundTo(name: string): void {
+		void this.conn.ChatRoomUpdate({
+			Background: name
+		});
+	}
+
+	destroy() {
+		clearInterval(this.tickTimer);
+		super.destroy();
+	}
 
     destroy() {
         clearInterval(this.tickTimer);

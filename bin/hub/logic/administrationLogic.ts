@@ -1009,17 +1009,17 @@ export class AdministrationLogic extends LogicBase {
                 data!.points = 0;
             }, logger.fatal.bind(logger));
 
-            if (canBeBannedUntil != null && canBeBannedUntil >= Date.now()) {
-                this.a_start_kickvote(
-                    target.connection,
-                    true,
-                    target,
-                    target.connection.Player,
-                    "Room Guard™ detected repeated, likely disruptive or spammy actions.",
-                );
-            }
-        }
-        /* TODO: Ban on repetitive violation
+			logger.alert(`${this.a_LogHeader(target.connection)} RoomGuard kicked ${target}: ${data.points}\n`, ...data.log);
+			target.connection.SendMessage("Emote", `*${target} has been automatically kicked by Room Guard™, as their actions have been detected as likely disruptive.`);
+			target.Kick();
+			// Reset points to 0, resetting roomguard for specific user after kicking
+			data.points = 0;
+
+			if (canBeBannedUntil != null && canBeBannedUntil >= Date.now()) {
+				this.a_start_kickvote(target.connection, true, target, target.connection.Player, "Room Guard™ detected repeated, likely disruptive or spammy actions.");
+			}
+		}
+		/* TODO: Ban on repetitive violation
 ==========[ ROOM GUARD ]==========
 Warning: Room guard has detected your actions as potentially disruptive or spamming.
 Please slow down a bit with what you are currently doing. If your actions continue like this, you will be automatically banned from the room, as this is not your first violation!

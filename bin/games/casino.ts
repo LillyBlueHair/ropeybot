@@ -19,7 +19,6 @@ import {
     API_Character,
     ItemPermissionLevel,
     BC_Server_ChatRoomMessage,
-    TBeepType,
     API_AppearanceItem,
     AssetGet,
     BC_AppearanceItem,
@@ -123,7 +122,7 @@ export class Casino {
         }
 
         conn.on("CharacterEntered", this.onCharacterEntered);
-        conn.on("Beep", ({ payload }) => this.onBeep(payload));
+        conn.on("Beep", (msg) => this.onBeep(msg));
 
         this.commandParser.register("help", this.onCommandHelp);
         this.commandParser.register("forfeits", this.onCommandForfeits);
@@ -161,7 +160,7 @@ export class Casino {
         }
     };
 
-    private onBeep = (beep: TBeepType) => {
+    private onBeep = (beep: ServerAccountBeepResponse) => {
         if (
             beep.Message.includes("TypingStatus") ||
             beep.Message.includes("ReqRoom")
@@ -346,7 +345,7 @@ ${forfeitsString()}
             return;
         }
 
-        this.conn.Player.FriendListAdd(toAdd.MemberNumber);
+        toAdd.friend();
 
         this.conn.reply(msg, `I am now friends with ${toAdd}! I like friends!`);
     };

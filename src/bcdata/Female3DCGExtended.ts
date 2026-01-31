@@ -188,852 +188,847 @@ import { E } from "./female3DCG.js";
 
 /**
  * An enum encapsulating the available extended item archetypes
- * @satisfies {Record<Uppercase<ExtendedArchetype>, ExtendedArchetype>}
  */
-const ExtendedArchetype = /** @type {const} */ {
-    MODULAR: "modular",
-    TYPED: "typed",
-    VIBRATING: "vibrating",
-    VARIABLEHEIGHT: "variableheight",
-    TEXT: "text",
-    NOARCH: "noarch",
-};
+// const ExtendedArchetype: Record<Uppercase<ExtendedArchetype>, ExtendedArchetype> = ({
+enum ExtendedArchetype {
+	MODULAR = "modular",
+	TYPED = "typed",
+	VIBRATING = "vibrating",
+	VARIABLEHEIGHT = "variableheight",
+	TEXT = "text",
+	NOARCH = "noarch",
+}
 
 /**
  * An object containing all extended item configurations.
  * @type {ExtendedItemMainConfig}
- * @const
  */
-export var AssetFemale3DCGExtended = {
-    BodyUpper: {
-        // NOTE: Switch to the `MODULAR` archetype if we'd want to allow for the simultaneous use of multiple overlays
-        Small: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Default",
-                },
-            ],
-        }, // Small
-        Normal: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "BodyUpper", AssetName: "Small" },
-        }, // Normal
-        Large: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "BodyUpper", AssetName: "Small" },
-        }, // Large
-        XLarge: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "BodyUpper", AssetName: "Small" },
-        }, // XLarge
-        FlatSmall: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "BodyUpper", AssetName: "Small" },
-        }, // FlatSmall
-        FlatMedium: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "BodyUpper", AssetName: "Small" },
-        }, // FlatMedium
-    },
-    Hat: {
-        Bandana: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Plain",
-                },
-                {
-                    Name: "Circles",
-                },
-                {
-                    Name: "Flowers",
-                },
-                {
-                    Name: "PolkaDots",
-                },
-                {
-                    Name: "Triangles",
-                },
-            ],
-        }, //Bandana
-        BallCapBack: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "StrapUnder",
-                },
-                {
-                    Name: "StrapOver",
-                },
-            ],
-        }, //BallCapBack
-        BallCapFront: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Blank",
-                },
-                {
-                    Name: "BCLogo",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "BDSM",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "BG",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "Chain",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "Gag",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "Knot",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "Monogram",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "Rock",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "Smile",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "Sun",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "Tick",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-            ],
-        }, //BallCapFront
-        SwimCap: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatSetting: ModularItemChatSetting.PER_MODULE,
-            Modules: [
-                {
-                    Name: "Pattern",
-                    Key: "p",
-                    Options: [{}, {}, {}, {}, {}, {}], //None, Stripes 1, Stripes 2, Tirangle, Cowprint, Tigerprint
-                },
-                {
-                    Name: "Hair",
-                    Key: "h",
-                    Options: [
-                        {
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                            },
-                        }, // No Hair Openings
-                        {
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                            },
-                        }, // Hair Openings
-                        {
-                            Property: { Hide: ["HairFront", "HairBack"] },
-                        }, // Ear Openings
-                        {
-                            Property: { Hide: ["HairFront"] },
-                        },
-                    ],
-                },
-            ],
-        }, // SwimCap
-        LatexHabit: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Loose",
-                },
-                {
-                    Name: "Tight",
-                },
-            ],
-        }, //LatexHabit
-        NunHabit: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Blank",
-                },
-                {
-                    Name: "Ass",
-                },
-                {
-                    Name: "Breasts",
-                },
-                {
-                    Name: "Chastity",
-                },
-                {
-                    Name: "Cock",
-                },
-                {
-                    Name: "Pussy",
-                },
-                {
-                    Name: "Thighs",
-                },
-            ],
-        }, // NunHabit
-        PirateHat: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Modules: [
-                {
-                    Name: "Bandana",
-                    Key: "b",
-                    Options: [
-                        {}, // Bandana
-                        {}, // No bandana :(
-                    ],
-                },
-                {
-                    Name: "Symbol",
-                    Key: "s",
-                    Options: [
-                        {}, // Classic
-                        {}, // Kinky
-                        {}, // None
-                    ],
-                },
-                {
-                    Name: "Feathers",
-                    Key: "f",
-                    DrawImages: false,
-                    Options: [
-                        {}, // Both
-                        {}, // Front
-                        {}, // Back
-                        {}, // None
-                    ],
-                },
-            ],
-        }, // PirateHat
-    },
-    HandAccessoryLeft: {
-        Rings: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Thumb",
-                    Key: "t",
-                    Options: [{}, {}],
-                },
-                {
-                    Name: "Index",
-                    Key: "i",
-                    Options: [{}, {}],
-                },
-                {
-                    Name: "Middle",
-                    Key: "m",
-                    Options: [{}, {}],
-                },
-                {
-                    Name: "Ring",
-                    Key: "r",
-                    Options: [{}, {}, {}],
-                },
-                {
-                    Name: "Pinkie",
-                    Key: "p",
-                    Options: [{}, {}, {}],
-                },
-            ],
-        },
-    },
-    HandAccessoryRight: {
-        Rings: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Thumb",
-                    Key: "t",
-                    Options: [{}, {}],
-                },
-                {
-                    Name: "Index",
-                    Key: "i",
-                    Options: [{}, {}],
-                },
-                {
-                    Name: "Middle",
-                    Key: "m",
-                    Options: [{}, {}],
-                },
-                {
-                    Name: "Ring",
-                    Key: "r",
-                    Options: [{}, {}, {}],
-                },
-                {
-                    Name: "Pinkie",
-                    Key: "p",
-                    Options: [{}, {}, {}],
-                },
-            ],
-        },
-    },
-    Cloth: {
-        TShirt2: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Plain",
-                },
-                {
-                    Name: "BCLogo",
-                    Property: {
-                        DefaultColor: "#FFF0CC",
-                    },
-                },
-                {
-                    Name: "BDSM",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "Gag",
-                    Property: {
-                        DefaultColor: "Default",
-                    },
-                },
-                {
-                    Name: "Knot",
-                    Property: {
-                        DefaultColor: "#CCC088",
-                    },
-                },
-                {
-                    Name: "Rock",
-                    Property: {
-                        DefaultColor: "#B03030",
-                    },
-                },
-                {
-                    Name: "Smile",
-                    Property: {
-                        DefaultColor: "#BB9911",
-                    },
-                },
-                {
-                    Name: "Tick",
-                    Property: {
-                        DefaultColor: "#119977",
-                    },
-                },
-            ],
-        }, // TShirt2
-        CustomTShirt: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Shirt",
-                    Key: "h",
-                    Options: [
-                        {
-                            // h0 - Normal
-                            Property: {
-                                OverridePriority: 28,
-                            },
-                        },
-                        {
-                            // h1 - UnderSkirt
-                            Property: {
-                                OverridePriority: 26,
-                            },
-                        },
-                        {
-                            // h2 - LowerLayer
-                            Property: {
-                                OverridePriority: 21,
-                            },
-                        },
-                    ],
-                    DrawImages: false,
-                },
-                {
-                    Name: "Stamp",
-                    Key: "t",
-                    Options: [
-                        {}, // t0 - None
-                        {}, // t1 - BondageCollege
-                        {}, // t2 - BTG
-                        {}, // t3 - Dominant
-                        {}, // t4 - Bonk
-                        {}, // t5 - OldXGame
-                        {}, // t6 - Staff
-                        {}, // t7 - Elite
-                        {}, // t8 - Raiders
-                        {}, // t9 - WhiteMoon
-                        {}, // t10 - ZamStick
-                        {}, // t11 - Eclipse
-                        {}, // t12 - RadFrog
-                        {}, // t13 - ZamStickII
-                        {}, // t14 - Hornywood
-                        {}, // t15 - BondageClubRules
-                        {}, // t16 - BornToBeTied
-                        {}, // t17 - Hogtied
-                        {}, // t18 - BCollege2
-                        {}, // t19 - ControlPad1
-                        {}, // t20 - Gangriels
-                        {}, // t21 - DenOfSin
-                        {}, // t22 - SlaveHelpline
-                        {}, // t23 - DemonsBar
-                        {}, // t24 - AzureCorp
-                        {}, // t25 - Shibari
-                        {}, // t26 - BullsEye
-                        {}, // t27 - Keys?
-                        {}, // t28 - VoidOrder
-                        {}, // t29 - Malkuth
-                        {}, // t30 - Amber Family
-                        {}, // t31 - Luke's Chill Tent
-                        {}, // t32 - Rat's Ass Tavern
-                    ],
-                },
-            ],
-        }, // CustomTShirt
-        ChineseDress2: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Red",
-                },
-                {
-                    Name: "Purple",
-                },
-                {
-                    Name: "Pink",
-                },
-            ],
-        }, // ChineseDress2
-        LatexLacedSuit: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Laced",
-                },
-                {
-                    Name: "NonLaced",
-                },
-            ],
-        }, // LatexLacedSuit
-        RetroGirdle: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "NonGarters",
-                },
-                {
-                    Name: "Garters",
-                },
-            ],
-        }, // RetroGirdle
-        ReverseBunnySuit: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "Suit", AssetName: "Catsuit" },
-        }, // ReverseBunnySuit
-        Jacket: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Normal",
-                },
-                {
-                    Name: "Hooded",
-                    Property: {
-                        Hide: [
-                            "HairFront",
-                            "HairBack",
-                            "HairAccessory1",
-                            "HairAccessory2",
-                            "HairAccessory3",
-                            "Hat",
-                        ],
-                    },
-                },
-                {
-                    Name: "HoodedEarsOut",
-                    Property: {
-                        HideItem: [
-                            "HairAccessory2UnicornHorn",
-                            "HairAccessory2DildocornHorn",
-                        ],
-                        Hide: [
-                            "HairFront",
-                            "HairBack",
-                            "HairAccessory1",
-                            "HairAccessory3",
-                            "Hat",
-                        ],
-                    },
-                },
-            ],
-        }, // Jacket
-        SlaveRags: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Cloth",
-                    Key: "c",
-                    Options: [
-                        {}, //c0 - Base
-                        {}, //c1 - BaseStained
-                        {}, //c2 - Torn1
-                        {}, //c3 - Torn1Stained
-                    ],
-                },
-                {
-                    Name: "Belt",
-                    Key: "b",
-                    Options: [
-                        {}, //b0
-                        {}, //b1
-                        {}, //b2
-                    ],
-                },
-            ],
-        }, //SlaveRags
-        Hoodie: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Hood",
-                    Key: "h",
-                    Options: [
-                        {}, //h0 - Down
-                        {}, //h1 - Up Regular
-                        {}, //h2 - Up Ears
-                    ],
-                },
-                {
-                    Name: "Length",
-                    Key: "l",
-                    DrawImages: false,
-                    Options: [
-                        {}, //l0 - Full Length
-                        {}, //l1 - Cropped
-                        {}, //l2 - Bolero
-                    ],
-                },
-                //{
-                // Name: "Pouch", Key: "p", // Pouch option not yet implemented
-                // Options: [
-                // {}, //p0 - Hands Out
-                // {}, //p1 - Hands In
-                // ],
-                //},
-            ],
-        }, //Hoodie
-        LatexTankTop: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "BackHood",
-                    Key: "lh",
-                    Options: [
-                        {
-                            // lh0 - None
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // lh1 - Down
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // lh2 - Pulled Up
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                    "HairAccessory3",
-                                    "Hat",
-                                ],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "ReverseHood",
-                    Key: "rh",
-                    Options: [
-                        {
-                            // rh0 - None
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // rh1 - Loose
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // rh2 - Pulled Up
-                            Property: {
-                                Effect: [E.Slow],
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                    "HairAccessory3",
-                                    "Hat",
-                                    "Head",
-                                ],
-                            },
-                        },
-                    ],
-                },
-            ],
-        }, //LatexTankTop
-        CheerleaderTop: {
-            Archetype: ExtendedArchetype.TEXT,
-            MaxLength: { Text: 8 },
-            Font: "'Archivo Black', 'Impact', 'Arial Black', 'Franklin Gothic', 'Arial', sans-serif",
-            ScriptHooks: {
-                AfterDraw: AssetsClothCheerleaderTopAfterDrawHook,
-            },
-            DialogPrefix: {
-                Header: "ClothCheerleaderTopTextLabel",
-            },
-        }, // CheerleaderTop
-        FishnetTop: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Modules: [
-                {
-                    Name: "Sleeves",
-                    Key: "s",
-                    Options: [
-                        {}, // Sleeves
-                        {}, // No sleeves
-                    ],
-                },
-                {
-                    Name: "Top",
-                    Key: "t",
-                    Options: [
-                        {}, // Full
-                        {}, // Crop
-                    ],
-                },
-            ],
-        }, // FishnetTop
-        MeshTop: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Modules: [
-                {
-                    Name: "Sleeves",
-                    Key: "s",
-                    Options: [
-                        {}, // Sleeves
-                        {}, // No sleeves
-                    ],
-                },
-                {
-                    Name: "Top",
-                    Key: "t",
-                    Options: [
-                        {}, // Full
-                        {}, // Crop
-                        {}, // Crop2
-                        {}, // Bolero
-                        {}, // Leotard
-                        {}, // Ripped
-                        {}, // None
-                    ],
-                },
-            ],
-        }, // MeshTop
-        CorsetDress: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [{ Name: "Normal" }, { Name: "NoSkirt" }],
-        }, // CorsetDress
-        LatexHobbleDress: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Top",
-                    Key: "t",
-                    Options: [
-                        {
-                            // t0 - Solid
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // t1 - Oval Cleavage
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-                {
-                    Name: "CollarOpt",
-                    Key: "c",
-                    Options: [
-                        {
-                            // c0 - None
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // c1 - Collar
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-                {
-                    Name: "SkirtOpt",
-                    Key: "k",
-                    Options: [
-                        {
-                            // k0 - Knee Area
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // k1 - Ankle Area
-                            Property: { Effect: [E.Slow] },
-                        },
-                    ],
-                },
-                {
-                    Name: "EndSkirt",
-                    Key: "r",
-                    Options: [
-                        {
-                            // r0 - Normal
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // r1 - Mermaid Type
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-                {
-                    Name: "Belt",
-                    Key: "b",
-                    Options: [
-                        {
-                            // b0 - None
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // b1 - Knee Strap Limiter
-                            Property: { Effect: [E.Slow] },
-                        },
-                        {
-                            // b2 - Ankle Strap Limiter
-                            Property: { Effect: [E.Slow] },
-                        },
-                        {
-                            // b3 - Both Straps Limiter
-                            Property: { Effect: [E.Slow] },
-                        },
-                    ],
-                },
-            ],
-        }, // LatexHobbleDress
-    }, // Cloth
-    BodyMarkings: {
-        WombTattoos: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatSetting: ModularItemChatSetting.PER_MODULE,
-            DrawImages: false,
-            Modules: [
-                {
-                    Name: "Zoom",
-                    Key: "z",
-                    Options: [{}, {}], // n,y
-                },
-                {
-                    Name: "Big",
-                    Key: "b",
-                    Options: [{}, {}], // n,y
-                },
-                {
-                    Name: "Bloom",
-                    Key: "c",
-                    Options: [{}, {}], // n,y
-                },
-                {
-                    Name: "BottomSpike",
-                    Key: "d",
-                    Options: [{}, {}], // n,y
-                },
-                {
-                    Name: "Flash",
-                    Key: "e",
-                    Options: [{}, {}], // n,y
-                },
-                {
-                    Name: "Fly",
-                    Key: "f",
-                    Options: [{}, {}], // n,y
-                },
-                {
-                    Name: "Grass",
-                    Key: "g",
-                    Options: [{}, {}], // n,y
-                },
+export var AssetFemale3DCGExtended: ExtendedItemMainConfig = {
+	BodyUpper: {
+		// NOTE: Switch to the `MODULAR` archetype if we'd want to allow for the simultaneous use of multiple overlays
+		Small: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Default",
+				},
+			],
+		}, // Small
+		Normal: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "BodyUpper", AssetName: "Small" },
+		}, // Normal
+		Large: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "BodyUpper", AssetName: "Small" },
+		}, // Large
+		XLarge: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "BodyUpper", AssetName: "Small" },
+		}, // XLarge
+		FlatSmall: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "BodyUpper", AssetName: "Small" },
+		}, // FlatSmall
+		FlatMedium: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "BodyUpper", AssetName: "Small" },
+		}, // FlatMedium
+	},
+	Hat: {
+		Bandana: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Plain",
+				},
+				{
+					Name: "Circles",
+				},
+				{
+					Name: "Flowers",
+				},
+				{
+					Name: "PolkaDots",
+				},
+				{
+					Name: "Triangles",
+				},
+			],
+		}, //Bandana
+		BallCapBack: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "StrapUnder",
+				},
+				{
+					Name: "StrapOver",
+				},
+			],
+		}, //BallCapBack
+		BallCapFront: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Blank",
+				},
+				{
+					Name: "BCLogo",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "BDSM",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "BG",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "Chain",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "Gag",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "Knot",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "Monogram",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "Rock",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "Smile",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "Sun",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "Tick",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+			],
+		}, //BallCapFront
+		SwimCap: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			Modules: [
+				{
+					Name: "Pattern",
+					Key: "p",
+					Options: [{}, {}, {}, {}, {}, {}], //None, Stripes 1, Stripes 2, Tirangle, Cowprint, Tigerprint
+				},
+				{
+					Name: "Hair",
+					Key: "h",
+					Options: [
+						{
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+							},
+						}, // No Hair Openings
+						{
+							Property: {
+								Hide: ["HairFront", "HairAccessory1", "HairAccessory2"],
+							},
+						}, // Hair Openings
+						{
+							Property: { Hide: ["HairFront", "HairBack"] },
+						}, // Ear Openings
+						{
+							Property: { Hide: ["HairFront"] },
+						},
+					],
+				},
+			],
+		}, // SwimCap
+		LatexHabit: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Loose",
+				},
+				{
+					Name: "Tight",
+				},
+			],
+		}, //LatexHabit
+		NunHabit: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Blank",
+				},
+				{
+					Name: "Ass",
+				},
+				{
+					Name: "Breasts",
+				},
+				{
+					Name: "Chastity",
+				},
+				{
+					Name: "Cock",
+				},
+				{
+					Name: "Pussy",
+				},
+				{
+					Name: "Thighs",
+				},
+			],
+		}, // NunHabit
+		PirateHat: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			Modules: [
+				{
+					Name: "Bandana",
+					Key: "b",
+					Options: [
+						{}, // Bandana
+						{}, // No bandana :(
+					],
+				},
+				{
+					Name: "Symbol",
+					Key: "s",
+					Options: [
+						{}, // Classic
+						{}, // Kinky
+						{}, // None
+					],
+				},
+				{
+					Name: "Feathers",
+					Key: "f",
+					DrawImages: false,
+					Options: [
+						{}, // Both
+						{}, // Front
+						{}, // Back
+						{}, // None
+					],
+				},
+			],
+		}, // PirateHat
+	},
+	HandAccessoryLeft: {
+		Rings: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Thumb",
+					Key: "t",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Index",
+					Key: "i",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Middle",
+					Key: "m",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Ring",
+					Key: "r",
+					Options: [{}, {}, {}],
+				},
+				{
+					Name: "Pinkie",
+					Key: "p",
+					Options: [{}, {}, {}],
+				},
+			],
+		},
+	},
+	HandAccessoryRight: {
+		Rings: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Thumb",
+					Key: "t",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Index",
+					Key: "i",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Middle",
+					Key: "m",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Ring",
+					Key: "r",
+					Options: [{}, {}, {}],
+				},
+				{
+					Name: "Pinkie",
+					Key: "p",
+					Options: [{}, {}, {}],
+				},
+			],
+		},
+	},
+	Cloth: {
+		TShirt2: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Plain",
+				},
+				{
+					Name: "BCLogo",
+					Property: {
+						DefaultColor: "#FFF0CC",
+					},
+				},
+				{
+					Name: "BDSM",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "Gag",
+					Property: {
+						DefaultColor: "Default",
+					},
+				},
+				{
+					Name: "Knot",
+					Property: {
+						DefaultColor: "#CCC088",
+					},
+				},
+				{
+					Name: "Rock",
+					Property: {
+						DefaultColor: "#B03030",
+					},
+				},
+				{
+					Name: "Smile",
+					Property: {
+						DefaultColor: "#BB9911",
+					},
+				},
+				{
+					Name: "Tick",
+					Property: {
+						DefaultColor: "#119977",
+					},
+				},
+			],
+		}, // TShirt2
+		CustomTShirt: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Shirt",
+					Key: "h",
+					Options: [
+						{
+							// h0 - Normal
+							Property: {
+								OverridePriority: 28,
+							},
+						},
+						{
+							// h1 - UnderSkirt
+							Property: {
+								OverridePriority: 26,
+							},
+						},
+						{
+							// h2 - LowerLayer
+							Property: {
+								OverridePriority: 21,
+							},
+						},
+					],
+					DrawImages: false,
+				},
+				{
+					Name: "Stamp",
+					Key: "t",
+					Options: [
+						{}, // t0 - None
+						{}, // t1 - BondageCollege
+						{}, // t2 - BTG
+						{}, // t3 - Dominant
+						{}, // t4 - Bonk
+						{}, // t5 - OldXGame
+						{}, // t6 - Staff
+						{}, // t7 - Elite
+						{}, // t8 - Raiders
+						{}, // t9 - WhiteMoon
+						{}, // t10 - ZamStick
+						{}, // t11 - Eclipse
+						{}, // t12 - RadFrog
+						{}, // t13 - ZamStickII
+						{}, // t14 - Hornywood
+						{}, // t15 - BondageClubRules
+						{}, // t16 - BornToBeTied
+						{}, // t17 - Hogtied
+						{}, // t18 - BCollege2
+						{}, // t19 - ControlPad1
+						{}, // t20 - Gangriels
+						{}, // t21 - DenOfSin
+						{}, // t22 - SlaveHelpline
+						{}, // t23 - DemonsBar
+						{}, // t24 - AzureCorp
+						{}, // t25 - Shibari
+						{}, // t26 - BullsEye
+						{}, // t27 - Keys?
+						{}, // t28 - VoidOrder
+						{}, // t29 - Malkuth
+						{}, // t30 - Amber Family
+						{}, // t31 - Luke's Chill Tent
+						{}, // t32 - Rat's Ass Tavern
+					],
+				},
+			],
+		}, // CustomTShirt
+		ChineseDress2: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Red",
+				},
+				{
+					Name: "Purple",
+				},
+				{
+					Name: "Pink",
+				},
+			],
+		}, // ChineseDress2
+		LatexLacedSuit: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Laced",
+				},
+				{
+					Name: "NonLaced",
+				},
+			],
+		}, // LatexLacedSuit
+		RetroGirdle: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "NonGarters",
+				},
+				{
+					Name: "Garters",
+				},
+			],
+		}, // RetroGirdle
+		ReverseBunnySuit: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "Suit", AssetName: "Catsuit" },
+		}, // ReverseBunnySuit
+		Jacket: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Normal",
+				},
+				{
+					Name: "Hooded",
+					Property: {
+						Hide: [
+							"HairFront",
+							"HairBack",
+							"HairAccessory1",
+							"HairAccessory2",
+							"HairAccessory3",
+							"Hat",
+						],
+					},
+				},
+				{
+					Name: "HoodedEarsOut",
+					Property: {
+						HideItem: [
+							"HairAccessory2UnicornHorn",
+							"HairAccessory2DildocornHorn",
+						],
+						Hide: [
+							"HairFront",
+							"HairBack",
+							"HairAccessory1",
+							"HairAccessory3",
+							"Hat",
+						],
+					},
+				},
+			],
+		}, // Jacket
+		SlaveRags: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Cloth",
+					Key: "c",
+					Options: [
+						{}, //c0 - Base
+						{}, //c1 - BaseStained
+						{}, //c2 - Torn1
+						{}, //c3 - Torn1Stained
+					],
+				},
+				{
+					Name: "Belt",
+					Key: "b",
+					Options: [
+						{}, //b0
+						{}, //b1
+						{}, //b2
+					],
+				},
+			],
+		}, //SlaveRags
+		Hoodie: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Hood",
+					Key: "h",
+					Options: [
+						{}, //h0 - Down
+						{}, //h1 - Up Regular
+						{}, //h2 - Up Ears
+					],
+				},
+				{
+					Name: "Length",
+					Key: "l",
+					DrawImages: false,
+					Options: [
+						{}, //l0 - Full Length
+						{}, //l1 - Cropped
+						{}, //l2 - Bolero
+					],
+				},
+				//{
+				// Name: "Pouch", Key: "p", // Pouch option not yet implemented
+				// Options: [
+				// {}, //p0 - Hands Out
+				// {}, //p1 - Hands In
+				// ],
+				//},
+			],
+		}, //Hoodie
+		LatexTankTop: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "BackHood",
+					Key: "lh",
+					Options: [
+						{
+							// lh0 - None
+							Property: { Effect: [] },
+						},
+						{
+							// lh1 - Down
+							Property: { Effect: [] },
+						},
+						{
+							// lh2 - Pulled Up
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+									"HairAccessory3",
+									"Hat",
+								],
+							},
+						},
+					],
+				},
+				{
+					Name: "ReverseHood",
+					Key: "rh",
+					Options: [
+						{
+							// rh0 - None
+							Property: { Effect: [] },
+						},
+						{
+							// rh1 - Loose
+							Property: { Effect: [] },
+						},
+						{
+							// rh2 - Pulled Up
+							Property: {
+								Effect: [E.Slow],
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+									"HairAccessory3",
+									"Hat",
+									"Head",
+								],
+							},
+						},
+					],
+				},
+			],
+		}, //LatexTankTop
+		CheerleaderTop: {
+			Archetype: ExtendedArchetype.TEXT,
+			MaxLength: { Text: 8 },
+			Font: "'Archivo Black', 'Impact', 'Arial Black', 'Franklin Gothic', 'Arial', sans-serif",
+			ScriptHooks: {
+				AfterDraw: AssetsClothCheerleaderTopAfterDrawHook,
+			},
+			DialogPrefix: {
+				Header: "ClothCheerleaderTopTextLabel",
+			},
+		}, // CheerleaderTop
+		FishnetTop: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			Modules: [
+				{
+					Name: "Sleeves",
+					Key: "s",
+					Options: [
+						{}, // Sleeves
+						{}, // No sleeves
+					],
+				},
+				{
+					Name: "Top",
+					Key: "t",
+					Options: [
+						{}, // Full
+						{}, // Crop
+					],
+				},
+			],
+		}, // FishnetTop
+		MeshTop: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			Modules: [
+				{
+					Name: "Sleeves",
+					Key: "s",
+					Options: [
+						{}, // Sleeves
+						{}, // No sleeves
+					],
+				},
+				{
+					Name: "Top",
+					Key: "t",
+					Options: [
+						{}, // Full
+						{}, // Crop
+						{}, // Crop2
+						{}, // Bolero
+						{}, // Leotard
+						{}, // Ripped
+						{}, // None
+					],
+				},
+			],
+		}, // MeshTop
+		CorsetDress: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [{ Name: "Normal" }, { Name: "NoSkirt" }],
+		}, // CorsetDress
+		LatexHobbleDress: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Top",
+					Key: "t",
+					Options: [
+						{
+							// t0 - Solid
+							Property: { Effect: [] },
+						},
+						{
+							// t1 - Oval Cleavage
+							Property: { Effect: [] },
+						},
+					],
+				},
+				{
+					Name: "CollarOpt",
+					Key: "c",
+					Options: [
+						{
+							// c0 - None
+							Property: { Effect: [] },
+						},
+						{
+							// c1 - Collar
+							Property: { Effect: [] },
+						},
+					],
+				},
+				{
+					Name: "SkirtOpt",
+					Key: "k",
+					Options: [
+						{
+							// k0 - Knee Area
+							Property: { Effect: [] },
+						},
+						{
+							// k1 - Ankle Area
+							Property: { Effect: [E.Slow] },
+						},
+					],
+				},
+				{
+					Name: "EndSkirt",
+					Key: "r",
+					Options: [
+						{
+							// r0 - Normal
+							Property: { Effect: [] },
+						},
+						{
+							// r1 - Mermaid Type
+							Property: { Effect: [] },
+						},
+					],
+				},
+				{
+					Name: "Belt",
+					Key: "b",
+					Options: [
+						{
+							// b0 - None
+							Property: { Effect: [] },
+						},
+						{
+							// b1 - Knee Strap Limiter
+							Property: { Effect: [E.Slow] },
+						},
+						{
+							// b2 - Ankle Strap Limiter
+							Property: { Effect: [E.Slow] },
+						},
+						{
+							// b3 - Both Straps Limiter
+							Property: { Effect: [E.Slow] },
+						},
+					],
+				},
+			],
+		}, // LatexHobbleDress
+	}, // Cloth
+	BodyMarkings: {
+		WombTattoos: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "Zoom",
+					Key: "z",
+					Options: [{}, {}], // n,y
+				},
+				{
+					Name: "Big",
+					Key: "b",
+					Options: [{}, {}], // n,y
+				},
+				{
+					Name: "Bloom",
+					Key: "c",
+					Options: [{}, {}], // n,y
+				},
+				{
+					Name: "BottomSpike",
+					Key: "d",
+					Options: [{}, {}], // n,y
+				},
+				{
+					Name: "Flash",
+					Key: "e",
+					Options: [{}, {}], // n,y
+				},
+				{
+					Name: "Fly",
+					Key: "f",
+					Options: [{}, {}], // n,y
+				},
+				{
+					Name: "Grass",
+					Key: "g",
+					Options: [{}, {}], // n,y
+				},
 
                 {
                     Name: "Grow",
@@ -15569,5863 +15564,5598 @@ export var AssetFemale3DCGExtended = {
                             },
                         },
 
-                        {
-                            Property: {
-                                Effect: [E.GagHeavy],
-                            },
-                        },
-                        {},
-                    ], // Cloth, Cross Tape, Tape, Tape + panties, None
-                },
-                {
-                    Name: "Stuffing",
-                    Key: "Stuffing",
-                    Options: [
-                        {
-                            Property: {
-                                Effect: [E.GagMedium],
-                                Fetish: ["Lingerie"],
-                            },
-                        },
-                        {
-                            Property: {
-                                Effect: [E.GagMedium],
-                                Fetish: ["Lingerie"],
-                            },
-                        },
-                    ], // Panties, Wad
-                },
-            ],
-            DialogPrefix: {
-                Header: "OverfilledGagSelect",
-                Module: "OverfilledGagModule",
-                Option: "OverfilledGagOption",
-                Chat: "OverfilledGagSet",
-            },
-        }, // Overfilled Gag
-        AOMGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            DrawImages: false,
-            Options: [
-                {
-                    Name: "Lips",
-                    AllowLock: false,
-                    Property: {},
-                },
-                {
-                    Name: "Straps",
-                    AllowLock: true,
-                    Property: { Difficulty: 4 },
-                },
-            ],
-        }, // AOMGag
-        HorrorMuzzle: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "None",
-                    Property: {},
-                },
-                {
-                    Name: "Rivets",
-                    Property: { Difficulty: 3 },
-                },
-            ],
-        }, // HorrorMuzzle
-        AsylumMuzzle: {
-            Archetype: ExtendedArchetype.TYPED,
-            DrawImages: false,
-            Options: [
-                {
-                    Name: "Normal",
-                    Property: { Effect: [E.GagEasy] },
-                },
-                {
-                    Name: "Padded",
-                    Property: { Effect: [E.GagNormal], Difficulty: 3 },
-                },
-            ],
-        }, // AsylumMuzzle
-    }, // ItemMouth
-    ItemMouth2: {
-        ClothGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "ClothGag" },
-        },
-        ScarfGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "ScarfGag" },
-        },
-        WiffleGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "WiffleGag" },
-        },
-        BallGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag" },
-        },
-        RopeBallGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "RopeBallGag" },
-        },
-        HarnessBallGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag" },
-        },
-        HarnessPonyBits: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "HarnessPonyBits",
-            },
-        },
-        DuctTape: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "DuctTape" },
-        },
-        HarnessBallGag1: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "HarnessBallGag1",
-            },
-        },
-        CupholderGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "CupholderGag" },
-        },
-        Ribbons: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "Ribbons" },
-        },
-        FuturisticMuzzle: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "FuturisticMuzzle",
-            },
-        },
-        PonyGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "PonyGag" },
-        },
-        FuturisticPanelGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "FuturisticPanelGag",
-            },
-        },
-        FuturisticHarnessPanelGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "FuturisticHarnessPanelGag",
-            },
-        },
-        FuturisticHarnessBallGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "FuturisticHarnessBallGag",
-            },
-        },
-        BallGagMask: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGagMask" },
-        },
-        LatexMuzzleMask: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "LatexMuzzleMask",
-            },
-        },
-        ModularGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "ModularGag" },
-        },
-        Stitches: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "Stitches" },
-        }, // StitchGag
-        PaddedFaceMask: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "PaddedFaceMask" },
-        }, // PaddedFaceMask
-        LatexRespirator: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "LatexRespirator",
-            },
-        }, //LatexRespirator
-        DildoPlugGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "DildoPlugGag" },
-        }, // DildoPlugGag
-        BigMouth: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "BigMouth" },
-        }, // BigMouth
-        DentalGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "DentalGag" },
-        }, // DentalGag
-        OTNPlugGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "OTNPlugGag" },
-        }, // OTNPlugGag
-        LatexSheathGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "LatexSheathGag" },
-        }, // LatexSheathGag
-        PlugGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "PlugGag" },
-        }, // PlugGag
-        PumpGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "PumpGag" },
-        }, // PumpGag
-        TonguePiercingGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "TonguePiercingGag",
-            },
-        }, // TonguePiercingGag
-        TechnoGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "TechnoGag" },
-        }, // TechnoGag
-        MilkBottle: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "MilkBottle" },
-        }, // MilkBottle
-        FunnelGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "FunnelGag" },
-            Options: [
-                {
-                    Name: "None",
-                    Property: {
-                        Effect: [E.OpenMouth],
-                    },
-                },
-                {
-                    Name: "Funnel",
-                    Property: {
-                        Effect: [E.BlockMouth, E.ProtrudingMouth],
-                        Block: ["ItemMouth3", "ItemHood"],
-                    },
-                },
-            ],
-        }, // FunnelGag
-        QualityHarnessGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "QualityHarnessGag",
-            },
-        }, // QualityHarnessGag
-        GenitalGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "GenitalGag" },
-        }, // GenitalGag
-        PremiumMuzzle: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "PremiumMuzzle" },
-        }, // PremiumMuzzle
-        OverfilledGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "OverfilledGag" },
-        }, // OverfilledGag
-        AOMGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "AOMGag" },
-        }, // AOMGag
-        HorrorMuzzle: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "HorrorMuzzle" },
-        }, // HorrorMuzzle
-        AsylumMuzzle: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "AsylumMuzzle" },
-        }, // AsylumMuzzle
-    }, // ItemMouth2
-    ItemMouth3: {
-        ClothGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "ClothGag" },
-        },
-        ScarfGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "ScarfGag" },
-        },
-        WiffleGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "WiffleGag" },
-        },
-        BallGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag" },
-        },
-        RopeBallGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "RopeBallGag" },
-        },
-        HarnessBallGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag" },
-        },
-        HarnessPonyBits: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "HarnessPonyBits",
-            },
-        },
-        DuctTape: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "DuctTape" },
-        },
-        HarnessBallGag1: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "HarnessBallGag1",
-            },
-        },
-        CupholderGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "CupholderGag" },
-        },
-        Ribbons: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "Ribbons" },
-        },
-        FuturisticMuzzle: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "FuturisticMuzzle",
-            },
-        },
-        PonyGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "PonyGag" },
-        },
-        FuturisticPanelGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "FuturisticPanelGag",
-            },
-        },
-        FuturisticHarnessPanelGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "FuturisticHarnessPanelGag",
-            },
-        },
-        FuturisticHarnessBallGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "FuturisticHarnessBallGag",
-            },
-        },
-        Stitches: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "Stitches" },
-        }, // StitchGag
-        LatexRespirator: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "LatexRespirator",
-            },
-        }, //LatexRespirator
-        PaddedFaceMask: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "PaddedFaceMask" },
-        }, // PaddedFaceMask
-        BallGagMask: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGagMask" },
-        },
-        LatexMuzzleMask: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "LatexMuzzleMask",
-            },
-        },
-        ModularGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "ModularGag" },
-        },
-        DildoPlugGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "DildoPlugGag" },
-        }, // DildoPlugGag
-        BigMouth: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "BigMouth" },
-        }, // BigMouth
-        DentalGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "DentalGag" },
-        }, // DentalGag
-        OTNPlugGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "OTNPlugGag" },
-        }, // OTNPlugGag
-        LatexSheathGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "LatexSheathGag" },
-        }, // LatexSheathGag
-        PlugGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "PlugGag" },
-        }, // PlugGag
-        PumpGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "PumpGag" },
-        }, // PumpGag
-        TonguePiercingGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "TonguePiercingGag",
-            },
-        }, // TonguePiercingGag
-        TechnoGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "TechnoGag" },
-        }, // TechnoGag
-        MilkBottle: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "MilkBottle" },
-        }, // MilkBottle
-        FunnelGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "FunnelGag" },
-            Options: [
-                {
-                    Name: "None",
-                    Property: {
-                        Effect: [E.OpenMouth],
-                    },
-                },
-                {
-                    Name: "Funnel",
-                    Property: {
-                        Effect: [E.BlockMouth, E.ProtrudingMouth],
-                        Block: ["ItemHood"],
-                    },
-                },
-            ],
-        }, // FunnelGag
-        QualityHarnessGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemMouth",
-                AssetName: "QualityHarnessGag",
-            },
-        }, // QualityHarnessGag
-        PremiumMuzzle: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "PremiumMuzzle" },
-        }, // PremiumMuzzle
-        OverfilledGag: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "OverfilledGag" },
-        }, // OverfilledGag
-        AOMGag: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "AOMGag" },
-        }, // AOMGag
-        HorrorMuzzle: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "HorrorMuzzle" },
-        }, // HorrorMuzzle
-        AsylumMuzzle: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMouth", AssetName: "AsylumMuzzle" },
-        }, // AsylumMuzzle
-    }, // ItemMouth3
-    Mask: {
-        BunnyMask1: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Ears",
-                },
-                {
-                    Name: "Earless",
-                    Property: { OverridePriority: 51 },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectBunnyMaskStyle",
-                Option: "BunnyMaskType",
-            },
-        }, // BunnyMask1
-        OpenFaceHood: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "HideBackHair",
-                    Property: { Hide: ["HairBack"] },
-                },
-                {
-                    Name: "ShowBackHair",
-                    NPCDefault: true,
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectOpenFaceHoodStyle",
-                Option: "OpenFaceHoodStyle",
-            },
-            DrawImages: false,
-        }, // OpenFaceHood
-        PetNose: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Nose",
-                    Key: "n",
-                    Options: [
-                        {}, // n0 - Nose
-                        {}, // n1 - No Nose
-                    ],
-                },
-                {
-                    Name: "Cheeks",
-                    Key: "c",
-                    Options: [
-                        {}, // c0 - No Cheeks
-                        {}, // c1 - Small Cheeks
-                        {}, // c2 - Big Cheeks
-                    ],
-                },
-                {
-                    Name: "Whiskers",
-                    Key: "w",
-                    Options: [
-                        {}, // w0 - No Whiskers
-                        {}, // w1 - Short Whiskers
-                        {}, // w2 - Long Whiskers
-                    ],
-                },
-                {
-                    Name: "Mouth",
-                    Key: "m",
-                    Options: [
-                        {}, // m0 - Show Mouth
-                        { Property: { Hide: ["Mouth"] } }, // m1 - Hide Mouth
-                    ],
-                },
-            ],
-        }, //PetNose
-        Glitter: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Freckles",
-                },
-                {
-                    Name: "MidFreckles",
-                },
-                {
-                    Name: "SplitFreckles",
-                },
-                {
-                    Name: "FrecklesSmall",
-                },
-                {
-                    Name: "MidFrecklesSmall",
-                },
-                {
-                    Name: "SplitFrecklesSmall",
-                },
-                {
-                    Name: "StarsBoth",
-                },
-                {
-                    Name: "StarsLeft",
-                },
-                {
-                    Name: "StarsRight",
-                },
-                {
-                    Name: "DotsBoth",
-                },
-                {
-                    Name: "DotsLeft",
-                },
-                {
-                    Name: "DotsRight",
-                },
-            ],
-        }, //Glitter
-        HeadHarness: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Simple",
-                },
-                {
-                    Name: "Heavy",
-                },
-            ],
-        }, //HeadHarness
-        Kissmark: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ClothAccessory", AssetName: "Kissmark" },
-            DialogPrefix: {
-                Header: "ClothAccessoryKissmarkSelect",
-                Module: "ClothAccessoryKissmarkModule",
-                Option: "ClothAccessoryKissmarkOption",
-                Chat: "ClothAccessoryKissmarkSet",
-            },
-        }, //KissMark
-        SwimCap: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "Hat", AssetName: "SwimCap" },
-        },
-        DroneMask: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ItemHead", AssetName: "DroneMask" },
-            Modules: [
-                {
-                    Name: "Mouth",
-                    Key: "m",
-                    Options: [{}, {}, {}, {}, {}, {}, {}, {}, {}], // none, onahole, fleshlight, smile, holes, sculpted, subtle, thin, thin oh
-                },
-                {
-                    Name: "Eyes",
-                    Key: "e",
-                    Options: [{}, {}, {}, {}, {}, {}, {}], // none, regular, spiral, smile, holes, sculpted, concave
-                },
-                {
-                    Name: "Pattern",
-                    Key: "p",
-                    Options: [
-                        {}, // Blank
-                        {}, // Barcode
-                        {}, // Scarab
-                        {}, // Hex
-                        {}, // Lines
-                        {
-                            HasSubscreen: true,
-                            ArchetypeConfig: {
-                                Archetype: ExtendedArchetype.TEXT,
-                                MaxLength: { Text: 16 },
-                                Font: "Impact",
-                                ScriptHooks: {
-                                    AfterDraw:
-                                        AssetsItemHeadDroneMaskAfterDrawHook,
-                                },
-                            },
-                            Property: {
-                                HideItem: [
-                                    "ItemHeadDroneMask",
-                                    "ItemHoodDroneMask",
-                                ],
-                            },
-                        }, // text
-                        {}, // Machine
-                        {}, // Fishnet
-                        {}, // Hexpattern
-                        {}, // Large Circle
-                        {}, // Large Split Circle
-                        {}, // Large Heart
-                        {}, // Large Stylized Heart
-                        {}, // Small Heart
-                        {}, // Lock
-                        {}, // Large X
-                    ],
-                },
-                {
-                    Name: "Glow",
-                    Key: "g",
-                    Options: [{}, {}, {}, {}], // Glow Off, Glow Eyes, Mouth On, Glow Pattern On, Glow On
-                },
-                {
-                    Name: "Helmet",
-                    Key: "h",
-                    Options: [
-                        {}, // h0 - Mask
-                        {
-                            Property: {
-                                Hide: ["HairFront", "HairBack"], //"HairAccessory1", "HairAccessory2"],
-                                HideItem: [
-                                    "HatBonnet1",
-                                    "HatBonnet2",
-                                    "HatBunnySuccubus2",
-                                    "HatCrown1",
-                                    "HatCrown2",
-                                    "HatCrown4",
-                                    "HatCrown5",
-                                    "HatBand1",
-                                    "HatBand2",
-                                    "HatPirateBandana1",
-                                    "HatVeil1",
-                                    "HatVeil2", // Hat items
-                                    "MaskFuturisticVisor",
-                                    "MaskShinobiMask", // Mask items
-                                    "HairAccessory3Ribbons4", // HairAccessory items
-                                    "HairAccessory1Antennae",
-                                    "HairAccessory1BunnyEars1",
-                                    "HairAccessory1BunnyEars2",
-                                    "HairAccessory1CowHorns",
-                                    "HairAccessory1ElfEars",
-                                    "HairAccessory1Ears1",
-                                    "HairAccessory1Ears2",
-                                    "HairAccessory1FoxEars1",
-                                    "HairAccessory1FoxEars2",
-                                    "HairAccessory1FoxEars3",
-                                    "HairAccessory1KittenEars1",
-                                    "HairAccessory1KittenEars2",
-                                    "HairAccessory1MouseEars1",
-                                    "HairAccessory1MouseEars2",
-                                    "HairAccessory1PuppyEars1",
-                                    "HairAccessory1Ribbons2",
-                                    "HairAccessory1WolfEars1",
-                                    "HairAccessory1WolfEars2",
-                                    "HairAccessory1Ribbons4", // Ear items (HA1)
-                                    "HairAccessory2Antennae",
-                                    "HairAccessory2BunnyEars1",
-                                    "HairAccessory2BunnyEars2",
-                                    "HairAccessory2CowHorns",
-                                    "HairAccessory2ElfEars",
-                                    "HairAccessory2Ears1",
-                                    "HairAccessory2Ears2",
-                                    "HairAccessory2FoxEars1",
-                                    "HairAccessory2FoxEars2",
-                                    "HairAccessory2FoxEars3",
-                                    "HairAccessory2KittenEars1",
-                                    "HairAccessory2KittenEars2",
-                                    "HairAccessory2MouseEars1",
-                                    "HairAccessory2MouseEars2",
-                                    "HairAccessory2PuppyEars1",
-                                    "HairAccessory2Ribbons2",
-                                    "HairAccessory2WolfEars1",
-                                    "HairAccessory2WolfEars2", // Ear items (HA2)
-                                ], // These items are hidden because they have clear mismatch issues with the hood.
-                            },
-                        }, // h1 - Helmet (hood)
-                        {
-                            // h2 - Helmet ( hood but nothing shows)
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "Hat",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                    "HairAccessory3",
-                                ],
-                                HideItem: [
-                                    "MaskFuturisticVisor",
-                                    "MaskShinobiMask",
-                                ],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Layering",
-                    Key: "j",
-                    Options: [
-                        {
-                            Property: {
-                                Block: [
-                                    "ItemMouth",
-                                    "ItemMouth2",
-                                    "ItemMouth3",
-                                    "ItemHead",
-                                ],
-                                Hide: [
-                                    "ItemMouth",
-                                    "ItemMouth2",
-                                    "ItemMouth3",
-                                    "ItemHead",
-                                    "Glasses",
-                                ],
-                            },
-                        }, // No gags or blindfolds visible
-                        {
-                            Property: {
-                                OverridePriority: 12,
-                                Block: ["ItemMouth", "ItemMouth2", "ItemHead"],
-                                Hide: [
-                                    "ItemMouth",
-                                    "ItemMouth2",
-                                    "ItemHead",
-                                    "Glasses",
-                                ],
-                            },
-                        }, // Highest layer gag visible
-                        {
-                            Property: {
-                                OverridePriority: 12,
-                                Block: ["ItemHead"],
-                                Hide: ["ItemHead", "Glasses"],
-                            },
-                        }, // All gags visible
-                        {
-                            Property: {
-                                OverridePriority: 12,
-                                Block: [
-                                    "ItemMouth",
-                                    "ItemMouth2",
-                                    "ItemMouth3",
-                                ],
-                                Hide: ["ItemMouth", "ItemMouth2", "ItemMouth3"],
-                            },
-                        }, // Blindfold items visible
-                        {
-                            Property: {
-                                OverridePriority: 12,
-                                Block: ["ItemMouth", "ItemMouth2"],
-                                Hide: ["ItemMouth", "ItemMouth2"],
-                            },
-                        }, // Blindfold and highest layer gag
-                        {
-                            Property: {
-                                OverridePriority: 12,
-                                Block: [],
-                                Hide: [],
-                            },
-                        }, // Blindfold and all gags
-                    ],
-                },
-                {
-                    Name: "Visibility",
-                    Key: "b",
-                    Options: [
-                        {
-                            Property: {
-                                Hide: ["Blush"],
-                                HideItem: [
-                                    "HatFacePaint",
-                                    "MaskFacePaint",
-                                    "ClothAccessoryFacePaint",
-                                ],
-                            },
-                        },
-                        {
-                            Property: {
-                                Hide: [],
-                                HideItem: [],
-                            },
-                        },
-                    ],
-                },
-            ],
-        }, // DroneMask
-        RubberMask: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Wig",
-                    Key: "g",
-                    Options: [
-                        {
-                            // "Normal"
-                            Property: {
-                                Hide: ["HairAccessory1", "HairAccessory2"],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig1"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig2"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig3"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig4"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig5"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig6"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig7"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig8"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig9"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig10"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig11"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig12"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig13"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig14"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig15"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig16"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // "Wig17"
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                ],
-                                Effect: [],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Eyes",
-                    Key: "e",
-                    Options: [
-                        {
-                            // "Eyes0"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Eyes1"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Eyes2"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Eyes3"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Eyes4"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Eyes5"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Eyes6"
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-                {
-                    Name: "Eyebrows",
-                    Key: "y",
-                    Options: [
-                        {
-                            // "Eyebrows0"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Eyebrows1"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Eyebrows2"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Eyebrows3"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Eyebrows4"
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-                {
-                    Name: "Lips",
-                    Key: "l",
-                    Options: [
-                        {
-                            // "Lips0"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Lips1"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Lips2"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Lips3"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Lips4"
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // "Lips5"
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-            ],
-        }, // RubberMask
-        FaceScars: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatSetting: ModularItemChatSetting.PER_MODULE,
-            DrawImages: false,
-            CopyConfig: { GroupName: "BodyMarkings", AssetName: "FaceScars" },
-        }, // FaceScars
-        AnimalNoses: {
-            Archetype: ExtendedArchetype.TYPED,
-            DrawImages: false,
-            Options: [
-                {
-                    Name: "ButtonNose",
-                },
-                {
-                    Name: "ElegantFelineNose",
-                },
-                {
-                    Name: "LargeCanineNose",
-                },
-            ],
-        }, // Animal Noses
-        EldritchMask: {
-            Archetype: ExtendedArchetype.TYPED,
-            DrawImages: false,
-            Options: [
-                {
-                    Name: "Eyes",
-                },
-                {
-                    Name: "GlowingEyes",
-                },
-            ],
-        }, // Eldritch Mask
-        Splatters: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "BodyMarkings", AssetName: "Splatters" },
-        }, // Splatters
-    }, // Mask
-    ItemLegs: {
-        DuctTape: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
-            Options: [
-                {
-                    Name: "Legs",
-                    Property: {
-                        Difficulty: 0,
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                    },
-                },
-                {
-                    Name: "HalfLegs",
-                    Prerequisite: ["NoClothLower"],
-                    Property: {
-                        Hide: ["ClothLower", "Garters"],
-                        Difficulty: 2,
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                    },
-                },
-                {
-                    Name: "MostLegs",
-                    Prerequisite: ["NoClothLower"],
-                    Property: {
-                        Hide: ["ClothLower", "Garters"],
-                        Difficulty: 4,
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        HideItem: [
-                            "PantiesPoofyDiaper",
-                            "PantiesBulkyDiaper",
-                            "ItemPelvisPoofyDiaper",
-                            "ItemPelvisBulkyDiaper",
-                        ],
-                    },
-                },
-                {
-                    Name: "CompleteLegs",
-                    Prerequisite: ["NoClothLower"],
-                    Property: {
-                        Hide: ["ClothLower", "Garters"],
-                        Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt"],
-                        Difficulty: 6,
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        HideItem: [
-                            "PantiesPoofyDiaper",
-                            "PantiesBulkyDiaper",
-                            "ItemPelvisPoofyDiaper",
-                            "ItemPelvisBulkyDiaper",
-                        ],
-                    },
-                },
-                {
-                    Name: "PetLegs",
-                    Prerequisite: ["NoClothLower"],
-                    Property: {
-                        Hide: ["ClothLower", "Garters"],
-                        SetPose: ["Kneel"],
-                        Difficulty: 6,
-                    },
-                    Random: false,
-                },
-                {
-                    Name: "CutOut",
-                    Prerequisite: ["NoClothLower"],
-                    Property: {
-                        Hide: ["ClothLower", "Garters"],
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 6,
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectTapeWrapping",
-                Option: "DuctTapePose",
-                Chat: "DuctTapeRestrain",
-                Npc: "DuctTapePose",
-            },
-        }, // DuctTape
-        NylonRope: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
-            Options: [
-                {
-                    Name: "Knees",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 1,
-                    },
-                },
-                {
-                    Name: "Thighs",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 1,
-                    },
-                },
-                {
-                    Name: "KneesThighs",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 2,
-                    },
-                },
-                {
-                    Name: "Frogtie",
-                    BondageLevel: 3,
-                    Property: {
-                        SetPose: ["Kneel"],
-                        AllowActivePose: [
-                            ...PoseAllKneeling,
-                            "AllFours",
-                            "Hogtied",
-                        ],
-                        Difficulty: 3,
-                    },
-                    Random: false,
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectRopeBondage",
-                Option: "RopeBondage",
-                Chat: "LegRopeSet",
-                Npc: "RopeBondage",
-            },
-        }, // NylonRope
-        HempRope: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
-            Options: [
-                {
-                    Name: "Basic",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 1,
-                    },
-                },
-                {
-                    Name: "FullBinding",
-                    BondageLevel: 2,
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 2,
-                    },
-                },
-                {
-                    Name: "Link",
-                    BondageLevel: 2,
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 2,
-                    },
-                },
-                {
-                    Name: "Frogtie",
-                    BondageLevel: 3,
-                    Property: {
-                        SetPose: ["Kneel"],
-                        AllowActivePose: [
-                            "Kneel",
-                            "KneelingSpread",
-                            "Hogtied",
-                            "AllFours",
-                        ],
-                        Difficulty: 3,
-                    },
-                    Random: false,
-                },
-                {
-                    Name: "Crossed",
-                    BondageLevel: 4,
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 4,
-                    },
-                },
-                {
-                    Name: "Mermaid",
-                    BondageLevel: 4,
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 4,
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectRopeBondage",
-                Option: "RopeBondage",
-                Chat: "LegRopeSet",
-                Npc: "RopeBondage",
-            },
-        }, // HempRope
-        Chains: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
-            Options: [
-                {
-                    Name: "Basic",
-                    BondageLevel: 0,
-                    Property: { Difficulty: 0 },
-                },
-                {
-                    Name: "Strict",
-                    BondageLevel: 2,
-                    Property: { Difficulty: 2 },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectChainBondage",
-                Option: "ChainBondage",
-                Chat: "LegChainSet",
-                Npc: "ChainBondage",
-            },
-            ChangeWhenLocked: false,
-        }, // Chains
-        SturdyLeatherBelts: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemArms",
-                AssetName: "SturdyLeatherBelts",
-            },
-            Options: [
-                {
-                    Name: "One",
-                },
-                {
-                    Name: "Two",
-                    Property: { Difficulty: 2 },
-                },
-            ],
-        }, // SturdyLeatherBelts
-        FuturisticLegCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemLegs", AssetName: "LeatherLegCuffs" },
-            DialogPrefix: {
-                Header: "SelectBondagePosition",
-                Option: "ItemLegsLeatherLegCuffs",
-                Chat: "FuturisticLegCuffsRestrain",
-            },
-            ScriptHooks: {
-                Load: FuturisticAccessLoad,
-                Click: FuturisticAccessClick,
-                Draw: FuturisticAccessDraw,
-                Exit: FuturisticAccessExit,
-                Validate: FuturisticAccessValidate,
-            },
-        }, // FuturisticLegCuffs
-        ShinyLegBinder: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Options: [
-                {
-                    Name: "Laced",
-                },
-                {
-                    Name: "Asylum",
-                },
-                {
-                    Name: "Beltbinder",
-                },
-                {
-                    Name: "Classic",
-                },
-            ],
-            ChangeWhenLocked: false,
-        }, // ShinyLegBinder
-        LeatherLegCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
-            Options: [
-                {
-                    Name: "None",
-                },
-                {
-                    Name: "Closed",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        Effect: [E.BlockWardrobe, E.Slow],
-                        AllowActivePose: ["Kneel", "LegsClosed"],
-                        Difficulty: 6,
-                    },
-                },
-                {
-                    Name: "Chained",
-                    Property: {
-                        Effect: [E.Slow],
-                        SetPose: ["BaseLower"],
-                        AllowActivePose: ["Kneel", ...PoseAllStanding],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectBondagePosition",
-            },
-        }, // LeatherLegCuffs
-        LeatherDeluxeLegCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemLegs", AssetName: "LeatherLegCuffs" },
-        }, // LeatherDeluxeLegCuffs
-        Ribbons: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
-            Options: [
-                {
-                    Name: "Messystyle",
-                    Property: { Difficulty: 3 },
-                },
-                {
-                    Name: "MessyWrap",
-                    Property: { Difficulty: 4 },
-                },
-                {
-                    Name: "Cross",
-                    Property: { Difficulty: 5 },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectRibbonType",
-            },
-        }, // Ribbons
-        OrnateLegCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "LeatherLegCuffs" },
-        }, // OrnateLegCuffs
-        Zipties: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
-            Options: [
-                {
-                    Name: "ZipLegLight",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 1,
-                    },
-                },
-                {
-                    Name: "ZipLegMedium",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 2,
-                    },
-                },
-                {
-                    Name: "ZipLegFull",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 2,
-                    },
-                },
-                {
-                    Name: "ZipFrogtie",
-                    Property: {
-                        SetPose: ["Kneel"],
-                        AllowActivePose: ["AllFours", "Hogtied"],
-                        Difficulty: 3,
-                    },
-                    Random: false,
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectZipTie",
-                Option: "ZipBondage",
-                Npc: "Zip",
-            },
-        }, // Zipties
-        MermaidTail: {
-            Archetype: ExtendedArchetype.VIBRATING,
-        }, // MermaidTail
-        BarrelCorset: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ItemTorso", AssetName: "BarrelCorset" },
-        }, // BarrelCorset
-    }, // ItemLegs
-    ItemFeet: {
-        SpreaderMetal: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Narrow",
-                    Property: {
-                        SetPose: ["LegsOpen"],
-                    },
-                },
-                {
-                    Name: "Wide",
-                    Property: {
-                        SetPose: ["Spread"],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectSpreaderType",
-                Option: "SpreaderMetalPose",
-            },
-            ChatSetting: TypedItemChatSetting.SILENT,
-        }, // SpreaderMetal
-        HeavySpreaderMetal: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemFeet", AssetName: "SpreaderMetal" },
-            DialogPrefix: {
-                Header: "SelectSpreaderType",
-                Option: "HeavySpreaderMetalPose",
-            },
-        }, // HeavySpreaderMetal
-        Chains: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
-            Options: [
-                {
-                    Name: "Basic",
-                    BondageLevel: 0,
-                    Property: {
-                        Difficulty: 0,
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                    },
-                },
-                {
-                    Name: "Strict",
-                    BondageLevel: 2,
-                    Property: {
-                        Difficulty: 2,
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                    },
-                },
-                {
-                    Name: "Suspension",
-                    BondageLevel: 6,
-                    Property: {
-                        Difficulty: 4,
-                        SetPose: ["Suspension", "LegsClosed"],
-                    },
-                    Random: false,
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectChainBondage",
-                Option: "ChainBondage",
-                Chat: "LegChainSet",
-                Npc: "ChainBondage",
-            },
-            ChangeWhenLocked: false,
-        }, // Chains
-        FuturisticAnkleCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemFeet", AssetName: "SteelAnkleCuffs" },
-            ScriptHooks: {
-                Load: FuturisticAccessLoad,
-                Click: FuturisticAccessClick,
-                Draw: FuturisticAccessDraw,
-                Exit: FuturisticAccessExit,
-                Validate: FuturisticAccessValidate,
-            },
-        }, // FuturisticAnkleCuffs
-        SteelAnkleCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Options: [
-                {
-                    Name: "None",
-                    Property: {
-                        Difficulty: 0,
-                    },
-                },
-                {
-                    Name: "Closed",
-                    Property: {
-                        Effect: [E.BlockWardrobe, E.Freeze],
-                        SetPose: ["LegsClosed"],
-                        Difficulty: 6,
-                        AllowActivePose: ["Kneel"],
-                    },
-                },
-                {
-                    Name: "Chained",
-                    Property: {
-                        Effect: [E.Slow],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectBondagePosition",
-                Option: "ItemFeetSteelAnkleCuffs",
-                Chat: "ItemFeetSteelAnkleCuffsSet",
-            },
-        }, // SteelAnkleCuffs
-        SturdyLeatherBelts: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "ItemArms",
-                AssetName: "SturdyLeatherBelts",
-            },
-        }, // SturdyLeatherBelts
-        LeatherAnkleCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "SteelAnkleCuffs" },
-        }, // LeatherAnkleCuffs
-        LeatherDeluxeAnkleCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "SteelAnkleCuffs" },
-        }, // LeatherDeluxeAnkleCuffs
-        OrnateAnkleCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "SteelAnkleCuffs" },
-        }, // OrnateAnkleCuffs
-        HighStyleSteelAnkleCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "SteelAnkleCuffs" },
-        }, // HighStyleSteelAnkleCuffs
-        DuctTape: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Feet",
-                    Property: {
-                        Difficulty: 0,
-                        Hide: [],
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                    },
-                },
-                {
-                    Name: "HalfFeet",
-                    Property: {
-                        Difficulty: 2,
-                        Hide: ["ClothLower", "Shoes"],
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                    },
-                },
-                {
-                    Name: "MostFeet",
-                    Property: {
-                        Difficulty: 4,
-                        Hide: ["ClothLower", "Shoes"],
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                    },
-                },
-                {
-                    Name: "CompleteFeet",
-                    Property: {
-                        Difficulty: 6,
-                        Hide: ["ClothLower", "Shoes"],
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectTapeWrapping",
-                Chat: "DuctTapeRestrain",
-                Npc: "DuctTapeRestrain",
-                Option: "DuctTapePose",
-            },
-        }, // DuctTape
-        Zipties: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
-            Options: [
-                {
-                    Name: "ZipFeetLight",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 1,
-                    },
-                },
-                {
-                    Name: "ZipFeetMedium",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 2,
-                    },
-                },
-                {
-                    Name: "ZipFeetFull",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 2,
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectZipTie",
-                Chat: "ZipFeetSet",
-                Npc: "ZipFeetSet",
-                Option: "ZipBondage",
-            },
-        }, // Zipties
-        Tentacles: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Closed",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                    },
-                },
-                {
-                    Name: "Spread",
-                    Property: {
-                        OverridePriority: 25,
-                        SetPose: ["Spread"],
-                        OverrideHeight: { Height: 0, Priority: 60 },
-                    },
-                },
-            ],
-        }, // Tentacles
-        WoodenCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "LegsOpen",
-                    Property: {
-                        Difficulty: 2,
-                        SetPose: ["LegsOpen"],
-                        SelfUnlock: true,
-                    },
-                },
-                {
-                    Name: "Spread2",
-                    Property: {
-                        Difficulty: 3,
-                        SetPose: ["Spread"],
-                        SelfUnlock: true,
-                    },
-                },
-                {
-                    Name: "Spread3",
-                    Property: {
-                        Difficulty: 3,
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        SelfUnlock: true,
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectBondagePosition",
-                Option: "ItemFeetWoodenCuffs",
-            },
-        }, // WoodenCuffs
-        NylonRope: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
-            Options: [
-                {
-                    Name: "Ankles",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 1,
-                    },
-                },
-                {
-                    Name: "Knees",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 1,
-                    },
-                },
-                {
-                    Name: "AnklesKnees",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 2,
-                    },
-                },
-                {
-                    Name: "BedSpreadEagle",
-                    BondageLevel: 1,
-                    Property: {
-                        Block: ["ItemDevices"],
-                        SetPose: ["Spread"],
-                        Difficulty: 5,
-                    },
-                    Prerequisite: ["OnBed"],
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectRopeBondage",
-                Option: "RopeBondage",
-                Npc: "RopeBondage",
-                Chat: "FeetRopeSet",
-            },
-        }, // NylonRope
-        HempRope: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
-            Options: [
-                {
-                    Name: "Basic",
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 1,
-                    },
-                },
-                {
-                    Name: "FullBinding",
-                    BondageLevel: 2,
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 2,
-                    },
-                },
-                {
-                    Name: "Link",
-                    BondageLevel: 2,
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 2,
-                    },
-                },
-                {
-                    Name: "Diamond",
-                    BondageLevel: 4,
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 4,
-                    },
-                },
-                {
-                    Name: "Mermaid",
-                    BondageLevel: 4,
-                    Property: {
-                        SetPose: ["LegsClosed"],
-                        AllowActivePose: ["Kneel"],
-                        Difficulty: 4,
-                    },
-                },
-                {
-                    Name: "Suspension",
-                    BondageLevel: 6,
-                    Property: {
-                        SetPose: ["LegsClosed", "Suspension"],
-                        Difficulty: 6,
-                    },
-                    Expression: [{ Group: "Blush", Name: "High", Timer: 30 }],
-                },
-                {
-                    Name: "BedSpreadEagle",
-                    BondageLevel: 1,
-                    Property: {
-                        Block: ["ItemDevices"],
-                        SetPose: ["Spread"],
-                        Difficulty: 5,
-                    },
-                    Prerequisite: ["OnBed"],
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectRopeBondage",
-                Option: "RopeBondage",
-                Npc: "RopeBondage",
-                Chat: "LegRopeSet",
-            },
-        },
-        SpreaderVibratingDildoBar: {
-            Archetype: ExtendedArchetype.VIBRATING,
-        }, // SpreaderVibratingDildoBar
-        KneeOvernighter: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Loose",
-                    Property: {
-                        Difficulty: 5,
-                    },
-                },
-                {
-                    Name: "Thigh",
-                    Property: {
-                        Difficulty: 7,
-                        Effect: [E.Freeze],
-                    },
-                },
-            ],
-            DrawImages: false,
-            ChangeWhenLocked: false,
-        }, // KneeOvernighter
-        HeelBinders: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChangeWhenLocked: false,
-            Modules: [
-                {
-                    Name: "Restraints",
-                    Key: "r",
-                    Options: [
-                        {
-                            // r0 - Chain
-                            Property: {
-                                Effect: [E.Slow],
-                                Difficulty: 5,
-                            },
-                        },
-                        {
-                            // r1 - None
-                            Property: {},
-                        },
-                        {
-                            // r2 - ShortChain
-                            Property: {
-                                SetPose: ["LegsClosed"],
-                                AllowActivePose: ["Kneel"],
-                                Effect: [E.Slow, E.BlockWardrobe],
-                                Difficulty: 6,
-                            },
-                        },
-                        {
-                            // r3 - Strap Limiter
-                            Property: {
-                                AllowActivePose: [
-                                    "LegsOpen",
-                                    "LegsClosed",
-                                    "Kneel",
-                                    "AllFours",
-                                    "Hogtied",
-                                ],
-                                Effect: [E.Slow, E.BlockWardrobe],
-                                Difficulty: 5,
-                            },
-                        },
-                        {
-                            // r4 - Spread Bar Stand
-                            Property: {
-                                SetPose: ["LegsOpen"],
-                                AllowActivePose: ["Kneel"],
-                                Effect: [
-                                    E.BlockWardrobe,
-                                    E.Freeze,
-                                    E.MapImmobile,
-                                ],
-                                Difficulty: 7,
-                            },
-                        },
-                        {
-                            // r5 - Spread Bar Spread
-                            Property: {
-                                SetPose: ["Spread"],
-                                AllowActivePose: ["KneelingSpread"],
-                                Effect: [
-                                    E.BlockWardrobe,
-                                    E.Freeze,
-                                    E.MapImmobile,
-                                ],
-                                Difficulty: 8,
-                            },
-                        },
-                        {
-                            // r6 - Spread Bar Sus.Inverted
-                            Property: {
-                                SetPose: ["Spread", "Suspension"],
-                                Effect: [
-                                    E.BlockWardrobe,
-                                    E.Freeze,
-                                    E.Tethered,
-                                    E.MapImmobile,
-                                ],
-                                OverrideHeight: { Height: -20, Priority: 41 },
-                                Difficulty: 9,
-                            },
-                        },
-                        {
-                            // r7 - Spread Bar Spread.Ground
-                            Property: {
-                                SetPose: ["Spread"],
-                                Effect: [
-                                    E.BlockWardrobe,
-                                    E.Freeze,
-                                    E.Tethered,
-                                    E.MapImmobile,
-                                ],
-                                Difficulty: 9,
-                            },
-                        },
-                    ],
-                },
-            ],
-        }, // HeelBinders
-    }, // ItemFeet
-    ItemMisc: {
-        ServingTray: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                { Name: "Empty" },
-                { Name: "Drinks" },
-                { Name: "Cake" },
-                { Name: "Cookies" },
-                { Name: "Toys" },
-            ],
-        }, // WoodenMaidTray
-        TeddyBear: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
-            Options: [
-                {
-                    Name: "Bear",
-                },
-                {
-                    Name: "Fox",
-                },
-                {
-                    Name: "Pup",
-                },
-                {
-                    Name: "Pony",
-                },
-                {
-                    Name: "Kitty",
-                },
-                {
-                    Name: "Bunny",
-                },
-            ],
-        }, // TeddyBear
-        PetPost: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "ItemNeckRestraints",
-                AssetName: "PetPost",
-            },
-            Modules: [
-                {
-                    Name: "Plaque",
-                    Key: "p",
-                    Options: [
-                        {}, //p0 - Border
-                        {}, //p1 - Border
-                    ],
-                },
-                {
-                    Name: "Dirt",
-                    Key: "d",
-                    Options: [
-                        {}, //d0 - Clean
-                        {}, //d1 - Dirty
-                    ],
-                },
-                {
-                    Name: "Sticker",
-                    Key: "s",
-                    Options: [
-                        {}, //s0 - Paw
-                        {}, //s1 - Triskel
-                        {}, //s2 - Moon
-                        {}, //s3 - LGBT
-                        {}, //s4 - Trans
-                        {}, //s5 - Bi
-                        {}, //s6 - NoSwim
-                        {}, //s7 - None
-                    ],
-                },
-                {
-                    Name: "PostIt",
-                    Key: "m",
-                    Options: [
-                        {}, //m0 - Postit
-                        {}, //m1 - No PostIt
-                    ],
-                },
-                {
-                    Name: "Txt",
-                    Key: "x",
-                    Options: [
-                        {
-                            HasSubscreen: true,
-                            ArchetypeConfig: {
-                                Archetype: ExtendedArchetype.TEXT,
-                                MaxLength: { Text: 14, Text2: 14, Text3: 14 },
-                                Font: "sans-serif",
-                                ScriptHooks: {
-                                    AfterDraw:
-                                        AssetsItemNeckRestraintsPetPostAfterDrawHook,
-                                },
-                            },
-                        }, // text
-                    ],
-                },
-            ],
-            DialogPrefix: {
-                Chat: "ItemNeckRestraintsPetPostSet",
-            },
-        }, //PetPost
-        WoodenSign: {
-            Archetype: ExtendedArchetype.TEXT,
-            MaxLength: { Text: 12, Text2: 12 },
-            Font: "'Calligraffitti', cursive",
-            ScriptHooks: {
-                AfterDraw: AssetsItemMiscWoodenSignAfterDrawHook,
-            },
-        }, // WoodenSign
-        PetPotato: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.ASSET_NAME],
-            Options: [{ Name: "Lap" }, { Name: "Floor" }],
-            DrawImages: false,
-            DialogPrefix: {
-                Header: "ItemMiscPetPotatoSelect",
-                Option: "ItemMiscPetPotato",
-                Chat: "ItemMiscPetPotatoSet",
-            },
-        }, // PetPotato
-        Karl: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMisc", AssetName: "PetPotato" },
-        }, // Karl
-        FoxPlush: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMisc", AssetName: "PetPotato" },
-        }, // FoxPlush
-        BunPlush: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemMisc", AssetName: "PetPotato" },
-        }, // BunPlush
-        IntricatePadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Draw: InventoryItemMiscIntricatePadlockDrawHook,
-            },
-        }, // IntricatePadlock
-        HighSecurityPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Init: InventoryItemMiscHighSecurityPadlockInitHook,
-                Load: InventoryItemMiscHighSecurityPadlockLoadHook,
-                Draw: InventoryItemMiscHighSecurityPadlockDrawHook,
-                Click: InventoryItemMiscHighSecurityPadlockClickHook,
-                Exit: InventoryItemMiscHighSecurityPadlockExitHook,
-            },
-            BaselineProperty: {
-                MemberNumberListKeys: "",
-            },
-        }, // HighSecurityPadlock
-        SafewordPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            CopyConfig: { GroupName: "ItemMisc", AssetName: "PasswordPadlock" },
-            ScriptHooks: {
-                Load: InventoryItemMiscSafewordPadlockLoadHook,
-                Draw: InventoryItemMiscSafewordPadlockDrawHook,
-                Click: InventoryItemMiscSafewordPadlockClickHook,
-                Exit: InventoryItemMiscPasswordPadlockExitHook,
-            },
-        }, // SafewordPadlock
-        TimerPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Draw: InventoryItemMiscTimerPadlockDrawHook,
-                Click: InventoryItemMiscTimerPadlockClickHook,
-            },
-        }, // TimerPadlock
-        PasswordPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            DialogPrefix: {
-                Header: (data, C, item) => {
-                    const lockmemberNumber = item.Property?.LockMemberNumber;
-                    if (lockmemberNumber == null) {
-                        return "";
-                    }
-                    return `${InterfaceTextGet("LockMemberNumber")} ${lockmemberNumber}`;
-                },
-            },
-            ScriptHooks: {
-                Load: InventoryItemMiscPasswordPadlockLoadHook,
-                Draw: InventoryItemMiscPasswordPadlockDrawHook,
-                Click: InventoryItemMiscPasswordPadlockClickHook,
-                Exit: InventoryItemMiscPasswordPadlockExitHook,
-            },
-            BaselineProperty: {
-                Password: "PASSWORD",
-                Hint: "Take a guess...",
-                LockSet: false,
-                RemoveOnUnlock: false,
-            },
-        }, // PasswordPadlock
-        MistressPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Draw: InventoryItemMiscMistressPadlockDrawHook,
-            },
-        }, // MistressPadlock
-        PandoraPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            CopyConfig: { GroupName: "ItemMisc", AssetName: "MistressPadlock" },
-        }, // PandoraPadlock
-        OwnerTimerPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Draw: InventoryItemMiscOwnerTimerPadlockDrawHook,
-                Click: InventoryItemMiscOwnerTimerPadlockClickHook,
-            },
-            BaselineProperty: {
-                RemoveItem: false,
-                ShowTimer: true,
-                EnableRandomInput: false,
-                MemberNumberList: [],
-            },
-        }, // OwnerTimerPadlock
-        LoversTimerPadlock: {
-            CopyConfig: {
-                GroupName: "ItemMisc",
-                AssetName: "OwnerTimerPadlock",
-            },
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Draw: (...args) =>
-                    InventoryItemMiscOwnerTimerPadlockDrawHook(
-                        ...args,
-                        InventoryItemMiscLoversTimerPadlockValidator,
-                    ),
-                Click: (...args) =>
-                    InventoryItemMiscOwnerTimerPadlockClickHook(
-                        ...args,
-                        InventoryItemMiscLoversTimerPadlockValidator,
-                    ),
-            },
-        }, // LoversTimerPadlock
-        OwnerPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Draw: InventoryItemMiscOwnerPadlockDrawHook,
-            },
-        }, // OwnerPadlock
-        LoversPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            CopyConfig: { GroupName: "ItemMisc", AssetName: "OwnerPadlock" },
-        }, // LoversPadlock
-        FamilyPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Draw: InventoryItemMiscFamilyPadlockDrawHook,
-            },
-        }, // FamilyPadlock
-        PortalLinkPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            CopyConfig: {
-                GroupName: "ItemMisc",
-                AssetName: "ExclusivePadlock",
-            },
-        }, // PortalLinkPadlock
-        MistressTimerPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Draw: InventoryItemMiscMistressTimerPadlockDrawHook,
-                Click: InventoryItemMiscMistressTimerPadlockClickHook,
-            },
-            BaselineProperty: {
-                RemoveItem: false,
-                ShowTimer: true,
-                EnableRandomInput: false,
-                MemberNumberList: [],
-            },
-        }, // MistressTimerPadlock
-        MetalPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            CopyConfig: {
-                GroupName: "ItemMisc",
-                AssetName: "IntricatePadlock",
-            },
-        }, // MetalPadlock
-        ExclusivePadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Draw: InventoryItemMiscExclusivePadlockDrawHook,
-            },
-        }, // ExclusivePadlock
-        CombinationPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Load: InventoryItemMiscCombinationPadlockLoadHook,
-                Draw: InventoryItemMiscCombinationPadlockDrawHook,
-                Click: InventoryItemMiscCombinationPadlockClickHook,
-                Exit: InventoryItemMiscCombinationPadlockExitHook,
-            },
-            BaselineProperty: {
-                CombinationNumber: "0000",
-            },
-        }, // ExclusivePadlock
-        TimerPasswordPadlock: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Load: InventoryItemMiscTimerPasswordPadlockLoadHook,
-                Draw: InventoryItemMiscTimerPasswordPadlockDrawHook,
-                Click: InventoryItemMiscTimerPasswordPadlockClickHook,
-                Exit: InventoryItemMiscPasswordPadlockExitHook,
-            },
-            BaselineProperty: {
-                Password: "PASSWORD",
-                Hint: "Take a guess...",
-                LockSet: false,
-                RemoveItem: false,
-                ShowTimer: true,
-                EnableRandomInput: false,
-                MemberNumberList: [],
-            },
-        }, // TimerPasswordPadlock
-    }, // ItemMisc
-    ItemPelvis: {
-        FuturisticChastityBelt: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Model",
-                    Key: "m",
-                    Options: [{}, {}, {}, {}],
-                },
-                {
-                    Name: "Front",
-                    Key: "f",
-                    Options: [
-                        {
-                            Property: {},
-                        },
-                        {
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                                Effect: [E.Chaste],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Back",
-                    Key: "b",
-                    Options: [
-                        {
-                            Property: {},
-                        },
-                        {
-                            Property: {
-                                Block: ["ItemButt"],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Tamper",
-                    Key: "t",
-                    Options: [{}, {}, {}],
-                },
-                {
-                    Name: "Orgasm",
-                    Key: "o",
-                    Options: [{}, {}],
-                },
-            ],
-            ScriptHooks: {
-                Load: FuturisticAccessLoad,
-                Click: FuturisticAccessClick,
-                Draw: FuturisticAccessDraw,
-                Exit: FuturisticAccessExit,
-            },
-        }, // FuturisticChastityBelt
-        MetalChastityBelt: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
-            Options: [
-                {
-                    Name: "OpenBack",
-                    Property: {
-                        Block: [],
-                    },
-                },
-                {
-                    Name: "ClosedBack",
-                    Property: {
-                        Block: ["ItemButt"],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectBackShield",
-                Option: "Chastity",
-                Npc: "Chastity",
-                Chat: "ChastityBeltBackShield",
-            },
-            ChangeWhenLocked: false,
-        }, // MetalChastityBelt
-        ForbiddenChastityBelt: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.ASSET_NAME,
-            ],
-            DrawImages: true,
-            Modules: [
-                {
-                    Name: "CrotchShield",
-                    Key: "c",
-                    Options: [
-                        {}, // 0 - open
-                        {
-                            // 1 - close front
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                            },
-                        },
-                        {
-                            // 2 - close back
-                            Property: {
-                                Effect: [E.ButtChaste],
-                                Block: ["ItemButt"],
-                            },
-                        },
-                        {
-                            // 3 - close both
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: [E.Chaste, E.ButtChaste],
-                                Block: [
-                                    "ItemVulva",
-                                    "ItemVulvaPiercings",
-                                    "ItemButt",
-                                ],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "ShockModule",
-                    Key: "s",
-                    DrawImages: false,
-                    DrawData: {
-                        elementData: [
-                            { position: ExtendedXYWithoutImages[8][0] },
-                            { position: ExtendedXYWithoutImages[8][1] },
-                            { position: ExtendedXYWithoutImages[8][2] },
-                            { position: ExtendedXYWithoutImages[8][3] },
-                        ],
-                    },
-                    Options: [
-                        {}, // Off
-                        { Property: { ShockLevel: 0 } }, // Low
-                        { Property: { ShockLevel: 1 } }, // Medium
-                        { Property: { ShockLevel: 2 } }, // High
-                    ],
-                },
-            ],
-            DrawData: {
-                elementData: [
-                    {}, // CrotchShield
-                    {
-                        imagePath:
-                            "Screens/Inventory/ItemPelvis/ForbiddenChastityBelt/s0.png",
-                    }, // ShockModule
-                ],
-            },
-            ScriptHooks: {
-                Draw: InventoryItemBreastForbiddenChastityBraDrawHook,
-                Click: InventoryItemBreastForbiddenChastityBraClickHook,
-                BeforeDraw:
-                    AssetsItemNeckAccessoriesCollarShockUnitBeforeDrawHook,
-                ScriptDraw: AssetsItemBreastForbiddenChastityBraScriptDrawHook,
-            },
-            ChangeWhenLocked: false,
-            BaselineProperty: {
-                TriggerCount: 0,
-                ShowText: true,
-                BlinkState: false,
-                PunishOrgasm: false,
-                PunishStandup: false,
-                PunishStruggle: false,
-            },
-        }, // ForbiddenChastityBelt
-        OrnateChastityBelt: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "MetalChastityBelt" },
-        }, // OrnateChastityBelt
-        StuddedChastityBelt: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "MetalChastityBelt" },
-        }, // StuddedChastityBelt
-        PolishedChastityBelt: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "MetalChastityBelt" },
-        }, // PolishedChastityBelt
-        Ribbons: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
-            Options: [
-                {
-                    Name: "BowWrap",
-                    Property: { Difficulty: 3, OverridePriority: 21 },
-                },
-                {
-                    Name: "CrotchWrapping",
-                    Property: { Difficulty: 4 },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectRibbonType",
-                Option: "RibbonsBelt",
-                Npc: "ItemPelvisRibbons",
-                Chat: "PelvisRibbonsSet",
-            },
-        }, // Ribbons
-        HempRope: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
-            Options: [
-                {
-                    Name: "Crotch",
-                    Property: { Difficulty: 1, Effect: [E.CrotchRope] },
-                },
-                {
-                    Name: "OverPanties",
-                    Property: {
-                        Difficulty: 1,
-                        OverridePriority: 21,
-                        Effect: [E.CrotchRope],
-                    },
-                },
-                {
-                    Name: "SwissSeat",
-                    BondageLevel: 4,
-                    Property: { Difficulty: 4 },
-                },
-                {
-                    Name: "KikkouHip",
-                    BondageLevel: 5,
-                    Property: { Difficulty: 5 },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectRopeBondage",
-                Option: "RopeBondage",
-                Npc: "RopeBondage",
-                Chat: "PelvisRopeSet",
-            },
-        }, // HempRope
-        PoofyDiaper: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.DEST_CHAR_NAME],
-            Options: [
-                {
-                    Name: "RegularPadding",
-                },
-                {
-                    Name: "Poofy",
-                    Property: {
-                        HideItem: [
-                            "ClothLowerSkirt3",
-                            "ClothLowerTennisSkirt1",
-                        ],
-                    },
-                },
-            ],
-        }, // PoofyDiaper
-        ObedienceBelt: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
-            ChangeWhenLocked: false,
-            Modules: [
-                {
-                    Name: "CrotchShield",
-                    Key: "c",
-                    Options: [
-                        {}, // 0 - open
-                        {
-                            // 1 - close front
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                                HideItem: [
-                                    "ItemVulvaPiercingsChastityClitShield",
-                                    "ItemVulvaPiercingsHighSecurityVulvaShield",
-                                ],
-                            },
-                        },
-                        {
-                            // 2 - close back
-                            Property: {
-                                Effect: [E.ButtChaste],
-                                Block: ["ItemButt"],
-                            },
-                        },
-                        {
-                            // 3 - close both
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: [E.Chaste, E.ButtChaste],
-                                Block: [
-                                    "ItemVulva",
-                                    "ItemVulvaPiercings",
-                                    "ItemButt",
-                                ],
-                                HideItem: [
-                                    "ItemVulvaPiercingsChastityClitShield",
-                                    "ItemVulvaPiercingsHighSecurityVulvaShield",
-                                ],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "ShockModule",
-                    Key: "s",
-                    Options: [
-                        {}, // 0 - disabled
-                        {
-                            HasSubscreen: true,
-                            ArchetypeConfig: {
-                                Archetype: ExtendedArchetype.NOARCH,
-                                ScriptHooks: {
-                                    Draw: InventoryItemPelvisObedienceBelts1DrawHook,
-                                    Click: InventoryItemPelvisObedienceBelts1ClickHook,
-                                },
-                            },
-                        }, // 1 - enabled
-                    ],
-                },
-                {
-                    Name: "Engraving",
-                    Key: "e",
-                    Options: [
-                        {
-                            HasSubscreen: true,
-                            ArchetypeConfig: {
-                                Archetype: ExtendedArchetype.TEXT,
-                                MaxLength: { Text: 13 },
-                                Font: "Arial, sans-serif",
-                                DialogPrefix: {
-                                    Chat: "ObedienceBeltEngraving",
-                                },
-                                ScriptHooks: {
-                                    AfterDraw:
-                                        AssetsItemPelvisObedienceBeltAfterDrawHook,
-                                },
-                            },
-                        }, // text
-                    ],
-                },
-            ],
-            BaselineProperty: {
-                Text: "",
-                ShowText: false,
-                PunishOrgasm: false,
-                PunishStandup: false,
-                NextShockTime: 0,
-            },
-        },
-        SciFiPleasurePanties: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.DEST_CHAR_NAME,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Modules: [
-                {
-                    Name: "CrotchShield",
-                    Key: "c",
-                    DrawImages: false,
-                    Options: [
-                        {}, // 0 - open
-                        {
-                            // 1 - close front
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                            },
-                        },
-                        {
-                            // 2 - close back
-                            Property: {
-                                Effect: [E.ButtChaste],
-                                Block: ["ItemButt"],
-                            },
-                        },
-                        {
-                            // 3 - close both
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: [E.Chaste, E.ButtChaste],
-                                Block: [
-                                    "ItemVulva",
-                                    "ItemVulvaPiercings",
-                                    "ItemButt",
-                                ],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Intensity",
-                    Key: "i",
-                    DrawImages: false,
-                    Options: [
-                        { Property: { Intensity: -1 } }, // i0 - Turn Off
-                        { Property: { Intensity: 0, Effect: [E.Vibrating] } }, // i1 - Low
-                        { Property: { Intensity: 1, Effect: [E.Vibrating] } }, // i2 - Medium
-                        { Property: { Intensity: 2, Effect: [E.Vibrating] } }, // i3 - High
-                        { Property: { Intensity: 3, Effect: [E.Vibrating] } }, // i4 - Maximum
-                    ],
-                },
-                {
-                    Name: "OrgasmLock",
-                    Key: "o",
-                    DrawImages: false,
-                    Options: [
-                        {}, // o0 - Normal
-                        { Property: { Effect: [E.DenialMode] } }, // o1 - Edge
-                        { Property: { Effect: [E.DenialMode, E.RuinOrgasms] } }, // o2 - Deny
-                    ],
-                },
-                {
-                    Name: "ShockLevel",
-                    Key: "s",
-                    DrawImages: false,
-                    Options: [
-                        { Property: { ShockLevel: 0 } }, // s0 - Level 1
-                        { Property: { ShockLevel: 1 } }, // s1 - Level 2
-                        { Property: { ShockLevel: 2 } }, // s2 - Level 3
-                    ],
-                },
-            ],
-            BaselineProperty: { ShowText: true },
-            ScriptHooks: {
-                Load: FuturisticAccessLoad,
-                Click: InventoryItemPelvisSciFiPleasurePantiesClickHook,
-                Draw: InventoryItemPelvisSciFiPleasurePantiesDrawHook,
-                Exit: FuturisticAccessExit,
-                Validate: FuturisticAccessValidate,
-            },
-            DialogPrefix: {
-                Chat: InventoryItemPelvisSciFiPleasurePantiesChatPrefix,
-            },
-        },
-        PortalPanties: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatTags: [
-                CommonChatTags.DEST_CHAR_NAME,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Modules: [
-                {
-                    Name: "Code",
-                    Key: "o",
-                    Options: [
-                        {
-                            HasSubscreen: true,
-                            ChangeWhenLocked: false,
-                            ArchetypeConfig: {
-                                Archetype: ExtendedArchetype.NOARCH,
-                                ScriptHooks: {
-                                    Load: PortalLinkRecieverLoadHook,
-                                    Draw: PortalLinkRecieverDrawHook,
-                                    Click: PortalLinkRecieverClickHook,
-                                    Exit: PortalLinkRecieverExitHook,
-                                },
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "CrotchShield",
-                    Key: "c",
-                    Options: [
-                        {}, // 0 - open
-                        {
-                            // 1 - close front
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                                Attribute: [
-                                    "PortalLinkTargetItemVulva",
-                                    "PortalLinkActivityCaress",
-                                    "PortalLinkActivityKiss",
-                                    "PortalLinkActivitySlap",
-                                    "PortalLinkActivityMasturbateHand",
-                                    "PortalLinkActivityMasturbateTongue",
-                                ],
-                                Hide: ["Pussy"],
-                            },
-                        },
-                        {
-                            // 2 - close back
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemButt"],
-                                Attribute: [
-                                    "PortalLinkTargetItemButt",
-                                    "PortalLinkActivityCaress",
-                                    "PortalLinkActivityKiss",
-                                    "PortalLinkActivitySlap",
-                                    "PortalLinkActivityMasturbateHand",
-                                    "PortalLinkActivityMasturbateTongue",
-                                ],
-                                Hide: ["Pussy"],
-                            },
-                        },
-                        {
-                            // 3 - close both
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: [
-                                    "ItemVulva",
-                                    "ItemVulvaPiercings",
-                                    "ItemButt",
-                                ],
-                                Hide: ["Pussy"],
-                            },
-                        },
-                    ],
-                },
-            ],
-            DrawData: {
-                elementData: [{ position: ExtendedXY[1][0] }, { hidden: true }],
-            },
-            BaselineProperty: {
-                PortalLinkCode: "00000000",
-            },
-            ScriptHooks: {
-                Load: FuturisticAccessLoad,
-                Click: FuturisticAccessClick,
-                Draw: FuturisticAccessDraw,
-                Exit: FuturisticAccessExit,
-            },
-        },
-        LoveChastityBelt: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Modules: [
-                {
-                    Name: "FrontShield",
-                    Key: "f",
-                    DrawImages: false,
-                    Options: [
-                        {
-                            // 0 - open
-                            Expression: [
-                                { Name: "Low", Group: "Blush", Timer: 10 },
-                            ],
-                        },
-                        {
-                            // 1 - close front
-                            Prerequisite: ["CanCoverVulva"],
-                            Expression: [
-                                { Name: "Medium", Group: "Blush", Timer: 10 },
-                            ],
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                            },
-                        },
-                        {
-                            // 2 - close front & vibrator
-                            Prerequisite: ["CanCoverVulva"],
-                            Expression: [
-                                { Name: "Medium", Group: "Blush", Timer: 10 },
-                            ],
-                            Property: {
-                                Effect: [E.Chaste, E.Egged],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                            },
-                        },
-                        {
-                            // 3 - close front & shock unit
-                            Prerequisite: ["CanCoverVulva"],
-                            Expression: [
-                                { Name: "Medium", Group: "Blush", Timer: 10 },
-                            ],
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "BackShield",
-                    Key: "b",
-                    DrawImages: false,
-                    Options: [
-                        {}, // 0 - open
-                        {
-                            // 1 - closed
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemButt"],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Intensity",
-                    Key: "i",
-                    DrawImages: false,
-                    Options: [
-                        { Property: { Intensity: -1 } }, // i0 - Turn Off
-                        { Property: { Intensity: 0, Effect: [E.Vibrating] } }, // i1 - Low
-                        { Property: { Intensity: 1, Effect: [E.Vibrating] } }, // i2 - Medium
-                        { Property: { Intensity: 2, Effect: [E.Vibrating] } }, // i3 - High
-                        { Property: { Intensity: 3, Effect: [E.Vibrating] } }, // i4 - Maximum
-                    ],
-                },
-                {
-                    Name: "ShockLevel",
-                    Key: "s",
-                    DrawImages: false,
-                    Options: [
-                        { Property: { ShockLevel: 0 } }, // s0 - Level 1
-                        { Property: { ShockLevel: 1 } }, // s1 - Level 2
-                        { Property: { ShockLevel: 2 } }, // s2 - Level 3
-                    ],
-                },
-            ],
-            BaselineProperty: { ShowText: true },
-            ScriptHooks: {
-                SetOption: InventoryItemPelvisLoveChastityBeltSetOptionHook,
-                Draw: InventoryItemPelvisLoveChastityBeltDraw,
-                Validate: InventoryItemPelvisLoveChastityBeltValidate,
-                Click: (...args) => {
-                    InventoryItemPelvisSciFiPleasurePantiesClickHook(
-                        ...args,
-                        false,
-                    );
-                },
-            },
-            DialogPrefix: {
-                Chat: InventoryItemPelvisSciFiPleasurePantiesChatPrefix,
-            },
-        }, // LoveChastityBelt
-        FuturisticTrainingBelt: {
-            Archetype: ExtendedArchetype.VIBRATING,
-            Options: [VibratorModeSet.STANDARD],
-            ScriptHooks: {
-                Load: InventoryItemPelvisFuturisticTrainingBeltLoadHook,
-                Click: InventoryItemPelvisFuturisticTrainingBeltClickHook,
-                Draw: InventoryItemPelvisFuturisticTrainingBeltDrawHook,
-                Exit: InventoryItemPelvisFuturisticTrainingBeltExitHook,
-                Validate: FuturisticAccessValidate,
-                ScriptDraw: AssetsItemPelvisFuturisticTrainingBeltScriptDraw,
-            },
-            BaselineProperty: {
-                ShowText: false,
-                NextShockTime: 0,
-                PunishStruggle: false,
-                PunishStruggleOther: false,
-                PunishOrgasm: false,
-                PunishStandup: false,
-                PunishSpeech: 0,
-                PunishRequiredSpeech: 0,
-                PunishRequiredSpeechWord: "Miss",
-                PunishProhibitedSpeech: 0,
-                PunishProhibitedSpeechWords: "I,me,am,my,im",
-                PublicModeCurrent: 0,
-                PublicModePermission: 0,
-            },
-            AllowEffect: [E.DenialMode, E.RuinOrgasms],
-        }, // FuturisticTrainingBelt
-        HeavyDutyBelt: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.DEST_CHAR_NAME,
-                CommonChatTags.ASSET_NAME,
-            ],
-            ChangeWhenLocked: false,
-            Modules: [
-                {
-                    Name: "CrotchShield",
-                    Key: "c",
-                    Options: [
-                        {}, // 0 - open
-                        {
-                            // 1 - transparent
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                                Hide: ["Pussy"],
-                            },
-                        },
-                        {
-                            // 2 - metal
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                                HideItem: [
-                                    "ItemButtAnalBeads2",
-                                    "ItemVulvaVibratingDildo",
-                                    "ItemVulvaClitSuctionCup",
-                                    "ItemVulvaInflatableVibeDildo",
-                                    "ItemVulvaHeavyWeightClamp",
-                                    "ItemVulvaPenisDildo",
-                                    "ItemVulvaShockDildo",
-                                    "ItemVulvaPiercingsVibeHeartClitPiercing",
-                                    "ItemVulvaPiercingsClitRing",
-                                    "ItemVulvaPiercingsChastityClitShield",
-                                    "ItemVulvaPiercingsHighSecurityVulvaShield",
-                                    "ItemVulvaPlasticChastityCage1",
-                                    "ItemVulvaPlasticChastityCage2",
-                                    "ItemVulvaTechnoChastityCage",
-                                    "ItemVulvaFlatChastityCage",
-                                    "ItemVulvaVibeEggPenisBase",
-                                    "ItemVulvaChastityPouch",
-                                ],
-                                Hide: ["Pussy"],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "BackShield",
-                    Key: "b",
-                    DrawImages: false,
-                    Options: [
-                        {}, // 0 - open
-                        {
-                            // 1 - close back
-                            Property: {
-                                Block: ["ItemButt"],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Modules",
-                    Key: "m",
-                    Options: [
-                        {}, // 0 - none
-                        {
-                            // 1 - cage/spreader
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                                Hide: ["Pussy"],
-                            },
-                        },
-                        {
-                            // 2 - rotors
-                            Property: {
-                                Hide: ["Pussy"],
-                            },
-                        },
-                        {
-                            // 3 - both
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: [E.Chaste],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                                Hide: ["Pussy"],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Intensity",
-                    Key: "i",
-                    DrawImages: false,
-                    Options: [
-                        { Property: { Intensity: -1, Effect: [E.Egged] } }, // i0 - Turn Off
-                        {
-                            Property: {
-                                Intensity: 0,
-                                Effect: [E.Egged, E.Vibrating],
-                            },
-                        }, // i1 - Low
-                        {
-                            Property: {
-                                Intensity: 1,
-                                Effect: [E.Egged, E.Vibrating],
-                            },
-                        }, // i2 - Medium
-                        {
-                            Property: {
-                                Intensity: 2,
-                                Effect: [E.Egged, E.Vibrating],
-                            },
-                        }, // i3 - High
-                        {
-                            Property: {
-                                Intensity: 3,
-                                Effect: [E.Egged, E.Vibrating],
-                            },
-                        }, // i4 - Maximum
-                    ],
-                },
-                {
-                    Name: "OrgasmLock",
-                    Key: "o",
-                    DrawImages: false,
-                    Options: [
-                        {}, // o0 - Normal
-                        { Property: { Effect: [E.DenialMode] } }, // o1 - Edge
-                        { Property: { Effect: [E.DenialMode, E.RuinOrgasms] } }, // o2 - Deny
-                    ],
-                },
-            ],
-        }, //HeavyDutyBelt
-        ModularChastityBelt: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.DEST_CHAR_NAME,
-                CommonChatTags.ASSET_NAME,
-            ],
-            ChangeWhenLocked: false,
-            Modules: [
-                {
-                    Name: "BeltType",
-                    Key: "a",
-                    Options: [
-                        {}, // 0 - Invisible
-                        {}, // 1 - Standard
-                    ],
-                },
-                {
-                    Name: "CrotchShield",
-                    Key: "c",
-                    DrawImages: false,
-                    Options: [
-                        {}, // 0 - open
-                        {
-                            // 1 - Close Front
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: ["Chaste"],
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                                HideItem: [
-                                    "ItemButtAnalBeads2",
-                                    "ItemVulvaPenisDildo",
-                                    "ItemVulvaShockDildo",
-                                    "ItemVulvaVibratingDildo",
-                                    "ItemVulvaInflatableVibeDildo",
-                                    "ItemVulvaClitoralStimulator",
-                                    "ItemVulvaClitSuctionCup",
-                                    "ItemVulvaHeavyWeightClamp",
-                                    "ItemVulvaLoversVibrator",
-                                    "ItemVulvaDoubleEndDildo",
-                                    "ItemVulvaBasicCockring",
-                                    "ItemVulvaPlasticChastityCage1",
-                                    "ItemVulvaVibeEggPenisBase",
-                                    "ItemVulvaPlasticChastityCage2",
-                                    "ItemVulvaTechnoChastityCage",
-                                    "ItemVulvaFlatChastityCage",
-                                    "ItemVulvaChastityPouch",
-                                    "ItemVulvaFullCasingCage",
-                                    "ItemVulvaPiercingsVibeHeartClitPiercing",
-                                    "ItemVulvaPiercingsClitRing",
-                                    "ItemVulvaPiercingsChastityClitShield",
-                                    "ItemVulvaPiercingsHighSecurityVulvaShield",
-                                ],
-                                Hide: ["Pussy"],
-                            },
-                        },
-                        {
-                            // 2 - close back
-                            Property: {
-                                Effect: ["ButtChaste"],
-                                Block: ["ItemButt"],
-                            },
-                        },
-                        {
-                            // 3 - Close both
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Effect: ["Chaste", "ButtChaste"],
-                                Block: [
-                                    "ItemVulva",
-                                    "ItemVulvaPiercings",
-                                    "ItemButt",
-                                ],
-                                HideItem: [
-                                    "ItemButtAnalBeads2",
-                                    "ItemVulvaPenisDildo",
-                                    "ItemVulvaShockDildo",
-                                    "ItemVulvaVibratingDildo",
-                                    "ItemVulvaInflatableVibeDildo",
-                                    "ItemVulvaClitoralStimulator",
-                                    "ItemVulvaClitSuctionCup",
-                                    "ItemVulvaHeavyWeightClamp",
-                                    "ItemVulvaLoversVibrator",
-                                    "ItemVulvaDoubleEndDildo",
-                                    "ItemVulvaBasicCockring",
-                                    "ItemVulvaPlasticChastityCage1",
-                                    "ItemVulvaVibeEggPenisBase",
-                                    "ItemVulvaPlasticChastityCage2",
-                                    "ItemVulvaTechnoChastityCage",
-                                    "ItemVulvaFlatChastityCage",
-                                    "ItemVulvaChastityPouch",
-                                    "ItemVulvaFullCasingCage",
-                                    "ItemVulvaPiercingsVibeHeartClitPiercing",
-                                    "ItemVulvaPiercingsClitRing",
-                                    "ItemVulvaPiercingsChastityClitShield",
-                                    "ItemVulvaPiercingsHighSecurityVulvaShield",
-                                ],
-                                Hide: ["Pussy"],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Intensity",
-                    Key: "i",
-                    DrawImages: false,
-                    Options: [
-                        { Property: { Intensity: -1, Effect: ["Egged"] } }, // i0 - Turn Off
-                        {
-                            Property: {
-                                Intensity: 0,
-                                Effect: ["Egged", "Vibrating"],
-                            },
-                        }, // i1 - Low
-                        {
-                            Property: {
-                                Intensity: 1,
-                                Effect: ["Egged", "Vibrating"],
-                            },
-                        }, // i2 - Medium
-                        {
-                            Property: {
-                                Intensity: 2,
-                                Effect: ["Egged", "Vibrating"],
-                            },
-                        }, // i3 - High
-                        {
-                            Property: {
-                                Intensity: 3,
-                                Effect: ["Egged", "Vibrating"],
-                            },
-                        }, // i4 - Maximum
-                    ],
-                },
-                {
-                    Name: "Plugs",
-                    Key: "p",
-                    DrawImages: false,
-                    Options: [
-                        { Property: { InflateLevel: 0 } }, // p0 - Empty
-                        {
-                            Property: {
-                                InflateLevel: 1,
-                                Block: ["ItemVulva", "ItemButt"],
-                                Effect: ["FillVulva", "IsPlugged"],
-                            },
-                        }, // p1 - Light
-                        {
-                            Property: {
-                                InflateLevel: 2,
-                                Block: ["ItemVulva", "ItemButt"],
-                                Effect: ["FillVulva", "IsPlugged"],
-                            },
-                        }, // p2 - Inflated
-                        {
-                            Property: {
-                                InflateLevel: 3,
-                                Block: ["ItemVulva", "ItemButt"],
-                                Effect: ["FillVulva", "IsPlugged", "Slow"],
-                            },
-                        }, // p3 - Bloated
-                        {
-                            Property: {
-                                InflateLevel: 4,
-                                Block: ["ItemVulva", "ItemButt"],
-                                Effect: ["FillVulva", "IsPlugged", "Slow"],
-                            },
-                        }, // p4 - Maximum
-                    ],
-                },
-                {
-                    Name: "ShockModule",
-                    Key: "s",
-                    DrawImages: false,
-                    Options: [
-                        { Property: { ShockLevel: 0 } }, // s0 - Off
-                        { Property: { ShockLevel: 0 } }, // s1 - Level 1
-                        { Property: { ShockLevel: 1 } }, // s2 - Level 2
-                        { Property: { ShockLevel: 2 } }, // s3 - Level 3
-                    ],
-                    DrawData: {
-                        elementData: [
-                            { position: ExtendedXYWithoutImages[8][0] },
-                            { position: ExtendedXYWithoutImages[8][1] },
-                            { position: ExtendedXYWithoutImages[8][2] },
-                            { position: ExtendedXYWithoutImages[8][3] },
-                        ],
-                    },
-                },
-                {
-                    Name: "VoiceControl",
-                    Key: "v",
-                    DrawImages: false,
-                    Options: [
-                        {}, //v0 - Off
-                        {}, //v1 - On
-                    ],
-                },
-                {
-                    Name: "OrgasmLock",
-                    Key: "o",
-                    DrawImages: false,
-                    Options: [
-                        {}, // o0 - Normal
-                        { Property: { Effect: ["DenialMode"] } }, // o1 - Edge
-                        { Property: { Effect: ["DenialMode", "RuinOrgasms"] } }, // o2 - Deny
-                    ],
-                },
-            ],
-            ScriptHooks: {
-                Click: InventoryItemPelvisModularChastityBeltClickHook,
-                Draw: InventoryItemPelvisModularChastityBeltDrawHook,
-                Exit: InventoryItemPelvisModularChastityBeltExitHook,
-                ScriptDraw:
-                    InventoryItemPelvisModularChastityBeltScriptDrawHook,
-            },
-            BaselineProperty: {
-                TriggerCount: 0,
-                OrgasmCount: 0,
-                RuinedOrgasmCount: 0,
-                TimeWorn: CommonTime(),
-                TimeSinceLastOrgasm: CommonTime(),
-                ShowText: true,
-                ShockLevel: 0,
-                PunishOrgasm: false,
-                PunishStandup: false,
-                PunishStruggle: false,
-                PunishStruggleOther: false,
-                AccessMode: "",
-                TriggerValues: CommonConvertArrayToString(
-                    InventoryItemPelvisModularChastityBeltVoiceTriggers,
-                ),
-            },
-        }, // ModularChastityBelt
-        WaistLegHarness: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChangeWhenLocked: false,
-            Modules: [
-                {
-                    Name: "LinkLegs",
-                    Key: "l",
-                    Options: [
-                        {
-                            // l0 - None
-                            Property: {},
-                        },
-                        {
-                            // l1 - Loose Strap
-                            Property: { Difficulty: 2 },
-                        },
-                        {
-                            // l2 - Locked
-                            Property: {
-                                SetPose: ["LegsClosed"],
-                                AllowActivePose: ["Kneel"],
-                                Effect: [E.Slow],
-                                Difficulty: 3,
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "BeltAcc_A",
-                    Key: "x",
-                    Options: [
-                        {
-                            // x0 - None
-                            Property: { Difficulty: 0 },
-                        },
-                        {
-                            // x1 - Eqquiped
-                            Property: { Difficulty: 1 },
-                        },
-                    ],
-                },
-                {
-                    Name: "BeltAcc_B",
-                    Key: "y",
-                    Options: [
-                        {
-                            // y0 - None
-                            Property: { Difficulty: 0 },
-                        },
-                        {
-                            // y1 - Eqquiped
-                            Property: { Difficulty: 1 },
-                        },
-                    ],
-                },
-                {
-                    Name: "StrapOn",
-                    Key: "c",
-                    Options: [
-                        {
-                            // c0 - None
-                            Property: { Difficulty: 0 },
-                        },
-                        {
-                            // c1 - Eqquiped
-                            Property: {
-                                Difficulty: 1,
-                                AllowActivity: ["PenetrateItem"],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Vibrator",
-                    Key: "v",
-                    Options: [
-                        {
-                            // v0 - None
-                            Property: { Difficulty: 1 },
-                        },
-                        {
-                            // v1 - With wand
-                            Property: { Difficulty: 2 },
-                        },
-                        // v2 to v6 - Wand intensity
-                        { Property: { Intensity: 0, Effect: [E.Vibrating] } }, // v2 - Low
-                        { Property: { Intensity: 1, Effect: [E.Vibrating] } }, // v3 - Mid-Low
-                        { Property: { Intensity: 2, Effect: [E.Vibrating] } }, // v4 - Medium
-                        {
-                            Property: {
-                                Intensity: 2,
-                                Effect: [E.Egged, E.Vibrating],
-                            },
-                        }, // v5 - High
-                        {
-                            Property: {
-                                Intensity: 3,
-                                Effect: [E.Egged, E.Vibrating],
-                            },
-                        }, // v6 - Maximum
-                    ],
-                },
-                {
-                    Name: "Chastity",
-                    Key: "t",
-                    Options: [
-                        {
-                            // t0 - None
-                            Property: { Difficulty: 0 },
-                        },
-                        {
-                            // t1 - Just Strap
-                            Property: { Difficulty: 5 },
-                        },
-                        {
-                            // t2 - Lock Vagina
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Difficulty: 10,
-                                Block: ["ItemVulva", "ItemVulvaPiercings"],
-                                Effect: [E.Chaste],
-                                HideItem: [
-                                    "ItemButtAnalBeads2",
-                                    "ItemVulvaPenisDildo",
-                                    "ItemVulvaShockDildo",
-                                    "ItemVulvaVibratingDildo",
-                                    "ItemVulvaInflatableVibeDildo",
-                                    "ItemVulvaClitoralStimulator",
-                                    "ItemVulvaClitSuctionCup",
-                                    "ItemVulvaHeavyWeightClamp",
-                                    "ItemVulvaLoversVibrator",
-                                    "ItemVulvaDoubleEndDildo",
-                                    "ItemVulvaBasicCockring",
-                                    "ItemVulvaPlasticChastityCage1",
-                                    "ItemVulvaVibeEggPenisBase",
-                                    "ItemVulvaPlasticChastityCage2",
-                                    "ItemVulvaTechnoChastityCage",
-                                    "ItemVulvaFlatChastityCage",
-                                    "ItemVulvaChastityPouch",
-                                    "ItemVulvaFullCasingCage",
-                                    "ItemVulvaPiercingsVibeHeartClitPiercing",
-                                    "ItemVulvaPiercingsClitRing",
-                                    "ItemVulvaPiercingsChastityClitShield",
-                                    "ItemVulvaPiercingsHighSecurityVulvaShield",
-                                ],
-                                Hide: ["Pussy"],
-                            },
-                        },
-                        {
-                            // t3 - Lock Ass
-                            Property: {
-                                Difficulty: 9,
-                                Effect: ["ButtChaste"],
-                                Block: ["ItemButt"],
-                            },
-                        },
-                        {
-                            // t4 - Lock Both
-                            Prerequisite: ["CanCoverVulva"],
-                            Property: {
-                                Difficulty: 20,
-                                Effect: ["Chaste", "ButtChaste"],
-                                Block: [
-                                    "ItemVulva",
-                                    "ItemVulvaPiercings",
-                                    "ItemButt",
-                                ],
-                                HideItem: [
-                                    "ItemButtAnalBeads2",
-                                    "ItemVulvaPenisDildo",
-                                    "ItemVulvaShockDildo",
-                                    "ItemVulvaVibratingDildo",
-                                    "ItemVulvaInflatableVibeDildo",
-                                    "ItemVulvaClitoralStimulator",
-                                    "ItemVulvaClitSuctionCup",
-                                    "ItemVulvaHeavyWeightClamp",
-                                    "ItemVulvaLoversVibrator",
-                                    "ItemVulvaDoubleEndDildo",
-                                    "ItemVulvaBasicCockring",
-                                    "ItemVulvaPlasticChastityCage1",
-                                    "ItemVulvaVibeEggPenisBase",
-                                    "ItemVulvaPlasticChastityCage2",
-                                    "ItemVulvaTechnoChastityCage",
-                                    "ItemVulvaFlatChastityCage",
-                                    "ItemVulvaChastityPouch",
-                                    "ItemVulvaFullCasingCage",
-                                    "ItemVulvaPiercingsVibeHeartClitPiercing",
-                                    "ItemVulvaPiercingsClitRing",
-                                    "ItemVulvaPiercingsChastityClitShield",
-                                    "ItemVulvaPiercingsHighSecurityVulvaShield",
-                                ],
-                                Hide: ["Pussy"],
-                            },
-                        },
-                    ],
-                },
-            ],
-        }, // WaistLegHarness
-    }, // ItemPelvis
-    ItemEars: {
-        FuturisticEarphones: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Options: [
-                {
-                    Name: "Off",
-                    Property: {
-                        Effect: [],
-                    },
-                },
-                {
-                    Name: "Light",
-                    Property: {
-                        Effect: [E.DeafLight],
-                    },
-                },
-                {
-                    Name: "Heavy",
-                    Property: {
-                        Effect: [E.DeafHeavy],
-                    },
-                },
-                {
-                    Name: "NoiseCancelling",
-                    Property: {
-                        Effect: [E.DeafTotal],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "HeadphoneEarPlugsSelectLoudness",
-                Option: "HeadphoneEarPlugsPose",
-                Chat: "HeadphoneEarPlugsRestrain",
-                Npc: "ItemEarsHeadphonePlugs",
-            },
-            ScriptHooks: {
-                Load: FuturisticAccessLoad,
-                Click: FuturisticAccessClick,
-                Draw: FuturisticAccessDraw,
-                Exit: FuturisticAccessExit,
-                Validate: FuturisticAccessValidate,
-            },
-        }, // FuturisticEarphones
-        HeadphoneEarPlugs: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Options: [
-                {
-                    Name: "Off",
-                    Property: {
-                        Effect: [],
-                    },
-                },
-                {
-                    Name: "Light",
-                    Property: {
-                        Effect: [E.DeafLight],
-                    },
-                },
-                {
-                    Name: "Heavy",
-                    Property: {
-                        Effect: [E.DeafHeavy],
-                    },
-                },
-                {
-                    Name: "NoiseCancelling",
-                    Property: {
-                        Effect: [E.DeafTotal],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "HeadphoneEarPlugsSelectLoudness",
-                Option: "HeadphoneEarPlugsPose",
-                Chat: "HeadphoneEarPlugsRestrain",
-                Npc: "ItemEarsHeadphonePlugs",
-            },
-        }, // HeadphoneEarPlugs
-        Headphones: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "HeadphoneEarPlugs" },
-        }, // Headphones
-        BluetoothEarbuds: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "HeadphoneEarPlugs" },
-        }, // BluetoothEarbuds
-    }, // ItemEars
-    Bra: {
-        Ribbons: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Basic",
-                },
-                {
-                    Name: "Bow",
-                },
-                {
-                    Name: "Wrap",
-                },
-            ],
-            DialogPrefix: {
-                Option: "RibbonBraType",
-                Header: "SelectRibbonStyle",
-            },
-        }, // Ribbons
-        SexyBikini1: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Open",
-                },
-                {
-                    Name: "Closed",
-                },
-            ],
-            DialogPrefix: {
-                Option: "BikiniType",
-                Header: "SelectBikiniType",
-            },
-        }, // SexyBikini1
-        CuteBikini1: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "SexyBikini1" },
-        }, // CuteBikini1
-        Swimsuit1: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Shiny",
-                },
-                {
-                    Name: "Dull",
-                },
-            ],
-        }, // ChineseDress2
-        MeshTop: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: {
-                GroupName: "Cloth",
-                AssetName: "MeshTop",
-            },
-            DialogPrefix: {
-                Header: "ClothMeshTopSelect",
-                Module: "ClothMeshTopModule",
-                Option: "ClothMeshTopOption",
-                Chat: "ClothMeshTopSet",
-            },
-        }, //Mesh Top
-    }, // Bra
-    Panties: {
-        Diapers4: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "None",
-                },
-                {
-                    Name: "StrawBerry",
-                },
-                {
-                    Name: "Flower",
-                },
-                {
-                    Name: "Butterfly",
-                },
-                {
-                    Name: "Spots",
-                },
-            ],
-        }, // Diapers4
-        PoofyDiaper: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.DEST_CHAR_NAME],
-            Options: [
-                {
-                    Name: "RegularPadding",
-                },
-                {
-                    Name: "Poofy",
-                    Property: {
-                        HideItem: [
-                            "ClothLowerSkirt3",
-                            "ClothLowerTennisSkirt1",
-                        ],
-                    },
-                },
-            ],
-        }, // PoofyDiaper
-        MaleCatsuitPanties: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "SuitLower",
-                AssetName: "MaleSeamlessCatsuit",
-            },
-        }, // MaleCatsuitPanties - Panties
-        Jockstrap: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "String",
-                },
-                {
-                    Name: "Sidestraps",
-                },
-                {
-                    Name: "Holemesh",
-                },
-            ],
-        }, // Jockstrap
-    }, // Panties
-    Glasses: {
-        EyePatch1: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Left",
-                },
-                {
-                    Name: "Right",
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectEyePatchType",
-                Option: "EyePatchType",
-            },
-        }, // EyePatch1
-        CatGlasses: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Front",
-                    Property: {
-                        OverridePriority: 53,
-                    },
-                },
-                {
-                    Name: "Back",
-                    Property: {
-                        OverridePriority: 27,
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "CatGlassesSelectStyle",
-                Option: "CatGlassesStyle",
-            },
-            DrawImages: false,
-        }, // CatGlasses
-        GradientSunglasses: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "GradUp",
-                },
-                {
-                    Name: "GradDipped",
-                },
-                {
-                    Name: "FlatUp",
-                },
-                {
-                    Name: "FlatDipped",
-                },
-            ],
-            DialogPrefix: {
-                Header: "GradientSunglassesSelectType",
-                Option: "GradientSunglassesType",
-            },
-            DrawImages: false,
-        }, // GradientSunglasses
-        StreetEyewear: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Normal",
-                    Property: {
-                        OverridePriority: 27,
-                    },
-                },
-                {
-                    Name: "NormalOver",
-                    Property: {
-                        OverridePriority: 53,
-                    },
-                },
-                {
-                    Name: "Half",
-                    Property: {
-                        OverridePriority: 27,
-                    },
-                },
-                {
-                    Name: "HalfOver",
-                    Property: {
-                        OverridePriority: 53,
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "StreetEyewearSelectType",
-                Option: "StreetEyewearType",
-            },
-            DrawImages: false,
-        }, // StreetEyewear
-        Pincenez: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "NoAcc",
-                    Property: {
-                        OverridePriority: 27,
-                    },
-                },
-                {
-                    Name: "NoAccOver",
-                    Property: {
-                        OverridePriority: 53,
-                    },
-                },
-                {
-                    Name: "Acc",
-                    Property: {
-                        OverridePriority: 27,
-                    },
-                },
-                {
-                    Name: "AccOver",
-                    Property: {
-                        OverridePriority: 53,
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "PincenezSelectType",
-                Option: "PincenezType",
-            },
-            DrawImages: false,
-        }, // Pincenez
-        RoundSunglasses: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Normal",
-                    Property: { OverridePriority: 27 },
-                },
-                {
-                    Name: "Over",
-                    Property: { OverridePriority: 53 },
-                },
-            ],
-            DrawImages: false,
-        }, // RoundSunglasses
-    }, // Glasses
-    Bracelet: {
-        Band1: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Left",
-                },
-                {
-                    Name: "Both",
-                },
-                {
-                    Name: "Right",
-                },
-            ],
-            DrawImages: false,
-        }, // Band1
-        SpikeBands: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Both",
-                },
-                {
-                    Name: "Right",
-                },
-                {
-                    Name: "Left",
-                },
-            ],
-            DialogPrefix: {
-                Header: "BraceletSpikeBandsSelect",
-                Option: "BraceletSpikeBands",
-            },
-        }, // SpikeBands
-        Wristband: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Left",
-                },
-                {
-                    Name: "Both",
-                },
-                {
-                    Name: "Right",
-                },
-            ],
-        }, // Wristband
-        WristWatch: {
-            Archetype: ExtendedArchetype.MODULAR,
-            DrawImages: false,
-            Modules: [
-                {
-                    Name: "Left",
-                    Key: "l",
-                    Options: [{}, {}, {}], // Circle, Square, None
-                },
-                {
-                    Name: "Right",
-                    Key: "r",
-                    Options: [{}, {}, {}], // Circle, Square, None
-                },
-            ],
-        }, // WristWatch
-    }, //Bracelet
-    Garters: {
-        GarterBelt: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Both",
-                },
-                {
-                    Name: "Right",
-                },
-                {
-                    Name: "Left",
-                },
-            ],
-            DrawImages: false,
-        }, // GarterBelt
-        ComboBelt: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "ClothAccessory", AssetName: "ComboBelt" },
-            DrawImages: false,
-            Modules: [
-                {
-                    Name: "Chain",
-                    Key: "c",
-                    Options: [
-                        {
-                            // c0 - Added
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // c1 - None
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-            ],
-        }, // ComboBelt
-        ButterflyGarter: {
-            Archetype: ExtendedArchetype.MODULAR,
-            DrawImages: false,
-            Modules: [
-                {
-                    Name: "RightLeg",
-                    Key: "r",
-                    Options: [
-                        {
-                            // r0 - Added
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // r1 - None
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-                {
-                    Name: "LeftLeg",
-                    Key: "l",
-                    Options: [
-                        {
-                            // l0 - Added
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // l1 - None
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-            ],
-        }, // ButterflyGarter
-    }, // Garters
-    AnkletRight: {
-        LegFur: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Ankle",
-                    Key: "n",
-                    Options: [
-                        {
-                            // n0 - None
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // n1 - Fur
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-                {
-                    Name: "Knee",
-                    Key: "k",
-                    Options: [
-                        {
-                            // k0 - None
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // k1 - Fur
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-            ],
-            DrawImages: false,
-        }, // LegFur
-    }, // AnkletRight
-    AnkletLeft: {
-        LegFur: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Ankle",
-                    Key: "n",
-                    Options: [
-                        {
-                            // n0 - None
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // n1 - Fur
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-                {
-                    Name: "Knee",
-                    Key: "k",
-                    Options: [
-                        {
-                            // k0 - None
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // k1 - Fur
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-            ],
-            DrawImages: false,
-        }, // LegFur
-    }, // AnkletLeft
-    Gloves: {
-        WarmGloves: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [{ Name: "Fur" }, { Name: "NoFur" }],
-            DrawImages: false,
-        }, // WarmGloves
-        OperaGloves: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [{ Name: "Long" }, { Name: "Default" }],
-            DrawImages: false,
-        }, // OperaGloves
-    }, // Gloves
-    Necklace: {
-        NecklaceKey: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Normal",
-                    Property: {
-                        OverridePriority: 31,
-                    },
-                },
-                {
-                    Name: "Tucked",
-                    Property: {
-                        OverridePriority: 29,
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectPriorityType",
-                Option: "ClothPriorityType",
-            },
-        }, // NecklaceKey
-        NecklaceLock: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "NecklaceKey" },
-        }, // NecklaceLock
-        NecklaceRope: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Short",
-                },
-                {
-                    Name: "Long",
-                },
-            ],
-        }, //NecklaceRope
-        ChokerTattoo: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Loops",
-                },
-                {
-                    Name: "Flowers",
-                },
-            ],
-        }, //ChokerTattoo
-        PearlNecklace1: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Option1",
-                    Key: "m",
-                    Options: [
-                        {
-                            // m0 - None
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // m1 - Equipped
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-                {
-                    Name: "Option2",
-                    Key: "n",
-                    Options: [
-                        {
-                            // n0 - None
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // n1 - Equipped
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-                {
-                    Name: "Option3",
-                    Key: "o",
-                    Options: [
-                        {
-                            // o0 - No Details
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // o1 - Metal Details
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-            ],
-            DrawImages: false,
-        }, // PearlNecklace1
-        SatinScarf: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Style1",
-                },
-                {
-                    Name: "Style2",
-                },
-                {
-                    Name: "Style3",
-                },
-                {
-                    Name: "Style4",
-                },
-            ],
-        }, //SatinScarf
-    }, // Necklace
-    Suit: {
-        Catsuit: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "NoGloves",
-                },
-                {
-                    Name: "OpaqueGloves",
-                    Property: {
-                        Hide: ["HandsLeft", "HandsRight"],
-                    },
-                },
-                {
-                    Name: "TransparentGloves",
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectSuitGloves",
-                Option: "SuitGloveType",
-            },
-            DrawImages: false,
-        }, // Catsuit
-        LatexCatsuit: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.DEST_CHAR,
-                CommonChatTags.DEST_CHAR_NAME,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Options: [
-                {
-                    Name: "Standard",
-                },
-                {
-                    Name: "Prisoner",
-                },
-                {
-                    Name: "Transparent",
-                },
-                {
-                    Name: "PrisonerTransparent",
-                },
-            ],
-            DrawImages: false,
-            BaselineProperty: { Text: "PRISONER", Text2: "#0000", Text3: "" },
-            ChatSetting: TypedItemChatSetting.FROM_TO,
-            ScriptHooks: {
-                Load: InventorySuitLatexCatsuitLoadHook,
-                Draw: InventorySuitLatexCatsuitDrawHook,
-                Exit: InventorySuitLatexCatsuitExitHook,
-                PublishAction: InventorySuitLatexCatsuitPublishActionHook,
-            },
-        }, // LatexCatsuit
-        SeamlessCatsuit: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "Suit", AssetName: "Catsuit" },
-        }, // SeamlessCatsuit
-        PilotSuit: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "Suit", AssetName: "Catsuit" },
-        }, // PilotSuit
-        SeethroughSuit: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "NoGloves",
-                },
-                {
-                    Name: "TransparentGloves",
-                },
-                {
-                    Name: "OpaqueGloves",
-                    Property: {
-                        Hide: ["HandsLeft", "HandsRight"],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectSuitGloves",
-                Option: "SuitGloveType",
-            },
-            DrawImages: false,
-        }, // SeethroughSuit
-        SeethroughSuitZip: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "Suit", AssetName: "SeethroughSuit" },
-        }, // SeethroughSuitZip
-        ReverseBunnySuit: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "Suit", AssetName: "Catsuit" },
-        }, // ReverseBunnySuit
-        MaleSeamlessCatsuit: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "Suit", AssetName: "Catsuit" },
-        }, // MaleSeamlessCatsuit
-        FishnetTop: {
-            Archetype: ExtendedArchetype.MODULAR,
-            CopyConfig: { GroupName: "Cloth", AssetName: "FishnetTop" },
-            DialogPrefix: {
-                Header: "ClothFishnetTopSelect",
-                Module: "ClothFishnetTopModule",
-                Option: "ClothFishnetTopOption",
-                Chat: "ClothFishnetTopSet",
-            },
-        }, // FishnetTop
-    }, // Suit
-    SuitLower: {
-        MaleSeamlessCatsuit: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Tucked",
-                },
-                {
-                    Name: "Bulge",
-                },
-                {
-                    Name: "SkinTight",
-                },
-                {
-                    Name: "Lock",
-                },
-            ],
-        }, // MaleSeamlessCatsuit
-        LatexCatsuit: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Standard",
-                },
-                {
-                    Name: "Prisoner",
-                },
-                {
-                    Name: "Transparent",
-                },
-                {
-                    Name: "PrisonerTransparent",
-                },
-            ],
-            DialogPrefix: {
-                Header: "SuitLatexCatsuitSelect",
-                Option: "SuitLatexCatsuit",
-            },
-            DrawImages: false,
-        }, // LatexCatsuit
-        MaleCatsuitPanties: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: {
-                GroupName: "SuitLower",
-                AssetName: "MaleSeamlessCatsuit",
-            },
-        }, // MaleCatsuitPanties - SuitLower
-        RippedPantyhose: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "Socks", AssetName: "RippedPantyhose" },
-        },
-    }, // SuitLower
-    ItemHead: {
-        DuctTape: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Double",
-                    Property: {
-                        Block: ["ItemNose"],
-                        Effect: [E.BlindNormal, E.BlockWardrobe],
-                    },
-                },
-                {
-                    Name: "Wrap",
-                    Property: {
-                        Block: ["ItemNose"],
-                        Effect: [E.BlindNormal, E.BlockWardrobe],
-                    },
-                },
-                {
-                    Name: "Mummy",
-                    Property: {
-                        Hide: ["HairFront", "HairBack"],
-                        Block: [
-                            "ItemMouth",
-                            "ItemMouth2",
-                            "ItemMouth3",
-                            "ItemEars",
-                            "ItemHood",
-                            "ItemNose",
-                        ],
-                        Effect: [
-                            E.GagNormal,
-                            E.BlindNormal,
-                            E.BlockWardrobe,
-                            E.BlockMouth,
-                        ],
-                    },
-                },
-                {
-                    Name: "Open",
-                    Property: {
-                        Hide: ["HairFront", "HairBack"],
-                        Block: [
-                            "ItemMouth",
-                            "ItemMouth2",
-                            "ItemMouth3",
-                            "ItemEars",
-                            "ItemHood",
-                        ],
-                        Effect: [E.GagNormal, E.BlockMouth],
-                    },
-                },
-            ],
-        }, // DuctTape
-        Ribbons: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Basic",
-                    Property: {
-                        Effect: [E.BlindLight],
-                    },
-                },
-                {
-                    Name: "Wrap",
-                    Property: {
-                        Effect: [E.BlindNormal],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectRibbonType",
-            },
-        }, // Ribbons
-        WebBlindfold: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Blindfold",
-                    Property: {
-                        Difficulty: 0,
-                        Block: ["ItemNose"],
-                        Effect: [E.BlindLight],
-                    },
-                },
-                {
-                    Name: "Cocoon",
-                    Property: {
-                        Difficulty: 30,
-                        Hide: [
-                            "HairFront",
-                            "HairBack",
-                            "Hat",
-                            "ItemMouth",
-                            "ItemMouth2",
-                            "ItemMouth3",
-                        ],
-                        Block: [
-                            "ItemMouth",
-                            "ItemMouth2",
-                            "ItemMouth3",
-                            "ItemEars",
-                            "ItemHood",
-                            "ItemNose",
-                        ],
-                        Effect: [E.BlindHeavy, E.GagNormal, E.BlockMouth],
-                    },
-                },
-            ],
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
-            DialogPrefix: {
-                Header: "WebBondageSelect",
-            },
-        }, // WebBlindfold
-        FuturisticMask: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Transparent",
-                    Property: {
-                        SelfUnlock: true,
-                        Effect: [],
-                    },
-                },
-                {
-                    Name: "LightTint",
-                    Property: {
-                        Effect: [E.BlindLight, E.BlockWardrobe],
-                        Tint: [{ Color: 0, Strength: 0.2 }],
-                    },
-                },
-                {
-                    Name: "HeavyTint",
-                    Property: {
-                        Effect: [E.BlindNormal, E.BlockWardrobe],
-                        Tint: [{ Color: 0, Strength: 0.5 }],
-                    },
-                },
-                {
-                    Name: "Blind",
-                    Property: {
-                        Effect: [E.BlindHeavy, E.BlockWardrobe],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectVisorType",
-                Option: "ItemHeadInteractiveVisorType",
-                Chat: "ItemHeadInteractiveVisorSet",
-            },
-            ScriptHooks: {
-                Load: FuturisticAccessLoad,
-                Click: FuturisticAccessClick,
-                Draw: FuturisticAccessDraw,
-                Exit: FuturisticAccessExit,
-                Validate: FuturisticAccessValidate,
-            },
-        }, // FuturisticMask
-        InteractiveVisor: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Transparent",
-                    Property: {
-                        SelfUnlock: true,
-                        Effect: [],
-                    },
-                },
-                {
-                    Name: "LightTint",
-                    Property: {
-                        Effect: [E.BlindLight, E.BlockWardrobe],
-                        Tint: [{ Color: 0, Strength: 0.2 }],
-                    },
-                },
-                {
-                    Name: "HeavyTint",
-                    Property: {
-                        Effect: [E.BlindNormal, E.BlockWardrobe],
-                        Tint: [{ Color: 0, Strength: 0.5 }],
-                    },
-                },
-                {
-                    Name: "Blind",
-                    Property: {
-                        Effect: [E.BlindHeavy, E.BlockWardrobe],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectVisorType",
-                Option: "ItemHeadInteractiveVisorType",
-                Chat: "ItemHeadInteractiveVisorSet",
-            },
-            ScriptHooks: {
-                Load: FuturisticAccessLoad,
-                Click: FuturisticAccessClick,
-                Draw: FuturisticAccessDraw,
-                Exit: FuturisticAccessExit,
-                Validate: FuturisticAccessValidate,
-            },
-        }, // InteractiveVisor
-        InteractiveVRHeadset: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Background",
-                    Key: "b",
-                    Options: [
-                        //CustomBlindBackground: {"None" : "SynthWave", "FreeVR" : "SynthWave", "Gaming" : "Dungeon", "Off" : "", "AR" : ""},
-                        {
-                            // b0 - Passthrough
-                            Property: {
-                                CustomBlindBackground: "",
-                            },
-                        },
-                        {
-                            // b1 - SynthWave
-                            Property: {
-                                CustomBlindBackground: "SynthWave",
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // b2 - Dungeon
-                            Property: {
-                                CustomBlindBackground: "Dungeon",
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // b3 - SciFiCell
-                            Property: {
-                                CustomBlindBackground: "SciFiCell",
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // b4 - AncientRuins
-                            Property: {
-                                CustomBlindBackground: "AncientRuins",
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // b5 - HypnoticSpiral
-                            Property: {
-                                CustomBlindBackground: "HypnoticSpiral",
-                                Effect: [],
-                            },
-                        },
-                    ],
-                },
-                {
-                    // Use `BlindTotal` for VR avatars to ensure that the `thin` property never reduces the blindness level below `BlindHeavy`,
-                    // as lowering it any more will result in visual odities related to partial blindness
-                    Name: "Function",
-                    Key: "f",
-                    Options: [
-                        {
-                            // f0 - Passthrough
-                            Property: {
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // f1 - Off
-                            Property: {
-                                Effect: [E.BlindHeavy, E.BlockWardrobe],
-                            },
-                        },
-                        {
-                            // f2 - VR Avatar
-                            Property: {
-                                Effect: [
-                                    E.BlindTotal,
-                                    E.BlockWardrobe,
-                                    E.VRAvatars,
-                                ],
-                            },
-                        },
-                        {
-                            // f3 - VR Avatar (hide restraints)
-                            Property: {
-                                Effect: [
-                                    E.BlindTotal,
-                                    E.VRAvatars,
-                                    E.HideRestraints,
-                                ],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Game",
-                    Key: "g",
-                    Options: [
-                        {
-                            // g0 - None
-                            Property: {
-                                Effect: [],
-                            },
-                        },
-                        {
-                            // f1 - Kinky Dungeon
-                            Property: {
-                                Effect: [E.KinkyDungeonParty],
-                            },
-                        },
-                    ],
-                },
-            ],
-            ScriptHooks: {
-                Load: FuturisticAccessLoad,
-                Click: FuturisticAccessClick,
-                Draw: FuturisticAccessDraw,
-                Exit: FuturisticAccessExit,
-            },
-        }, // InteractiveVRHeadset
-        HypnoticVisor: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Frame",
-                    Key: "t",
-                    Options: [
-                        {}, // t0 - Frame A
-                        {}, // t1 - Frame B
-                    ],
-                },
-                {
-                    Name: "Pattern",
-                    Key: "p",
-                    Options: [
-                        {}, // p0 - Opaque
-                        {}, // p1 - Pattern 1
-                        {}, // p2 - Pattern 2
-                        {}, // p3 - Pattern 3
-                    ],
-                },
-                {
-                    Name: "Decal",
-                    Key: "d",
-                    Options: [
-                        {}, // d0 - None
-                        {}, // d1 - Bunny
-                        {}, // d2 - Cat
-                        {}, // d3 - Snake
-                        {}, // d4 - Fox
-                        {}, // d5 - Pony
-                        {}, // d6 - Xeno
-                        {}, // d7 - Leaf
-                    ],
-                },
-                {
-                    Name: "Text",
-                    Key: "e",
-                    Options: [
-                        {
-                            HasSubscreen: true,
-                            ArchetypeConfig: {
-                                Archetype: ExtendedArchetype.TEXT,
-                                MaxLength: { Text: 16 },
-                                Font: "sans-serif",
-                                ScriptHooks: {
-                                    AfterDraw: (...args) =>
-                                        TextItem.GenericTextDrawHook(...args, {
-                                            YOffset: 10,
-                                            drawOptions: { fontSize: 12 },
-                                        }),
-                                },
-                            },
-                        },
-                    ],
-                },
-            ],
-        },
-        MedicalPatch: {
-            ChatSetting: ModularItemChatSetting.PER_MODULE,
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Eye",
-                    Key: "e",
-                    Options: [
-                        {
-                            Property: {
-                                Effect: [E.BlindNormal, E.BlockWardrobe],
-                            },
-                        },
-                        {},
-                        {},
-                    ],
-                },
-                {
-                    Name: "RightSticker",
-                    Key: "r",
-                    Options: [{}, {}, {}, {}, {}], //Just blank and cosmetic options
-                },
-                {
-                    Name: "LeftSticker",
-                    Key: "l",
-                    Options: [{}, {}, {}, {}, {}], //Just blank and cosmetic options
-                },
-            ],
-        }, //MedicalPatch
-        BigMouthHood: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemHood", AssetName: "BigMouthHood" },
-            Options: [
-                { Name: "Empty", Property: { Effect: [] } },
-                {
-                    Name: "Lenses",
-                    Property: {
-                        Effect: [E.BlindLight],
-                        Tint: [{ Color: 2, Strength: 0.2 }],
-                    },
-                },
-                {
-                    Name: "Mesh",
-                    Property: {
-                        Effect: [E.BlindNormal, E.BlockWardrobe],
-                    },
-                },
-                {
-                    Name: "Slim",
-                    Property: {
-                        Effect: [E.BlindHeavy, E.BlockWardrobe],
-                    },
-                },
-            ],
-        }, //BigMouthHood
-        DroneMask: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatSetting: ModularItemChatSetting.PER_MODULE,
-            Modules: [
-                {
-                    Name: "Mouth",
-                    Key: "m",
-                    Options: [
-                        {
-                            // m0 - None
-                            Property: { Effect: [E.BlockMouth] },
-                        },
-                        {
-                            // m1 - Onahole
-                            Property: { Effect: [E.GagMedium, E.OpenMouth] },
-                        },
-                        {
-                            // m2 - Fleshlight
-                            Property: { Effect: [E.GagMedium, E.OpenMouth] },
-                        },
-                        {
-                            // m3 - Smile
-                            Property: { Effect: [E.BlockMouth] },
-                        },
-                        {
-                            // m4 - Holes
-                            Property: { Effect: [E.BlockMouth] },
-                        },
-                        {
-                            // m5 - Sculpted
-                            Property: { Effect: [E.BlockMouth] },
-                        },
-                        {
-                            // m6 - Subtle
-                            Property: { Effect: [E.BlockMouth] },
-                        },
-                        {
-                            // m7 - Thin
-                            Property: { Effect: [E.BlockMouth] },
-                        },
-                        {
-                            // m8 - Thin Oh
-                            Property: { Effect: [E.BlockMouth] },
-                        },
-                    ],
-                },
-                {
-                    Name: "Eyes",
-                    Key: "e",
-                    Options: [
-                        {
-                            // e0 - None
-                            Property: { Effect: [E.BlindLight] },
-                        },
-                        {
-                            // e1 - Regular
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // e2 - Spiral
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // e3 - Smile
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // e4 - Holes
-                            Property: { Effect: [E.BlindLight] },
-                        },
-                        {
-                            // e5 - Sculpted
-                            Property: { Effect: [] },
-                        },
-                        {
-                            // e6 - Concave
-                            Property: { Effect: [E.BlindLight] },
-                        },
-                    ],
-                },
-                {
-                    Name: "Pattern",
-                    Key: "p",
-                    Options: [
-                        {}, // Blank
-                        {}, // Barcode
-                        {}, // Scarab
-                        {}, // Hex
-                        {}, // Lines
-                        {
-                            HasSubscreen: true,
-                            ArchetypeConfig: {
-                                Archetype: ExtendedArchetype.TEXT,
-                                MaxLength: { Text: 16 },
-                                Font: "Impact",
-                                ScriptHooks: {
-                                    AfterDraw:
-                                        AssetsItemHeadDroneMaskAfterDrawHook,
-                                },
-                            },
-                        }, // text
-                        {}, // Machine
-                        {}, // Fishnet
-                        {}, // Hexpattern
-                        {}, // Large Circle
-                        {}, // Large Split Circle
-                        {}, // Large Heart
-                        {}, // Large Stylized Heart
-                        {}, // Small Heart
-                        {}, // Lock
-                        {}, // Large X
-                    ],
-                },
-                {
-                    Name: "Glow",
-                    Key: "g",
-                    Options: [{}, {}, {}, {}], // Glow Off, Glow Eyes, Mouth On, Glow Pattern On, Glow On
-                },
-                {
-                    Name: "Sight",
-                    Key: "s",
-                    Options: [
-                        {
-                            // s0 - Opaque
-                            Property: {
-                                Effect: [E.BlindHeavy, E.BlockWardrobe],
-                            },
-                        },
-                        {
-                            // s1 - One Way
-                            Property: { Effect: [] },
-                        },
-                    ],
-                },
-                {
-                    Name: "Helmet",
-                    Key: "h",
-                    Options: [
-                        {}, // h0 - Mask
-                        {
-                            Property: {
-                                Hide: ["HairFront", "HairBack"], //"HairAccessory1", "HairAccessory2"],
-                                HideItem: [
-                                    "HatBonnet1",
-                                    "HatBonnet2",
-                                    "HatBunnySuccubus2",
-                                    "HatCrown1",
-                                    "HatCrown2",
-                                    "HatCrown4",
-                                    "HatCrown5",
-                                    "HatBand1",
-                                    "HatBand2",
-                                    "HatPirateBandana1",
-                                    "HatVeil1",
-                                    "HatVeil2", // Hat items
-                                    "MaskFuturisticVisor",
-                                    "MaskShinobiMask", // Mask items
-                                    "HairAccessory3Ribbons4", // HairAccessory items
-                                    "HairAccessory1Antennae",
-                                    "HairAccessory1BunnyEars1",
-                                    "HairAccessory1BunnyEars2",
-                                    "HairAccessory1CowHorns",
-                                    "HairAccessory1ElfEars",
-                                    "HairAccessory1Ears1",
-                                    "HairAccessory1Ears2",
-                                    "HairAccessory1FoxEars1",
-                                    "HairAccessory1FoxEars2",
-                                    "HairAccessory1FoxEars3",
-                                    "HairAccessory1KittenEars1",
-                                    "HairAccessory1KittenEars2",
-                                    "HairAccessory1MouseEars1",
-                                    "HairAccessory1MouseEars2",
-                                    "HairAccessory1PuppyEars1",
-                                    "HairAccessory1Ribbons2",
-                                    "HairAccessory1WolfEars1",
-                                    "HairAccessory1WolfEars2",
-                                    "HairAccessory1Ribbons4", // Ear items (HA1)
-                                    "HairAccessory2Antennae",
-                                    "HairAccessory2BunnyEars1",
-                                    "HairAccessory2BunnyEars2",
-                                    "HairAccessory2CowHorns",
-                                    "HairAccessory2ElfEars",
-                                    "HairAccessory2Ears1",
-                                    "HairAccessory2Ears2",
-                                    "HairAccessory2FoxEars1",
-                                    "HairAccessory2FoxEars2",
-                                    "HairAccessory2FoxEars3",
-                                    "HairAccessory2KittenEars1",
-                                    "HairAccessory2KittenEars2",
-                                    "HairAccessory2MouseEars1",
-                                    "HairAccessory2MouseEars2",
-                                    "HairAccessory2PuppyEars1",
-                                    "HairAccessory2Ribbons2",
-                                    "HairAccessory2WolfEars1",
-                                    "HairAccessory2WolfEars2", // Ear items (HA2)
-                                ], // These items are hidden because they have clear mismatch issues with the hood.
-                            },
-                        }, // h1 - Helmet (hood)
-                        {
-                            // h2 - Helmet ( hood but nothing shows)
-                            Property: {
-                                Hide: [
-                                    "HairFront",
-                                    "HairBack",
-                                    "Hat",
-                                    "HairAccessory1",
-                                    "HairAccessory2",
-                                    "HairAccessory3",
-                                ],
-                                HideItem: [
-                                    "MaskFuturisticVisor",
-                                    "MaskShinobiMask",
-                                ],
-                            },
-                        },
-                    ],
-                },
-                {
-                    Name: "Layering",
-                    Key: "j",
-                    Options: [
-                        {
-                            Property: {
-                                Block: [
-                                    "ItemMouth",
-                                    "ItemMouth2",
-                                    "ItemMouth3",
-                                ],
-                                Hide: [
-                                    "ItemMouth",
-                                    "ItemMouth2",
-                                    "ItemMouth3",
-                                    "Glasses",
-                                ],
-                            },
-                        }, // No gags visible
-                        {
-                            Property: {
-                                OverridePriority: 12,
-                                Block: ["ItemMouth", "ItemMouth2"],
-                                Hide: ["ItemMouth", "ItemMouth2", "Glasses"],
-                            },
-                        }, // Highest layer gag visible
-                        {
-                            Property: {
-                                OverridePriority: 12,
-                                Block: [],
-                                Hide: [],
-                            },
-                        }, // All gags visible
-                        {}, // Blindfold items visible
-                        {}, // Blindfold and highest layer gag
-                        {}, // Blindfold and all gags
-                    ],
-                },
-                {
-                    Name: "Visibility",
-                    Key: "b",
-                    Options: [
-                        {
-                            Property: {
-                                Hide: ["Blush"],
-                                HideItem: [
-                                    "HatFacePaint",
-                                    "MaskFacePaint",
-                                    "ClothAccessoryFacePaint",
-                                ],
-                            },
-                        },
-                        {
-                            Property: {
-                                Hide: [],
-                                HideItem: [],
-                            },
-                        },
-                    ],
-                },
-            ],
-            ScriptHooks: {
-                Validate: ItemHeadDroneMaskValidateHook,
-            },
-            ChangeWhenLocked: false,
-            BaselineProperty: { Text: "" },
-        }, // DroneMask
-        Stitches: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Main",
-                    Key: "m",
-                    Options: [
-                        { Property: { Hide: ["Eyes"] } }, // Right Eye
-                        { Property: { Hide: ["Eyes2"] } }, // Left Eye
-                        {
-                            Property: {
-                                Hide: ["Eyes", "Eyes2"],
-                                Effect: [E.BlindHeavy, E.BlockWardrobe],
-                            },
-                        }, //Both Eyes
-                    ],
-                },
-                {
-                    Name: "Right",
-                    Key: "r",
-                    Options: [
-                        {}, // Straight
-                        {}, // ZigZag
-                        {}, // Skewed
-                        {}, // Crossed
-                    ],
-                },
-                {
-                    Name: "Left",
-                    Key: "l",
-                    Options: [
-                        {}, // Straight
-                        {}, // ZigZag
-                        {}, // Skewed
-                        {}, // Crossed
-                    ],
-                },
-            ],
-        }, // Stitches
-        Kigu2Hood: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemHood", AssetName: "Kigu2Hood" },
-            DrawImages: false,
-            ChangeWhenLocked: false,
-            Options: [
-                // Lenses type
-                { Name: "None", Property: { Effect: [] } },
-                {
-                    Name: "Thin",
-                    Property: {
-                        Effect: [E.BlindLight],
-                        Tint: [{ Color: 0, Strength: 0.2 }],
-                    },
-                },
-                {
-                    Name: "Thick",
-                    Property: {
-                        Effect: [E.BlindNormal, E.BlockWardrobe],
-                        Tint: [{ Color: 0, Strength: 0.3 }],
-                    },
-                },
-                {
-                    Name: "Opaque",
-                    Property: {
-                        Effect: [E.BlindHeavy, E.BlockWardrobe],
-                        Tint: [{ Color: 0, Strength: 0.5 }],
-                    },
-                },
-            ],
-        }, // Kigu2Hood
-        AsylumBlindfold: {
-            Archetype: ExtendedArchetype.TYPED,
-            DrawImages: false,
-            Options: [
-                {
-                    Name: "Normal",
-                    Property: { Effect: [E.BlindLight] },
-                },
-                {
-                    Name: "Padded",
-                    Property: { Effect: [E.BlindNormal], Difficulty: 3 },
-                },
-            ],
-        }, // AsylumBlindfold
-    }, // ItemHead
-    ItemHands: {
-        FuturisticMittens: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Mittens",
-                    Property: {
-                        Difficulty: 8,
-                        SelfUnlock: false,
-                        Effect: [E.Block, E.BlockWardrobe, E.MergedFingers],
-                        Block: ["ItemHandheld"],
-                        Hide: ["ItemHandheld"],
-                        HideItemExclude: [
-                            "ItemHandheldFoxPlush",
-                            "ItemHandheldBunPlush",
-                            "ItemHandheldKarl",
-                            "ItemHandheldShark",
-                            "ItemHandheldPetPotato",
-                        ],
-                    },
-                },
-                {
-                    Name: "Gloves",
-                    Property: { Difficulty: 0, SelfUnlock: true, Block: [] },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectFuturisticMittensType",
-                Option: "FuturisticMittensType",
-                Chat: "FuturisticMittensSet",
-            },
-            ScriptHooks: {
-                Load: FuturisticAccessLoad,
-                Click: FuturisticAccessClick,
-                Draw: FuturisticAccessDraw,
-                Exit: FuturisticAccessExit,
-                Validate: FuturisticAccessValidate,
-            },
-        }, // FuturisticMittens
-        PaddedMittens: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Unchained",
-                    Property: {
-                        HideItemExclude: [
-                            "ItemHandheldFoxPlush",
-                            "ItemHandheldBunPlush",
-                            "ItemHandheldKarl",
-                            "ItemHandheldShark",
-                            "ItemHandheldPetPotato",
-                        ],
-                    },
-                },
-                {
-                    Name: "Chained",
-                    Prerequisite: ["CanAttachMittens", "NoItemArms"],
-                    Property: {
-                        SetPose: ["BaseUpper"],
-                        Block: ["ItemTorso", "ItemTorso2"],
-                    },
-                },
-            ],
-        }, // PaddedMittens
-        PawMittens: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "PaddedMittens" },
-        }, // PawMittens
-        PonyMittensBinder: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Unchained",
-                    Property: {
-                        HideItemExclude: [
-                            "ItemHandheldFoxPlush",
-                            "ItemHandheldBunPlush",
-                            "ItemHandheldKarl",
-                            "ItemHandheldShark",
-                            "ItemHandheldPetPotato",
-                        ],
-                    },
-                },
-                {
-                    Name: "Chained",
-                    Prerequisite: ["NoItemArms"],
-                    Property: {
-                        SetPose: ["BackElbowTouch"],
-                        Block: ["ItemArms"],
-                        Difficulty: 10,
-                    },
-                },
-            ],
-        }, // PonyMittensBinder
-        ElbowLengthMittens: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { AssetName: "PonyMittensBinder" },
-        }, // ElbowLengthMittens
-        HempRopeCuffs: {
-            Archetype: ExtendedArchetype.TYPED,
-            DrawImages: false,
-            Options: [
-                {
-                    Name: "Unlinked",
-                    Property: {
-                        Difficulty: 0,
-                    },
-                },
-                {
-                    Name: "Cuffed",
-                    Property: {
-                        Effect: [E.Block],
-                        Difficulty: 2,
-                        SetPose: ["BackCuffs"],
-                    },
-                },
-                {
-                    Name: "HarnessFront",
-                    Prerequisite: ["NeedsHipHarness"],
-                    Property: {
-                        Effect: [E.Block],
-                        Difficulty: 3,
-                        SetPose: ["BaseUpper"],
-                    },
-                },
-                {
-                    Name: "HarnessBack",
-                    Prerequisite: ["NeedsHipHarness"],
-                    SelfBondageLevel: 4,
-                    Property: {
-                        Effect: [E.Block],
-                        Difficulty: 4,
-                        SetPose: ["BackElbowTouch"],
-                    },
-                },
-            ],
-        },
-        FullMittens: {
-            Archetype: ExtendedArchetype.MODULAR,
-            Modules: [
-                {
-                    Name: "Restraints",
-                    Key: "r",
-                    Options: [
-                        {
-                            // r0 - None
-                            Property: {},
-                        },
-                        {
-                            // r1 - Bar Yoke Position
-                            Property: {
-                                SetPose: ["Yoked"],
-                                Effect: [
-                                    E.Block,
-                                    E.BlockWardrobe,
-                                    E.Freeze,
-                                    E.NotSelfPickable,
-                                    E.Tethered,
-                                    E.MapImmobile,
-                                ],
-                                Difficulty: 9,
-                            },
-                        },
-                        {
-                            // r2 - Bar Over Position
-                            Property: {
-                                SetPose: ["OverTheHead"],
-                                Effect: [
-                                    E.Block,
-                                    E.BlockWardrobe,
-                                    E.Freeze,
-                                    E.NotSelfPickable,
-                                    E.Tethered,
-                                    E.MapImmobile,
-                                ],
-                                Difficulty: 12,
-                            },
-                        },
-                        {
-                            // r3 - StraitJacket Mode
-                            Property: {
-                                SetPose: ["BackBoxTie"],
-                                Block: ["ItemArms"],
-                                Effect: [
-                                    E.Block,
-                                    E.BlockWardrobe,
-                                    E.NotSelfPickable,
-                                ],
-                                Difficulty: 8,
-                            },
-                        },
-                        {
-                            // r4 - Restrict Belts
-                            Property: {
-                                SetPose: ["BackElbowTouch"],
-                                Effect: [
-                                    E.Block,
-                                    E.BlockWardrobe,
-                                    E.NotSelfPickable,
-                                ],
-                                Difficulty: 6,
-                            },
-                        },
-                        {
-                            // r5 - Armbinder Mode
-                            Property: {
-                                SetPose: ["BackElbowTouch"],
-                                Block: ["ItemArms"],
-                                Effect: [
-                                    E.Block,
-                                    E.BlockWardrobe,
-                                    E.NotSelfPickable,
-                                ],
-                                Difficulty: 9,
-                            },
-                        },
-                        {
-                            // r6 - Full Armbinder and Ankles Combo
-                            Property: {
-                                SetPose: ["BackElbowTouch"],
-                                Block: ["ItemArms"],
-                                Effect: [
-                                    E.Block,
-                                    E.BlockWardrobe,
-                                    E.Slow,
-                                    E.NotSelfPickable,
-                                ],
-                                Difficulty: 12,
-                            },
-                        },
-                    ],
-                },
-            ],
-            ChangeWhenLocked: false,
-        }, // FullMittens
-        LatexBondageMitts: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatSetting: ModularItemChatSetting.PER_MODULE,
-            Modules: [
-                {
-                    Name: "GloveType",
-                    Key: "t",
-                    Options: [{}, {}, {}], // Padded, Balloon, Balloon w nozzle
-                },
-                {
-                    Name: "Wrist",
-                    Key: "w",
-                    Options: [{}, {}, {}], // No wrist, Firm Wrist, Fitted Wrist
-                },
-                {
-                    Name: "PatternRight",
-                    Key: "r",
-                    Options: [{}, {}, {}, {}, {}, {}, {}], // None, Pumpkin (underside only), Pumpkin, Smiley (underside only), Smiley, Split, Quarters
-                },
-                {
-                    Name: "PatternLeft",
-                    Key: "l",
-                    Options: [{}, {}, {}, {}, {}, {}, {}], // None, Pumpkin (underside only), Pumpkin, Smiley (underside only), Smiley, Split, Quarters
-                },
-            ],
-        }, //LatexBondageMitts
-    }, // ItemHands
-    ItemAddon: {
-        CeilingChain: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [
-                CommonChatTags.SOURCE_CHAR,
-                CommonChatTags.TARGET_CHAR,
-                CommonChatTags.ASSET_NAME,
-            ],
-            Options: [
-                {
-                    Name: "Lowered",
-                    Property: { Difficulty: 6 },
-                },
-                {
-                    Name: "LoweredShort",
-                    Property: {
-                        Difficulty: 6,
-                        SetPose: ["BaseLower"],
-                        AllowActivePose: [...PoseAllStanding],
-                    },
-                },
-                {
-                    Name: "Suspended",
-                    Property: {
-                        Difficulty: 7,
-                        OverrideHeight: {
-                            Height: 30,
-                            Priority: 51,
-                            HeightRatioProportion: 0,
-                        },
-                        Effect: [E.Lifted],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectCeilingChainState",
-                Option: "CeilingChainBondage",
-                Chat: "CeilingChainSet",
-                Npc: "CeilingChain",
-            },
-            ChangeWhenLocked: false,
-        }, // CeilingChain
-        CeilingRope: {
-            Archetype: ExtendedArchetype.TYPED,
-            CopyConfig: { GroupName: "ItemAddon", AssetName: "CeilingChain" },
-        }, // CeilingRope
-        CeilingNeckCuff: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Loose",
-                    Property: {},
-                },
-                {
-                    Name: "Strict",
-                    Property: {
-                        Difficulty: 6,
-                        SetPose: ["BaseLower"],
-                        AllowActivePose: [...PoseAllStanding],
-                    },
-                },
-            ],
-            DrawImages: false,
-            ChangeWhenLocked: false,
-        }, // CeilingNeckCuff
-    }, // ItemAddon
-    ItemNose: {
-        NoseRing: {
-            Archetype: ExtendedArchetype.TYPED,
-            ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
-            Options: [
-                {
-                    Name: "Base",
-                },
-                {
-                    Name: "ChainShort",
-                    Prerequisite: ["NotSuspended"],
-                    Property: {
-                        SetPose: ["Kneel"],
-                        AllowActivePose: [...PoseAllKneeling],
-                        Effect: [E.Freeze, E.IsChained],
-                    },
-                },
-                {
-                    Name: "ChainLong",
-                    Prerequisite: ["NotSuspended"],
-                    Property: {
-                        Effect: [E.Tethered, E.IsChained],
-                    },
-                },
-                {
-                    Name: "Leash",
-                    Prerequisite: ["NotSuspended"],
-                    Property: {
-                        Effect: [E.Leash],
-                    },
-                },
-            ],
-            DialogPrefix: {
-                Header: "SelectAttachmentState",
-                Option: "NoseRingPose",
-                Chat: "NoseRingRestrain",
-                Npc: "InventoryItemNoseNoseRingNPCReaction",
-            },
-        }, // NoseRing
-    }, // ItemNose
-    Wings: {
-        SteampunkWings: {
-            Archetype: ExtendedArchetype.TYPED,
-            DrawImages: false,
-            Options: [
-                {
-                    Name: "Off",
-                },
-                {
-                    Name: "On",
-                },
-            ],
-        }, // SteampunkWings
-        DragonWings: {
-            Archetype: ExtendedArchetype.TYPED,
-            DrawImages: true,
-            Options: [
-                {
-                    Name: "Spread",
-                },
-                {
-                    Name: "Folded",
-                },
-                {
-                    Name: "Bound",
-                },
-            ],
-        }, // DragonWings
-    }, // Wings
-    ItemHandheld: {
-        Smartphone: {
-            Archetype: ExtendedArchetype.MODULAR,
-            ChatSetting: ModularItemChatSetting.PER_MODULE,
-            DrawImages: false,
-            Modules: [
-                {
-                    Name: "Case",
-                    Key: "c",
-                    DrawImages: true,
-                    Options: [
-                        // none, matte, stripes, dots, hearts
-                        {},
-                        {},
-                        {},
-                        {},
-                        {},
-                    ],
-                },
-            ],
-        }, // Smartphone
-        PortalTablet: {
-            Archetype: ExtendedArchetype.NOARCH,
-            ScriptHooks: {
-                Load: PortalLinkTransmitterLoadHook,
-                Draw: PortalLinkTransmitterDrawHook,
-                Click: PortalLinkTransmitterClickHook,
-                Exit: PortalLinkTransmitterExitHook,
-            },
-            BaselineProperty: { PortalLinkCode: "" },
-        }, // PortalTablet
-        AnimeGirlWand: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    Name: "Staff",
-                    Property: {
-                        AllowActivity: ["SpankItem"],
-                    },
-                },
-                {
-                    Name: "Wand",
-                    Property: {
-                        AllowActivity: ["MasturbateItem", "RubItem"],
-                    },
-                },
-            ],
-        }, // AnimeGirlWand
-        Kyosensu: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    // Cherry blossoms
-                    Name: "Type1",
-                    Property: {},
-                },
-                {
-                    // Lightning bolt
-                    Name: "Type2",
-                    Property: {},
-                },
-                {
-                    // Sun
-                    Name: "Type3",
-                    Property: {},
-                },
-                {
-                    // Sea art
-                    Name: "Type4",
-                    Property: {},
-                },
-                {
-                    // Moon
-                    Name: "Type5",
-                    Property: {},
-                },
-                {
-                    // Flowers
-                    Name: "Type6",
-                    Property: {},
-                },
-            ],
-        }, // Kyosensu
-        Uchiwa: {
-            Archetype: ExtendedArchetype.TYPED,
-            Options: [
-                {
-                    // Cherry blossoms
-                    Name: "Type1",
-                    Property: {},
-                },
-                {
-                    // Lightning bolt
-                    Name: "Type2",
-                    Property: {},
-                },
-                {
-                    // Sun
-                    Name: "Type3",
-                    Property: {},
-                },
-                {
-                    // Wave art
-                    Name: "Type4",
-                    Property: {},
-                },
-                {
-                    // Moon
-                    Name: "Type5",
-                    Property: {},
-                },
-                {
-                    // Flowers
-                    Name: "Type6",
-                    Property: {},
-                },
-            ],
-        }, // Uchiwa
-    }, // ItemHandheld
+						{
+							Property: {
+								Effect: [E.GagHeavy],
+							},
+						},
+						{},
+					], // Cloth, Cross Tape, Tape, Tape + panties, None
+				},
+				{
+					Name: "Stuffing",
+					Key: "Stuffing",
+					Options: [
+						{
+							Property: {
+								Effect: [E.GagMedium],
+								Fetish: ["Lingerie"],
+							},
+						},
+						{
+							Property: {
+								Effect: [E.GagMedium],
+								Fetish: ["Lingerie"],
+							},
+						},
+					], // Panties, Wad
+				},
+			],
+			DialogPrefix: {
+				Header: "OverfilledGagSelect",
+				Module: "OverfilledGagModule",
+				Option: "OverfilledGagOption",
+				Chat: "OverfilledGagSet",
+			},
+		}, // Overfilled Gag
+		AOMGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "Lips",
+					AllowLock: false,
+					Property: {},
+				},
+				{
+					Name: "Straps",
+					AllowLock: true,
+					Property: { Difficulty: 4 },
+				},
+			],
+		}, // AOMGag
+		HorrorMuzzle: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "None",
+					Property: {},
+				},
+				{
+					Name: "Rivets",
+					Property: { Difficulty: 3 },
+				},
+			],
+		}, // HorrorMuzzle
+		AsylumMuzzle: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "Normal",
+					Property: { Effect: [E.GagEasy] },
+				},
+				{
+					Name: "Padded",
+					Property: { Effect: [E.GagNormal], Difficulty: 3 },
+				},
+			],
+		}, // AsylumMuzzle
+	}, // ItemMouth
+	ItemMouth2: {
+		ClothGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "ClothGag" },
+		},
+		ScarfGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "ScarfGag" },
+		},
+		WiffleGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "WiffleGag" },
+		},
+		BallGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag" },
+		},
+		RopeBallGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "RopeBallGag" },
+		},
+		HarnessBallGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag" },
+		},
+		HarnessPonyBits: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "HarnessPonyBits" },
+		},
+		DuctTape: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "DuctTape" },
+		},
+		HarnessBallGag1: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "HarnessBallGag1" },
+		},
+		CupholderGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "CupholderGag" },
+		},
+		Ribbons: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "Ribbons" },
+		},
+		FuturisticMuzzle: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "FuturisticMuzzle" },
+		},
+		PonyGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PonyGag" },
+		},
+		FuturisticPanelGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "FuturisticPanelGag" },
+		},
+		FuturisticHarnessPanelGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "ItemMouth",
+				AssetName: "FuturisticHarnessPanelGag",
+			},
+		},
+		FuturisticHarnessBallGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "ItemMouth",
+				AssetName: "FuturisticHarnessBallGag",
+			},
+		},
+		BallGagMask: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGagMask" },
+		},
+		LatexMuzzleMask: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "LatexMuzzleMask" },
+		},
+		ModularGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "ModularGag" },
+		},
+		Stitches: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "Stitches" },
+		}, // StitchGag
+		PaddedFaceMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PaddedFaceMask" },
+		}, // PaddedFaceMask
+		LatexRespirator: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "LatexRespirator" },
+		}, //LatexRespirator
+		DildoPlugGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "DildoPlugGag" },
+		}, // DildoPlugGag
+		BigMouth: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BigMouth" },
+		}, // BigMouth
+		DentalGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "DentalGag" },
+		}, // DentalGag
+		OTNPlugGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "OTNPlugGag" },
+		}, // OTNPlugGag
+		LatexSheathGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "LatexSheathGag" },
+		}, // LatexSheathGag
+		PlugGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PlugGag" },
+		}, // PlugGag
+		PumpGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PumpGag" },
+		}, // PumpGag
+		TonguePiercingGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "TonguePiercingGag" },
+		}, // TonguePiercingGag
+		TechnoGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "TechnoGag" },
+		}, // TechnoGag
+		MilkBottle: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "MilkBottle" },
+		}, // MilkBottle
+		FunnelGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "FunnelGag" },
+			Options: [
+				{
+					Name: "None",
+					Property: {
+						Effect: [E.OpenMouth],
+					},
+				},
+				{
+					Name: "Funnel",
+					Property: {
+						Effect: [E.BlockMouth, E.ProtrudingMouth],
+						Block: ["ItemMouth3", "ItemHood"],
+					},
+				},
+			],
+		}, // FunnelGag
+		QualityHarnessGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "QualityHarnessGag" },
+		}, // QualityHarnessGag
+		GenitalGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "GenitalGag" },
+		}, // GenitalGag
+		PremiumMuzzle: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PremiumMuzzle" },
+		}, // PremiumMuzzle
+		OverfilledGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "OverfilledGag" },
+		}, // OverfilledGag
+		AOMGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "AOMGag" },
+		}, // AOMGag
+		HorrorMuzzle: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "HorrorMuzzle" },
+		}, // HorrorMuzzle
+		AsylumMuzzle: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "AsylumMuzzle" },
+		}, // AsylumMuzzle
+	}, // ItemMouth2
+	ItemMouth3: {
+		ClothGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "ClothGag" },
+		},
+		ScarfGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "ScarfGag" },
+		},
+		WiffleGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "WiffleGag" },
+		},
+		BallGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag" },
+		},
+		RopeBallGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "RopeBallGag" },
+		},
+		HarnessBallGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag" },
+		},
+		HarnessPonyBits: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "HarnessPonyBits" },
+		},
+		DuctTape: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "DuctTape" },
+		},
+		HarnessBallGag1: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "HarnessBallGag1" },
+		},
+		CupholderGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "CupholderGag" },
+		},
+		Ribbons: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "Ribbons" },
+		},
+		FuturisticMuzzle: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "FuturisticMuzzle" },
+		},
+		PonyGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PonyGag" },
+		},
+		FuturisticPanelGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "FuturisticPanelGag" },
+		},
+		FuturisticHarnessPanelGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "ItemMouth",
+				AssetName: "FuturisticHarnessPanelGag",
+			},
+		},
+		FuturisticHarnessBallGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "ItemMouth",
+				AssetName: "FuturisticHarnessBallGag",
+			},
+		},
+		Stitches: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "Stitches" },
+		}, // StitchGag
+		LatexRespirator: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "LatexRespirator" },
+		}, //LatexRespirator
+		PaddedFaceMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PaddedFaceMask" },
+		}, // PaddedFaceMask
+		BallGagMask: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGagMask" },
+		},
+		LatexMuzzleMask: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "LatexMuzzleMask" },
+		},
+		ModularGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "ModularGag" },
+		},
+		DildoPlugGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "DildoPlugGag" },
+		}, // DildoPlugGag
+		BigMouth: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BigMouth" },
+		}, // BigMouth
+		DentalGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "DentalGag" },
+		}, // DentalGag
+		OTNPlugGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "OTNPlugGag" },
+		}, // OTNPlugGag
+		LatexSheathGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "LatexSheathGag" },
+		}, // LatexSheathGag
+		PlugGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PlugGag" },
+		}, // PlugGag
+		PumpGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PumpGag" },
+		}, // PumpGag
+		TonguePiercingGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "TonguePiercingGag" },
+		}, // TonguePiercingGag
+		TechnoGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "TechnoGag" },
+		}, // TechnoGag
+		MilkBottle: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "MilkBottle" },
+		}, // MilkBottle
+		FunnelGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "FunnelGag" },
+			Options: [
+				{
+					Name: "None",
+					Property: {
+						Effect: [E.OpenMouth],
+					},
+				},
+				{
+					Name: "Funnel",
+					Property: {
+						Effect: [E.BlockMouth, E.ProtrudingMouth],
+						Block: ["ItemHood"],
+					},
+				},
+			],
+		}, // FunnelGag
+		QualityHarnessGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "QualityHarnessGag" },
+		}, // QualityHarnessGag
+		PremiumMuzzle: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PremiumMuzzle" },
+		}, // PremiumMuzzle
+		OverfilledGag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "OverfilledGag" },
+		}, // OverfilledGag
+		AOMGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "AOMGag" },
+		}, // AOMGag
+		HorrorMuzzle: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "HorrorMuzzle" },
+		}, // HorrorMuzzle
+		AsylumMuzzle: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "AsylumMuzzle" },
+		}, // AsylumMuzzle
+	}, // ItemMouth3
+	Mask: {
+		BunnyMask1: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Ears",
+				},
+				{
+					Name: "Earless",
+					Property: { OverridePriority: 51 },
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectBunnyMaskStyle",
+				Option: "BunnyMaskType",
+			},
+		}, // BunnyMask1
+		OpenFaceHood: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "HideBackHair",
+					Property: { Hide: ["HairBack"] },
+				},
+				{
+					Name: "ShowBackHair",
+					NPCDefault: true,
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectOpenFaceHoodStyle",
+				Option: "OpenFaceHoodStyle",
+			},
+			DrawImages: false,
+		}, // OpenFaceHood
+		PetNose: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Nose",
+					Key: "n",
+					Options: [
+						{}, // n0 - Nose
+						{}, // n1 - No Nose
+					],
+				},
+				{
+					Name: "Cheeks",
+					Key: "c",
+					Options: [
+						{}, // c0 - No Cheeks
+						{}, // c1 - Small Cheeks
+						{}, // c2 - Big Cheeks
+					],
+				},
+				{
+					Name: "Whiskers",
+					Key: "w",
+					Options: [
+						{}, // w0 - No Whiskers
+						{}, // w1 - Short Whiskers
+						{}, // w2 - Long Whiskers
+					],
+				},
+				{
+					Name: "Mouth",
+					Key: "m",
+					Options: [
+						{}, // m0 - Show Mouth
+						{ Property: { Hide: ["Mouth"] } }, // m1 - Hide Mouth
+					],
+				},
+			],
+		}, //PetNose
+		Glitter: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Freckles",
+				},
+				{
+					Name: "MidFreckles",
+				},
+				{
+					Name: "SplitFreckles",
+				},
+				{
+					Name: "FrecklesSmall",
+				},
+				{
+					Name: "MidFrecklesSmall",
+				},
+				{
+					Name: "SplitFrecklesSmall",
+				},
+				{
+					Name: "StarsBoth",
+				},
+				{
+					Name: "StarsLeft",
+				},
+				{
+					Name: "StarsRight",
+				},
+				{
+					Name: "DotsBoth",
+				},
+				{
+					Name: "DotsLeft",
+				},
+				{
+					Name: "DotsRight",
+				},
+			],
+		}, //Glitter
+		HeadHarness: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Simple",
+				},
+				{
+					Name: "Heavy",
+				},
+			],
+		}, //HeadHarness
+		Kissmark: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ClothAccessory", AssetName: "Kissmark" },
+			DialogPrefix: {
+				Header: "ClothAccessoryKissmarkSelect",
+				Module: "ClothAccessoryKissmarkModule",
+				Option: "ClothAccessoryKissmarkOption",
+				Chat: "ClothAccessoryKissmarkSet",
+			},
+		}, //KissMark
+		SwimCap: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "Hat", AssetName: "SwimCap" },
+		},
+		DroneMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemHead", AssetName: "DroneMask" },
+			Modules: [
+				{
+					Name: "Mouth",
+					Key: "m",
+					Options: [{}, {}, {}, {}, {}, {}, {}, {}, {}], // none, onahole, fleshlight, smile, holes, sculpted, subtle, thin, thin oh
+				},
+				{
+					Name: "Eyes",
+					Key: "e",
+					Options: [{}, {}, {}, {}, {}, {}, {}], // none, regular, spiral, smile, holes, sculpted, concave
+				},
+				{
+					Name: "Pattern",
+					Key: "p",
+					Options: [
+						{}, // Blank
+						{}, // Barcode
+						{}, // Scarab
+						{}, // Hex
+						{}, // Lines
+						{
+							HasSubscreen: true,
+							ArchetypeConfig: {
+								Archetype: ExtendedArchetype.TEXT,
+								MaxLength: { Text: 16 },
+								Font: "Impact",
+								ScriptHooks: {
+									AfterDraw: AssetsItemHeadDroneMaskAfterDrawHook,
+								},
+							},
+							Property: {
+								HideItem: ["ItemHeadDroneMask", "ItemHoodDroneMask"],
+							},
+						}, // text
+						{}, // Machine
+						{}, // Fishnet
+						{}, // Hexpattern
+						{}, // Large Circle
+						{}, // Large Split Circle
+						{}, // Large Heart
+						{}, // Large Stylized Heart
+						{}, // Small Heart
+						{}, // Lock
+						{}, // Large X
+					],
+				},
+				{
+					Name: "Glow",
+					Key: "g",
+					Options: [{}, {}, {}, {}], // Glow Off, Glow Eyes, Mouth On, Glow Pattern On, Glow On
+				},
+				{
+					Name: "Helmet",
+					Key: "h",
+					Options: [
+						{}, // h0 - Mask
+						{
+							Property: {
+								Hide: ["HairFront", "HairBack"], //"HairAccessory1", "HairAccessory2"],
+								HideItem: [
+									"HatBonnet1",
+									"HatBonnet2",
+									"HatBunnySuccubus2",
+									"HatCrown1",
+									"HatCrown2",
+									"HatCrown4",
+									"HatCrown5",
+									"HatBand1",
+									"HatBand2",
+									"HatPirateBandana1",
+									"HatVeil1",
+									"HatVeil2", // Hat items
+									"MaskFuturisticVisor",
+									"MaskShinobiMask", // Mask items
+									"HairAccessory3Ribbons4", // HairAccessory items
+									"HairAccessory1Antennae",
+									"HairAccessory1BunnyEars1",
+									"HairAccessory1BunnyEars2",
+									"HairAccessory1CowHorns",
+									"HairAccessory1ElfEars",
+									"HairAccessory1Ears1",
+									"HairAccessory1Ears2",
+									"HairAccessory1FoxEars1",
+									"HairAccessory1FoxEars2",
+									"HairAccessory1FoxEars3",
+									"HairAccessory1KittenEars1",
+									"HairAccessory1KittenEars2",
+									"HairAccessory1MouseEars1",
+									"HairAccessory1MouseEars2",
+									"HairAccessory1PuppyEars1",
+									"HairAccessory1Ribbons2",
+									"HairAccessory1WolfEars1",
+									"HairAccessory1WolfEars2",
+									"HairAccessory1Ribbons4", // Ear items (HA1)
+									"HairAccessory2Antennae",
+									"HairAccessory2BunnyEars1",
+									"HairAccessory2BunnyEars2",
+									"HairAccessory2CowHorns",
+									"HairAccessory2ElfEars",
+									"HairAccessory2Ears1",
+									"HairAccessory2Ears2",
+									"HairAccessory2FoxEars1",
+									"HairAccessory2FoxEars2",
+									"HairAccessory2FoxEars3",
+									"HairAccessory2KittenEars1",
+									"HairAccessory2KittenEars2",
+									"HairAccessory2MouseEars1",
+									"HairAccessory2MouseEars2",
+									"HairAccessory2PuppyEars1",
+									"HairAccessory2Ribbons2",
+									"HairAccessory2WolfEars1",
+									"HairAccessory2WolfEars2", // Ear items (HA2)
+								], // These items are hidden because they have clear mismatch issues with the hood.
+							},
+						}, // h1 - Helmet (hood)
+						{
+							// h2 - Helmet ( hood but nothing shows)
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"Hat",
+									"HairAccessory1",
+									"HairAccessory2",
+									"HairAccessory3",
+								],
+								HideItem: ["MaskFuturisticVisor", "MaskShinobiMask"],
+							},
+						},
+					],
+				},
+				{
+					Name: "Layering",
+					Key: "j",
+					Options: [
+						{
+							Property: {
+								Block: ["ItemMouth", "ItemMouth2", "ItemMouth3", "ItemHead"],
+								Hide: [
+									"ItemMouth",
+									"ItemMouth2",
+									"ItemMouth3",
+									"ItemHead",
+									"Glasses",
+								],
+							},
+						}, // No gags or blindfolds visible
+						{
+							Property: {
+								OverridePriority: 12,
+								Block: ["ItemMouth", "ItemMouth2", "ItemHead"],
+								Hide: ["ItemMouth", "ItemMouth2", "ItemHead", "Glasses"],
+							},
+						}, // Highest layer gag visible
+						{
+							Property: {
+								OverridePriority: 12,
+								Block: ["ItemHead"],
+								Hide: ["ItemHead", "Glasses"],
+							},
+						}, // All gags visible
+						{
+							Property: {
+								OverridePriority: 12,
+								Block: ["ItemMouth", "ItemMouth2", "ItemMouth3"],
+								Hide: ["ItemMouth", "ItemMouth2", "ItemMouth3"],
+							},
+						}, // Blindfold items visible
+						{
+							Property: {
+								OverridePriority: 12,
+								Block: ["ItemMouth", "ItemMouth2"],
+								Hide: ["ItemMouth", "ItemMouth2"],
+							},
+						}, // Blindfold and highest layer gag
+						{
+							Property: {
+								OverridePriority: 12,
+								Block: [],
+								Hide: [],
+							},
+						}, // Blindfold and all gags
+					],
+				},
+				{
+					Name: "Visibility",
+					Key: "b",
+					Options: [
+						{
+							Property: {
+								Hide: ["Blush"],
+								HideItem: [
+									"HatFacePaint",
+									"MaskFacePaint",
+									"ClothAccessoryFacePaint",
+								],
+							},
+						},
+						{
+							Property: {
+								Hide: [],
+								HideItem: [],
+							},
+						},
+					],
+				},
+			],
+		}, // DroneMask
+		RubberMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Wig",
+					Key: "g",
+					Options: [
+						{
+							// "Normal"
+							Property: {
+								Hide: ["HairAccessory1", "HairAccessory2"],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig1"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig2"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig3"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig4"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig5"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig6"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig7"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig8"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig9"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig10"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig11"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig12"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig13"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig14"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig15"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig16"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+						{
+							// "Wig17"
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"HairAccessory1",
+									"HairAccessory2",
+								],
+								Effect: [],
+							},
+						},
+					],
+				},
+				{
+					Name: "Eyes",
+					Key: "e",
+					Options: [
+						{
+							// "Eyes0"
+							Property: { Effect: [] },
+						},
+						{
+							// "Eyes1"
+							Property: { Effect: [] },
+						},
+						{
+							// "Eyes2"
+							Property: { Effect: [] },
+						},
+						{
+							// "Eyes3"
+							Property: { Effect: [] },
+						},
+						{
+							// "Eyes4"
+							Property: { Effect: [] },
+						},
+						{
+							// "Eyes5"
+							Property: { Effect: [] },
+						},
+						{
+							// "Eyes6"
+							Property: { Effect: [] },
+						},
+					],
+				},
+				{
+					Name: "Eyebrows",
+					Key: "y",
+					Options: [
+						{
+							// "Eyebrows0"
+							Property: { Effect: [] },
+						},
+						{
+							// "Eyebrows1"
+							Property: { Effect: [] },
+						},
+						{
+							// "Eyebrows2"
+							Property: { Effect: [] },
+						},
+						{
+							// "Eyebrows3"
+							Property: { Effect: [] },
+						},
+						{
+							// "Eyebrows4"
+							Property: { Effect: [] },
+						},
+					],
+				},
+				{
+					Name: "Lips",
+					Key: "l",
+					Options: [
+						{
+							// "Lips0"
+							Property: { Effect: [] },
+						},
+						{
+							// "Lips1"
+							Property: { Effect: [] },
+						},
+						{
+							// "Lips2"
+							Property: { Effect: [] },
+						},
+						{
+							// "Lips3"
+							Property: { Effect: [] },
+						},
+						{
+							// "Lips4"
+							Property: { Effect: [] },
+						},
+						{
+							// "Lips5"
+							Property: { Effect: [] },
+						},
+					],
+				},
+			],
+		}, // RubberMask
+		FaceScars: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			DrawImages: false,
+			CopyConfig: { GroupName: "BodyMarkings", AssetName: "FaceScars" },
+		}, // FaceScars
+		AnimalNoses: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "ButtonNose",
+				},
+				{
+					Name: "ElegantFelineNose",
+				},
+				{
+					Name: "LargeCanineNose",
+				},
+			],
+		}, // Animal Noses
+		EldritchMask: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "Eyes",
+				},
+				{
+					Name: "GlowingEyes",
+				},
+			],
+		}, // Eldritch Mask
+		Splatters: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "BodyMarkings", AssetName: "Splatters" },
+		}, // Splatters
+	}, // Mask
+	ItemLegs: {
+		DuctTape: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
+			Options: [
+				{
+					Name: "Legs",
+					Property: {
+						Difficulty: 0,
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+					},
+				},
+				{
+					Name: "HalfLegs",
+					Prerequisite: ["NoClothLower"],
+					Property: {
+						Hide: ["ClothLower", "Garters"],
+						Difficulty: 2,
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+					},
+				},
+				{
+					Name: "MostLegs",
+					Prerequisite: ["NoClothLower"],
+					Property: {
+						Hide: ["ClothLower", "Garters"],
+						Difficulty: 4,
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						HideItem: [
+							"PantiesPoofyDiaper",
+							"PantiesBulkyDiaper",
+							"ItemPelvisPoofyDiaper",
+							"ItemPelvisBulkyDiaper",
+						],
+					},
+				},
+				{
+					Name: "CompleteLegs",
+					Prerequisite: ["NoClothLower"],
+					Property: {
+						Hide: ["ClothLower", "Garters"],
+						Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt"],
+						Difficulty: 6,
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						HideItem: [
+							"PantiesPoofyDiaper",
+							"PantiesBulkyDiaper",
+							"ItemPelvisPoofyDiaper",
+							"ItemPelvisBulkyDiaper",
+						],
+					},
+				},
+				{
+					Name: "PetLegs",
+					Prerequisite: ["NoClothLower"],
+					Property: {
+						Hide: ["ClothLower", "Garters"],
+						SetPose: ["Kneel"],
+						Difficulty: 6,
+					},
+					Random: false,
+				},
+				{
+					Name: "CutOut",
+					Prerequisite: ["NoClothLower"],
+					Property: {
+						Hide: ["ClothLower", "Garters"],
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 6,
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectTapeWrapping",
+				Option: "DuctTapePose",
+				Chat: "DuctTapeRestrain",
+				Npc: "DuctTapePose",
+			},
+		}, // DuctTape
+		NylonRope: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
+			Options: [
+				{
+					Name: "Knees",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 1,
+					},
+				},
+				{
+					Name: "Thighs",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 1,
+					},
+				},
+				{
+					Name: "KneesThighs",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 2,
+					},
+				},
+				{
+					Name: "Frogtie",
+					BondageLevel: 3,
+					Property: {
+						SetPose: ["Kneel"],
+						AllowActivePose: [...PoseAllKneeling, "AllFours", "Hogtied"],
+						Difficulty: 3,
+					},
+					Random: false,
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectRopeBondage",
+				Option: "RopeBondage",
+				Chat: "LegRopeSet",
+				Npc: "RopeBondage",
+			},
+		}, // NylonRope
+		HempRope: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
+			Options: [
+				{
+					Name: "Basic",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 1,
+					},
+				},
+				{
+					Name: "FullBinding",
+					BondageLevel: 2,
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 2,
+					},
+				},
+				{
+					Name: "Link",
+					BondageLevel: 2,
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 2,
+					},
+				},
+				{
+					Name: "Frogtie",
+					BondageLevel: 3,
+					Property: {
+						SetPose: ["Kneel"],
+						AllowActivePose: ["Kneel", "KneelingSpread", "Hogtied", "AllFours"],
+						Difficulty: 3,
+					},
+					Random: false,
+				},
+				{
+					Name: "Crossed",
+					BondageLevel: 4,
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 4,
+					},
+				},
+				{
+					Name: "Mermaid",
+					BondageLevel: 4,
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 4,
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectRopeBondage",
+				Option: "RopeBondage",
+				Chat: "LegRopeSet",
+				Npc: "RopeBondage",
+			},
+		}, // HempRope
+		Chains: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
+			Options: [
+				{
+					Name: "Basic",
+					BondageLevel: 0,
+					Property: { Difficulty: 0 },
+				},
+				{
+					Name: "Strict",
+					BondageLevel: 2,
+					Property: { Difficulty: 2 },
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectChainBondage",
+				Option: "ChainBondage",
+				Chat: "LegChainSet",
+				Npc: "ChainBondage",
+			},
+			ChangeWhenLocked: false,
+		}, // Chains
+		SturdyLeatherBelts: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemArms", AssetName: "SturdyLeatherBelts" },
+			Options: [
+				{
+					Name: "One",
+				},
+				{
+					Name: "Two",
+					Property: { Difficulty: 2 },
+				},
+			],
+		}, // SturdyLeatherBelts
+		FuturisticLegCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemLegs", AssetName: "LeatherLegCuffs" },
+			DialogPrefix: {
+				Header: "SelectBondagePosition",
+				Option: "ItemLegsLeatherLegCuffs",
+				Chat: "FuturisticLegCuffsRestrain",
+			},
+			ScriptHooks: {
+				Load: FuturisticAccessLoad,
+				Click: FuturisticAccessClick,
+				Draw: FuturisticAccessDraw,
+				Exit: FuturisticAccessExit,
+				Validate: FuturisticAccessValidate,
+			},
+		}, // FuturisticLegCuffs
+		ShinyLegBinder: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			Options: [
+				{
+					Name: "Laced",
+				},
+				{
+					Name: "Asylum",
+				},
+				{
+					Name: "Beltbinder",
+				},
+				{
+					Name: "Classic",
+				},
+			],
+			ChangeWhenLocked: false,
+		}, // ShinyLegBinder
+		LeatherLegCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
+			Options: [
+				{
+					Name: "None",
+				},
+				{
+					Name: "Closed",
+					Property: {
+						SetPose: ["LegsClosed"],
+						Effect: [E.BlockWardrobe, E.Slow],
+						AllowActivePose: ["Kneel", "LegsClosed"],
+						Difficulty: 6,
+					},
+				},
+				{
+					Name: "Chained",
+					Property: {
+						Effect: [E.Slow],
+						SetPose: ["BaseLower"],
+						AllowActivePose: ["Kneel", ...PoseAllStanding],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectBondagePosition",
+			},
+		}, // LeatherLegCuffs
+		LeatherDeluxeLegCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemLegs", AssetName: "LeatherLegCuffs" },
+		}, // LeatherDeluxeLegCuffs
+		Ribbons: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
+			Options: [
+				{
+					Name: "Messystyle",
+					Property: { Difficulty: 3 },
+				},
+				{
+					Name: "MessyWrap",
+					Property: { Difficulty: 4 },
+				},
+				{
+					Name: "Cross",
+					Property: { Difficulty: 5 },
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectRibbonType",
+			},
+		}, // Ribbons
+		OrnateLegCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "LeatherLegCuffs" },
+		}, // OrnateLegCuffs
+		Zipties: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
+			Options: [
+				{
+					Name: "ZipLegLight",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 1,
+					},
+				},
+				{
+					Name: "ZipLegMedium",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 2,
+					},
+				},
+				{
+					Name: "ZipLegFull",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 2,
+					},
+				},
+				{
+					Name: "ZipFrogtie",
+					Property: {
+						SetPose: ["Kneel"],
+						AllowActivePose: ["AllFours", "Hogtied"],
+						Difficulty: 3,
+					},
+					Random: false,
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectZipTie",
+				Option: "ZipBondage",
+				Npc: "Zip",
+			},
+		}, // Zipties
+		MermaidTail: {
+			Archetype: ExtendedArchetype.VIBRATING,
+		}, // MermaidTail
+		BarrelCorset: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemTorso", AssetName: "BarrelCorset" },
+		}, // BarrelCorset
+	}, // ItemLegs
+	ItemFeet: {
+		SpreaderMetal: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Narrow",
+					Property: {
+						SetPose: ["LegsOpen"],
+					},
+				},
+				{
+					Name: "Wide",
+					Property: {
+						SetPose: ["Spread"],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectSpreaderType",
+				Option: "SpreaderMetalPose",
+			},
+			ChatSetting: TypedItemChatSetting.SILENT,
+		}, // SpreaderMetal
+		HeavySpreaderMetal: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemFeet", AssetName: "SpreaderMetal" },
+			DialogPrefix: {
+				Header: "SelectSpreaderType",
+				Option: "HeavySpreaderMetalPose",
+			},
+		}, // HeavySpreaderMetal
+		Chains: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
+			Options: [
+				{
+					Name: "Basic",
+					BondageLevel: 0,
+					Property: {
+						Difficulty: 0,
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+					},
+				},
+				{
+					Name: "Strict",
+					BondageLevel: 2,
+					Property: {
+						Difficulty: 2,
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+					},
+				},
+				{
+					Name: "Suspension",
+					BondageLevel: 6,
+					Property: {
+						Difficulty: 4,
+						SetPose: ["Suspension", "LegsClosed"],
+					},
+					Random: false,
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectChainBondage",
+				Option: "ChainBondage",
+				Chat: "LegChainSet",
+				Npc: "ChainBondage",
+			},
+			ChangeWhenLocked: false,
+		}, // Chains
+		FuturisticAnkleCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemFeet", AssetName: "SteelAnkleCuffs" },
+			ScriptHooks: {
+				Load: FuturisticAccessLoad,
+				Click: FuturisticAccessClick,
+				Draw: FuturisticAccessDraw,
+				Exit: FuturisticAccessExit,
+				Validate: FuturisticAccessValidate,
+			},
+		}, // FuturisticAnkleCuffs
+		SteelAnkleCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			Options: [
+				{
+					Name: "None",
+					Property: {
+						Difficulty: 0,
+					},
+				},
+				{
+					Name: "Closed",
+					Property: {
+						Effect: [E.BlockWardrobe, E.Freeze],
+						SetPose: ["LegsClosed"],
+						Difficulty: 6,
+						AllowActivePose: ["Kneel"],
+					},
+				},
+				{
+					Name: "Chained",
+					Property: {
+						Effect: [E.Slow],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectBondagePosition",
+				Option: "ItemFeetSteelAnkleCuffs",
+				Chat: "ItemFeetSteelAnkleCuffsSet",
+			},
+		}, // SteelAnkleCuffs
+		SturdyLeatherBelts: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemArms", AssetName: "SturdyLeatherBelts" },
+		}, // SturdyLeatherBelts
+		LeatherAnkleCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "SteelAnkleCuffs" },
+		}, // LeatherAnkleCuffs
+		LeatherDeluxeAnkleCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "SteelAnkleCuffs" },
+		}, // LeatherDeluxeAnkleCuffs
+		OrnateAnkleCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "SteelAnkleCuffs" },
+		}, // OrnateAnkleCuffs
+		HighStyleSteelAnkleCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "SteelAnkleCuffs" },
+		}, // HighStyleSteelAnkleCuffs
+		DuctTape: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Feet",
+					Property: {
+						Difficulty: 0,
+						Hide: [],
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+					},
+				},
+				{
+					Name: "HalfFeet",
+					Property: {
+						Difficulty: 2,
+						Hide: ["ClothLower", "Shoes"],
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+					},
+				},
+				{
+					Name: "MostFeet",
+					Property: {
+						Difficulty: 4,
+						Hide: ["ClothLower", "Shoes"],
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+					},
+				},
+				{
+					Name: "CompleteFeet",
+					Property: {
+						Difficulty: 6,
+						Hide: ["ClothLower", "Shoes"],
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectTapeWrapping",
+				Chat: "DuctTapeRestrain",
+				Npc: "DuctTapeRestrain",
+				Option: "DuctTapePose",
+			},
+		}, // DuctTape
+		Zipties: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
+			Options: [
+				{
+					Name: "ZipFeetLight",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 1,
+					},
+				},
+				{
+					Name: "ZipFeetMedium",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 2,
+					},
+				},
+				{
+					Name: "ZipFeetFull",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 2,
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectZipTie",
+				Chat: "ZipFeetSet",
+				Npc: "ZipFeetSet",
+				Option: "ZipBondage",
+			},
+		}, // Zipties
+		Tentacles: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Closed",
+					Property: { SetPose: ["LegsClosed"], AllowActivePose: ["Kneel"] },
+				},
+				{
+					Name: "Spread",
+					Property: {
+						OverridePriority: 25,
+						SetPose: ["Spread"],
+						OverrideHeight: { Height: 0, Priority: 60 },
+					},
+				},
+			],
+		}, // Tentacles
+		WoodenCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "LegsOpen",
+					Property: {
+						Difficulty: 2,
+						SetPose: ["LegsOpen"],
+						SelfUnlock: true,
+					},
+				},
+				{
+					Name: "Spread2",
+					Property: {
+						Difficulty: 3,
+						SetPose: ["Spread"],
+						SelfUnlock: true,
+					},
+				},
+				{
+					Name: "Spread3",
+					Property: {
+						Difficulty: 3,
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						SelfUnlock: true,
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectBondagePosition",
+				Option: "ItemFeetWoodenCuffs",
+			},
+		}, // WoodenCuffs
+		NylonRope: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
+			Options: [
+				{
+					Name: "Ankles",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 1,
+					},
+				},
+				{
+					Name: "Knees",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 1,
+					},
+				},
+				{
+					Name: "AnklesKnees",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 2,
+					},
+				},
+				{
+					Name: "BedSpreadEagle",
+					BondageLevel: 1,
+					Property: {
+						Block: ["ItemDevices"],
+						SetPose: ["Spread"],
+						Difficulty: 5,
+					},
+					Prerequisite: ["OnBed"],
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectRopeBondage",
+				Option: "RopeBondage",
+				Npc: "RopeBondage",
+				Chat: "FeetRopeSet",
+			},
+		}, // NylonRope
+		HempRope: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
+			Options: [
+				{
+					Name: "Basic",
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 1,
+					},
+				},
+				{
+					Name: "FullBinding",
+					BondageLevel: 2,
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 2,
+					},
+				},
+				{
+					Name: "Link",
+					BondageLevel: 2,
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 2,
+					},
+				},
+				{
+					Name: "Diamond",
+					BondageLevel: 4,
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 4,
+					},
+				},
+				{
+					Name: "Mermaid",
+					BondageLevel: 4,
+					Property: {
+						SetPose: ["LegsClosed"],
+						AllowActivePose: ["Kneel"],
+						Difficulty: 4,
+					},
+				},
+				{
+					Name: "Suspension",
+					BondageLevel: 6,
+					Property: {
+						SetPose: ["LegsClosed", "Suspension"],
+						Difficulty: 6,
+					},
+					Expression: [{ Group: "Blush", Name: "High", Timer: 30 }],
+				},
+				{
+					Name: "BedSpreadEagle",
+					BondageLevel: 1,
+					Property: {
+						Block: ["ItemDevices"],
+						SetPose: ["Spread"],
+						Difficulty: 5,
+					},
+					Prerequisite: ["OnBed"],
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectRopeBondage",
+				Option: "RopeBondage",
+				Npc: "RopeBondage",
+				Chat: "LegRopeSet",
+			},
+		},
+		SpreaderVibratingDildoBar: {
+			Archetype: ExtendedArchetype.VIBRATING,
+		}, // SpreaderVibratingDildoBar
+		KneeOvernighter: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Loose",
+					Property: {
+						Difficulty: 5,
+					},
+				},
+				{
+					Name: "Thigh",
+					Property: {
+						Difficulty: 7,
+						Effect: [E.Freeze],
+					},
+				},
+			],
+			DrawImages: false,
+			ChangeWhenLocked: false,
+		}, // KneeOvernighter
+		HeelBinders: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChangeWhenLocked: false,
+			Modules: [
+				{
+					Name: "Restraints",
+					Key: "r",
+					Options: [
+						{
+							// r0 - Chain
+							Property: {
+								Effect: [E.Slow],
+								Difficulty: 5,
+							},
+						},
+						{
+							// r1 - None
+							Property: {},
+						},
+						{
+							// r2 - ShortChain
+							Property: {
+								SetPose: ["LegsClosed"],
+								AllowActivePose: ["Kneel"],
+								Effect: [E.Slow, E.BlockWardrobe],
+								Difficulty: 6,
+							},
+						},
+						{
+							// r3 - Strap Limiter
+							Property: {
+								AllowActivePose: [
+									"LegsOpen",
+									"LegsClosed",
+									"Kneel",
+									"AllFours",
+									"Hogtied",
+								],
+								Effect: [E.Slow, E.BlockWardrobe],
+								Difficulty: 5,
+							},
+						},
+						{
+							// r4 - Spread Bar Stand
+							Property: {
+								SetPose: ["LegsOpen"],
+								AllowActivePose: ["Kneel"],
+								Effect: [E.BlockWardrobe, E.Freeze, E.MapImmobile],
+								Difficulty: 7,
+							},
+						},
+						{
+							// r5 - Spread Bar Spread
+							Property: {
+								SetPose: ["Spread"],
+								AllowActivePose: ["KneelingSpread"],
+								Effect: [E.BlockWardrobe, E.Freeze, E.MapImmobile],
+								Difficulty: 8,
+							},
+						},
+						{
+							// r6 - Spread Bar Sus.Inverted
+							Property: {
+								SetPose: ["Spread", "Suspension"],
+								Effect: [E.BlockWardrobe, E.Freeze, E.Tethered, E.MapImmobile],
+								OverrideHeight: { Height: -20, Priority: 41 },
+								Difficulty: 9,
+							},
+						},
+						{
+							// r7 - Spread Bar Spread.Ground
+							Property: {
+								SetPose: ["Spread"],
+								Effect: [E.BlockWardrobe, E.Freeze, E.Tethered, E.MapImmobile],
+								Difficulty: 9,
+							},
+						},
+					],
+				},
+			],
+		}, // HeelBinders
+	}, // ItemFeet
+	ItemMisc: {
+		ServingTray: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{ Name: "Empty" },
+				{ Name: "Drinks" },
+				{ Name: "Cake" },
+				{ Name: "Cookies" },
+				{ Name: "Toys" },
+			],
+		}, // WoodenMaidTray
+		TeddyBear: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
+			Options: [
+				{
+					Name: "Bear",
+				},
+				{
+					Name: "Fox",
+				},
+				{
+					Name: "Pup",
+				},
+				{
+					Name: "Pony",
+				},
+				{
+					Name: "Kitty",
+				},
+				{
+					Name: "Bunny",
+				},
+			],
+		}, // TeddyBear
+		PetPost: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemNeckRestraints", AssetName: "PetPost" },
+			Modules: [
+				{
+					Name: "Plaque",
+					Key: "p",
+					Options: [
+						{}, //p0 - Border
+						{}, //p1 - Border
+					],
+				},
+				{
+					Name: "Dirt",
+					Key: "d",
+					Options: [
+						{}, //d0 - Clean
+						{}, //d1 - Dirty
+					],
+				},
+				{
+					Name: "Sticker",
+					Key: "s",
+					Options: [
+						{}, //s0 - Paw
+						{}, //s1 - Triskel
+						{}, //s2 - Moon
+						{}, //s3 - LGBT
+						{}, //s4 - Trans
+						{}, //s5 - Bi
+						{}, //s6 - NoSwim
+						{}, //s7 - None
+					],
+				},
+				{
+					Name: "PostIt",
+					Key: "m",
+					Options: [
+						{}, //m0 - Postit
+						{}, //m1 - No PostIt
+					],
+				},
+				{
+					Name: "Txt",
+					Key: "x",
+					Options: [
+						{
+							HasSubscreen: true,
+							ArchetypeConfig: {
+								Archetype: ExtendedArchetype.TEXT,
+								MaxLength: { Text: 14, Text2: 14, Text3: 14 },
+								Font: "sans-serif",
+								ScriptHooks: {
+									AfterDraw: AssetsItemNeckRestraintsPetPostAfterDrawHook,
+								},
+							},
+						}, // text
+					],
+				},
+			],
+			DialogPrefix: {
+				Chat: "ItemNeckRestraintsPetPostSet",
+			},
+		}, //PetPost
+		WoodenSign: {
+			Archetype: ExtendedArchetype.TEXT,
+			MaxLength: { Text: 12, Text2: 12 },
+			Font: "'Calligraffitti', cursive",
+			ScriptHooks: {
+				AfterDraw: AssetsItemMiscWoodenSignAfterDrawHook,
+			},
+		}, // WoodenSign
+		PetPotato: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.ASSET_NAME],
+			Options: [{ Name: "Lap" }, { Name: "Floor" }],
+			DrawImages: false,
+			DialogPrefix: {
+				Header: "ItemMiscPetPotatoSelect",
+				Option: "ItemMiscPetPotato",
+				Chat: "ItemMiscPetPotatoSet",
+			},
+		}, // PetPotato
+		Karl: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMisc", AssetName: "PetPotato" },
+		}, // Karl
+		FoxPlush: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMisc", AssetName: "PetPotato" },
+		}, // FoxPlush
+		BunPlush: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMisc", AssetName: "PetPotato" },
+		}, // BunPlush
+		IntricatePadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Draw: InventoryItemMiscIntricatePadlockDrawHook,
+			},
+		}, // IntricatePadlock
+		HighSecurityPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Init: InventoryItemMiscHighSecurityPadlockInitHook,
+				Load: InventoryItemMiscHighSecurityPadlockLoadHook,
+				Draw: InventoryItemMiscHighSecurityPadlockDrawHook,
+				Click: InventoryItemMiscHighSecurityPadlockClickHook,
+				Exit: InventoryItemMiscHighSecurityPadlockExitHook,
+			},
+			BaselineProperty: {
+				MemberNumberListKeys: "",
+			},
+		}, // HighSecurityPadlock
+		SafewordPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			CopyConfig: { GroupName: "ItemMisc", AssetName: "PasswordPadlock" },
+			ScriptHooks: {
+				Load: InventoryItemMiscSafewordPadlockLoadHook,
+				Draw: InventoryItemMiscSafewordPadlockDrawHook,
+				Click: InventoryItemMiscSafewordPadlockClickHook,
+				Exit: InventoryItemMiscPasswordPadlockExitHook,
+			},
+		}, // SafewordPadlock
+		TimerPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Draw: InventoryItemMiscTimerPadlockDrawHook,
+				Click: InventoryItemMiscTimerPadlockClickHook,
+			},
+		}, // TimerPadlock
+		PasswordPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			DialogPrefix: {
+				Header: (data, C, item) => {
+					const lockmemberNumber = item.Property?.LockMemberNumber;
+					if (lockmemberNumber == null) {
+						return "";
+					}
+					return `${InterfaceTextGet("LockMemberNumber")} ${lockmemberNumber}`;
+				},
+			},
+			ScriptHooks: {
+				Load: InventoryItemMiscPasswordPadlockLoadHook,
+				Draw: InventoryItemMiscPasswordPadlockDrawHook,
+				Click: InventoryItemMiscPasswordPadlockClickHook,
+				Exit: InventoryItemMiscPasswordPadlockExitHook,
+			},
+			BaselineProperty: {
+				Password: "PASSWORD",
+				Hint: "Take a guess...",
+				LockSet: false,
+				RemoveOnUnlock: false,
+			},
+		}, // PasswordPadlock
+		MistressPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Draw: InventoryItemMiscMistressPadlockDrawHook,
+			},
+		}, // MistressPadlock
+		PandoraPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			CopyConfig: { GroupName: "ItemMisc", AssetName: "MistressPadlock" },
+		}, // PandoraPadlock
+		OwnerTimerPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Draw: InventoryItemMiscOwnerTimerPadlockDrawHook,
+				Click: InventoryItemMiscOwnerTimerPadlockClickHook,
+			},
+			BaselineProperty: {
+				RemoveItem: false,
+				ShowTimer: true,
+				EnableRandomInput: false,
+				MemberNumberList: [],
+			},
+		}, // OwnerTimerPadlock
+		LoversTimerPadlock: {
+			CopyConfig: { GroupName: "ItemMisc", AssetName: "OwnerTimerPadlock" },
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Draw: (...args) =>
+					InventoryItemMiscOwnerTimerPadlockDrawHook(
+						...args,
+						InventoryItemMiscLoversTimerPadlockValidator,
+					),
+				Click: (...args) =>
+					InventoryItemMiscOwnerTimerPadlockClickHook(
+						...args,
+						InventoryItemMiscLoversTimerPadlockValidator,
+					),
+			},
+		}, // LoversTimerPadlock
+		OwnerPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Draw: InventoryItemMiscOwnerPadlockDrawHook,
+			},
+		}, // OwnerPadlock
+		LoversPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			CopyConfig: { GroupName: "ItemMisc", AssetName: "OwnerPadlock" },
+		}, // LoversPadlock
+		FamilyPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Draw: InventoryItemMiscFamilyPadlockDrawHook,
+			},
+		}, // FamilyPadlock
+		PortalLinkPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			CopyConfig: { GroupName: "ItemMisc", AssetName: "ExclusivePadlock" },
+		}, // PortalLinkPadlock
+		MistressTimerPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Draw: InventoryItemMiscMistressTimerPadlockDrawHook,
+				Click: InventoryItemMiscMistressTimerPadlockClickHook,
+			},
+			BaselineProperty: {
+				RemoveItem: false,
+				ShowTimer: true,
+				EnableRandomInput: false,
+				MemberNumberList: [],
+			},
+		}, // MistressTimerPadlock
+		MetalPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			CopyConfig: { GroupName: "ItemMisc", AssetName: "IntricatePadlock" },
+		}, // MetalPadlock
+		ExclusivePadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Draw: InventoryItemMiscExclusivePadlockDrawHook,
+			},
+		}, // ExclusivePadlock
+		CombinationPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Load: InventoryItemMiscCombinationPadlockLoadHook,
+				Draw: InventoryItemMiscCombinationPadlockDrawHook,
+				Click: InventoryItemMiscCombinationPadlockClickHook,
+				Exit: InventoryItemMiscCombinationPadlockExitHook,
+			},
+			BaselineProperty: {
+				CombinationNumber: "0000",
+			},
+		}, // ExclusivePadlock
+		TimerPasswordPadlock: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Load: InventoryItemMiscTimerPasswordPadlockLoadHook,
+				Draw: InventoryItemMiscTimerPasswordPadlockDrawHook,
+				Click: InventoryItemMiscTimerPasswordPadlockClickHook,
+				Exit: InventoryItemMiscPasswordPadlockExitHook,
+			},
+			BaselineProperty: {
+				Password: "PASSWORD",
+				Hint: "Take a guess...",
+				LockSet: false,
+				RemoveItem: false,
+				ShowTimer: true,
+				EnableRandomInput: false,
+				MemberNumberList: [],
+			},
+		}, // TimerPasswordPadlock
+	}, // ItemMisc
+	ItemPelvis: {
+		FuturisticChastityBelt: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Model",
+					Key: "m",
+					Options: [{}, {}, {}, {}],
+				},
+				{
+					Name: "Front",
+					Key: "f",
+					Options: [
+						{
+							Property: {},
+						},
+						{
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+								Effect: [E.Chaste],
+							},
+						},
+					],
+				},
+				{
+					Name: "Back",
+					Key: "b",
+					Options: [
+						{
+							Property: {},
+						},
+						{
+							Property: {
+								Block: ["ItemButt"],
+							},
+						},
+					],
+				},
+				{
+					Name: "Tamper",
+					Key: "t",
+					Options: [{}, {}, {}],
+				},
+				{
+					Name: "Orgasm",
+					Key: "o",
+					Options: [{}, {}],
+				},
+			],
+			ScriptHooks: {
+				Load: FuturisticAccessLoad,
+				Click: FuturisticAccessClick,
+				Draw: FuturisticAccessDraw,
+				Exit: FuturisticAccessExit,
+			},
+		}, // FuturisticChastityBelt
+		MetalChastityBelt: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
+			Options: [
+				{
+					Name: "OpenBack",
+					Property: {
+						Block: [],
+					},
+				},
+				{
+					Name: "ClosedBack",
+					Property: {
+						Block: ["ItemButt"],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectBackShield",
+				Option: "Chastity",
+				Npc: "Chastity",
+				Chat: "ChastityBeltBackShield",
+			},
+			ChangeWhenLocked: false,
+		}, // MetalChastityBelt
+		ForbiddenChastityBelt: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			DrawImages: true,
+			Modules: [
+				{
+					Name: "CrotchShield",
+					Key: "c",
+					Options: [
+						{}, // 0 - open
+						{
+							// 1 - close front
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+							},
+						},
+						{
+							// 2 - close back
+							Property: {
+								Effect: [E.ButtChaste],
+								Block: ["ItemButt"],
+							},
+						},
+						{
+							// 3 - close both
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: [E.Chaste, E.ButtChaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt"],
+							},
+						},
+					],
+				},
+				{
+					Name: "ShockModule",
+					Key: "s",
+					DrawImages: false,
+					DrawData: {
+						elementData: [
+							{ position: ExtendedXYWithoutImages[8][0] },
+							{ position: ExtendedXYWithoutImages[8][1] },
+							{ position: ExtendedXYWithoutImages[8][2] },
+							{ position: ExtendedXYWithoutImages[8][3] },
+						],
+					},
+					Options: [
+						{}, // Off
+						{ Property: { ShockLevel: 0 } }, // Low
+						{ Property: { ShockLevel: 1 } }, // Medium
+						{ Property: { ShockLevel: 2 } }, // High
+					],
+				},
+			],
+			DrawData: {
+				elementData: [
+					{}, // CrotchShield
+					{
+						imagePath:
+							"Screens/Inventory/ItemPelvis/ForbiddenChastityBelt/s0.png",
+					}, // ShockModule
+				],
+			},
+			ScriptHooks: {
+				Draw: InventoryItemBreastForbiddenChastityBraDrawHook,
+				Click: InventoryItemBreastForbiddenChastityBraClickHook,
+				BeforeDraw: AssetsItemNeckAccessoriesCollarShockUnitBeforeDrawHook,
+				ScriptDraw: AssetsItemBreastForbiddenChastityBraScriptDrawHook,
+			},
+			ChangeWhenLocked: false,
+			BaselineProperty: {
+				TriggerCount: 0,
+				ShowText: true,
+				BlinkState: false,
+				PunishOrgasm: false,
+				PunishStandup: false,
+				PunishStruggle: false,
+			},
+		}, // ForbiddenChastityBelt
+		OrnateChastityBelt: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "MetalChastityBelt" },
+		}, // OrnateChastityBelt
+		StuddedChastityBelt: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "MetalChastityBelt" },
+		}, // StuddedChastityBelt
+		PolishedChastityBelt: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "MetalChastityBelt" },
+		}, // PolishedChastityBelt
+		Ribbons: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
+			Options: [
+				{
+					Name: "BowWrap",
+					Property: { Difficulty: 3, OverridePriority: 21 },
+				},
+				{
+					Name: "CrotchWrapping",
+					Property: { Difficulty: 4 },
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectRibbonType",
+				Option: "RibbonsBelt",
+				Npc: "ItemPelvisRibbons",
+				Chat: "PelvisRibbonsSet",
+			},
+		}, // Ribbons
+		HempRope: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
+			Options: [
+				{
+					Name: "Crotch",
+					Property: { Difficulty: 1, Effect: [E.CrotchRope] },
+				},
+				{
+					Name: "OverPanties",
+					Property: {
+						Difficulty: 1,
+						OverridePriority: 21,
+						Effect: [E.CrotchRope],
+					},
+				},
+				{
+					Name: "SwissSeat",
+					BondageLevel: 4,
+					Property: { Difficulty: 4 },
+				},
+				{
+					Name: "KikkouHip",
+					BondageLevel: 5,
+					Property: { Difficulty: 5 },
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectRopeBondage",
+				Option: "RopeBondage",
+				Npc: "RopeBondage",
+				Chat: "PelvisRopeSet",
+			},
+		}, // HempRope
+		PoofyDiaper: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.DEST_CHAR_NAME],
+			Options: [
+				{
+					Name: "RegularPadding",
+				},
+				{
+					Name: "Poofy",
+					Property: {
+						HideItem: ["ClothLowerSkirt3", "ClothLowerTennisSkirt1"],
+					},
+				},
+			],
+		}, // PoofyDiaper
+		ObedienceBelt: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
+			ChangeWhenLocked: false,
+			Modules: [
+				{
+					Name: "CrotchShield",
+					Key: "c",
+					Options: [
+						{}, // 0 - open
+						{
+							// 1 - close front
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+								HideItem: [
+									"ItemVulvaPiercingsChastityClitShield",
+									"ItemVulvaPiercingsHighSecurityVulvaShield",
+								],
+							},
+						},
+						{
+							// 2 - close back
+							Property: {
+								Effect: [E.ButtChaste],
+								Block: ["ItemButt"],
+							},
+						},
+						{
+							// 3 - close both
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: [E.Chaste, E.ButtChaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt"],
+								HideItem: [
+									"ItemVulvaPiercingsChastityClitShield",
+									"ItemVulvaPiercingsHighSecurityVulvaShield",
+								],
+							},
+						},
+					],
+				},
+				{
+					Name: "ShockModule",
+					Key: "s",
+					Options: [
+						{}, // 0 - disabled
+						{
+							HasSubscreen: true,
+							ArchetypeConfig: {
+								Archetype: ExtendedArchetype.NOARCH,
+								ScriptHooks: {
+									Draw: InventoryItemPelvisObedienceBelts1DrawHook,
+									Click: InventoryItemPelvisObedienceBelts1ClickHook,
+								},
+							},
+						}, // 1 - enabled
+					],
+				},
+				{
+					Name: "Engraving",
+					Key: "e",
+					Options: [
+						{
+							HasSubscreen: true,
+							ArchetypeConfig: {
+								Archetype: ExtendedArchetype.TEXT,
+								MaxLength: { Text: 13 },
+								Font: "Arial, sans-serif",
+								DialogPrefix: {
+									Chat: "ObedienceBeltEngraving",
+								},
+								ScriptHooks: {
+									AfterDraw: AssetsItemPelvisObedienceBeltAfterDrawHook,
+								},
+							},
+						}, // text
+					],
+				},
+			],
+			BaselineProperty: {
+				Text: "",
+				ShowText: false,
+				PunishOrgasm: false,
+				PunishStandup: false,
+				NextShockTime: 0,
+			},
+		},
+		SciFiPleasurePanties: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.DEST_CHAR_NAME,
+				CommonChatTags.ASSET_NAME,
+			],
+			Modules: [
+				{
+					Name: "CrotchShield",
+					Key: "c",
+					DrawImages: false,
+					Options: [
+						{}, // 0 - open
+						{
+							// 1 - close front
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+							},
+						},
+						{
+							// 2 - close back
+							Property: {
+								Effect: [E.ButtChaste],
+								Block: ["ItemButt"],
+							},
+						},
+						{
+							// 3 - close both
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: [E.Chaste, E.ButtChaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt"],
+							},
+						},
+					],
+				},
+				{
+					Name: "Intensity",
+					Key: "i",
+					DrawImages: false,
+					Options: [
+						{ Property: { Intensity: -1 } }, // i0 - Turn Off
+						{ Property: { Intensity: 0, Effect: [E.Vibrating] } }, // i1 - Low
+						{ Property: { Intensity: 1, Effect: [E.Vibrating] } }, // i2 - Medium
+						{ Property: { Intensity: 2, Effect: [E.Vibrating] } }, // i3 - High
+						{ Property: { Intensity: 3, Effect: [E.Vibrating] } }, // i4 - Maximum
+					],
+				},
+				{
+					Name: "OrgasmLock",
+					Key: "o",
+					DrawImages: false,
+					Options: [
+						{}, // o0 - Normal
+						{ Property: { Effect: [E.DenialMode] } }, // o1 - Edge
+						{ Property: { Effect: [E.DenialMode, E.RuinOrgasms] } }, // o2 - Deny
+					],
+				},
+				{
+					Name: "ShockLevel",
+					Key: "s",
+					DrawImages: false,
+					Options: [
+						{ Property: { ShockLevel: 0 } }, // s0 - Level 1
+						{ Property: { ShockLevel: 1 } }, // s1 - Level 2
+						{ Property: { ShockLevel: 2 } }, // s2 - Level 3
+					],
+				},
+			],
+			BaselineProperty: { ShowText: true },
+			ScriptHooks: {
+				Load: FuturisticAccessLoad,
+				Click: InventoryItemPelvisSciFiPleasurePantiesClickHook,
+				Draw: InventoryItemPelvisSciFiPleasurePantiesDrawHook,
+				Exit: FuturisticAccessExit,
+				Validate: FuturisticAccessValidate,
+			},
+			DialogPrefix: {
+				Chat: InventoryItemPelvisSciFiPleasurePantiesChatPrefix,
+			},
+		},
+		PortalPanties: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatTags: [CommonChatTags.DEST_CHAR_NAME, CommonChatTags.ASSET_NAME],
+			Modules: [
+				{
+					Name: "Code",
+					Key: "o",
+					Options: [
+						{
+							HasSubscreen: true,
+							ChangeWhenLocked: false,
+							ArchetypeConfig: {
+								Archetype: ExtendedArchetype.NOARCH,
+								ScriptHooks: {
+									Load: PortalLinkRecieverLoadHook,
+									Draw: PortalLinkRecieverDrawHook,
+									Click: PortalLinkRecieverClickHook,
+									Exit: PortalLinkRecieverExitHook,
+								},
+							},
+						},
+					],
+				},
+				{
+					Name: "CrotchShield",
+					Key: "c",
+					Options: [
+						{}, // 0 - open
+						{
+							// 1 - close front
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+								Attribute: [
+									"PortalLinkTargetItemVulva",
+									"PortalLinkActivityCaress",
+									"PortalLinkActivityKiss",
+									"PortalLinkActivitySlap",
+									"PortalLinkActivityMasturbateHand",
+									"PortalLinkActivityMasturbateTongue",
+								],
+								Hide: ["Pussy"],
+							},
+						},
+						{
+							// 2 - close back
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemButt"],
+								Attribute: [
+									"PortalLinkTargetItemButt",
+									"PortalLinkActivityCaress",
+									"PortalLinkActivityKiss",
+									"PortalLinkActivitySlap",
+									"PortalLinkActivityMasturbateHand",
+									"PortalLinkActivityMasturbateTongue",
+								],
+								Hide: ["Pussy"],
+							},
+						},
+						{
+							// 3 - close both
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt"],
+								Hide: ["Pussy"],
+							},
+						},
+					],
+				},
+			],
+			DrawData: {
+				elementData: [{ position: ExtendedXY[1][0] }, { hidden: true }],
+			},
+			BaselineProperty: {
+				PortalLinkCode: "00000000",
+			},
+			ScriptHooks: {
+				Load: FuturisticAccessLoad,
+				Click: FuturisticAccessClick,
+				Draw: FuturisticAccessDraw,
+				Exit: FuturisticAccessExit,
+			},
+		},
+		LoveChastityBelt: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			Modules: [
+				{
+					Name: "FrontShield",
+					Key: "f",
+					DrawImages: false,
+					Options: [
+						{
+							// 0 - open
+							Expression: [{ Name: "Low", Group: "Blush", Timer: 10 }],
+						},
+						{
+							// 1 - close front
+							Prerequisite: ["CanCoverVulva"],
+							Expression: [{ Name: "Medium", Group: "Blush", Timer: 10 }],
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+							},
+						},
+						{
+							// 2 - close front & vibrator
+							Prerequisite: ["CanCoverVulva"],
+							Expression: [{ Name: "Medium", Group: "Blush", Timer: 10 }],
+							Property: {
+								Effect: [E.Chaste, E.Egged],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+							},
+						},
+						{
+							// 3 - close front & shock unit
+							Prerequisite: ["CanCoverVulva"],
+							Expression: [{ Name: "Medium", Group: "Blush", Timer: 10 }],
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+							},
+						},
+					],
+				},
+				{
+					Name: "BackShield",
+					Key: "b",
+					DrawImages: false,
+					Options: [
+						{}, // 0 - open
+						{
+							// 1 - closed
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemButt"],
+							},
+						},
+					],
+				},
+				{
+					Name: "Intensity",
+					Key: "i",
+					DrawImages: false,
+					Options: [
+						{ Property: { Intensity: -1 } }, // i0 - Turn Off
+						{ Property: { Intensity: 0, Effect: [E.Vibrating] } }, // i1 - Low
+						{ Property: { Intensity: 1, Effect: [E.Vibrating] } }, // i2 - Medium
+						{ Property: { Intensity: 2, Effect: [E.Vibrating] } }, // i3 - High
+						{ Property: { Intensity: 3, Effect: [E.Vibrating] } }, // i4 - Maximum
+					],
+				},
+				{
+					Name: "ShockLevel",
+					Key: "s",
+					DrawImages: false,
+					Options: [
+						{ Property: { ShockLevel: 0 } }, // s0 - Level 1
+						{ Property: { ShockLevel: 1 } }, // s1 - Level 2
+						{ Property: { ShockLevel: 2 } }, // s2 - Level 3
+					],
+				},
+			],
+			BaselineProperty: { ShowText: true },
+			ScriptHooks: {
+				SetOption: InventoryItemPelvisLoveChastityBeltSetOptionHook,
+				Draw: InventoryItemPelvisLoveChastityBeltDraw,
+				Validate: InventoryItemPelvisLoveChastityBeltValidate,
+				Click: (...args) => {
+					InventoryItemPelvisSciFiPleasurePantiesClickHook(...args, false);
+				},
+			},
+			DialogPrefix: {
+				Chat: InventoryItemPelvisSciFiPleasurePantiesChatPrefix,
+			},
+		}, // LoveChastityBelt
+		FuturisticTrainingBelt: {
+			Archetype: ExtendedArchetype.VIBRATING,
+			Options: [VibratorModeSet.STANDARD],
+			ScriptHooks: {
+				Load: InventoryItemPelvisFuturisticTrainingBeltLoadHook,
+				Click: InventoryItemPelvisFuturisticTrainingBeltClickHook,
+				Draw: InventoryItemPelvisFuturisticTrainingBeltDrawHook,
+				Exit: InventoryItemPelvisFuturisticTrainingBeltExitHook,
+				Validate: FuturisticAccessValidate,
+				ScriptDraw: AssetsItemPelvisFuturisticTrainingBeltScriptDraw,
+			},
+			BaselineProperty: {
+				ShowText: false,
+				NextShockTime: 0,
+				PunishStruggle: false,
+				PunishStruggleOther: false,
+				PunishOrgasm: false,
+				PunishStandup: false,
+				PunishSpeech: 0,
+				PunishRequiredSpeech: 0,
+				PunishRequiredSpeechWord: "Miss",
+				PunishProhibitedSpeech: 0,
+				PunishProhibitedSpeechWords: "I,me,am,my,im",
+				PublicModeCurrent: 0,
+				PublicModePermission: 0,
+			},
+			AllowEffect: [E.DenialMode, E.RuinOrgasms],
+		}, // FuturisticTrainingBelt
+		HeavyDutyBelt: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.DEST_CHAR_NAME,
+				CommonChatTags.ASSET_NAME,
+			],
+			ChangeWhenLocked: false,
+			Modules: [
+				{
+					Name: "CrotchShield",
+					Key: "c",
+					Options: [
+						{}, // 0 - open
+						{
+							// 1 - transparent
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+								Hide: ["Pussy"],
+							},
+						},
+						{
+							// 2 - metal
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+								HideItem: [
+									"ItemButtAnalBeads2",
+									"ItemVulvaVibratingDildo",
+									"ItemVulvaClitSuctionCup",
+									"ItemVulvaInflatableVibeDildo",
+									"ItemVulvaHeavyWeightClamp",
+									"ItemVulvaPenisDildo",
+									"ItemVulvaShockDildo",
+									"ItemVulvaPiercingsVibeHeartClitPiercing",
+									"ItemVulvaPiercingsClitRing",
+									"ItemVulvaPiercingsChastityClitShield",
+									"ItemVulvaPiercingsHighSecurityVulvaShield",
+									"ItemVulvaPlasticChastityCage1",
+									"ItemVulvaPlasticChastityCage2",
+									"ItemVulvaTechnoChastityCage",
+									"ItemVulvaFlatChastityCage",
+									"ItemVulvaVibeEggPenisBase",
+									"ItemVulvaChastityPouch",
+								],
+								Hide: ["Pussy"],
+							},
+						},
+					],
+				},
+				{
+					Name: "BackShield",
+					Key: "b",
+					DrawImages: false,
+					Options: [
+						{}, // 0 - open
+						{
+							// 1 - close back
+							Property: {
+								Block: ["ItemButt"],
+							},
+						},
+					],
+				},
+				{
+					Name: "Modules",
+					Key: "m",
+					Options: [
+						{}, // 0 - none
+						{
+							// 1 - cage/spreader
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+								Hide: ["Pussy"],
+							},
+						},
+						{
+							// 2 - rotors
+							Property: {
+								Hide: ["Pussy"],
+							},
+						},
+						{
+							// 3 - both
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+								Hide: ["Pussy"],
+							},
+						},
+					],
+				},
+				{
+					Name: "Intensity",
+					Key: "i",
+					DrawImages: false,
+					Options: [
+						{ Property: { Intensity: -1, Effect: [E.Egged] } }, // i0 - Turn Off
+						{ Property: { Intensity: 0, Effect: [E.Egged, E.Vibrating] } }, // i1 - Low
+						{ Property: { Intensity: 1, Effect: [E.Egged, E.Vibrating] } }, // i2 - Medium
+						{ Property: { Intensity: 2, Effect: [E.Egged, E.Vibrating] } }, // i3 - High
+						{ Property: { Intensity: 3, Effect: [E.Egged, E.Vibrating] } }, // i4 - Maximum
+					],
+				},
+				{
+					Name: "OrgasmLock",
+					Key: "o",
+					DrawImages: false,
+					Options: [
+						{}, // o0 - Normal
+						{ Property: { Effect: [E.DenialMode] } }, // o1 - Edge
+						{ Property: { Effect: [E.DenialMode, E.RuinOrgasms] } }, // o2 - Deny
+					],
+				},
+			],
+		}, //HeavyDutyBelt
+		ModularChastityBelt: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.DEST_CHAR_NAME,
+				CommonChatTags.ASSET_NAME,
+			],
+			ChangeWhenLocked: false,
+			Modules: [
+				{
+					Name: "BeltType",
+					Key: "a",
+					Options: [
+						{}, // 0 - Invisible
+						{}, // 1 - Standard
+					],
+				},
+				{
+					Name: "CrotchShield",
+					Key: "c",
+					DrawImages: false,
+					Options: [
+						{}, // 0 - open
+						{
+							// 1 - Close Front
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: ["Chaste"],
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+								HideItem: [
+									"ItemButtAnalBeads2",
+									"ItemVulvaPenisDildo",
+									"ItemVulvaShockDildo",
+									"ItemVulvaVibratingDildo",
+									"ItemVulvaInflatableVibeDildo",
+									"ItemVulvaClitoralStimulator",
+									"ItemVulvaClitSuctionCup",
+									"ItemVulvaHeavyWeightClamp",
+									"ItemVulvaLoversVibrator",
+									"ItemVulvaDoubleEndDildo",
+									"ItemVulvaBasicCockring",
+									"ItemVulvaPlasticChastityCage1",
+									"ItemVulvaVibeEggPenisBase",
+									"ItemVulvaPlasticChastityCage2",
+									"ItemVulvaTechnoChastityCage",
+									"ItemVulvaFlatChastityCage",
+									"ItemVulvaChastityPouch",
+									"ItemVulvaFullCasingCage",
+									"ItemVulvaPiercingsVibeHeartClitPiercing",
+									"ItemVulvaPiercingsClitRing",
+									"ItemVulvaPiercingsChastityClitShield",
+									"ItemVulvaPiercingsHighSecurityVulvaShield",
+								],
+								Hide: ["Pussy"],
+							},
+						},
+						{
+							// 2 - close back
+							Property: {
+								Effect: ["ButtChaste"],
+								Block: ["ItemButt"],
+							},
+						},
+						{
+							// 3 - Close both
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Effect: ["Chaste", "ButtChaste"],
+								Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt"],
+								HideItem: [
+									"ItemButtAnalBeads2",
+									"ItemVulvaPenisDildo",
+									"ItemVulvaShockDildo",
+									"ItemVulvaVibratingDildo",
+									"ItemVulvaInflatableVibeDildo",
+									"ItemVulvaClitoralStimulator",
+									"ItemVulvaClitSuctionCup",
+									"ItemVulvaHeavyWeightClamp",
+									"ItemVulvaLoversVibrator",
+									"ItemVulvaDoubleEndDildo",
+									"ItemVulvaBasicCockring",
+									"ItemVulvaPlasticChastityCage1",
+									"ItemVulvaVibeEggPenisBase",
+									"ItemVulvaPlasticChastityCage2",
+									"ItemVulvaTechnoChastityCage",
+									"ItemVulvaFlatChastityCage",
+									"ItemVulvaChastityPouch",
+									"ItemVulvaFullCasingCage",
+									"ItemVulvaPiercingsVibeHeartClitPiercing",
+									"ItemVulvaPiercingsClitRing",
+									"ItemVulvaPiercingsChastityClitShield",
+									"ItemVulvaPiercingsHighSecurityVulvaShield",
+								],
+								Hide: ["Pussy"],
+							},
+						},
+					],
+				},
+				{
+					Name: "Intensity",
+					Key: "i",
+					DrawImages: false,
+					Options: [
+						{ Property: { Intensity: -1, Effect: ["Egged"] } }, // i0 - Turn Off
+						{ Property: { Intensity: 0, Effect: ["Egged", "Vibrating"] } }, // i1 - Low
+						{ Property: { Intensity: 1, Effect: ["Egged", "Vibrating"] } }, // i2 - Medium
+						{ Property: { Intensity: 2, Effect: ["Egged", "Vibrating"] } }, // i3 - High
+						{ Property: { Intensity: 3, Effect: ["Egged", "Vibrating"] } }, // i4 - Maximum
+					],
+				},
+				{
+					Name: "Plugs",
+					Key: "p",
+					DrawImages: false,
+					Options: [
+						{ Property: { InflateLevel: 0 } }, // p0 - Empty
+						{
+							Property: {
+								InflateLevel: 1,
+								Block: ["ItemVulva", "ItemButt"],
+								Effect: ["FillVulva", "IsPlugged"],
+							},
+						}, // p1 - Light
+						{
+							Property: {
+								InflateLevel: 2,
+								Block: ["ItemVulva", "ItemButt"],
+								Effect: ["FillVulva", "IsPlugged"],
+							},
+						}, // p2 - Inflated
+						{
+							Property: {
+								InflateLevel: 3,
+								Block: ["ItemVulva", "ItemButt"],
+								Effect: ["FillVulva", "IsPlugged", "Slow"],
+							},
+						}, // p3 - Bloated
+						{
+							Property: {
+								InflateLevel: 4,
+								Block: ["ItemVulva", "ItemButt"],
+								Effect: ["FillVulva", "IsPlugged", "Slow"],
+							},
+						}, // p4 - Maximum
+					],
+				},
+				{
+					Name: "ShockModule",
+					Key: "s",
+					DrawImages: false,
+					Options: [
+						{ Property: { ShockLevel: 0 } }, // s0 - Off
+						{ Property: { ShockLevel: 0 } }, // s1 - Level 1
+						{ Property: { ShockLevel: 1 } }, // s2 - Level 2
+						{ Property: { ShockLevel: 2 } }, // s3 - Level 3
+					],
+					DrawData: {
+						elementData: [
+							{ position: ExtendedXYWithoutImages[8][0] },
+							{ position: ExtendedXYWithoutImages[8][1] },
+							{ position: ExtendedXYWithoutImages[8][2] },
+							{ position: ExtendedXYWithoutImages[8][3] },
+						],
+					},
+				},
+				{
+					Name: "VoiceControl",
+					Key: "v",
+					DrawImages: false,
+					Options: [
+						{}, //v0 - Off
+						{}, //v1 - On
+					],
+				},
+				{
+					Name: "OrgasmLock",
+					Key: "o",
+					DrawImages: false,
+					Options: [
+						{}, // o0 - Normal
+						{ Property: { Effect: ["DenialMode"] } }, // o1 - Edge
+						{ Property: { Effect: ["DenialMode", "RuinOrgasms"] } }, // o2 - Deny
+					],
+				},
+			],
+			ScriptHooks: {
+				Click: InventoryItemPelvisModularChastityBeltClickHook,
+				Draw: InventoryItemPelvisModularChastityBeltDrawHook,
+				Exit: InventoryItemPelvisModularChastityBeltExitHook,
+				ScriptDraw: InventoryItemPelvisModularChastityBeltScriptDrawHook,
+			},
+			BaselineProperty: {
+				TriggerCount: 0,
+				OrgasmCount: 0,
+				RuinedOrgasmCount: 0,
+				TimeWorn: CommonTime(),
+				TimeSinceLastOrgasm: CommonTime(),
+				ShowText: true,
+				ShockLevel: 0,
+				PunishOrgasm: false,
+				PunishStandup: false,
+				PunishStruggle: false,
+				PunishStruggleOther: false,
+				AccessMode: "",
+				TriggerValues: CommonConvertArrayToString(
+					InventoryItemPelvisModularChastityBeltVoiceTriggers,
+				),
+			},
+		}, // ModularChastityBelt
+		WaistLegHarness: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChangeWhenLocked: false,
+			Modules: [
+				{
+					Name: "LinkLegs",
+					Key: "l",
+					Options: [
+						{
+							// l0 - None
+							Property: {},
+						},
+						{
+							// l1 - Loose Strap
+							Property: { Difficulty: 2 },
+						},
+						{
+							// l2 - Locked
+							Property: {
+								SetPose: ["LegsClosed"],
+								AllowActivePose: ["Kneel"],
+								Effect: [E.Slow],
+								Difficulty: 3,
+							},
+						},
+					],
+				},
+				{
+					Name: "BeltAcc_A",
+					Key: "x",
+					Options: [
+						{
+							// x0 - None
+							Property: { Difficulty: 0 },
+						},
+						{
+							// x1 - Eqquiped
+							Property: { Difficulty: 1 },
+						},
+					],
+				},
+				{
+					Name: "BeltAcc_B",
+					Key: "y",
+					Options: [
+						{
+							// y0 - None
+							Property: { Difficulty: 0 },
+						},
+						{
+							// y1 - Eqquiped
+							Property: { Difficulty: 1 },
+						},
+					],
+				},
+				{
+					Name: "StrapOn",
+					Key: "c",
+					Options: [
+						{
+							// c0 - None
+							Property: { Difficulty: 0 },
+						},
+						{
+							// c1 - Eqquiped
+							Property: {
+								Difficulty: 1,
+								AllowActivity: ["PenetrateItem"],
+							},
+						},
+					],
+				},
+				{
+					Name: "Vibrator",
+					Key: "v",
+					Options: [
+						{
+							// v0 - None
+							Property: { Difficulty: 1 },
+						},
+						{
+							// v1 - With wand
+							Property: { Difficulty: 2 },
+						},
+						// v2 to v6 - Wand intensity
+						{ Property: { Intensity: 0, Effect: [E.Vibrating] } }, // v2 - Low
+						{ Property: { Intensity: 1, Effect: [E.Vibrating] } }, // v3 - Mid-Low
+						{ Property: { Intensity: 2, Effect: [E.Vibrating] } }, // v4 - Medium
+						{ Property: { Intensity: 2, Effect: [E.Egged, E.Vibrating] } }, // v5 - High
+						{ Property: { Intensity: 3, Effect: [E.Egged, E.Vibrating] } }, // v6 - Maximum
+					],
+				},
+				{
+					Name: "Chastity",
+					Key: "t",
+					Options: [
+						{
+							// t0 - None
+							Property: { Difficulty: 0 },
+						},
+						{
+							// t1 - Just Strap
+							Property: { Difficulty: 5 },
+						},
+						{
+							// t2 - Lock Vagina
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Difficulty: 10,
+								Block: ["ItemVulva", "ItemVulvaPiercings"],
+								Effect: [E.Chaste],
+								HideItem: [
+									"ItemButtAnalBeads2",
+									"ItemVulvaPenisDildo",
+									"ItemVulvaShockDildo",
+									"ItemVulvaVibratingDildo",
+									"ItemVulvaInflatableVibeDildo",
+									"ItemVulvaClitoralStimulator",
+									"ItemVulvaClitSuctionCup",
+									"ItemVulvaHeavyWeightClamp",
+									"ItemVulvaLoversVibrator",
+									"ItemVulvaDoubleEndDildo",
+									"ItemVulvaBasicCockring",
+									"ItemVulvaPlasticChastityCage1",
+									"ItemVulvaVibeEggPenisBase",
+									"ItemVulvaPlasticChastityCage2",
+									"ItemVulvaTechnoChastityCage",
+									"ItemVulvaFlatChastityCage",
+									"ItemVulvaChastityPouch",
+									"ItemVulvaFullCasingCage",
+									"ItemVulvaPiercingsVibeHeartClitPiercing",
+									"ItemVulvaPiercingsClitRing",
+									"ItemVulvaPiercingsChastityClitShield",
+									"ItemVulvaPiercingsHighSecurityVulvaShield",
+								],
+								Hide: ["Pussy"],
+							},
+						},
+						{
+							// t3 - Lock Ass
+							Property: {
+								Difficulty: 9,
+								Effect: ["ButtChaste"],
+								Block: ["ItemButt"],
+							},
+						},
+						{
+							// t4 - Lock Both
+							Prerequisite: ["CanCoverVulva"],
+							Property: {
+								Difficulty: 20,
+								Effect: ["Chaste", "ButtChaste"],
+								Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt"],
+								HideItem: [
+									"ItemButtAnalBeads2",
+									"ItemVulvaPenisDildo",
+									"ItemVulvaShockDildo",
+									"ItemVulvaVibratingDildo",
+									"ItemVulvaInflatableVibeDildo",
+									"ItemVulvaClitoralStimulator",
+									"ItemVulvaClitSuctionCup",
+									"ItemVulvaHeavyWeightClamp",
+									"ItemVulvaLoversVibrator",
+									"ItemVulvaDoubleEndDildo",
+									"ItemVulvaBasicCockring",
+									"ItemVulvaPlasticChastityCage1",
+									"ItemVulvaVibeEggPenisBase",
+									"ItemVulvaPlasticChastityCage2",
+									"ItemVulvaTechnoChastityCage",
+									"ItemVulvaFlatChastityCage",
+									"ItemVulvaChastityPouch",
+									"ItemVulvaFullCasingCage",
+									"ItemVulvaPiercingsVibeHeartClitPiercing",
+									"ItemVulvaPiercingsClitRing",
+									"ItemVulvaPiercingsChastityClitShield",
+									"ItemVulvaPiercingsHighSecurityVulvaShield",
+								],
+								Hide: ["Pussy"],
+							},
+						},
+					],
+				},
+			],
+		}, // WaistLegHarness
+	}, // ItemPelvis
+	ItemEars: {
+		FuturisticEarphones: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			Options: [
+				{
+					Name: "Off",
+					Property: {
+						Effect: [],
+					},
+				},
+				{
+					Name: "Light",
+					Property: {
+						Effect: [E.DeafLight],
+					},
+				},
+				{
+					Name: "Heavy",
+					Property: {
+						Effect: [E.DeafHeavy],
+					},
+				},
+				{
+					Name: "NoiseCancelling",
+					Property: {
+						Effect: [E.DeafTotal],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "HeadphoneEarPlugsSelectLoudness",
+				Option: "HeadphoneEarPlugsPose",
+				Chat: "HeadphoneEarPlugsRestrain",
+				Npc: "ItemEarsHeadphonePlugs",
+			},
+			ScriptHooks: {
+				Load: FuturisticAccessLoad,
+				Click: FuturisticAccessClick,
+				Draw: FuturisticAccessDraw,
+				Exit: FuturisticAccessExit,
+				Validate: FuturisticAccessValidate,
+			},
+		}, // FuturisticEarphones
+		HeadphoneEarPlugs: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			Options: [
+				{
+					Name: "Off",
+					Property: {
+						Effect: [],
+					},
+				},
+				{
+					Name: "Light",
+					Property: {
+						Effect: [E.DeafLight],
+					},
+				},
+				{
+					Name: "Heavy",
+					Property: {
+						Effect: [E.DeafHeavy],
+					},
+				},
+				{
+					Name: "NoiseCancelling",
+					Property: {
+						Effect: [E.DeafTotal],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "HeadphoneEarPlugsSelectLoudness",
+				Option: "HeadphoneEarPlugsPose",
+				Chat: "HeadphoneEarPlugsRestrain",
+				Npc: "ItemEarsHeadphonePlugs",
+			},
+		}, // HeadphoneEarPlugs
+		Headphones: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "HeadphoneEarPlugs" },
+		}, // Headphones
+		BluetoothEarbuds: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "HeadphoneEarPlugs" },
+		}, // BluetoothEarbuds
+	}, // ItemEars
+	Bra: {
+		Ribbons: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Basic",
+				},
+				{
+					Name: "Bow",
+				},
+				{
+					Name: "Wrap",
+				},
+			],
+			DialogPrefix: {
+				Option: "RibbonBraType",
+				Header: "SelectRibbonStyle",
+			},
+		}, // Ribbons
+		SexyBikini1: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Open",
+				},
+				{
+					Name: "Closed",
+				},
+			],
+			DialogPrefix: {
+				Option: "BikiniType",
+				Header: "SelectBikiniType",
+			},
+		}, // SexyBikini1
+		CuteBikini1: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "SexyBikini1" },
+		}, // CuteBikini1
+		Swimsuit1: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Shiny",
+				},
+				{
+					Name: "Dull",
+				},
+			],
+		}, // ChineseDress2
+		MeshTop: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "Cloth",
+				AssetName: "MeshTop",
+			},
+			DialogPrefix: {
+				Header: "ClothMeshTopSelect",
+				Module: "ClothMeshTopModule",
+				Option: "ClothMeshTopOption",
+				Chat: "ClothMeshTopSet",
+			},
+		}, //Mesh Top
+	}, // Bra
+	Panties: {
+		Diapers4: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "None",
+				},
+				{
+					Name: "StrawBerry",
+				},
+				{
+					Name: "Flower",
+				},
+				{
+					Name: "Butterfly",
+				},
+				{
+					Name: "Spots",
+				},
+			],
+		}, // Diapers4
+		PoofyDiaper: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.DEST_CHAR_NAME],
+			Options: [
+				{
+					Name: "RegularPadding",
+				},
+				{
+					Name: "Poofy",
+					Property: {
+						HideItem: ["ClothLowerSkirt3", "ClothLowerTennisSkirt1"],
+					},
+				},
+			],
+		}, // PoofyDiaper
+		MaleCatsuitPanties: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "SuitLower", AssetName: "MaleSeamlessCatsuit" },
+		}, // MaleCatsuitPanties - Panties
+		Jockstrap: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "String",
+				},
+				{
+					Name: "Sidestraps",
+				},
+				{
+					Name: "Holemesh",
+				},
+			],
+		}, // Jockstrap
+	}, // Panties
+	Glasses: {
+		EyePatch1: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Left",
+				},
+				{
+					Name: "Right",
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectEyePatchType",
+				Option: "EyePatchType",
+			},
+		}, // EyePatch1
+		CatGlasses: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Front",
+					Property: {
+						OverridePriority: 53,
+					},
+				},
+				{
+					Name: "Back",
+					Property: {
+						OverridePriority: 27,
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "CatGlassesSelectStyle",
+				Option: "CatGlassesStyle",
+			},
+			DrawImages: false,
+		}, // CatGlasses
+		GradientSunglasses: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "GradUp",
+				},
+				{
+					Name: "GradDipped",
+				},
+				{
+					Name: "FlatUp",
+				},
+				{
+					Name: "FlatDipped",
+				},
+			],
+			DialogPrefix: {
+				Header: "GradientSunglassesSelectType",
+				Option: "GradientSunglassesType",
+			},
+			DrawImages: false,
+		}, // GradientSunglasses
+		StreetEyewear: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Normal",
+					Property: {
+						OverridePriority: 27,
+					},
+				},
+				{
+					Name: "NormalOver",
+					Property: {
+						OverridePriority: 53,
+					},
+				},
+				{
+					Name: "Half",
+					Property: {
+						OverridePriority: 27,
+					},
+				},
+				{
+					Name: "HalfOver",
+					Property: {
+						OverridePriority: 53,
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "StreetEyewearSelectType",
+				Option: "StreetEyewearType",
+			},
+			DrawImages: false,
+		}, // StreetEyewear
+		Pincenez: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "NoAcc",
+					Property: {
+						OverridePriority: 27,
+					},
+				},
+				{
+					Name: "NoAccOver",
+					Property: {
+						OverridePriority: 53,
+					},
+				},
+				{
+					Name: "Acc",
+					Property: {
+						OverridePriority: 27,
+					},
+				},
+				{
+					Name: "AccOver",
+					Property: {
+						OverridePriority: 53,
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "PincenezSelectType",
+				Option: "PincenezType",
+			},
+			DrawImages: false,
+		}, // Pincenez
+		RoundSunglasses: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Normal",
+					Property: { OverridePriority: 27 },
+				},
+				{
+					Name: "Over",
+					Property: { OverridePriority: 53 },
+				},
+			],
+			DrawImages: false,
+		}, // RoundSunglasses
+	}, // Glasses
+	Bracelet: {
+		Band1: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Left",
+				},
+				{
+					Name: "Both",
+				},
+				{
+					Name: "Right",
+				},
+			],
+			DrawImages: false,
+		}, // Band1
+		SpikeBands: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Both",
+				},
+				{
+					Name: "Right",
+				},
+				{
+					Name: "Left",
+				},
+			],
+			DialogPrefix: {
+				Header: "BraceletSpikeBandsSelect",
+				Option: "BraceletSpikeBands",
+			},
+		}, // SpikeBands
+		Wristband: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Left",
+				},
+				{
+					Name: "Both",
+				},
+				{
+					Name: "Right",
+				},
+			],
+		}, // Wristband
+		WristWatch: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "Left",
+					Key: "l",
+					Options: [{}, {}, {}], // Circle, Square, None
+				},
+				{
+					Name: "Right",
+					Key: "r",
+					Options: [{}, {}, {}], // Circle, Square, None
+				},
+			],
+		}, // WristWatch
+	}, //Bracelet
+	Garters: {
+		GarterBelt: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Both",
+				},
+				{
+					Name: "Right",
+				},
+				{
+					Name: "Left",
+				},
+			],
+			DrawImages: false,
+		}, // GarterBelt
+		ComboBelt: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ClothAccessory", AssetName: "ComboBelt" },
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "Chain",
+					Key: "c",
+					Options: [
+						{
+							// c0 - Added
+							Property: { Effect: [] },
+						},
+						{
+							// c1 - None
+							Property: { Effect: [] },
+						},
+					],
+				},
+			],
+		}, // ComboBelt
+		ButterflyGarter: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "RightLeg",
+					Key: "r",
+					Options: [
+						{
+							// r0 - Added
+							Property: { Effect: [] },
+						},
+						{
+							// r1 - None
+							Property: { Effect: [] },
+						},
+					],
+				},
+				{
+					Name: "LeftLeg",
+					Key: "l",
+					Options: [
+						{
+							// l0 - Added
+							Property: { Effect: [] },
+						},
+						{
+							// l1 - None
+							Property: { Effect: [] },
+						},
+					],
+				},
+			],
+		}, // ButterflyGarter
+	}, // Garters
+	AnkletRight: {
+		LegFur: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Ankle",
+					Key: "n",
+					Options: [
+						{
+							// n0 - None
+							Property: { Effect: [] },
+						},
+						{
+							// n1 - Fur
+							Property: { Effect: [] },
+						},
+					],
+				},
+				{
+					Name: "Knee",
+					Key: "k",
+					Options: [
+						{
+							// k0 - None
+							Property: { Effect: [] },
+						},
+						{
+							// k1 - Fur
+							Property: { Effect: [] },
+						},
+					],
+				},
+			],
+			DrawImages: false,
+		}, // LegFur
+	}, // AnkletRight
+	AnkletLeft: {
+		LegFur: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Ankle",
+					Key: "n",
+					Options: [
+						{
+							// n0 - None
+							Property: { Effect: [] },
+						},
+						{
+							// n1 - Fur
+							Property: { Effect: [] },
+						},
+					],
+				},
+				{
+					Name: "Knee",
+					Key: "k",
+					Options: [
+						{
+							// k0 - None
+							Property: { Effect: [] },
+						},
+						{
+							// k1 - Fur
+							Property: { Effect: [] },
+						},
+					],
+				},
+			],
+			DrawImages: false,
+		}, // LegFur
+	}, // AnkletLeft
+	Gloves: {
+		WarmGloves: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [{ Name: "Fur" }, { Name: "NoFur" }],
+			DrawImages: false,
+		}, // WarmGloves
+		OperaGloves: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [{ Name: "Long" }, { Name: "Default" }],
+			DrawImages: false,
+		}, // OperaGloves
+	}, // Gloves
+	Necklace: {
+		NecklaceKey: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Normal",
+					Property: {
+						OverridePriority: 31,
+					},
+				},
+				{
+					Name: "Tucked",
+					Property: {
+						OverridePriority: 29,
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectPriorityType",
+				Option: "ClothPriorityType",
+			},
+		}, // NecklaceKey
+		NecklaceLock: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "NecklaceKey" },
+		}, // NecklaceLock
+		NecklaceRope: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Short",
+				},
+				{
+					Name: "Long",
+				},
+			],
+		}, //NecklaceRope
+		ChokerTattoo: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Loops",
+				},
+				{
+					Name: "Flowers",
+				},
+			],
+		}, //ChokerTattoo
+		PearlNecklace1: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Option1",
+					Key: "m",
+					Options: [
+						{
+							// m0 - None
+							Property: { Effect: [] },
+						},
+						{
+							// m1 - Equipped
+							Property: { Effect: [] },
+						},
+					],
+				},
+				{
+					Name: "Option2",
+					Key: "n",
+					Options: [
+						{
+							// n0 - None
+							Property: { Effect: [] },
+						},
+						{
+							// n1 - Equipped
+							Property: { Effect: [] },
+						},
+					],
+				},
+				{
+					Name: "Option3",
+					Key: "o",
+					Options: [
+						{
+							// o0 - No Details
+							Property: { Effect: [] },
+						},
+						{
+							// o1 - Metal Details
+							Property: { Effect: [] },
+						},
+					],
+				},
+			],
+			DrawImages: false,
+		}, // PearlNecklace1
+		SatinScarf: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Style1",
+				},
+				{
+					Name: "Style2",
+				},
+				{
+					Name: "Style3",
+				},
+				{
+					Name: "Style4",
+				},
+			],
+		}, //SatinScarf
+	}, // Necklace
+	Suit: {
+		Catsuit: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "NoGloves",
+				},
+				{
+					Name: "OpaqueGloves",
+					Property: {
+						Hide: ["HandsLeft", "HandsRight"],
+					},
+				},
+				{
+					Name: "TransparentGloves",
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectSuitGloves",
+				Option: "SuitGloveType",
+			},
+			DrawImages: false,
+		}, // Catsuit
+		LatexCatsuit: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.DEST_CHAR_NAME,
+				CommonChatTags.ASSET_NAME,
+			],
+			Options: [
+				{
+					Name: "Standard",
+				},
+				{
+					Name: "Prisoner",
+				},
+				{
+					Name: "Transparent",
+				},
+				{
+					Name: "PrisonerTransparent",
+				},
+			],
+			DrawImages: false,
+			BaselineProperty: { Text: "PRISONER", Text2: "#0000", Text3: "" },
+			ChatSetting: TypedItemChatSetting.FROM_TO,
+			ScriptHooks: {
+				Load: InventorySuitLatexCatsuitLoadHook,
+				Draw: InventorySuitLatexCatsuitDrawHook,
+				Exit: InventorySuitLatexCatsuitExitHook,
+				PublishAction: InventorySuitLatexCatsuitPublishActionHook,
+			},
+		}, // LatexCatsuit
+		SeamlessCatsuit: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "Suit", AssetName: "Catsuit" },
+		}, // SeamlessCatsuit
+		PilotSuit: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "Suit", AssetName: "Catsuit" },
+		}, // PilotSuit
+		SeethroughSuit: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "NoGloves",
+				},
+				{
+					Name: "TransparentGloves",
+				},
+				{
+					Name: "OpaqueGloves",
+					Property: {
+						Hide: ["HandsLeft", "HandsRight"],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectSuitGloves",
+				Option: "SuitGloveType",
+			},
+			DrawImages: false,
+		}, // SeethroughSuit
+		SeethroughSuitZip: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "Suit", AssetName: "SeethroughSuit" },
+		}, // SeethroughSuitZip
+		ReverseBunnySuit: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "Suit", AssetName: "Catsuit" },
+		}, // ReverseBunnySuit
+		MaleSeamlessCatsuit: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "Suit", AssetName: "Catsuit" },
+		}, // MaleSeamlessCatsuit
+		FishnetTop: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "Cloth", AssetName: "FishnetTop" },
+			DialogPrefix: {
+				Header: "ClothFishnetTopSelect",
+				Module: "ClothFishnetTopModule",
+				Option: "ClothFishnetTopOption",
+				Chat: "ClothFishnetTopSet",
+			},
+		}, // FishnetTop
+	}, // Suit
+	SuitLower: {
+		MaleSeamlessCatsuit: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Tucked",
+				},
+				{
+					Name: "Bulge",
+				},
+				{
+					Name: "SkinTight",
+				},
+				{
+					Name: "Lock",
+				},
+			],
+		}, // MaleSeamlessCatsuit
+		LatexCatsuit: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Standard",
+				},
+				{
+					Name: "Prisoner",
+				},
+				{
+					Name: "Transparent",
+				},
+				{
+					Name: "PrisonerTransparent",
+				},
+			],
+			DialogPrefix: {
+				Header: "SuitLatexCatsuitSelect",
+				Option: "SuitLatexCatsuit",
+			},
+			DrawImages: false,
+		}, // LatexCatsuit
+		MaleCatsuitPanties: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "SuitLower", AssetName: "MaleSeamlessCatsuit" },
+		}, // MaleCatsuitPanties - SuitLower
+		RippedPantyhose: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "Socks", AssetName: "RippedPantyhose" },
+		},
+	}, // SuitLower
+	ItemHead: {
+		DuctTape: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Double",
+					Property: {
+						Block: ["ItemNose"],
+						Effect: [E.BlindNormal, E.BlockWardrobe],
+					},
+				},
+				{
+					Name: "Wrap",
+					Property: {
+						Block: ["ItemNose"],
+						Effect: [E.BlindNormal, E.BlockWardrobe],
+					},
+				},
+				{
+					Name: "Mummy",
+					Property: {
+						Hide: ["HairFront", "HairBack"],
+						Block: [
+							"ItemMouth",
+							"ItemMouth2",
+							"ItemMouth3",
+							"ItemEars",
+							"ItemHood",
+							"ItemNose",
+						],
+						Effect: [E.GagNormal, E.BlindNormal, E.BlockWardrobe, E.BlockMouth],
+					},
+				},
+				{
+					Name: "Open",
+					Property: {
+						Hide: ["HairFront", "HairBack"],
+						Block: [
+							"ItemMouth",
+							"ItemMouth2",
+							"ItemMouth3",
+							"ItemEars",
+							"ItemHood",
+						],
+						Effect: [E.GagNormal, E.BlockMouth],
+					},
+				},
+			],
+		}, // DuctTape
+		Ribbons: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Basic",
+					Property: {
+						Effect: [E.BlindLight],
+					},
+				},
+				{
+					Name: "Wrap",
+					Property: {
+						Effect: [E.BlindNormal],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectRibbonType",
+			},
+		}, // Ribbons
+		WebBlindfold: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Blindfold",
+					Property: {
+						Difficulty: 0,
+						Block: ["ItemNose"],
+						Effect: [E.BlindLight],
+					},
+				},
+				{
+					Name: "Cocoon",
+					Property: {
+						Difficulty: 30,
+						Hide: [
+							"HairFront",
+							"HairBack",
+							"Hat",
+							"ItemMouth",
+							"ItemMouth2",
+							"ItemMouth3",
+						],
+						Block: [
+							"ItemMouth",
+							"ItemMouth2",
+							"ItemMouth3",
+							"ItemEars",
+							"ItemHood",
+							"ItemNose",
+						],
+						Effect: [E.BlindHeavy, E.GagNormal, E.BlockMouth],
+					},
+				},
+			],
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.TARGET_CHAR],
+			DialogPrefix: {
+				Header: "WebBondageSelect",
+			},
+		}, // WebBlindfold
+		FuturisticMask: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Transparent",
+					Property: {
+						SelfUnlock: true,
+						Effect: [],
+					},
+				},
+				{
+					Name: "LightTint",
+					Property: {
+						Effect: [E.BlindLight, E.BlockWardrobe],
+						Tint: [{ Color: 0, Strength: 0.2 }],
+					},
+				},
+				{
+					Name: "HeavyTint",
+					Property: {
+						Effect: [E.BlindNormal, E.BlockWardrobe],
+						Tint: [{ Color: 0, Strength: 0.5 }],
+					},
+				},
+				{
+					Name: "Blind",
+					Property: {
+						Effect: [E.BlindHeavy, E.BlockWardrobe],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectVisorType",
+				Option: "ItemHeadInteractiveVisorType",
+				Chat: "ItemHeadInteractiveVisorSet",
+			},
+			ScriptHooks: {
+				Load: FuturisticAccessLoad,
+				Click: FuturisticAccessClick,
+				Draw: FuturisticAccessDraw,
+				Exit: FuturisticAccessExit,
+				Validate: FuturisticAccessValidate,
+			},
+		}, // FuturisticMask
+		InteractiveVisor: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Transparent",
+					Property: {
+						SelfUnlock: true,
+						Effect: [],
+					},
+				},
+				{
+					Name: "LightTint",
+					Property: {
+						Effect: [E.BlindLight, E.BlockWardrobe],
+						Tint: [{ Color: 0, Strength: 0.2 }],
+					},
+				},
+				{
+					Name: "HeavyTint",
+					Property: {
+						Effect: [E.BlindNormal, E.BlockWardrobe],
+						Tint: [{ Color: 0, Strength: 0.5 }],
+					},
+				},
+				{
+					Name: "Blind",
+					Property: {
+						Effect: [E.BlindHeavy, E.BlockWardrobe],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectVisorType",
+				Option: "ItemHeadInteractiveVisorType",
+				Chat: "ItemHeadInteractiveVisorSet",
+			},
+			ScriptHooks: {
+				Load: FuturisticAccessLoad,
+				Click: FuturisticAccessClick,
+				Draw: FuturisticAccessDraw,
+				Exit: FuturisticAccessExit,
+				Validate: FuturisticAccessValidate,
+			},
+		}, // InteractiveVisor
+		InteractiveVRHeadset: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Background",
+					Key: "b",
+					Options: [
+						//CustomBlindBackground: {"None" : "SynthWave", "FreeVR" : "SynthWave", "Gaming" : "Dungeon", "Off" : "", "AR" : ""},
+						{
+							// b0 - Passthrough
+							Property: {
+								CustomBlindBackground: "",
+							},
+						},
+						{
+							// b1 - SynthWave
+							Property: {
+								CustomBlindBackground: "SynthWave",
+								Effect: [],
+							},
+						},
+						{
+							// b2 - Dungeon
+							Property: {
+								CustomBlindBackground: "Dungeon",
+								Effect: [],
+							},
+						},
+						{
+							// b3 - SciFiCell
+							Property: {
+								CustomBlindBackground: "SciFiCell",
+								Effect: [],
+							},
+						},
+						{
+							// b4 - AncientRuins
+							Property: {
+								CustomBlindBackground: "AncientRuins",
+								Effect: [],
+							},
+						},
+						{
+							// b5 - HypnoticSpiral
+							Property: {
+								CustomBlindBackground: "HypnoticSpiral",
+								Effect: [],
+							},
+						},
+					],
+				},
+				{
+					// Use `BlindTotal` for VR avatars to ensure that the `thin` property never reduces the blindness level below `BlindHeavy`,
+					// as lowering it any more will result in visual odities related to partial blindness
+					Name: "Function",
+					Key: "f",
+					Options: [
+						{
+							// f0 - Passthrough
+							Property: {
+								Effect: [],
+							},
+						},
+						{
+							// f1 - Off
+							Property: {
+								Effect: [E.BlindHeavy, E.BlockWardrobe],
+							},
+						},
+						{
+							// f2 - VR Avatar
+							Property: {
+								Effect: [E.BlindTotal, E.BlockWardrobe, E.VRAvatars],
+							},
+						},
+						{
+							// f3 - VR Avatar (hide restraints)
+							Property: {
+								Effect: [E.BlindTotal, E.VRAvatars, E.HideRestraints],
+							},
+						},
+					],
+				},
+				{
+					Name: "Game",
+					Key: "g",
+					Options: [
+						{
+							// g0 - None
+							Property: {
+								Effect: [],
+							},
+						},
+						{
+							// f1 - Kinky Dungeon
+							Property: {
+								Effect: [E.KinkyDungeonParty],
+							},
+						},
+					],
+				},
+			],
+			ScriptHooks: {
+				Load: FuturisticAccessLoad,
+				Click: FuturisticAccessClick,
+				Draw: FuturisticAccessDraw,
+				Exit: FuturisticAccessExit,
+			},
+		}, // InteractiveVRHeadset
+		HypnoticVisor: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Frame",
+					Key: "t",
+					Options: [
+						{}, // t0 - Frame A
+						{}, // t1 - Frame B
+					],
+				},
+				{
+					Name: "Pattern",
+					Key: "p",
+					Options: [
+						{}, // p0 - Opaque
+						{}, // p1 - Pattern 1
+						{}, // p2 - Pattern 2
+						{}, // p3 - Pattern 3
+					],
+				},
+				{
+					Name: "Decal",
+					Key: "d",
+					Options: [
+						{}, // d0 - None
+						{}, // d1 - Bunny
+						{}, // d2 - Cat
+						{}, // d3 - Snake
+						{}, // d4 - Fox
+						{}, // d5 - Pony
+						{}, // d6 - Xeno
+						{}, // d7 - Leaf
+					],
+				},
+				{
+					Name: "Text",
+					Key: "e",
+					Options: [
+						{
+							HasSubscreen: true,
+							ArchetypeConfig: {
+								Archetype: ExtendedArchetype.TEXT,
+								MaxLength: { Text: 16 },
+								Font: "sans-serif",
+								ScriptHooks: {
+									AfterDraw: (...args) =>
+										// @ts-expect-error stub
+										TextItem.GenericTextDrawHook(...args, {
+											YOffset: 10,
+											drawOptions: { fontSize: 12 },
+										}),
+								},
+							},
+						},
+					],
+				},
+			],
+		},
+		MedicalPatch: {
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Eye",
+					Key: "e",
+					Options: [
+						{
+							Property: {
+								Effect: [E.BlindNormal, E.BlockWardrobe],
+							},
+						},
+						{},
+						{},
+					],
+				},
+				{
+					Name: "RightSticker",
+					Key: "r",
+					Options: [{}, {}, {}, {}, {}], //Just blank and cosmetic options
+				},
+				{
+					Name: "LeftSticker",
+					Key: "l",
+					Options: [{}, {}, {}, {}, {}], //Just blank and cosmetic options
+				},
+			],
+		}, //MedicalPatch
+		BigMouthHood: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemHood", AssetName: "BigMouthHood" },
+			Options: [
+				{ Name: "Empty", Property: { Effect: [] } },
+				{
+					Name: "Lenses",
+					Property: {
+						Effect: [E.BlindLight],
+						Tint: [{ Color: 2, Strength: 0.2 }],
+					},
+				},
+				{
+					Name: "Mesh",
+					Property: {
+						Effect: [E.BlindNormal, E.BlockWardrobe],
+					},
+				},
+				{
+					Name: "Slim",
+					Property: {
+						Effect: [E.BlindHeavy, E.BlockWardrobe],
+					},
+				},
+			],
+		}, //BigMouthHood
+		DroneMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			Modules: [
+				{
+					Name: "Mouth",
+					Key: "m",
+					Options: [
+						{
+							// m0 - None
+							Property: { Effect: [E.BlockMouth] },
+						},
+						{
+							// m1 - Onahole
+							Property: { Effect: [E.GagMedium, E.OpenMouth] },
+						},
+						{
+							// m2 - Fleshlight
+							Property: { Effect: [E.GagMedium, E.OpenMouth] },
+						},
+						{
+							// m3 - Smile
+							Property: { Effect: [E.BlockMouth] },
+						},
+						{
+							// m4 - Holes
+							Property: { Effect: [E.BlockMouth] },
+						},
+						{
+							// m5 - Sculpted
+							Property: { Effect: [E.BlockMouth] },
+						},
+						{
+							// m6 - Subtle
+							Property: { Effect: [E.BlockMouth] },
+						},
+						{
+							// m7 - Thin
+							Property: { Effect: [E.BlockMouth] },
+						},
+						{
+							// m8 - Thin Oh
+							Property: { Effect: [E.BlockMouth] },
+						},
+					],
+				},
+				{
+					Name: "Eyes",
+					Key: "e",
+					Options: [
+						{
+							// e0 - None
+							Property: { Effect: [E.BlindLight] },
+						},
+						{
+							// e1 - Regular
+							Property: { Effect: [] },
+						},
+						{
+							// e2 - Spiral
+							Property: { Effect: [] },
+						},
+						{
+							// e3 - Smile
+							Property: { Effect: [] },
+						},
+						{
+							// e4 - Holes
+							Property: { Effect: [E.BlindLight] },
+						},
+						{
+							// e5 - Sculpted
+							Property: { Effect: [] },
+						},
+						{
+							// e6 - Concave
+							Property: { Effect: [E.BlindLight] },
+						},
+					],
+				},
+				{
+					Name: "Pattern",
+					Key: "p",
+					Options: [
+						{}, // Blank
+						{}, // Barcode
+						{}, // Scarab
+						{}, // Hex
+						{}, // Lines
+						{
+							HasSubscreen: true,
+							ArchetypeConfig: {
+								Archetype: ExtendedArchetype.TEXT,
+								MaxLength: { Text: 16 },
+								Font: "Impact",
+								ScriptHooks: {
+									AfterDraw: AssetsItemHeadDroneMaskAfterDrawHook,
+								},
+							},
+						}, // text
+						{}, // Machine
+						{}, // Fishnet
+						{}, // Hexpattern
+						{}, // Large Circle
+						{}, // Large Split Circle
+						{}, // Large Heart
+						{}, // Large Stylized Heart
+						{}, // Small Heart
+						{}, // Lock
+						{}, // Large X
+					],
+				},
+				{
+					Name: "Glow",
+					Key: "g",
+					Options: [{}, {}, {}, {}], // Glow Off, Glow Eyes, Mouth On, Glow Pattern On, Glow On
+				},
+				{
+					Name: "Sight",
+					Key: "s",
+					Options: [
+						{
+							// s0 - Opaque
+							Property: { Effect: [E.BlindHeavy, E.BlockWardrobe] },
+						},
+						{
+							// s1 - One Way
+							Property: { Effect: [] },
+						},
+					],
+				},
+				{
+					Name: "Helmet",
+					Key: "h",
+					Options: [
+						{}, // h0 - Mask
+						{
+							Property: {
+								Hide: ["HairFront", "HairBack"], //"HairAccessory1", "HairAccessory2"],
+								HideItem: [
+									"HatBonnet1",
+									"HatBonnet2",
+									"HatBunnySuccubus2",
+									"HatCrown1",
+									"HatCrown2",
+									"HatCrown4",
+									"HatCrown5",
+									"HatBand1",
+									"HatBand2",
+									"HatPirateBandana1",
+									"HatVeil1",
+									"HatVeil2", // Hat items
+									"MaskFuturisticVisor",
+									"MaskShinobiMask", // Mask items
+									"HairAccessory3Ribbons4", // HairAccessory items
+									"HairAccessory1Antennae",
+									"HairAccessory1BunnyEars1",
+									"HairAccessory1BunnyEars2",
+									"HairAccessory1CowHorns",
+									"HairAccessory1ElfEars",
+									"HairAccessory1Ears1",
+									"HairAccessory1Ears2",
+									"HairAccessory1FoxEars1",
+									"HairAccessory1FoxEars2",
+									"HairAccessory1FoxEars3",
+									"HairAccessory1KittenEars1",
+									"HairAccessory1KittenEars2",
+									"HairAccessory1MouseEars1",
+									"HairAccessory1MouseEars2",
+									"HairAccessory1PuppyEars1",
+									"HairAccessory1Ribbons2",
+									"HairAccessory1WolfEars1",
+									"HairAccessory1WolfEars2",
+									"HairAccessory1Ribbons4", // Ear items (HA1)
+									"HairAccessory2Antennae",
+									"HairAccessory2BunnyEars1",
+									"HairAccessory2BunnyEars2",
+									"HairAccessory2CowHorns",
+									"HairAccessory2ElfEars",
+									"HairAccessory2Ears1",
+									"HairAccessory2Ears2",
+									"HairAccessory2FoxEars1",
+									"HairAccessory2FoxEars2",
+									"HairAccessory2FoxEars3",
+									"HairAccessory2KittenEars1",
+									"HairAccessory2KittenEars2",
+									"HairAccessory2MouseEars1",
+									"HairAccessory2MouseEars2",
+									"HairAccessory2PuppyEars1",
+									"HairAccessory2Ribbons2",
+									"HairAccessory2WolfEars1",
+									"HairAccessory2WolfEars2", // Ear items (HA2)
+								], // These items are hidden because they have clear mismatch issues with the hood.
+							},
+						}, // h1 - Helmet (hood)
+						{
+							// h2 - Helmet ( hood but nothing shows)
+							Property: {
+								Hide: [
+									"HairFront",
+									"HairBack",
+									"Hat",
+									"HairAccessory1",
+									"HairAccessory2",
+									"HairAccessory3",
+								],
+								HideItem: ["MaskFuturisticVisor", "MaskShinobiMask"],
+							},
+						},
+					],
+				},
+				{
+					Name: "Layering",
+					Key: "j",
+					Options: [
+						{
+							Property: {
+								Block: ["ItemMouth", "ItemMouth2", "ItemMouth3"],
+								Hide: ["ItemMouth", "ItemMouth2", "ItemMouth3", "Glasses"],
+							},
+						}, // No gags visible
+						{
+							Property: {
+								OverridePriority: 12,
+								Block: ["ItemMouth", "ItemMouth2"],
+								Hide: ["ItemMouth", "ItemMouth2", "Glasses"],
+							},
+						}, // Highest layer gag visible
+						{
+							Property: {
+								OverridePriority: 12,
+								Block: [],
+								Hide: [],
+							},
+						}, // All gags visible
+						{}, // Blindfold items visible
+						{}, // Blindfold and highest layer gag
+						{}, // Blindfold and all gags
+					],
+				},
+				{
+					Name: "Visibility",
+					Key: "b",
+					Options: [
+						{
+							Property: {
+								Hide: ["Blush"],
+								HideItem: [
+									"HatFacePaint",
+									"MaskFacePaint",
+									"ClothAccessoryFacePaint",
+								],
+							},
+						},
+						{
+							Property: {
+								Hide: [],
+								HideItem: [],
+							},
+						},
+					],
+				},
+			],
+			ScriptHooks: {
+				Validate: ItemHeadDroneMaskValidateHook,
+			},
+			ChangeWhenLocked: false,
+			BaselineProperty: { Text: "" },
+		}, // DroneMask
+		Stitches: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Main",
+					Key: "m",
+					Options: [
+						{ Property: { Hide: ["Eyes"] } }, // Right Eye
+						{ Property: { Hide: ["Eyes2"] } }, // Left Eye
+						{
+							Property: {
+								Hide: ["Eyes", "Eyes2"],
+								Effect: [E.BlindHeavy, E.BlockWardrobe],
+							},
+						}, //Both Eyes
+					],
+				},
+				{
+					Name: "Right",
+					Key: "r",
+					Options: [
+						{}, // Straight
+						{}, // ZigZag
+						{}, // Skewed
+						{}, // Crossed
+					],
+				},
+				{
+					Name: "Left",
+					Key: "l",
+					Options: [
+						{}, // Straight
+						{}, // ZigZag
+						{}, // Skewed
+						{}, // Crossed
+					],
+				},
+			],
+		}, // Stitches
+		Kigu2Hood: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemHood", AssetName: "Kigu2Hood" },
+			DrawImages: false,
+			ChangeWhenLocked: false,
+			Options: [
+				// Lenses type
+				{ Name: "None", Property: { Effect: [] } },
+				{
+					Name: "Thin",
+					Property: {
+						Effect: [E.BlindLight],
+						Tint: [{ Color: 0, Strength: 0.2 }],
+					},
+				},
+				{
+					Name: "Thick",
+					Property: {
+						Effect: [E.BlindNormal, E.BlockWardrobe],
+						Tint: [{ Color: 0, Strength: 0.3 }],
+					},
+				},
+				{
+					Name: "Opaque",
+					Property: {
+						Effect: [E.BlindHeavy, E.BlockWardrobe],
+						Tint: [{ Color: 0, Strength: 0.5 }],
+					},
+				},
+			],
+		}, // Kigu2Hood
+		AsylumBlindfold: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "Normal",
+					Property: { Effect: [E.BlindLight] },
+				},
+				{
+					Name: "Padded",
+					Property: { Effect: [E.BlindNormal], Difficulty: 3 },
+				},
+			],
+		}, // AsylumBlindfold
+	}, // ItemHead
+	ItemHands: {
+		FuturisticMittens: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Mittens",
+					Property: {
+						Difficulty: 8,
+						SelfUnlock: false,
+						Effect: [E.Block, E.BlockWardrobe, E.MergedFingers],
+						Block: ["ItemHandheld"],
+						Hide: ["ItemHandheld"],
+						HideItemExclude: [
+							"ItemHandheldFoxPlush",
+							"ItemHandheldBunPlush",
+							"ItemHandheldKarl",
+							"ItemHandheldShark",
+							"ItemHandheldPetPotato",
+						],
+					},
+				},
+				{
+					Name: "Gloves",
+					Property: { Difficulty: 0, SelfUnlock: true, Block: [] },
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectFuturisticMittensType",
+				Option: "FuturisticMittensType",
+				Chat: "FuturisticMittensSet",
+			},
+			ScriptHooks: {
+				Load: FuturisticAccessLoad,
+				Click: FuturisticAccessClick,
+				Draw: FuturisticAccessDraw,
+				Exit: FuturisticAccessExit,
+				Validate: FuturisticAccessValidate,
+			},
+		}, // FuturisticMittens
+		PaddedMittens: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Unchained",
+					Property: {
+						HideItemExclude: [
+							"ItemHandheldFoxPlush",
+							"ItemHandheldBunPlush",
+							"ItemHandheldKarl",
+							"ItemHandheldShark",
+							"ItemHandheldPetPotato",
+						],
+					},
+				},
+				{
+					Name: "Chained",
+					Prerequisite: ["CanAttachMittens", "NoItemArms"],
+					Property: {
+						SetPose: ["BaseUpper"],
+						Block: ["ItemTorso", "ItemTorso2"],
+					},
+				},
+			],
+		}, // PaddedMittens
+		PawMittens: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "PaddedMittens" },
+		}, // PawMittens
+		PonyMittensBinder: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Unchained",
+					Property: {
+						HideItemExclude: [
+							"ItemHandheldFoxPlush",
+							"ItemHandheldBunPlush",
+							"ItemHandheldKarl",
+							"ItemHandheldShark",
+							"ItemHandheldPetPotato",
+						],
+					},
+				},
+				{
+					Name: "Chained",
+					Prerequisite: ["NoItemArms"],
+					Property: {
+						SetPose: ["BackElbowTouch"],
+						Block: ["ItemArms"],
+						Difficulty: 10,
+					},
+				},
+			],
+		}, // PonyMittensBinder
+		ElbowLengthMittens: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "PonyMittensBinder" },
+		}, // ElbowLengthMittens
+		HempRopeCuffs: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "Unlinked",
+					Property: {
+						Difficulty: 0,
+					},
+				},
+				{
+					Name: "Cuffed",
+					Property: {
+						Effect: [E.Block],
+						Difficulty: 2,
+						SetPose: ["BackCuffs"],
+					},
+				},
+				{
+					Name: "HarnessFront",
+					Prerequisite: ["NeedsHipHarness"],
+					Property: {
+						Effect: [E.Block],
+						Difficulty: 3,
+						SetPose: ["BaseUpper"],
+					},
+				},
+				{
+					Name: "HarnessBack",
+					Prerequisite: ["NeedsHipHarness"],
+					SelfBondageLevel: 4,
+					Property: {
+						Effect: [E.Block],
+						Difficulty: 4,
+						SetPose: ["BackElbowTouch"],
+					},
+				},
+			],
+		},
+		FullMittens: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Restraints",
+					Key: "r",
+					Options: [
+						{
+							// r0 - None
+							Property: {},
+						},
+						{
+							// r1 - Bar Yoke Position
+							Property: {
+								SetPose: ["Yoked"],
+								Effect: [
+									E.Block,
+									E.BlockWardrobe,
+									E.Freeze,
+									E.NotSelfPickable,
+									E.Tethered,
+									E.MapImmobile,
+								],
+								Difficulty: 9,
+							},
+						},
+						{
+							// r2 - Bar Over Position
+							Property: {
+								SetPose: ["OverTheHead"],
+								Effect: [
+									E.Block,
+									E.BlockWardrobe,
+									E.Freeze,
+									E.NotSelfPickable,
+									E.Tethered,
+									E.MapImmobile,
+								],
+								Difficulty: 12,
+							},
+						},
+						{
+							// r3 - StraitJacket Mode
+							Property: {
+								SetPose: ["BackBoxTie"],
+								Block: ["ItemArms"],
+								Effect: [E.Block, E.BlockWardrobe, E.NotSelfPickable],
+								Difficulty: 8,
+							},
+						},
+						{
+							// r4 - Restrict Belts
+							Property: {
+								SetPose: ["BackElbowTouch"],
+								Effect: [E.Block, E.BlockWardrobe, E.NotSelfPickable],
+								Difficulty: 6,
+							},
+						},
+						{
+							// r5 - Armbinder Mode
+							Property: {
+								SetPose: ["BackElbowTouch"],
+								Block: ["ItemArms"],
+								Effect: [E.Block, E.BlockWardrobe, E.NotSelfPickable],
+								Difficulty: 9,
+							},
+						},
+						{
+							// r6 - Full Armbinder and Ankles Combo
+							Property: {
+								SetPose: ["BackElbowTouch"],
+								Block: ["ItemArms"],
+								Effect: [E.Block, E.BlockWardrobe, E.Slow, E.NotSelfPickable],
+								Difficulty: 12,
+							},
+						},
+					],
+				},
+			],
+			ChangeWhenLocked: false,
+		}, // FullMittens
+		LatexBondageMitts: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			Modules: [
+				{
+					Name: "GloveType",
+					Key: "t",
+					Options: [{}, {}, {}], // Padded, Balloon, Balloon w nozzle
+				},
+				{
+					Name: "Wrist",
+					Key: "w",
+					Options: [{}, {}, {}], // No wrist, Firm Wrist, Fitted Wrist
+				},
+				{
+					Name: "PatternRight",
+					Key: "r",
+					Options: [{}, {}, {}, {}, {}, {}, {}], // None, Pumpkin (underside only), Pumpkin, Smiley (underside only), Smiley, Split, Quarters
+				},
+				{
+					Name: "PatternLeft",
+					Key: "l",
+					Options: [{}, {}, {}, {}, {}, {}, {}], // None, Pumpkin (underside only), Pumpkin, Smiley (underside only), Smiley, Split, Quarters
+				},
+			],
+		}, //LatexBondageMitts
+	}, // ItemHands
+	ItemAddon: {
+		CeilingChain: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.TARGET_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			Options: [
+				{
+					Name: "Lowered",
+					Property: { Difficulty: 6 },
+				},
+				{
+					Name: "LoweredShort",
+					Property: {
+						Difficulty: 6,
+						SetPose: ["BaseLower"],
+						AllowActivePose: [...PoseAllStanding],
+					},
+				},
+				{
+					Name: "Suspended",
+					Property: {
+						Difficulty: 7,
+						OverrideHeight: {
+							Height: 30,
+							Priority: 51,
+							HeightRatioProportion: 0,
+						},
+						Effect: [E.Lifted],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectCeilingChainState",
+				Option: "CeilingChainBondage",
+				Chat: "CeilingChainSet",
+				Npc: "CeilingChain",
+			},
+			ChangeWhenLocked: false,
+		}, // CeilingChain
+		CeilingRope: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemAddon", AssetName: "CeilingChain" },
+		}, // CeilingRope
+		CeilingNeckCuff: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Loose",
+					Property: {},
+				},
+				{
+					Name: "Strict",
+					Property: {
+						Difficulty: 6,
+						SetPose: ["BaseLower"],
+						AllowActivePose: [...PoseAllStanding],
+					},
+				},
+			],
+			DrawImages: false,
+			ChangeWhenLocked: false,
+		}, // CeilingNeckCuff
+	}, // ItemAddon
+	ItemNose: {
+		NoseRing: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
+			Options: [
+				{
+					Name: "Base",
+				},
+				{
+					Name: "ChainShort",
+					Prerequisite: ["NotSuspended"],
+					Property: {
+						SetPose: ["Kneel"],
+						AllowActivePose: [...PoseAllKneeling],
+						Effect: [E.Freeze, E.IsChained],
+					},
+				},
+				{
+					Name: "ChainLong",
+					Prerequisite: ["NotSuspended"],
+					Property: {
+						Effect: [E.Tethered, E.IsChained],
+					},
+				},
+				{
+					Name: "Leash",
+					Prerequisite: ["NotSuspended"],
+					Property: {
+						Effect: [E.Leash],
+					},
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectAttachmentState",
+				Option: "NoseRingPose",
+				Chat: "NoseRingRestrain",
+				Npc: "InventoryItemNoseNoseRingNPCReaction",
+			},
+		}, // NoseRing
+	}, // ItemNose
+	Wings: {
+		SteampunkWings: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "Off",
+				},
+				{
+					Name: "On",
+				},
+			],
+		}, // SteampunkWings
+		DragonWings: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: true,
+			Options: [
+				{
+					Name: "Spread",
+				},
+				{
+					Name: "Folded",
+				},
+				{
+					Name: "Bound",
+				},
+			],
+		}, // DragonWings
+	}, // Wings
+	ItemHandheld: {
+		Smartphone: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "Case",
+					Key: "c",
+					DrawImages: true,
+					Options: [
+						// none, matte, stripes, dots, hearts
+						{},
+						{},
+						{},
+						{},
+						{},
+					],
+				},
+			],
+		}, // Smartphone
+		PortalTablet: {
+			Archetype: ExtendedArchetype.NOARCH,
+			ScriptHooks: {
+				Load: PortalLinkTransmitterLoadHook,
+				Draw: PortalLinkTransmitterDrawHook,
+				Click: PortalLinkTransmitterClickHook,
+				Exit: PortalLinkTransmitterExitHook,
+			},
+			BaselineProperty: { PortalLinkCode: "" },
+		}, // PortalTablet
+		AnimeGirlWand: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Staff",
+					Property: {
+						AllowActivity: ["SpankItem"],
+					},
+				},
+				{
+					Name: "Wand",
+					Property: {
+						AllowActivity: ["MasturbateItem", "RubItem"],
+					},
+				},
+			],
+		}, // AnimeGirlWand
+		Kyosensu: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					// Cherry blossoms
+					Name: "Type1",
+					Property: {},
+				},
+				{
+					// Lightning bolt
+					Name: "Type2",
+					Property: {},
+				},
+				{
+					// Sun
+					Name: "Type3",
+					Property: {},
+				},
+				{
+					// Sea art
+					Name: "Type4",
+					Property: {},
+				},
+				{
+					// Moon
+					Name: "Type5",
+					Property: {},
+				},
+				{
+					// Flowers
+					Name: "Type6",
+					Property: {},
+				},
+			],
+		}, // Kyosensu
+		Uchiwa: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					// Cherry blossoms
+					Name: "Type1",
+					Property: {},
+				},
+				{
+					// Lightning bolt
+					Name: "Type2",
+					Property: {},
+				},
+				{
+					// Sun
+					Name: "Type3",
+					Property: {},
+				},
+				{
+					// Wave art
+					Name: "Type4",
+					Property: {},
+				},
+				{
+					// Moon
+					Name: "Type5",
+					Property: {},
+				},
+				{
+					// Flowers
+					Name: "Type6",
+					Property: {},
+				},
+			],
+		}, // Uchiwa
+	}, // ItemHandheld
 };

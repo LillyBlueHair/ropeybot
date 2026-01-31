@@ -12,8 +12,6 @@
  * limitations under the License.
  */
 
-import { AssetType } from "./appearance.js";
-
 class Logger {
     public verbose(...args: any[]) {
         console.log(...args);

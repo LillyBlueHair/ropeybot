@@ -1821,25 +1821,16 @@ export class MaidsPartyNightSinglePlayerAdventure extends LoggingLogic {
         }
     }
 
-    /**
-     * Ensures only the correct members are set as admin and changes the open slots of the room to the number of admins present plus one and unlocks it
-     */
-    async makeRoomSizeOneMoreThanAdminsPresentAndUnlockRoom() {
-        await this.conn.ChatRoomUpdate({
-            Admin: [
-                this.conn.Player.MemberNumber,
-                this.conn2.Player.MemberNumber,
-                ...SUPERUSERS,
-            ],
-            Limit: _.clamp(
-                this.conn.chatRoom.characters.filter((c) => c.IsRoomAdmin())
-                    .length + 1,
-                2,
-                10,
-            ),
-            Locked: false,
-        });
-    }
+	/**
+	 * Frees the player from the slots given in the function
+	 * @param character the current player
+	 * @param itemSlots an array of all item slots where the player should be freed
+	 */
+	freePlayerInItemSlots(character: API_Character, itemSlots: AssetGroupName[]) {
+		for (const i of itemSlots) {
+			character.Appearance.RemoveItem(i);
+		}
+	}
 
     /**
      * The room will be cleaned up and reset since we no longer have an active player

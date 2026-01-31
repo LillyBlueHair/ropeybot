@@ -12,6 +12,7 @@
  * limitations under the License.
  */
 
+import { DefaultEventsMap, EventsMap } from "@socket.io/component-emitter";
 import { Socket } from "socket.io-client";
 
 // Don't send more than NUM_MESSAGES messages in TIME_INTERVAL milliseconds
@@ -22,12 +23,15 @@ const TIME_INTERVAL = 1000;
  * Wraps a socket.io socket to buffer messages, avoiding sending too many too quickly
  * so we don't get ratelimited.
  */
-export class SocketWrapper {
+export class SocketWrapper<
+    ListenEvents extends EventsMap = DefaultEventsMap,
+    EmitEvents extends EventsMap = ListenEvents,
+> {
     private queue: [string, any[]][] = [];
     private lastSendTimes: number[] = [];
     private sendTimer?: NodeJS.Timeout;
 
-    constructor(private socket: Socket) {
+    constructor(private socket: Socket<ListenEvents, EmitEvents>) {
         for (let i = 0; i < NUM_MESSAGES; i++) {
             this.lastSendTimes.push(0);
         }
@@ -67,10 +71,13 @@ export class SocketWrapper {
     private sendTail(): void {
         if (this.queue.length === 0) return;
 
-        const args = this.queue.shift();
+        const args = this.queue.shift()!;
         this.lastSendTimes.shift();
         this.lastSendTimes.push(Date.now());
 
-        this.socket.emit(args[0], ...args[1]);
+        this.socket.emit(
+            args[0],
+            ...(args[1] as Parameters<EmitEvents[string]>),
+        );
     }
 }
