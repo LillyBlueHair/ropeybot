@@ -16,7 +16,7 @@ import { API_Character, API_Character_Data } from "./apiCharacter.ts";
 import { isBind, isBody, isClothing, isCosplay } from "./assetHelpers.ts";
 import { wait } from "./util/wait.ts";
 import { API_AppearanceItem, BC_AppearanceItem } from "./item.ts";
-import { decompressFromBase64, compressToBase64 } from "lz-string";
+import lzString from "lz-string";
 
 /*
 const CLOTHING_SLOTS = [
@@ -93,11 +93,13 @@ const DEFAULT_APPLY_CFG: BundleApplyConfig = {
 };
 
 export function importBundle(bundle: string): BC_AppearanceItem[] {
-    return JSON.parse(decompressFromBase64(bundle)) as BC_AppearanceItem[];
+    return JSON.parse(
+        lzString.decompressFromBase64(bundle),
+    ) as BC_AppearanceItem[];
 }
 
 export function exportBundle(items: BC_AppearanceItem[]): string {
-    return compressToBase64(JSON.stringify(items));
+    return lzString.compressToBase64(JSON.stringify(items));
 }
 
 export class AssetType {
@@ -149,7 +151,7 @@ export class AppearanceType {
         return newItem;
     }
 
-    public RemoveItem(slot: /*AssetGroupName*/ string): void {
+    public RemoveItem(slot: AssetGroupName): void {
         //const idx = this._items.findIndex((i) => i.Group === slot);
         const idx = this.data.findIndex((i) => i.Group === slot);
         if (idx === -1) return;
@@ -168,7 +170,7 @@ export class AppearanceType {
 
     public InventoryGet(
         groupName: AssetGroupName | ExpressionGroupName,
-    ): API_AppearanceItem {
+    ): API_AppearanceItem | null {
         const item = this.data.find((i) => i.Group === groupName);
         if (!item) return null;
 

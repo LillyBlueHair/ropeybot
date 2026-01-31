@@ -19,7 +19,6 @@ import {
     API_Character,
     ItemPermissionLevel,
     BC_Server_ChatRoomMessage,
-    TBeepType,
     API_AppearanceItem,
     AssetGet,
     BC_AppearanceItem,
@@ -123,7 +122,7 @@ export class Casino {
         }
 
         conn.on("CharacterEntered", this.onCharacterEntered);
-        conn.on("Beep", ({ payload }) => this.onBeep(payload));
+        conn.on("Beep", (msg) => this.onBeep(msg));
 
         this.commandParser.register("help", this.onCommandHelp);
         this.commandParser.register("forfeits", this.onCommandForfeits);
@@ -167,7 +166,7 @@ export class Casino {
         }
     };
 
-    private onBeep = (beep: TBeepType) => {
+    private onBeep = (beep: ServerAccountBeepResponse) => {
         if (
             typeof beep?.Message !== "string" ||
             beep.Message.includes("TypingStatus") ||
@@ -353,7 +352,7 @@ ${forfeitsString()}
             return;
         }
 
-        this.conn.Player.FriendListAdd(toAdd.MemberNumber);
+        toAdd.friend();
 
         this.conn.reply(msg, `I am now friends with ${toAdd}! I like friends!`);
     };
@@ -601,6 +600,10 @@ ${forfeitsString()}
         const target = this.conn.chatRoom.findCharacter(args[0]);
         if (!target) {
             this.conn.reply(msg, "I can't find that person.");
+            return;
+        }
+        if (target.MemberNumber === sender.MemberNumber) {
+            this.conn.reply(msg, "You can't give yourself chips.");
             return;
         }
 

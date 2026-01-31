@@ -1,5 +1,3 @@
-
-
 const SUITS = ["Hearts", "Diamonds", "Clubs", "Spades"];
 const VALUES = [
     "A",

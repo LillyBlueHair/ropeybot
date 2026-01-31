@@ -1,0 +1,34 @@
+name: Checks
+
+on:
+    push:
+        branches: [main]
+    pull_request: {}
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        steps:
+            - uses: pnpm/action-setup@v2
+              with:
+                  version: 10
+
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Install dependencies
+              run: "pnpm install"
+
+            - name: Run Prettier
+              run: "pnpm run prettier"
+
+            - name: Install library dependencies
+              run: "cd src && pnpm install"
+
+            - name: Compile library
+              run: "cd src && pnpm run compile"
+
+            - name: Check Types
+              run: "pnpm run types"

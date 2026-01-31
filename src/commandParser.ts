@@ -13,7 +13,7 @@
  */
 
 import { API_Character } from "./apiCharacter.ts";
-import { API_Connector, MessageEvent } from "./apiConnector.ts";
+import { API_Connector, API_Message } from "./apiConnector.ts";
 import { BC_Server_ChatRoomMessage } from "./logicEvent.ts";
 
 type CommandCallback = (
@@ -38,12 +38,12 @@ export class CommandParser {
     public unregister(cmd: string) {
         this.commands.delete(cmd);
     }
-    
+
     public unregisterAll() {
         this.commands.clear();
     }
 
-    private onMessage = (ev: MessageEvent) => {
+    private onMessage = (ev: API_Message) => {
         // trim any leading or trailing parentheses from the message
         const msg = ev.message.Content.replace(/^\(+/, "").replace(/\)+$/, "");
 
@@ -66,7 +66,7 @@ export class CommandParser {
         }
     };
 
-    private processCmdString(ev: MessageEvent, cmdString: string): void {
+    private processCmdString(ev: API_Message, cmdString: string): void {
         const parts = cmdString.toLowerCase().split(" ");
         let cmd = [];
 
@@ -80,9 +80,13 @@ export class CommandParser {
                 try {
                     const ret = cb(ev.sender, ev.message, parts);
                     const promiseRet = ret as Promise<void>;
-                    if (promiseRet && promiseRet.catch) { // I am not sure if a check for promiseRet makes sense but if the return of the command is no promise it would error otherwise
+                    if (promiseRet && promiseRet.catch) {
+                        // I am not sure if a check for promiseRet makes sense but if the return of the command is no promise it would error otherwise
                         promiseRet.catch((e) => {
-                            console.log("Command handler threw async exception", e);
+                            console.log(
+                                "Command handler threw async exception",
+                                e,
+                            );
                         });
                     }
                 } catch (e) {

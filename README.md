@@ -13,11 +13,12 @@ To make a new game, you can copy the 'petspa' game file and use that as a base, 
 your new file into bot.ts.
 
 Usual club ettiquette applies, eg:
- * Make sure people know your bot is a bot, not a real player
- * Make sure people consent before your bot binds them / changes their clothing etc.
- * Watch how many messages your bot sends. Even if it stays under the ratelimit, constantly
-   sending messages will affect the server.
- * Make bots fun / interesting / useful, rather than to just sit in rooms.
+
+- Make sure people know your bot is a bot, not a real player
+- Make sure people consent before your bot binds them / changes their clothing etc.
+- Watch how many messages your bot sends. Even if it stays under the ratelimit, constantly
+  sending messages will affect the server.
+- Make bots fun / interesting / useful, rather than to just sit in rooms.
 
 ## Code layout
 
@@ -35,51 +36,58 @@ fun bots! Improvements and fixes are always welcome.
 The bot can either be run locally or via the Docker image.
 
 ### Running Locally
- * Get an environment with NodeJS, pnpm (https://pnpm.io/installation) and git
- * Check out the bot's code
-   `git clone https://github.com/FriendsOfBC/ropeybot.git`
- * Copy `config.sample.json` to `config.json` and customise it: you'll need to provide
-   at least a username and password for an account that the bot can log in as. You can
-   also choose what game the bot will run.
- * Enter the directory and install the dependencies:
-   `cd ropeybot`
-   `pnpm install`
- * Start the bot!
-   `pnpm start`
+
+- Get an environment with NodeJS, pnpm (https://pnpm.io/installation) and git
+- Check out the bot's code
+  `git clone https://github.com/FriendsOfBC/ropeybot.git`
+- Copy `config.sample.json` to `config.json` and customise it: you'll need to provide
+  at least a username and password for an account that the bot can log in as. You can
+  also choose what game the bot will run.
+- Enter the directory and install the dependencies:
+  `cd ropeybot`
+  `pnpm install`
+- Start the bot!
+  `pnpm start`
 
 ### Running with Docker
- * Install docker
- * Create a config file as in the steps for running locally
- * Run the bot, mapping in the config file you just made:
- `docker run --rm -it -v ${PWD}/config.json:/bot/cfg/config.json ghcr.io/FriendsOfBC/ropeybot:main`
- * Alternatively you can build the docker container yourself:
- `docker build --tag ropeybot .`
- * And then run said container with the config file mapped in
- `docker run --rm -it -v ${PWD}/config.json:/bot/cfg/config.json ropeybot`
+
+- Install docker
+- Create a config file as in the steps for running locally
+- Run the bot, mapping in the config file you just made:
+  `docker run --rm -it -v ${PWD}/config.json:/bot/cfg/config.json ghcr.io/FriendsOfBC/ropeybot:main`
+- Alternatively you can build the docker container yourself:
+  `docker build --tag ropeybot .`
+- And then run said container with the config file mapped in
+  `docker run --rm -it -v ${PWD}/config.json:/bot/cfg/config.json ropeybot`
 
 ## Games
+
 The bot comes with some built games. In brackets is the value to use for 'game' in the config
 file to run that game.
 
 ### Dare Game ('dare')
+
 A very simple game where players add dares and then draw them without knowing who added
 each dare.
 The dares added by players are stored in two files in the bot's working directory:
 dares.json and unuseddares.json: delete both of these files to reset the dares.
 
 ### Pet Spa ('petspa')
+
 This is an example of how to use the API to make an interactive map room, but also
 applies to non map rooms. You can use this file as a base for things like how to react
 when players enter areas on a map, adding restraints and setting their properties, sending
 and reacting to messages.
 
 ### Kidnappers ('kidnappers')
+
 From the original bot hub. Code is mostly unmodified from its original state.
 
 ### Roleplay challenge ('roleplay')
+
 Also from the original bot hub.
 
 ### Maid's Party Night ('maidspartynight')
+
 Also from the original bot hub, a single player adventure. Needs a second bot account
 (user2 and password2 in the config). Probably buggy!
-

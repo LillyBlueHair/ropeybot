@@ -19,14 +19,8 @@ import { AssetFemale3DCGExtended } from "./bcdata/Female3DCGExtended.ts";
 
 // An item as it appears on the wire (similar to Item but instead of the Asset
 // there's just Name representing the asset name), plus a Group
-export interface BC_AppearanceItem {
-    Group: AssetGroupName;
-    Name?: string;
-    Color?: ItemColor;
-    Difficulty?: number;
-    Craft?: CraftingItem;
-    Property?: ItemProperties;
-}
+
+export type BC_AppearanceItem = ServerItemBundle;
 
 interface PartialCraftingData {
     Name: string;
@@ -57,9 +51,10 @@ function getPoseCategories(
 }
 
 export class API_AppearanceItem {
-    private _extendedItem: ExtendedItem;
+    private _removed: boolean = false;
+    private _extendedItem: ExtendedItem | undefined;
 
-    private updateTask: NodeJS.Immediate;
+    private updateTask: NodeJS.Immediate | undefined;
 
     constructor(
         private character: API_Character,
@@ -81,17 +76,17 @@ export class API_AppearanceItem {
         return makeAssetType(AssetGet(this.data.Group, this.data.Name));
     }
     public get AssetGroup(): AssetGroupDefinition {
-        return AssetFemale3DCG.find((x) => x.Group === this.Group);
+        return AssetFemale3DCG.find((x) => x.Group === this.Group)!;
     }
-    public get Extended(): ExtendedItem {
+    public get Extended(): ExtendedItem | undefined {
         return this._extendedItem;
     }
 
     public getAssetDef(): AssetDefinition {
-        return getAssetDef(AssetGet(this.data.Group, this.data.Name));
+        return getAssetDef(AssetGet(this.data.Group, this.data.Name))!;
     }
 
-    public GetExpression(): string {
+    public GetExpression(): ExpressionName | undefined {
         return this.data.Property?.Expression;
     }
 
@@ -111,7 +106,7 @@ export class API_AppearanceItem {
         this.queueUpdate();
     }
 
-    public GetColor(): ItemColor {
+    public GetColor(): ItemColor | undefined {
         return this.data.Color;
     }
 
@@ -152,7 +147,7 @@ export class API_AppearanceItem {
     ): void {
         if (!this.getAssetDef().AllowLock) return;
 
-        this.ensureProps();
+        this.data.Property ??= {};
         this.data.Property.LockedBy = lockType;
         this.data.Property.LockMemberNumber = lockedBy;
         this.data.Property.Effect = this.data.Property.Effect ?? [];
@@ -164,12 +159,12 @@ export class API_AppearanceItem {
 
     public SetOverrideHeight(height: number | undefined): void {
         if (height) {
-            if (!this.data.Property) this.data.Property = {};
+            this.data.Property ??= {};
             this.data.Property.OverrideHeight = {
                 Priority: 100,
                 Height: height,
             };
-        } else {
+        } else if (this.data.Property) {
             delete this.data.Property.OverrideHeight;
         }
         this.queueUpdate();
@@ -180,11 +175,14 @@ export class API_AppearanceItem {
     }
 
     public setRemoved(): void {
-        this.data = { Group: this.data.Group };
+        this._removed = true;
     }
 
-    public setProperty(prop: string, value: any): void {
-        this.ensureProps();
+    public setProperty<K extends keyof ItemProperties>(
+        prop: K,
+        value: ItemProperties[K],
+    ): void {
+        this.data.Property ??= {};
         this.data.Property[prop] = value;
         this.queueUpdate();
     }
@@ -205,12 +203,19 @@ export class API_AppearanceItem {
         this.character.sendItemUpdate(this.data);
         //this.character.sendAppearanceUpdate();
     };
+}
 
-    public ensureProps(): void {
-        if (!this.data.Property) {
-            this.data.Property = {};
-        }
+function resolveExtendedAsset(group: AssetGroupName, asset: string) {
+    let config = getExtendedAssetDef(AssetGet(group, asset));
+    while (config && config.CopyConfig) {
+        config = getExtendedAssetDef(
+            AssetGet(
+                config.CopyConfig.GroupName ?? group,
+                config.CopyConfig.AssetName,
+            ),
+        );
     }
+    return config;
 }
 
 export class ExtendedItem {
@@ -220,17 +225,9 @@ export class ExtendedItem {
         private itemType: API_AppearanceItem,
         private item: BC_AppearanceItem,
     ) {
-        this.extendedDef = getExtendedAssetDef(
-            AssetGet(this.item.Group, this.item.Name),
-        );
-        if (this.extendedDef?.CopyConfig) {
-            this.extendedDef = getExtendedAssetDef(
-                AssetGet(
-                    this.extendedDef.CopyConfig.GroupName ?? this.item.Group,
-                    this.extendedDef.CopyConfig.AssetName,
-                ),
-            );
-        }
+        let config = resolveExtendedAsset(this.item.Group, this.item.Name);
+        if (!config) throw new Error();
+        this.extendedDef = config;
         //console.log(`Made extended item for ${item.Group} / ${item.Name}, Extended def is ${this.extendedDef}`);
     }
 
@@ -241,7 +238,7 @@ export class ExtendedItem {
     public SetText(text: string): void {
         const textParts = text.split("\n");
 
-        this.itemType.ensureProps();
+        this.item.Property ??= {};
         this.item.Property.Text = textParts[0];
         this.item.Property.Text2 = textParts[1];
         this.item.Property.Text3 = textParts[2];
@@ -256,28 +253,28 @@ export class ExtendedItem {
             );
         }
 
-        const optionSetIdx = this.extendedDef.Options.findIndex(
-            (x) => x.Name === t,
-        );
+        const optionSetIdx =
+            this.extendedDef.Options?.findIndex((x) => x.Name === t) ?? -1;
         if (optionSetIdx === -1) {
             throw new Error(`Invalid type ${t} for item ${this.item.Name}`);
         }
-        const optionSet = this.extendedDef.Options[optionSetIdx];
+        const optionSet = this.extendedDef.Options?.[optionSetIdx];
 
-        this.itemType.ensureProps();
+        this.item.Property ??= {};
         const oldEffect = this.item.Property.Effect;
-        Object.assign(this.item.Property, optionSet.Property, {
+        Object.assign(this.item.Property, optionSet?.Property, {
             TypeRecord: { typed: optionSetIdx },
         });
         if (oldEffect)
             this.item.Property.Effect = Array.from(
-                new Set([...oldEffect, ...optionSet.Property.Effect]),
+                new Set([...oldEffect, ...(optionSet?.Property?.Effect ?? [])]),
             );
         this.fixupAllowActivePose(); // we probably need to do this other times too
         this.itemType.queueUpdate();
     }
 
     private fixupAllowActivePose(): void {
+        this.item.Property ??= {};
         if (this.item.Property.SetPose) {
             // AllowActivePos is sometimes specified explictly and sometimes not, coming from SetPose.
             // Either way, extra ones need to be added implicitly - see AssetParsePosePrerequisite in BC
@@ -334,34 +331,32 @@ export function AssetGet(
     };
 }
 
-export function getAssetDef(
-    desc: BC_AppearanceItem,
-): AssetDefinition | undefined {
+export function getAssetDef(desc: BC_AppearanceItem): AssetDefinition | null {
     const grp = AssetFemale3DCG.find((g) => g.Group === desc.Group);
     if (!grp) {
         // We could add support for the echo slots, but until then, don't spam about them
-        if (!desc.Group.includes("Luzi")) console.warn("Invalid item group: " + desc.Group);
-        return undefined;
+        if (!desc.Group.includes("Luzi"))
+            console.warn("Invalid item group: " + desc.Group);
+        return null;
     }
 
     const assetDef = grp.Asset.find(
         (a) => typeof a !== "string" && a.Name === desc.Name,
     );
 
-    // probably not, but for now
-    if (typeof assetDef === "string" || assetDef === undefined)
-        return undefined;
+    // FIXME: those are the simple string; they'd need to be expanded
+    if (typeof assetDef === "string" || assetDef === undefined) return null;
 
     return assetDef;
 }
 
 export function getExtendedAssetDef(
     desc: BC_AppearanceItem,
-): AssetArchetypeConfig {
+): AssetArchetypeConfig | null {
     const grp = AssetFemale3DCGExtended[desc.Group];
     if (!grp) {
         console.warn("Invalid item group: " + desc.Group);
-        return undefined;
+        return null;
     }
 
     return grp[desc.Name];

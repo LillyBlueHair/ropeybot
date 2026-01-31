@@ -13,7 +13,17 @@
  */
 
 import { decompressFromBase64 } from "lz-string";
-import { API_Connector, MessageEvent, makeDoorRegion, MapRegion, API_Character, AssetGet, BC_AppearanceItem, CommandParser, BC_Server_ChatRoomMessage } from "bc-bot";
+import {
+    API_Connector,
+    API_Message,
+    makeDoorRegion,
+    MapRegion,
+    API_Character,
+    AssetGet,
+    BC_AppearanceItem,
+    CommandParser,
+    BC_Server_ChatRoomMessage,
+} from "bc-bot";
 import { remainingTimeString } from "../utils";
 import { wait } from "../hub/utils";
 
@@ -181,7 +191,7 @@ export class PetSpa {
         this.conn.Player.SetActivePose(["Kneel"]);
     };
 
-    private onMessage = async (msg: MessageEvent) => {
+    private onMessage = async (msg: API_Message) => {
         if (
             msg.message.Type === "Chat" &&
             !msg.message.Content.startsWith("(")
@@ -222,7 +232,7 @@ export class PetSpa {
     private onCharacterViewExhibit2 = async (char: API_Character) => {
         char.Tell(
             "Whisper",
-            "(This  painting is of a cat eating tasty looking chunks of food from a bowl." +
+            "(This painting is of a cat eating tasty looking chunks of food from a bowl." +
                 `The plaque below reads: "Our chefs prepare the finest meals daily for our residents. Nothing but the best will do."`,
         );
     };
@@ -231,7 +241,7 @@ export class PetSpa {
         char.Tell(
             "Whisper",
             "(This painting is of a very cute rabbit having its fur brushed by a cheerful lady in uniform." +
-                `The plaque below reads: "Grooming is part of our standard service here at the Pet Spa. We believe our pets shoukd look and feel their best."`,
+                `The plaque below reads: "Grooming is part of our standard service here at the Pet Spa. We believe our pets should look and feel their best."`,
         );
     };
 
@@ -239,7 +249,7 @@ export class PetSpa {
         character.Tell(
             "Whisper",
             "(This painting is of a fluffy fox with deep red fur, sitting on an examination table while a nurse holds a stethoscope to its chest." +
-                `The plaque below reads: "Here at the Pet Spa, the health of our pets is our top priority. Our highly trained vets will every pet's health needs are tended to."`,
+                `The plaque below reads: "Here at the Pet Spa, the health of our pets is our top priority. Our highly trained vets will ensure every pet's health needs are tended to."`,
         );
     };
 
@@ -341,7 +351,7 @@ export class PetSpa {
         );
         petSuitItem.SetCraft({
             Name: `Pet Spa Suit`,
-            Description: `A very comfy suit, specially made for ${character} to ensure the wearer complete, uniterrupted relaxation.`,
+            Description: `A very comfy suit, specially made for ${character} to ensure the wearer complete, uninterrupted relaxation.`,
         });
         petSuitItem.SetColor(characterHairColor);
         petSuitItem.Extended.SetType("Classic");
