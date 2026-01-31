@@ -15,7 +15,7 @@
     ],
     "scripts": {
         "prepare": "pnpm compile",
-        "compile": "rm -rf dist/* && tsc -p tsconfig.json"
+        "compile": "rimraf dist && tsc -p tsconfig.json"
     },
     "dependencies": {
         "@socket.io/component-emitter": "^3.1.2",
@@ -28,6 +28,7 @@
         "@tsconfig/node18": "^18.2.4",
         "@types/node": "^20.19.9",
         "esbuild": "^0.19.12",
+        "rimraf": "^6.1.2",
         "tsx": "^4.20.3",
         "typescript": "^5.8.3"
     }

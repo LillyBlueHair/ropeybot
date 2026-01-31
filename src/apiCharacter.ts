@@ -245,9 +245,10 @@ export class API_Character {
         return this.chatRoom?.Admin.includes(this.MemberNumber) ?? false;
     }
 
-    public IsRoomWhitelist(): boolean {
-        return this.chatRoom.Whitelist.includes(this.MemberNumber);
-    }
+    //TODO dunno if needed
+    /*public IsRoomWhitelist(): boolean {
+        return this.chatRoom?.Whitelist.includes(this.MemberNumber);
+    }*/
 
     public Tell(msgType: TellType, msg: string): void {
         console.log(`Tell (${msgType}) ${this}: ${msg}`);

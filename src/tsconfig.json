@@ -3,6 +3,7 @@
         "allowJs": true,
         "noEmit": false,
         "strict": true,
+        "noImplicitAny": false,
         "module": "nodenext",
         "moduleResolution": "nodenext",
         "esModuleInterop": true,

@@ -980,7 +980,7 @@ export class BlackjackGame implements Game {
         shuffleDeck(this.deck);
     }
 
-    private initialDeal(): void {
+    private async initialDeal(): Promise<void> {
         this.autoStandTimeout = setInterval(() => {
             this.onStandTimeout();
         }, 1000);
@@ -1015,7 +1015,6 @@ export class BlackjackGame implements Game {
                 );
             }
         }
-
         if (this.calculateHandValue(this.dealerHand) === 21) {
             this.conn.SendMessage(
                 "Chat",
@@ -1030,8 +1029,8 @@ export class BlackjackGame implements Game {
             return;
         }
 
-        if (this.allPlayersDone()) {
-            this.resolveGame();
+        if ( await this.allPlayersDone()) {
+            await this.resolveGame();
         }
 
         this.willStandAt = Date.now() + AUTO_STAND_TIMEOUT_MS;
