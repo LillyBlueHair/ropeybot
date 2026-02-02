@@ -201,7 +201,7 @@ export class API_AppearanceItem {
     private doUpdate = (): void => {
         this.updateTask = undefined;
         this.character.sendItemUpdate(this.data);
-        //this.character.sendAppearanceUpdate();
+        this.character.sendAppearanceUpdate();
     };
 }
 

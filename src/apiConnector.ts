@@ -62,7 +62,7 @@ export interface RoomDefinition {
 }
 
 // What the bot advertises as its game version
-const GAMEVERSION = "R122";
+const GAMEVERSION = "R124";
 const LZSTRING_MAGIC = "╬";
 
 class PromiseResolve<T> {

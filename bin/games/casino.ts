@@ -898,7 +898,7 @@ ${forfeitsString()}
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
-        if (!sender.IsRoomWhitelist() && !sender.IsRoomAdmin()) {
+        if (!sender.IsRoomAdmin()) {
             this.conn.reply(msg, "Sorry, you need to be whitelisted");
             return;
         }

@@ -31,12 +31,12 @@ export interface API_Chatroom_Data {
     Admin: number[];
     Whitelist: number[];
     Ban: number[];
-    Private: boolean;
+    // Private: boolean;
     Access: ServerChatRoomRole[];
     Visibility: ServerChatRoomRole[];
     Limit: number;
     Background: string;
-    Locked: boolean;
+    // Locked: boolean;
     Space: ServerChatRoomSpace;
     BlockCategory: ServerChatRoomBlockCategory[];
     Game: ServerChatRoomGame;
@@ -52,7 +52,7 @@ export function transformToChatRoomData(
         Character: chatRoom.Character.map((data) =>
             transformToCharacterData(data),
         ),
-    };
+    } ;
 }
 
 interface ChatRoomEvents {
@@ -96,6 +96,21 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         this.data.Admin = value;
         this.saveChanges();
     }
+    get Visibility(): ServerChatRoomRole[] {
+        return this.data.Visibility;
+    }
+    set Visibility(value: ServerChatRoomRole[]) {
+        this.data.Visibility = value;
+        this.saveChanges();
+    }
+    get Access(): ServerChatRoomRole[] {
+        return this.data.Access;
+    }
+    set Access(value: ServerChatRoomRole[]) {
+        this.data.Access = value;
+        this.saveChanges();
+    }
+
     public promoteAdmin(char: API_Character | number) {
         const member = typeof char === "number" ? char : char.MemberNumber;
         this.conn.chatRoomAdmin({
@@ -130,9 +145,9 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
             Publish: true,
         });
     }
-    public get Private(): boolean {
+    /* public get Private(): boolean {
         return this.data.Private;
-    }
+    } */
     public get Limit(): number {
         return this.data.Limit;
     }

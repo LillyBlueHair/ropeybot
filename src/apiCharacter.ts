@@ -293,12 +293,13 @@ export class API_Character {
         return upperBody?.Name === "Penis" ? "male" : "female";
     }
 
-    public Kick(): void {
+    public Kick(): Promise<void> {
         this.connection.chatRoomAdmin({
             Action: "Kick",
             MemberNumber: this.MemberNumber,
             Publish: true,
         });
+        return Promise.resolve();
     }
 
     public Ban(): void {

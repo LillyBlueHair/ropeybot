@@ -177,6 +177,10 @@ export class BlackjackGame implements Game {
                 "Panties",
                 "Suit",
                 "Gloves",
+                "Hat",
+                "HairAccessory1",
+                "HairAccessory2",
+                "HairAccessory3",
             ]);
         }, 500);
     }

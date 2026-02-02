@@ -190,7 +190,24 @@ export const FORFEITS: Record<string, Forfeit> = {
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         applyItems: makeChaste.bind(null),
-    } /*
+    }, 
+    upperPetSuit: {
+        name: "Upper Pet Suit",
+        colourLayers: [0],
+        value: 6,
+        items: () => [AssetGet("ItemArms", "PawPaddedPetsuitArms")],
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 20 * 60 * 1000,
+    }, 
+    lowerPetSuit: {
+        name: "Lower Pet Suit",
+        colourLayers: [0],
+        value: 6,
+        items: () => [AssetGet("ItemArms", "PawPaddedPetsuitLegs")],
+        lock: AssetGet("ItemLegs", "TimerPasswordPadlock"),
+        lockTimeMs: 20 * 60 * 1000,
+    }
+    /*
     hypnovisor: {
         name: "Hypnotic Visor",
         colourLayers: [2],
