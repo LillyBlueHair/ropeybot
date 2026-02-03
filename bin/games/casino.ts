@@ -544,7 +544,7 @@ ${forfeitsString()}
 
             this.conn.SendMessage(
                 "Chat",
-                `${sender} has bought a voucher for ${service.name}! Please contact Ellie to redeem your service.`,
+                `${sender} has bought a voucher for ${service.name}! Please contact Lilly to redeem your service.`,
             );
         }
     };
@@ -564,7 +564,6 @@ ${forfeitsString()}
             this.conn.reply(msg, "No vouchers outstanding");
             return;
         }
-
         this.conn.reply(
             msg,
             purchases
@@ -572,7 +571,7 @@ ${forfeitsString()}
                     if (SERVICES[p.service] === undefined) {
                         return `${p.memberName} (${p.memberNumber}): Unknown service ${p.service}`;
                     }
-                    `${p.memberName} (${p.memberNumber}): ${SERVICES[p.service].name}`;
+                    return `${p.memberName} (${p.memberNumber}): ${SERVICES[p.service].name}`;
                 })
                 .join("\n"),
         );
