@@ -19,7 +19,7 @@
     },
     "dependencies": {
         "@socket.io/component-emitter": "^3.1.2",
-        "bc-stubs": "^124.0.0",
+        "bc-stubs": "^126.0.0",
         "lz-string": "^1.5.0",
         "prettier": "^3.8.1",
         "socket.io-client": "^4.8.3"

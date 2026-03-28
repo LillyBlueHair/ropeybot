@@ -11153,6 +11153,15 @@ export var AssetFemale3DCGExtended = {
 						Effect: [E.Block, E.Freeze, E.BlockWardrobe],
 					},
 				},
+				{
+					Name: "TiedElbow",
+					SelfBondageLevel: 5,
+					Property: {
+						Difficulty: 10,
+						SetPose: ["BackElbowTouch"],
+						Effect: [E.Block, E.Freeze, E.BlockWardrobe],
+					},
+				},
 			],
 		}, // Pole
 		CryoCapsule: {
@@ -11455,7 +11464,7 @@ export var AssetFemale3DCGExtended = {
 											drawOptions: {
 												fontSize: 20,
 												radius: 60,
-                                                // @ts-ignore
+												// @ts-ignore
 												effect: DynamicDrawTextEffect.BURN,
 											},
 										}),
@@ -14807,6 +14816,23 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // PumpHighHeels
+		ZipperLeatherBoots: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "LeftSide",
+					Key: "l",
+					DrawImages: false,
+					Options: [{}, {}],
+				},
+				{
+					Name: "RightSide",
+					Key: "r",
+					DrawImages: false,
+					Options: [{}, {}],
+				},
+			],
+		}, // ZipperLeatherBoots
 	}, // Shoes
 	HairAccessory1: {
 		ElfEars: {
@@ -16457,6 +16483,22 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // CompGag
+		BishopGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "Open",
+					Property: {},
+				},
+				{
+					Name: "Covered",
+					Property: {
+						Difficulty: 6,
+					},
+				},
+			],
+		},
 	}, // ItemMouth
 	ItemMouth2: {
 		ClothGag: {
@@ -16644,6 +16686,15 @@ export var AssetFemale3DCGExtended = {
 			Archetype: ExtendedArchetype.MODULAR,
 			CopyConfig: { GroupName: "ItemMouth", AssetName: "CompGag" },
 		}, // CompGag
+		BishopGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BishopGag" },
+			DialogPrefix: {
+				Header: "ItemMouthBishopGagSelect",
+				Chat: "ItemMouthBishopGagSet",
+				Option: "ItemMouthBishopGag",
+			},
+		}, // BishopGag
 	}, // ItemMouth2
 	ItemMouth3: {
 		ClothGag: {
@@ -16823,6 +16874,15 @@ export var AssetFemale3DCGExtended = {
 			Archetype: ExtendedArchetype.TYPED,
 			CopyConfig: { GroupName: "ItemMouth", AssetName: "AsylumMuzzle" },
 		}, // AsylumMuzzle
+		BishopGag: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BishopGag" },
+			DialogPrefix: {
+				Header: "ItemMouthBishopGagSelect",
+				Chat: "ItemMouthBishopGagSet",
+				Option: "ItemMouthBishopGag",
+			},
+		}, // BishopGag
 	}, // ItemMouth3
 	Mask: {
 		BunnyMask1: {
@@ -17536,6 +17596,15 @@ export var AssetFemale3DCGExtended = {
 			Archetype: ExtendedArchetype.MODULAR,
 			CopyConfig: { GroupName: "BodyMarkings", AssetName: "Splatters" },
 		}, // Splatters
+		KirugumiMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemHood", AssetName: "KirugumiMask" },
+			DialogPrefix: {
+				Header: "ItemHoodKirugumiMaskSelect",
+				Module: "ItemHoodKirugumiMaskModule",
+				Option: "ItemHoodKirugumiMaskOption",
+			},
+		},
 	}, // Mask
 	ItemLegs: {
 		DuctTape: {
@@ -20709,6 +20778,11 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // ButterflyGarter
+		LaceLegRing: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Leftleg" }, { Name: "Rightleg" }, { Name: "Both" }],
+		}, // LaceLegRing
 	}, // Garters
 	AnkletRight: {
 		LegFur: {
@@ -21475,7 +21549,7 @@ export var AssetFemale3DCGExtended = {
 								Font: "sans-serif",
 								ScriptHooks: {
 									AfterDraw: (...args) =>
-                                        // @ts-ignore
+										// @ts-ignore
 										TextItem.GenericTextDrawHook(...args, {
 											YOffset: 10,
 											drawOptions: { fontSize: 12 },
@@ -22830,4 +22904,27 @@ export var AssetFemale3DCGExtended = {
 			],
 		}, // DragonPlush
 	}, // ItemHandheld
+	EyeShadow: {
+		Running: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "0",
+				},
+				{
+					Name: "1",
+				},
+				{
+					Name: "2",
+				},
+				{
+					Name: "3",
+				},
+				{
+					Name: "4",
+				},
+			],
+		},
+	},
 };

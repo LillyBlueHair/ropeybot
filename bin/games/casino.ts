@@ -170,7 +170,7 @@ export class Casino {
         if (
             typeof beep?.Message !== "string" ||
             beep.Message.includes("TypingStatus") ||
-                beep.Message.includes("ReqRoom")
+            beep.Message.includes("ReqRoom")
         ) {
             return;
         }
@@ -488,9 +488,14 @@ ${forfeitsString()}
         if (serviceName === "player") {
             target.Appearance.RemoveItem("ItemDevices");
             if (!target.Appearance.InventoryGet("ItemNeck")) {
-                target.Appearance.AddItem(
-                    AssetGet("ItemNeck", "LeatherCollar"),
+                const collar = target.Appearance.AddItem(
+                    AssetGet("ItemNeck", "LeatherChoker"),
                 );
+                collar.SetCraft({
+                    Name: `${sender}'s Sub`,
+                    Description:
+                        `Bought after an unfortunate bet, ${target}'s freedom now belongs to ${sender}.`,
+                });
             }
             target.Appearance.AddItem(
                 AssetGet("ItemNeckRestraints", "CollarLeash"),
@@ -897,7 +902,7 @@ ${forfeitsString()}
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
-        if (!sender.IsRoomAdmin()) {
+        if (!sender.IsRoomWhitelistedOrAdmin()) {
             this.conn.reply(msg, "Sorry, you need to be whitelisted");
             return;
         }

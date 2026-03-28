@@ -346,7 +346,7 @@ interface AssetGroupDefinitionBase extends AssetCommonPropertiesGroupAsset, Asse
 	 *
 	 * Those are used when generating random appearances or cycling colors in the wardrobe
 	 */
-	Color?: HexColor[];
+	Color?: BCColor[];
 
 	/**
 	 * A group that will be used to copy the size info from
@@ -412,7 +412,7 @@ interface AssetGroupDefinitionBase extends AssetCommonPropertiesGroupAsset, Asse
 	 */
 	ArousalZone?: AssetGroupItemName;
 
-	ColorSuffix?: Record<string, string>;
+	ColorSuffix?: Partial<Record<"HEX_COLOR" | BCColor, BCColor>>;
 	ExpressionPrerequisite?: AssetPrerequisite[];
 	HasPreviewImages?: boolean;
 }
@@ -464,7 +464,7 @@ interface AssetCommonPropertiesAssetLayer {
 	/** A list of alpha mask definitions. */
 	Alpha?: Alpha.Definition[];
 
-	ColorSuffix?: Record<string, string>;
+	ColorSuffix?: Partial<Record<"HEX_COLOR" | BCColor, BCColor>>;
 
 	/** Whether the asset is drawn at an absolute position. */
 	FixedPosition?: boolean;
@@ -703,8 +703,8 @@ interface AssetDefinitionBase extends AssetCommonPropertiesGroupAsset, AssetComm
 	DynamicScriptDraw?: boolean;
 	AllowLockType?: AssetLockType[];
 
-	/** Whether the color picker shows a "Whole Item" layer. Defaults to true. */
-	AllowColorizeAll?: boolean;
+	/** @deprecated Removed without replacement: items _must_ support a "color all layers" button (to the extent that the item is colorable in the first place) */
+	AllowColorizeAll?: never;
 
 	/** A list of online spaces (eg. Asylum) where the asset is automatically available */
 	AvailableLocations?: string[];
@@ -747,7 +747,7 @@ interface AssetDefinitionBase extends AssetCommonPropertiesGroupAsset, AssetComm
 	/** Applies screen tints when the asset is worn */
 	Tint?: TintDefinition[];
 	/** The default tint color (unless overriden by {@link TintDefinition.DefaultColor} */
-	DefaultTint?: string;
+	DefaultTint?: BCColor;
 	Gender?: AssetGender;
 
 	/**
@@ -816,6 +816,7 @@ interface AttributionDefinition {
 	Author?: string;
 	Email?: string;
 	License?: string;
+	OriginalName?: string;
 }
 
 interface AssetLayerDefinition extends AssetCommonPropertiesGroupAssetLayer, AssetCommonPropertiesAssetLayer {

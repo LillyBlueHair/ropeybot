@@ -96,6 +96,13 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         this.data.Admin = value;
         this.saveChanges();
     }
+    public get Whitelist(): number[] {
+        return this.data.Whitelist;
+    }
+    public set Whitelist(value: number[]) {
+        this.data.Whitelist = value;
+        this.saveChanges();
+    }
     get Visibility(): ServerChatRoomRole[] {
         return this.data.Visibility;
     }

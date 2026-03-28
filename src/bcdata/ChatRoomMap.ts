@@ -90,6 +90,7 @@ export const ChatRoomMapViewTileList = [
 
 
 export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
+
 	{ ID: 100, Type: "FloorDecoration", Style: "Blank" },
 	{ ID: 110, Type: "FloorDecoration", Style: "EntryFlag", Top: -0.125, Exit: true, Unique: true },
 	{ ID: 115, Type: "FloorDecoration", Style: "ExitFlag", Top: -0.125, Exit: true },
@@ -104,6 +105,7 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 	{ ID: 165, Type: "FloorDecoration", Style: "VikingChair" , Top: -0.5, Height: 2 },
 	{ ID: 166, Type: "FloorDecoration", Style: "Bed" , Top: -0.82, Left: 0.05, Height: 1.8, Width: 0.90, AssetName: "Bed", AssetGroup: "ItemDevices" },
 	{ ID: 170, Type: "FloorDecoration", Style: "Stairs" , Top: 0, Left: 0 },
+	{ ID: 180, Type: "FloorDecoration", Style: "AirConditioner" , Top: 0, Left: 0 },
 
 
 	{ ID: 200, Type: "FloorDecorationThemed", Style: "Blank" },
@@ -160,7 +162,7 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 			let RightObject = ChatRoomMapViewGetObjectAtPos(X + 1, Y);
 			if ((LeftObject != null) && (LeftObject.ID == this.ID) && ((RightObject != null) && (RightObject.ID == this.ID))) return "CouchPinkMiddle";
 			if ((LeftObject != null) && (LeftObject.ID == this.ID)) return "CouchPinkRight";
-			if ((RightObject != null) && (RightObject.ID == this.ID)) return "CouchPinkLeft";
+			if ((RightObject != null) && (RightObject.ID == this.ID))return "CouchPinkLeft";
 			return "CouckPinkSmall";
 		},
 		Top: -0.35
@@ -239,7 +241,7 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 			// Return the final image name
 			return "Railroad" + Suffix;
 		},
-		Top: -0.35,
+		Top: 0,
 	},
 	{ ID: 800, Type: "FloorDecorationAnimal", Style: "Blank" },
 	{
@@ -484,6 +486,7 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 	{ ID: 1309, Type: "FloorIcon", Style: "IconArrowRight" },
 
 	{ ID: 2000, Type: "FloorObstacle", Style: "Blank", CanEnter: () => false, },
+	{ ID: 2004, Type: "FloorObstacle", Style: "Stalagmite", Top: -0.125, Height: 1, CanEnter: () => false, },
 	{ ID: 2005, Type: "FloorObstacle", Style: "Rocks", Top: -0.125, Height: 1.125, CanEnter: () => false, },
 	{ ID: 2006, Type: "FloorObstacle", Style: "GoldStones", Top: 0.10, Left: 0.25, Height: 0.5, Width: 0.5, CanEnter: () => false, },
 	{ ID: 2007, Type: "FloorObstacle", Style: "StonePile", Top: 0.10, Left: 0.25, Height: 0.5, Width: 0.5, CanEnter: () => false, },
@@ -491,18 +494,36 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 	{ ID: 2011, Type: "FloorObstacle", Style: "Knight", Top: -1.25, Left: 0.05, Height: 1.65, Width: 0.75, CanEnter: () => false, },
 	{ ID: 2012, Type: "FloorObstacle", Style: "Samurai", Top: -1.25, Left: 0.05, Height: 1.75, Width: 0.85, CanEnter: () => false, },
 	{ ID: 2020, Type: "FloorObstacle", Style: "Barrel", Top: -0.5, Height: 1.5, CanEnter: () => false, },
+	{ ID: 2025, Type: "FloorObstacle", Style: "Chest", Top: 0, Height: 1, CanEnter: () => false, },
 	{ ID: 2030, Type: "FloorObstacle", Style: "IronBars", Top: -1, Height: 2, CanEnter: () => false, },
 	{ ID: 2031, Type: "FloorObstacle", Style: "BarbFence", Top: -1, Height: 2, CanEnter: () => false, },
 	{ ID: 2032, Type: "FloorObstacle", Style: "PicketFence", Top: -0.80, Height: 0.75, Width: 1, CanEnter: () => false, },
+	{
+		ID: 2033,
+		Type: "FloorObstacle",
+		Style: "VelourRopeBarrier",
+		BuildImageName: function(x, y) {
+			let LeftObject = ChatRoomMapViewGetObjectAtPos(x - 1, y);
+			let RightObject = ChatRoomMapViewGetObjectAtPos(x + 1, y);
+			if ((LeftObject != null) && (LeftObject.ID == this.ID) && ((RightObject != null) && (RightObject.ID == this.ID))) return "VelourRopeBarrierMiddle";
+			if ((LeftObject != null) && (LeftObject.ID == this.ID)) return "VelourRopeBarrierRight";
+			if ((RightObject != null) && (RightObject.ID == this.ID)) return "VelourRopeBarrierLeft";
+			return "VelourRopeBarrier";
+		},
+		Top: -0.35
+	},
 	{ ID: 2035, Type: "FloorObstacle", Style: "Bush", Top: -0.25, Height: 1, CanEnter: () => false, },
 	{ ID: 2040, Type: "FloorObstacle", Style: "OakTree", Left: -0.25, Top: -1.5, Width: 1.5, Height: 2.5, CanEnter: () => false, },
 	{ ID: 2045, Type: "FloorObstacle", Style: "OakTree_Fall", Left: -0.25, Top: -1.5, Width: 1.5, Height: 2.5, CanEnter: () => false, },
 	{ ID: 2048, Type: "FloorObstacle", Style: "LeaflessTree", Top: -1.25, Height: 2, CanEnter: () => false, },
 	{ ID: 2050, Type: "FloorObstacle", Style: "PineTree", Top: -1, Height: 2, CanEnter: () => false, },
 	{ ID: 2055, Type: "FloorObstacle", Style: "PalmTree", Left: -0.30, Top: -1.5, Width: 1.65, Height: 2.5, CanEnter: () => false, },
+	{ ID: 2059, Type: "FloorObstacle", Style: "Sakura", Left: -0.30, Top: -1.5, Width: 1.3, Height: 2.0, CanEnter: () => false, },
+	{ ID: 2057, Type: "FloorObstacle", Style: "Cactus", Left: -0.20, Top: -1.20, Width: 1.3, Height: 1.8, CanEnter: () => false, },
 	{ ID: 2060, Type: "FloorObstacle", Style: "ChristmasTree", Top: -1, Height: 2, CanEnter: () => false, },
 	{ ID: 2070, Type: "FloorObstacle", Style: "Window", Top: -0.5, Height: 1.5, CanEnter: () => false, },
 	{ ID: 2080, Type: "FloorObstacle", Style: "TrashCan", Top: -0.25, Height: 0.75, Width: 0.75, CanEnter: () => false, },
+	{ ID: 2085, Type: "FloorObstacle", Style: "RoadCone", Top: 0, Left: 0.13, Height: 0.75, Width: 0.75, CanEnter: () => false, },
 	{ ID: 2090, Type: "FloorObstacle", Style: "LampPost", Top: -1.25, Height: 2, CanEnter: () => false, },
 	{ ID: 2098, Type: "FloorObstacle", Style: "Pillar", Top: -1.25, Left: 0.16, Height: 2, Width: 0.70, CanEnter: () => false, },
 
@@ -522,12 +543,21 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 	{ ID: 3040, Type: "WallDecoration", Style: "Whip" },
 	{ ID: 3050, Type: "WallDecoration", Style: "Fireplace" },
 	{ ID: 3060, Type: "WallDecoration", Style: "Stocking",Top: 0.35, Left: 0.25, Height: 0.5, Width: 0.5 },
+	{ ID: 3070, Type: "WallDecoration", Style: "Moss", Top: 0.15, Height: 0.8 },
+	{ ID: 3075, Type: "WallDecoration", Style: "Vines", Top: 0.15, Height: 0.8 },
+	{ ID: 3076, Type: "WallDecoration", Style: "Vines2", Top: 0.15, Height: 0.8 },
 	{ ID: 3100, Type: "WallDecoration", Style: "SilverShield" },
 	{ ID: 3110, Type: "WallDecoration", Style: "CrossedSabers" },
+	{ ID: 3120, Type: "WallDecoration", Style: "Window", Top: 0.2, Left: 0.1, Height: 0.80, Width: 0.80 },
+	{ ID: 3121, Type: "WallDecoration", Style: "WindowNight", Top: 0.22, Left: 0.1, Height: 0.80, Width: 0.80 },
+	{ ID: 3122, Type: "WallDecoration", Style: "StainedGlass", Top: 0.25, Left: 0.13, Height: 0.75, Width: 0.75 },
 	{ ID: 3200, Type: "WallDecoration", Style: "SchoolBoard" },
 	{ ID: 3250, Type: "WallDecoration", Style: "FirstAidKit" },
 	{ ID: 3260, Type: "WallDecoration", Style: "EyeTest" },
+	{ ID: 3261, Type: "WallDecoration", Style: "Scroll", Left: 0.2, Top: 0.3, Height: 0.6, Width: 0.60 },
+	{ ID: 3262, Type: "WallDecoration", Style: "Wanted", Left: 0.2, Top: 0.25, Height: 0.7, Width: 0.6 },
 	{ ID: 3270, Type: "WallDecoration", Style: "Bookshelf" },
+	{ ID: 3275, Type: "WallDecoration", Style: "AirConditioner", Top: 0.27, Height: 0.8 },
 	{ ID: 3280, Type: "WallDecoration", Style: "ShowerHead" },
 	{ ID: 3290, Type: "WallDecoration", Style: "EnemaHead" },
 
