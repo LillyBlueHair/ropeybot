@@ -73,11 +73,11 @@ const FULLTHREECARDPOKERHELP = `${THREECARDPOKERHELP}
 ${THREECARDPOKERCOMMANDS}
 `;
 
-// const TIME_UNTIL_DEAL_MS = 35000;
-const TIME_UNTIL_DEAL_MS = 6000;
+const TIME_UNTIL_DEAL_MS = 35000;
+// const TIME_UNTIL_DEAL_MS = 6000;
 const BET_CANCEL_THRESHOLD_MS = 1000;
-// const AUTO_FOLD_TIMEOUT_MS = 45000;
-const AUTO_FOLD_TIMEOUT_MS = 10000;
+const AUTO_FOLD_TIMEOUT_MS = 45000;
+// const AUTO_FOLD_TIMEOUT_MS = 10000;
 const RESET_TIMEOUT_MS = 10000; // Time after a game ends before a new game can start
 
 const MAX_PLAYERS = 15; // Don't go over 16 or you don't have enough cards
