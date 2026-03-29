@@ -493,8 +493,7 @@ ${forfeitsString()}
                 );
                 collar.SetCraft({
                     Name: `${sender}'s Sub`,
-                    Description:
-                        `Bought after an unfortunate bet, ${target}'s freedom now belongs to ${sender}.`,
+                    Description: `Bought after an unfortunate bet, ${target}'s freedom now belongs to ${sender}.`,
                 });
             }
             target.Appearance.AddItem(

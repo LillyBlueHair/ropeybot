@@ -28,13 +28,16 @@ export interface MapRegion {
 }
 
 function mapTileByName(name: string): ChatRoomMapTile | null {
-    return ChatRoomMapViewTileList.find((tile) => tile.Style === name) as ChatRoomMapTile ?? null;
+    return (
+        (ChatRoomMapViewTileList.find(
+            (tile) => tile.Style === name,
+        ) as ChatRoomMapTile) ?? null
+    );
 }
 
 function mapObjectByName(name: string): ChatRoomMapObject | null {
-    return (
-        ChatRoomMapViewObjectList.find((tile) => tile.Style === name) ?? null
-    ) as ChatRoomMapObject | null;
+    return (ChatRoomMapViewObjectList.find((tile) => tile.Style === name) ??
+        null) as ChatRoomMapObject | null;
 }
 
 interface TileTrigger {

@@ -190,7 +190,7 @@ export const FORFEITS: Record<string, Forfeit> = {
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         applyItems: makeChaste.bind(null),
-    }, 
+    },
     upperpetsuit: {
         name: "Upper Pet Suit",
         colourLayers: [0],
@@ -198,7 +198,7 @@ export const FORFEITS: Record<string, Forfeit> = {
         items: () => [AssetGet("ItemArms", "PawPaddedPetsuitArms")],
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
-    }, 
+    },
     lowerpetsuit: {
         name: "Lower Pet Suit",
         colourLayers: [0],
@@ -243,14 +243,15 @@ export const SERVICES: Record<string, Service> = {
     },
     sessionlilly: {
         name: "Session with Lilly",
-        description: "Some time with Lilly in private. Wanna be a cute little pet? Or perhaps an owner for once?~",
-        value: 696900000000 ,
+        description:
+            "Some time with Lilly in private. Wanna be a cute little pet? Or perhaps an owner for once?~",
+        value: 696900000000,
     },
     outfitlilly: {
         name: "Outfit from Lilly",
         description: "Let Lilly make an outfit just for you~",
-        value: 69000000 ,
-    }
+        value: 69000000,
+    },
     /*"massage": {
         name: "Pixie Massage",
         description: "Let Miss Ellie melt away those tensions with a soothing massage.",

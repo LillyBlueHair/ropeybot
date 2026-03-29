@@ -52,7 +52,7 @@ export function transformToChatRoomData(
         Character: chatRoom.Character.map((data) =>
             transformToCharacterData(data),
         ),
-    } ;
+    };
 }
 
 interface ChatRoomEvents {

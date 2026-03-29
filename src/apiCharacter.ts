@@ -250,7 +250,9 @@ export class API_Character {
     }
 
     public IsRoomWhitelistedOrAdmin(): boolean {
-        return this.chatRoom?.Whitelist.includes(this.MemberNumber) ? true : this.chatRoom?.Admin.includes(this.MemberNumber) ?? false;
+        return this.chatRoom?.Whitelist.includes(this.MemberNumber)
+            ? true
+            : (this.chatRoom?.Admin.includes(this.MemberNumber) ?? false);
     }
 
     public Tell(msgType: TellType, msg: string): void {
@@ -355,8 +357,8 @@ export class API_Character {
         // See above
         return !Boolean(
             this.Appearance.InventoryGet("ItemMouth") ||
-                this.Appearance.InventoryGet("ItemMouth2") ||
-                this.Appearance.InventoryGet("ItemMouth3"),
+            this.Appearance.InventoryGet("ItemMouth2") ||
+            this.Appearance.InventoryGet("ItemMouth3"),
         );
     }
 

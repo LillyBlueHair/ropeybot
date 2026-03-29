@@ -937,7 +937,13 @@ export class BlackjackGame implements Game {
             if (playerHandValue === dealerHandValue) {
                 return -100; // push for forfeits
             }
-            if (playerHandValue === 21 && playerHand.length === 2 && this.players.find((p) => p.memberNumber === bet.memberNumber).bets.length === 1) { // only when not split
+            if (
+                playerHandValue === 21 &&
+                playerHand.length === 2 &&
+                this.players.find((p) => p.memberNumber === bet.memberNumber)
+                    .bets.length === 1
+            ) {
+                // only when not split
                 return Math.floor(bet.stake * 1.5);
             }
             if (dealerHandValue > 21) {
@@ -1033,7 +1039,7 @@ export class BlackjackGame implements Game {
             return;
         }
 
-        if ( await this.allPlayersDone()) {
+        if (await this.allPlayersDone()) {
             await this.resolveGame();
         }
 
