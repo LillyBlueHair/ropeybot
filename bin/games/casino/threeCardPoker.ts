@@ -876,7 +876,10 @@ export class ThreeCardPokerGame implements Game {
             const kicker = Number(
                 Object.keys(counts).find((v) => counts[Number(v)] === 1),
             );
-            return { rank: HandRank.Pair, rankedCards:[pairValue, pairValue, kicker] };
+            return {
+                rank: HandRank.Pair,
+                rankedCards: [pairValue, pairValue, kicker],
+            };
         } else {
             return { rank: HandRank.HighCard, rankedCards };
         }

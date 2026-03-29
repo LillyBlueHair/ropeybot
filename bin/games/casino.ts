@@ -738,7 +738,10 @@ ${forfeitsString()}
         this.getSign().SetColor(colors);
     }
 
-    public async applyForfeit(bet: Bet, timeMultiplayer: number = 1): Promise<void> {
+    public async applyForfeit(
+        bet: Bet,
+        timeMultiplayer: number = 1,
+    ): Promise<void> {
         const char = this.conn.chatRoom.findMember(bet.memberNumber);
         const applyFn = FORFEITS[bet.stakeForfeit].applyItems;
         const items = FORFEITS[bet.stakeForfeit].items(char);

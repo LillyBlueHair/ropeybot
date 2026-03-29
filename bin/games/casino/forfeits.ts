@@ -279,7 +279,11 @@ export const SERVICES: Record<string, Service> = {
     },*/
 };
 
-function makeChaste(character: API_Character, lockMemberNumber: number, color: BCColor): void {
+function makeChaste(
+    character: API_Character,
+    lockMemberNumber: number,
+    color: BCColor,
+): void {
     if (character.Appearance.InventoryGet("Pussy").Name == "Penis") {
         const chastityCage = character.Appearance.AddItem(
             AssetGet("ItemVulva", "PlasticChastityCage2"),
@@ -290,13 +294,8 @@ function makeChaste(character: API_Character, lockMemberNumber: number, color: B
                 `After betting and losing at the Cotton Candy Casino, ${character} has lost the privilege to orgasm. ` +
                 `This chastity cage will ensure that the rule is followed.`,
         });
-        
-        chastityCage.SetColor([
-            "Default",
-            color + "",
-            color + "",
-            "FFBC00",
-        ]);
+
+        chastityCage.SetColor(["Default", color + "", color + "", "FFBC00"]);
         chastityCage.lock("TimerPasswordPadlock", lockMemberNumber, {
             Password: generatePassword(),
             Hint: "Better luck next time!",
@@ -315,9 +314,7 @@ function makeChaste(character: API_Character, lockMemberNumber: number, color: B
                 `After betting and losing at the Cotton Candy Casino, ${character} has lost her privileges to orgasm. ` +
                 `This chastity belt will ensure that she is kept chaste until her time is up.`,
         });
-        chastityBelt.SetColor(
-            color + "",
-        );
+        chastityBelt.SetColor(color + "");
         chastityBelt.setProperty("TypeRecord", {
             a: 1,
             c: 1,
@@ -342,7 +339,7 @@ function makePet(
     hours: number,
     character: API_Character,
     lockMemberNumber: number,
-    color: BCColor
+    color: BCColor,
 ): void {
     const petSuitItem = character.Appearance.AddItem(
         AssetGet("ItemArms", "ShinyPetSuit"),
@@ -368,18 +365,14 @@ function makePet(
     if (!character.Appearance.InventoryGet("HairAccessory2")) {
         const ears = character.Appearance.AddItem(PET_EARS);
         ears.SetDifficulty(20);
-        ears.SetColor(
-            color
-        );
+        ears.SetColor(color);
     }
 
     if (!character.Appearance.InventoryGet("TailStraps")) {
         const tail = character.Appearance.AddItem(
             AssetGet("TailStraps", "PuppyTailStrap"),
         );
-        tail.SetColor(
-            color,
-        );
+        tail.SetColor(color);
     }
 
     if (!character.Appearance.InventoryGet("ItemNeck")) {
