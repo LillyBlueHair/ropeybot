@@ -293,7 +293,7 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
         let hairColor =
             character.Appearance.InventoryGet("HairFront").GetColor();
         if (hairColor.length > 1) {
-            hairColor = hairColor[0];
+            hairColor = hairColor[0] as BCColor;
         }
         chastityCage.SetColor([
             "Default",

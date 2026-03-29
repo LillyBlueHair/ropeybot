@@ -734,7 +734,7 @@ ${forfeitsString()}
         } else {
             colors = [colors, "Default", "Default"];
         }
-        colors[colors.length - 1] = color;
+        colors[colors.length - 1] = color as BCColor;
         this.getSign().SetColor(colors);
     }
 
@@ -766,7 +766,7 @@ ${forfeitsString()}
                 char.Appearance.InventoryGet("HairFront").GetColor();
             const added = char.Appearance.AddItem(items[0]);
             try {
-                characterHairColor = characterHairColor[0];
+                characterHairColor = characterHairColor[0] as BCColor;
                 let colors: string[] = [];
                 if (colourLayers) {
                     for (let i = 0; i <= Math.max(...colourLayers); i++) {
