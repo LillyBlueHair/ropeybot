@@ -149,8 +149,8 @@ export class Casino {
         const player = await this.store.getPlayer(character.MemberNumber);
         player.name = character.toString();
 
-        const nextFreeCreditsAt = player.lastFreeCredits + 20 * 60 * 60 * 1000;
-        if (nextFreeCreditsAt < Date.now()) {
+        const nextFreeChipsAt = player.lastFreeCredits + 20 * 60 * 60 * 1000;
+        if (nextFreeChipsAt < Date.now()) {
             player.credits += FREE_CHIPS;
             player.lastFreeCredits = Date.now();
             await this.store.savePlayer(player);
@@ -161,7 +161,7 @@ export class Casino {
         } else {
             character.Tell(
                 "Whisper",
-                `Welcome back, ${character}. ${remainingTimeString(nextFreeCreditsAt)} until your next free chips. See my bio for how to play.`,
+                `Welcome back, ${character}. ${remainingTimeString(nextFreeChipsAt)} until your next free chips. See my bio for how to play.`,
             );
         }
     };

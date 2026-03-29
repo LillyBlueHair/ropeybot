@@ -352,7 +352,7 @@ export class ThreeCardPokerGame implements Game {
                 winnerMemberData.credits += winnings;
                 winnerMemberData.score += winnings;
                 await this.casino.store.savePlayer(winnerMemberData);
-                message += `${player.memberName} wins ${winnings} credits\n`;
+                message += `${player.memberName} wins ${winnings} chips\n`;
                 sendMessage = true;
             } else if (player.bet.stakeForfeit && winnings !== -100) {
                 this.casino.applyForfeit(
@@ -394,12 +394,12 @@ export class ThreeCardPokerGame implements Game {
         if (bet.stakeForfeit) {
             this.conn.SendMessage(
                 "Chat",
-                `${bet.memberName} bets ${FORFEITS[bet.stakeForfeit].name} for ${bet.stake} credits`,
+                `${bet.memberName} bets ${FORFEITS[bet.stakeForfeit].name} for ${bet.stake} chips`,
             );
         } else {
             this.conn.SendMessage(
                 "Chat",
-                `${bet.memberName} bets ${bet.stake} credits`,
+                `${bet.memberName} bets ${bet.stake} chips`,
             );
         }
     }
@@ -598,7 +598,7 @@ export class ThreeCardPokerGame implements Game {
             if (playerStore.credits < bet.stake) {
                 this.conn.SendMessage(
                     "Whisper",
-                    "You don't have enough credits.",
+                    "You don't have enough chips.",
                     sender.MemberNumber,
                 );
                 return;
