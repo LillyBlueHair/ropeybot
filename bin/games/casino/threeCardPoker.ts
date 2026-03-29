@@ -767,6 +767,8 @@ export class ThreeCardPokerGame implements Game {
         const { rank: playerRank, rankedCards: playerRankedCards } =
             this.evaluteHand(playerHand);
 
+        if (bet.status === "folded") return 0;
+
         if (!dealerQualfies) {
             if (bet.stakeForfeit) {
                 return Math.floor((bet.stake * 3) / 4);
