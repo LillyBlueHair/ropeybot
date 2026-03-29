@@ -12,13 +12,9 @@ import {
     AssetGet,
 } from "bc-bot";
 //TODOs:
-// + fix forfeit pushing
 // + reconsider payouts for forfeits half as much makes more sense
-// + (I'd recommend a /bot forfeits command or something to list that menu) + bot commands as help is too long
-// + Split hands...max once?
 // - insurance
 // - random bonus rounds
-// + multiple decks per shoe
 
 const BLACKJACKCOMMANDS = `Blackjack commands:
 /bot bet <amount> - Bet on the current hand. Odds: 1:1.
@@ -316,8 +312,7 @@ export class BlackjackGame implements Game {
                 sender.MemberNumber,
             );
             return;
-        }
-        if (bet.standing) {
+        } else if (bet.standing) {
             this.conn.SendMessage(
                 "Whisper",
                 "You can't hit, you're standing.",

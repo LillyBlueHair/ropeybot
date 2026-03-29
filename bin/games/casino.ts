@@ -738,7 +738,7 @@ ${forfeitsString()}
         this.getSign().SetColor(colors);
     }
 
-    public applyForfeit(bet: Bet): void {
+    public applyForfeit(bet: Bet, timeMultiplayer: number = 1): void {
         const char = this.conn.chatRoom.findMember(bet.memberNumber);
         const applyFn = FORFEITS[bet.stakeForfeit].applyItems;
         const items = FORFEITS[bet.stakeForfeit].items(char);

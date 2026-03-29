@@ -27,6 +27,21 @@ export function createDeck(): Card[] {
     return deck;
 }
 
+export function getNumericCardValue(card: Card): number {
+    switch (card.value) {
+        case "J":
+            return 11;
+        case "Q":
+            return 12;
+        case "K":
+            return 13;
+        case "A":
+            return 14;
+        default:
+            return parseInt(card.value);
+    }
+}
+
 export function shuffleDeck(deck: Card[]): Card[] {
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
