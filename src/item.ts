@@ -111,7 +111,9 @@ export class API_AppearanceItem {
     }
 
     public SetColor(colors: string[] | string): void {
-        this.data.Color = Array.isArray(colors) ? colors as BCColor[] : [colors] as BCColor[];
+        this.data.Color = Array.isArray(colors)
+            ? (colors as BCColor[])
+            : ([colors] as BCColor[]);
         this.queueUpdate();
     }
 
