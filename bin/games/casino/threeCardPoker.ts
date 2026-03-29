@@ -41,6 +41,8 @@ You can then choose to "play" (continue by matching your Ante) or "fold" (give u
 The dealer also receives three cards, but only qualifies with a Queen high or better.
 If the dealer does not qualify, your Ante is paid 1:1 and your Play bet is returned.
 
+The forfeit time is halfed if you fold your bet.
+
 If the dealer qualifies:
 - If your hand is better, both Ante and Play pay 1:1.
 - If the dealer's hand is better, both bets lose.
@@ -308,9 +310,8 @@ export class ThreeCardPokerGame implements Game {
         this.autoFoldTimeout = undefined;
         await this.showHands(false);
 
-        const { rank: dealerRank, rankedCards: dealerRankedCards } = this.evaluteHand(
-            this.dealerHand,
-        );
+        const { rank: dealerRank, rankedCards: dealerRankedCards } =
+            this.evaluteHand(this.dealerHand);
         const dealerQualfies =
             dealerRank > HandRank.HighCard || dealerRankedCards[0] >= 12;
 
@@ -782,7 +783,7 @@ export class ThreeCardPokerGame implements Game {
             } else if (playerRank < dealerRank) {
                 return 0;
             } else {
-                for( let i = 0; i < playerRankedCards.length; i++) {
+                for (let i = 0; i < playerRankedCards.length; i++) {
                     if (playerRankedCards[i] > dealerRankedCards[i]) {
                         return bet.stake;
                     } else if (playerRankedCards[i] < dealerRankedCards[i]) {
@@ -797,7 +798,7 @@ export class ThreeCardPokerGame implements Game {
             } else if (playerRank < dealerRank) {
                 return 0;
             } else {
-                for( let i = 0; i < playerRankedCards.length; i++) {
+                for (let i = 0; i < playerRankedCards.length; i++) {
                     if (playerRankedCards[i] > dealerRankedCards[i]) {
                         return bet.stake * 2;
                     } else if (playerRankedCards[i] < dealerRankedCards[i]) {

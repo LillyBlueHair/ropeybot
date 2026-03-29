@@ -745,7 +745,8 @@ ${forfeitsString()}
         const colourLayers = FORFEITS[bet.stakeForfeit].colourLayers;
 
         if (items.length === 1) {
-            const lockTime = FORFEITS[bet.stakeForfeit].lockTimeMs * timeMultiplayer;
+            const lockTime =
+                FORFEITS[bet.stakeForfeit].lockTimeMs * timeMultiplayer;
             if (lockTime) {
                 this.lockedItems.set(
                     bet.memberNumber,
@@ -809,7 +810,9 @@ ${forfeitsString()}
                         Hint: "Better luck next time!",
                         RemoveItem: true,
                         RemoveTimer:
-                            Date.now() + FORFEITS[bet.stakeForfeit].lockTimeMs * timeMultiplayer,
+                            Date.now() +
+                            FORFEITS[bet.stakeForfeit].lockTimeMs *
+                                timeMultiplayer,
                         ShowTimer: true,
                         LockSet: true,
                     },
@@ -858,7 +861,10 @@ ${forfeitsString()}
             return;
         }
         if (args.length < 1) {
-            this.conn.reply(msg, "Usage: /bot game <game> -- available games: roulette, blackjack, threecardpoker");
+            this.conn.reply(
+                msg,
+                "Usage: /bot game <game> -- available games: roulette, blackjack, threecardpoker",
+            );
             return;
         }
         const game = args[0].toLowerCase();

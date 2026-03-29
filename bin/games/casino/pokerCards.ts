@@ -50,8 +50,10 @@ export function shuffleDeck(deck: Card[]): Card[] {
     return deck;
 }
 
-export function getCardString(card: Card, signFriendly: boolean = false): string {
-    
+export function getCardString(
+    card: Card,
+    signFriendly: boolean = false,
+): string {
     if (card.suit === "Spades") {
         return `${card.value}` + (signFriendly ? "s" : "♠");
     } else if (card.suit === "Hearts") {
