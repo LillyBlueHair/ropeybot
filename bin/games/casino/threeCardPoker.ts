@@ -17,10 +17,11 @@ import {
     API_AppearanceItem,
     AssetGet,
 } from "bc-bot";
-import { sign } from "crypto";
 
-const ThreeCardPokerCOMMANDS = `ThreeCardPoker commands:
+const THREECARDPOKERCOMMANDS = `ThreeCardPoker commands:
 /bot bet <amount> - Bet on the current hand. Odds: 1:1.
+/bot play - Play the current hand.
+/bot fold - Fold the current hand.
 /bot cancel - Cancel your bet. Only available before any cards are dealt.
 /bot chips - Show your current chip balance.
 /bot give <name or member number> <amount> - Give chips to another player.
@@ -31,32 +32,52 @@ const ThreeCardPokerCOMMANDS = `ThreeCardPoker commands:
 /bot score - Show your current score.
 `;
 
-const ThreeCardPokerHELP = ``;
+const THREECARDPOKERHELP = `Three Card Poker is a card game where you play against the dealer using a 3-card hand.
+The goal is to have a better hand than the dealer, or win when the dealer does not qualify.
 
-const ThreeCardPokerHELPCOMMAND = `
-${ThreeCardPokerHELP}
+Each player places an Ante bet and is dealt three cards face up.
+You can then choose to "play" (continue by matching your Ante) or "fold" (give up your Ante).
+
+The dealer also receives three cards, but only qualifies with a Queen high or better.
+If the dealer does not qualify, your Ante is paid 1:1 and your Play bet is returned.
+
+If the dealer qualifies:
+- If your hand is better, both Ante and Play pay 1:1.
+- If the dealer's hand is better, both bets lose.
+- If tied, both bets are returned.
+
+Hand rankings from highest to lowest:
+- Straight Flush (three cards in sequence of the same suit)
+- Three of a Kind
+- Straight (three cards in sequence)
+- Flush (three cards of the same suit)
+- Pair
+- High Card`;
+
+const THREECARDPOKERHELPCOMMAND = `
+${THREECARDPOKERHELP}
 
 For more information on commands or forfeits, use the following commands:
 /bot commands - Show all available commands.
 /bot forfeits - Show available forfeits.
 `;
 
-const ThreeCardPokerEXAMPLES = `
+const THREECARDPOKEREXAMPLES = `
 /bot bet 10
     bets 10 chips
 /bot bet leg binder
     bets the 'leg binder' forfeit (worth 7 chips)
 `;
-const FULLThreeCardPokerHELP = `${ThreeCardPokerHELP}
+const FULLTHREECARDPOKERHELP = `${THREECARDPOKERHELP}
 
-${ThreeCardPokerCOMMANDS}
+${THREECARDPOKERCOMMANDS}
 `;
 
-// const TIME_UNTIL_DEAL_MS = 35000;
-const TIME_UNTIL_DEAL_MS = 6000;
+const TIME_UNTIL_DEAL_MS = 35000;
+// const TIME_UNTIL_DEAL_MS = 6000;
 const BET_CANCEL_THRESHOLD_MS = 1000;
-// const AUTO_FOLD_TIMEOUT_MS = 45000;
-const AUTO_FOLD_TIMEOUT_MS = 10000;
+const AUTO_FOLD_TIMEOUT_MS = 45000;
+// const AUTO_FOLD_TIMEOUT_MS = 10000;
 const RESET_TIMEOUT_MS = 10000; // Time after a game ends before a new game can start
 
 const MAX_PLAYERS = 15; // Don't go over 16 or you don't have enough cards
@@ -96,10 +117,10 @@ export class ThreeCardPokerGame implements Game {
     private dealTimeout: NodeJS.Timeout | undefined; // after first bet until the deal
     private autoFoldTimeout: NodeJS.Timeout; // after the deal until all players stand
 
-    public HELPMESSAGE = FULLThreeCardPokerHELP;
-    public EXAMPLES = ThreeCardPokerEXAMPLES;
-    public HELPCOMMANDMESSAGE = ThreeCardPokerHELPCOMMAND;
-    public COMMANDSMESSAGE = ThreeCardPokerCOMMANDS;
+    public HELPMESSAGE = FULLTHREECARDPOKERHELP;
+    public EXAMPLES = THREECARDPOKEREXAMPLES;
+    public HELPCOMMANDMESSAGE = THREECARDPOKERHELPCOMMAND;
+    public COMMANDSMESSAGE = THREECARDPOKERCOMMANDS;
 
     constructor(
         private conn: API_Connector,
@@ -287,12 +308,15 @@ export class ThreeCardPokerGame implements Game {
         this.autoFoldTimeout = undefined;
         await this.showHands(false);
 
+        const { rank: dealerRank, highCard: dealerHighCard } = this.evaluteHand(this.dealerHand);
+        const dealerQualfies =  dealerRank > HandRank.HighCard || dealerHighCard >= 12;
+
         let message = `Dealer has a hand of ${this.handToString(this.dealerHand)}\n`;
+        if (!dealerQualfies) message += "Since the dealer doesn't qualify, they don't play the hand.\n";
 
         const sign = this.casino.getSign();
         sign.setProperty("Text", "Dealer has");
         sign.setProperty("Text2", `${this.handToString(this.dealerHand, false, true)}`);
-        console.log(this.handToString(this.dealerHand, false, true))
         this.casino.setTextColor("#ffffff");
 
         for (const player of this.players) {
@@ -303,7 +327,7 @@ export class ThreeCardPokerGame implements Game {
                 );
                 continue;
             }
-            const winnings = this.getWinnings(playerHand, player.bet);
+            const winnings = this.getWinnings(playerHand, player.bet, dealerRank, dealerHighCard, dealerQualfies);
 
             if (winnings > 0) {
                 const winnerMemberData = await this.casino.store.getPlayer(
@@ -565,6 +589,7 @@ export class ThreeCardPokerGame implements Game {
 
             playerStore.credits -= bet.stake;
             await this.casino.store.savePlayer(playerStore);
+            bet.stake *= 2;
         }
 
         bet.status = "playing";
@@ -715,13 +740,17 @@ export class ThreeCardPokerGame implements Game {
         this.conn.SendMessage("Whisper", "Bet cancelled.", sender.MemberNumber);
     };
 
-    getWinnings(playerHand: Hand, bet: ThreeCardPokerBet): number {
+    getWinnings(playerHand: Hand, bet: ThreeCardPokerBet, dealerRank: number, dealerHighCard: number, dealerQualfies: boolean): number {
         const { rank: playerRank, highCard: playerHighCard } =
             this.evaluteHand(playerHand);
-        const { rank: dealerRank, highCard: dealerHighCard } = this.evaluteHand(
-            this.dealerHand,
-        );
 
+        if (!dealerQualfies){
+            if (bet.stakeForfeit) {
+                return Math.floor(bet.stake * 3 / 4);
+            }else{
+                return Math.floor(bet.stake * 3 / 2);
+            }
+        }
         if (bet.stakeForfeit) {
             if (playerRank > dealerRank) {
                 return bet.stake;
@@ -742,7 +771,6 @@ export class ThreeCardPokerGame implements Game {
             } else if (playerRank < dealerRank) {
                 return 0;
             } else {
-                console.log(playerHighCard, dealerHighCard);
                 if (playerHighCard > dealerHighCard) {
                     return bet.stake * 2;
                 } else if (playerHighCard < dealerHighCard) {
@@ -801,7 +829,6 @@ export class ThreeCardPokerGame implements Game {
                 ? 3
                 : values[values.length - 1]; // On a wheel the high card is 3 since the Ace counts as 1
 
-        console.log(values, suits, uniqueValues, isStraight, isFlush, highCard);
         if (isStraight && isFlush) {
             return { rank: HandRank.StraightFlush, highCard };
         } else if (uniqueValues.size === 1) {
