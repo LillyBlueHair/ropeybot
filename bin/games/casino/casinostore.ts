@@ -22,6 +22,7 @@ export interface Player {
     score: number;
     lastFreeCredits: number;
     cheatStrikes: number;
+    color: string;
 }
 
 interface Outfit {
@@ -74,6 +75,7 @@ export class CasinoStore {
             lastFreeCredits: 0,
             name: "",
             cheatStrikes: 0,
+            color: "Default",
         };
     }
 

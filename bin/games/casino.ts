@@ -738,11 +738,16 @@ ${forfeitsString()}
         this.getSign().SetColor(colors);
     }
 
-    public applyForfeit(bet: Bet, timeMultiplayer: number = 1): void {
+    public async applyForfeit(bet: Bet, timeMultiplayer: number = 1): Promise<void> {
         const char = this.conn.chatRoom.findMember(bet.memberNumber);
         const applyFn = FORFEITS[bet.stakeForfeit].applyItems;
         const items = FORFEITS[bet.stakeForfeit].items(char);
         const colourLayers = FORFEITS[bet.stakeForfeit].colourLayers;
+        let color = char.Appearance.InventoryGet("HairFront").GetColor();
+        color = color[0] as BCColor;
+
+        let storeColor = await this.store.getPlayer(bet.memberNumber);
+        if (storeColor.color !== "Default") color = storeColor.color as BCColor;
 
         if (items.length === 1) {
             const lockTime =
@@ -763,23 +768,20 @@ ${forfeitsString()}
         if (applyFn) {
             applyFn(char, this.conn.Player.MemberNumber);
         } else if (items.length === 1) {
-            let characterHairColor =
-                char.Appearance.InventoryGet("HairFront").GetColor();
             const added = char.Appearance.AddItem(items[0]);
             try {
-                characterHairColor = characterHairColor[0] as BCColor;
                 let colors: string[] = [];
                 if (colourLayers) {
                     for (let i = 0; i <= Math.max(...colourLayers); i++) {
                         if (colourLayers.includes(i)) {
-                            colors.push(characterHairColor);
+                            colors.push(color);
                         } else {
                             colors.push("Default");
                         }
                     }
                     added.SetColor(colors);
                 } else {
-                    added.SetColor(characterHairColor);
+                    added.SetColor(color);
                 }
             } catch (e) {
                 console.error(
@@ -787,7 +789,7 @@ ${forfeitsString()}
                     e,
                 );
                 // Fallback to default color if setting color fails
-                added.SetColor(characterHairColor);
+                added.SetColor(color);
             }
 
             added.SetDifficulty(20);

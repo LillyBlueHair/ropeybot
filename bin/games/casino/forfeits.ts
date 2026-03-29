@@ -279,7 +279,7 @@ export const SERVICES: Record<string, Service> = {
     },*/
 };
 
-function makeChaste(character: API_Character, lockMemberNumber: number): void {
+function makeChaste(character: API_Character, lockMemberNumber: number, color: BCColor): void {
     if (character.Appearance.InventoryGet("Pussy").Name == "Penis") {
         const chastityCage = character.Appearance.AddItem(
             AssetGet("ItemVulva", "PlasticChastityCage2"),
@@ -290,15 +290,11 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
                 `After betting and losing at the Cotton Candy Casino, ${character} has lost the privilege to orgasm. ` +
                 `This chastity cage will ensure that the rule is followed.`,
         });
-        let hairColor =
-            character.Appearance.InventoryGet("HairFront").GetColor();
-        if (hairColor.length > 1) {
-            hairColor = hairColor[0] as BCColor;
-        }
+        
         chastityCage.SetColor([
             "Default",
-            hairColor + "",
-            hairColor + "",
+            color + "",
+            color + "",
             "FFBC00",
         ]);
         chastityCage.lock("TimerPasswordPadlock", lockMemberNumber, {
@@ -320,7 +316,7 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
                 `This chastity belt will ensure that she is kept chaste until her time is up.`,
         });
         chastityBelt.SetColor(
-            character.Appearance.InventoryGet("HairFront").GetColor(),
+            color + "",
         );
         chastityBelt.setProperty("TypeRecord", {
             a: 1,
@@ -346,10 +342,8 @@ function makePet(
     hours: number,
     character: API_Character,
     lockMemberNumber: number,
+    color: BCColor
 ): void {
-    const characterHairColor =
-        character.Appearance.InventoryGet("HairFront").GetColor();
-
     const petSuitItem = character.Appearance.AddItem(
         AssetGet("ItemArms", "ShinyPetSuit"),
     );
@@ -359,7 +353,7 @@ function makePet(
             `A bold but unfortunate bet from ${character} means that they are now an official Cotton Candy Casino Pet, ` +
             `here to be adorable for all our patrons. Please enjoy their helplessness!`,
     });
-    petSuitItem.SetColor(characterHairColor);
+    petSuitItem.SetColor(color);
     petSuitItem.Extended.SetType("Classic");
     petSuitItem.lock("TimerPasswordPadlock", lockMemberNumber, {
         Password: generatePassword(),
@@ -375,7 +369,7 @@ function makePet(
         const ears = character.Appearance.AddItem(PET_EARS);
         ears.SetDifficulty(20);
         ears.SetColor(
-            character.Appearance.InventoryGet("HairFront").GetColor(),
+            color
         );
     }
 
@@ -384,7 +378,7 @@ function makePet(
             AssetGet("TailStraps", "PuppyTailStrap"),
         );
         tail.SetColor(
-            character.Appearance.InventoryGet("HairFront").GetColor(),
+            color,
         );
     }
 

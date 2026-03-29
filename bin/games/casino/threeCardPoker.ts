@@ -866,7 +866,17 @@ export class ThreeCardPokerGame implements Game {
         } else if (isFlush) {
             return { rank: HandRank.Flush, rankedCards };
         } else if (uniqueValues.size === 2) {
-            return { rank: HandRank.Pair, rankedCards };
+            const counts: Record<number, number> = {};
+            values.forEach((v) => {
+                counts[v] = (counts[v] || 0) + 1;
+            });
+            const pairValue = Number(
+                Object.keys(counts).find((v) => counts[Number(v)] === 2),
+            );
+            const kicker = Number(
+                Object.keys(counts).find((v) => counts[Number(v)] === 1),
+            );
+            return { rank: HandRank.Pair, rankedCards:[pairValue, pairValue, kicker] };
         } else {
             return { rank: HandRank.HighCard, rankedCards };
         }
