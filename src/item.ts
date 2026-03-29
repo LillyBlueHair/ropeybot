@@ -111,7 +111,7 @@ export class API_AppearanceItem {
     }
 
     public SetColor(colors: string[] | string): void {
-        this.data.Color = colors;
+        this.data.Color = Array.isArray(colors) ? colors as BCColor[] : [colors] as BCColor[];
         this.queueUpdate();
     }
 
@@ -128,6 +128,7 @@ export class API_AppearanceItem {
                 Lock: "" as "",
                 Private: true,
                 ItemProperty: {} as ItemProperties,
+                Effects: {},
             },
             craft,
         );
