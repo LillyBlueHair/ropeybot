@@ -308,15 +308,23 @@ export class ThreeCardPokerGame implements Game {
         this.autoFoldTimeout = undefined;
         await this.showHands(false);
 
-        const { rank: dealerRank, highCard: dealerHighCard } = this.evaluteHand(this.dealerHand);
-        const dealerQualfies =  dealerRank > HandRank.HighCard || dealerHighCard >= 12;
+        const { rank: dealerRank, rankedCards: dealerRankedCards } = this.evaluteHand(
+            this.dealerHand,
+        );
+        const dealerQualfies =
+            dealerRank > HandRank.HighCard || dealerRankedCards[0] >= 12;
 
         let message = `Dealer has a hand of ${this.handToString(this.dealerHand)}\n`;
-        if (!dealerQualfies) message += "Since the dealer doesn't qualify, they don't play the hand.\n";
+        if (!dealerQualfies)
+            message +=
+                "Since the dealer doesn't qualify, they don't play the hand.\n";
 
         const sign = this.casino.getSign();
         sign.setProperty("Text", "Dealer has");
-        sign.setProperty("Text2", `${this.handToString(this.dealerHand, false, true)}`);
+        sign.setProperty(
+            "Text2",
+            `${this.handToString(this.dealerHand, false, true)}`,
+        );
         this.casino.setTextColor("#ffffff");
 
         for (const player of this.players) {
@@ -327,7 +335,13 @@ export class ThreeCardPokerGame implements Game {
                 );
                 continue;
             }
-            const winnings = this.getWinnings(playerHand, player.bet, dealerRank, dealerHighCard, dealerQualfies);
+            const winnings = this.getWinnings(
+                playerHand,
+                player.bet,
+                dealerRank,
+                dealerRankedCards,
+                dealerQualfies,
+            );
 
             if (winnings > 0) {
                 const winnerMemberData = await this.casino.store.getPlayer(
@@ -439,7 +453,6 @@ export class ThreeCardPokerGame implements Game {
             );
             return;
         }
-        
 
         const player = await this.casino.store.getPlayer(sender.MemberNumber);
         if (bet.stakeForfeit === undefined) {
@@ -740,15 +753,21 @@ export class ThreeCardPokerGame implements Game {
         this.conn.SendMessage("Whisper", "Bet cancelled.", sender.MemberNumber);
     };
 
-    getWinnings(playerHand: Hand, bet: ThreeCardPokerBet, dealerRank: number, dealerHighCard: number, dealerQualfies: boolean): number {
-        const { rank: playerRank, highCard: playerHighCard } =
+    getWinnings(
+        playerHand: Hand,
+        bet: ThreeCardPokerBet,
+        dealerRank: number,
+        dealerRankedCards: number[],
+        dealerQualfies: boolean,
+    ): number {
+        const { rank: playerRank, rankedCards: playerRankedCards } =
             this.evaluteHand(playerHand);
 
-        if (!dealerQualfies){
+        if (!dealerQualfies) {
             if (bet.stakeForfeit) {
-                return Math.floor(bet.stake * 3 / 4);
-            }else{
-                return Math.floor(bet.stake * 3 / 2);
+                return Math.floor((bet.stake * 3) / 4);
+            } else {
+                return Math.floor((bet.stake * 3) / 2);
             }
         }
         if (bet.stakeForfeit) {
@@ -757,13 +776,14 @@ export class ThreeCardPokerGame implements Game {
             } else if (playerRank < dealerRank) {
                 return 0;
             } else {
-                if (playerHighCard > dealerHighCard) {
-                    return bet.stake;
-                } else if (playerHighCard < dealerHighCard) {
-                    return 0;
-                } else {
-                    return -100; // push for forfeits
+                for( let i = 0; i < playerRankedCards.length; i++) {
+                    if (playerRankedCards[i] > dealerRankedCards[i]) {
+                        return bet.stake;
+                    } else if (playerRankedCards[i] < dealerRankedCards[i]) {
+                        return 0;
+                    }
                 }
+                return -100;
             }
         } else {
             if (playerRank > dealerRank) {
@@ -771,13 +791,14 @@ export class ThreeCardPokerGame implements Game {
             } else if (playerRank < dealerRank) {
                 return 0;
             } else {
-                if (playerHighCard > dealerHighCard) {
-                    return bet.stake * 2;
-                } else if (playerHighCard < dealerHighCard) {
-                    return 0;
-                } else {
-                    return bet.stake;
+                for( let i = 0; i < playerRankedCards.length; i++) {
+                    if (playerRankedCards[i] > dealerRankedCards[i]) {
+                        return bet.stake * 2;
+                    } else if (playerRankedCards[i] < dealerRankedCards[i]) {
+                        return 0;
+                    }
                 }
+                return bet.stake;
             }
         }
     }
@@ -813,7 +834,7 @@ export class ThreeCardPokerGame implements Game {
         }, 1000);
     }
 
-    private evaluteHand(hand: Hand): { rank: HandRank; highCard: number } {
+    private evaluteHand(hand: Hand): { rank: HandRank; rankedCards: number[] } {
         const values = hand
             .map((card) => getNumericCardValue(card))
             .sort((a, b) => a - b);
@@ -824,23 +845,23 @@ export class ThreeCardPokerGame implements Game {
             (values[1] == values[0] + 1 && values[2] == values[1] + 1) ||
             (values.includes(14) && values.includes(2) && values.includes(3));
         const isFlush = suits.every((suit) => suit === suits[0]);
-        const highCard =
+        const rankedCards =
             isStraight && values.includes(14) && values.includes(2)
-                ? 3
-                : values[values.length - 1]; // On a wheel the high card is 3 since the Ace counts as 1
+                ? [3, 2, 1]
+                : values; // On a wheel the high card is 3 since the Ace counts as 1
 
         if (isStraight && isFlush) {
-            return { rank: HandRank.StraightFlush, highCard };
+            return { rank: HandRank.StraightFlush, rankedCards };
         } else if (uniqueValues.size === 1) {
-            return { rank: HandRank.ThreeOfAKind, highCard };
+            return { rank: HandRank.ThreeOfAKind, rankedCards };
         } else if (isStraight) {
-            return { rank: HandRank.Straight, highCard };
+            return { rank: HandRank.Straight, rankedCards };
         } else if (isFlush) {
-            return { rank: HandRank.Flush, highCard };
+            return { rank: HandRank.Flush, rankedCards };
         } else if (uniqueValues.size === 2) {
-            return { rank: HandRank.Pair, highCard };
+            return { rank: HandRank.Pair, rankedCards };
         } else {
-            return { rank: HandRank.HighCard, highCard };
+            return { rank: HandRank.HighCard, rankedCards };
         }
     }
 
@@ -872,7 +893,11 @@ export class ThreeCardPokerGame implements Game {
         return outString;
     }
 
-    private handToString(hand: Hand, calculated: boolean = false, signFriendly: boolean = false): string {
+    private handToString(
+        hand: Hand,
+        calculated: boolean = false,
+        signFriendly: boolean = false,
+    ): string {
         if (!hand || hand.length === 0) {
             return "";
         }
