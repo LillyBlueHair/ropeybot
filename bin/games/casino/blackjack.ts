@@ -658,10 +658,14 @@ export class BlackjackGame implements Game {
         bet.standing = true;
         if (player.bets.length > player.playingHand + 1) {
             player.playingHand++;
+            const originalHand = player.playingHand;
+            while (player.bets[player.playingHand].standing) {
+                player.playingHand++;
+            }
             const handString = await this.buildHandString(true, player);
             this.conn.SendMessage(
                 "Whisper",
-                `You are standing on hand ${player.playingHand} and are now playing hand ${player.playingHand + 1}. \n${handString}`,
+                `You are standing on hand ${originalHand} and are now playing hand ${player.playingHand + 1}. \n${handString}`,
                 sender.MemberNumber,
             );
         } else {
@@ -933,6 +937,12 @@ export class BlackjackGame implements Game {
         }
         if (bet.stakeForfeit) {
             if (playerHandValue === dealerHandValue) {
+                if (playerHand.length === 2) {
+                    if (this.dealerHand.length === 2) {
+                        return -100;
+                    }
+                    return Math.floor(bet.stake * 1.5);
+                }
                 return -100; // push for forfeits
             }
             if (
@@ -952,9 +962,26 @@ export class BlackjackGame implements Game {
             }
         } else {
             if (playerHandValue === dealerHandValue) {
+                if (
+                    playerHand.length === 2 &&
+                    this.players.find(
+                        (p) => p.memberNumber === bet.memberNumber,
+                    ).bets.length === 1
+                ) {
+                    if (this.dealerHand.length === 2) {
+                        return bet.stake;
+                    }
+                    return Math.floor(bet.stake * 2.5);
+                }
                 return bet.stake;
             }
-            if (playerHandValue === 21 && playerHand.length === 2) {
+            if (
+                playerHandValue === 21 &&
+                playerHand.length === 2 &&
+                this.players.find((p) => p.memberNumber === bet.memberNumber)
+                    .bets.length === 1
+                // only when not split
+            ) {
                 return Math.floor(bet.stake * 2.5);
             }
             if (dealerHandValue > 21) {
