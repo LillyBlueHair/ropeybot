@@ -327,6 +327,8 @@ export class ThreeCardPokerGame implements Game {
         );
         this.casino.setTextColor("#ffffff");
 
+        let sendMessage = false;
+
         for (const player of this.players) {
             const playerHand = this.playerHands.get(player.bet);
             if (!playerHand) {
@@ -351,6 +353,7 @@ export class ThreeCardPokerGame implements Game {
                 winnerMemberData.score += winnings;
                 await this.casino.store.savePlayer(winnerMemberData);
                 message += `${player.memberName} wins ${winnings} credits\n`;
+                sendMessage = true;
             } else if (player.bet.stakeForfeit && winnings !== -100) {
                 this.casino.applyForfeit(
                     player.bet,
@@ -360,6 +363,7 @@ export class ThreeCardPokerGame implements Game {
                     FORFEITS[player.bet.stakeForfeit].lockTimeMs / 1000 / 60;
                 time = player.bet.status === "playing" ? time : time / 2;
                 message += `${player.memberName} lost and gets ${FORFEITS[player.bet.stakeForfeit].name} for ${time} Minutes!\n`;
+                sendMessage = true;
             }
         }
         this.clear();
@@ -378,7 +382,7 @@ export class ThreeCardPokerGame implements Game {
             this.casino.setTextColor("#ffffff");
         }, RESET_TIMEOUT_MS);
 
-        this.conn.SendMessage("Chat", message);
+        if (sendMessage) this.conn.SendMessage("Chat", message);
     }
 
     placeBet(bet: ThreeCardPokerBet): void {

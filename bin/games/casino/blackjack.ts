@@ -573,6 +573,7 @@ export class BlackjackGame implements Game {
         );
         this.casino.setTextColor("#ffffff");
 
+        let sendMessage = false;
         for (const player of this.players) {
             let totalWinnings = 0;
             for (const bet of player.bets) {
@@ -594,9 +595,11 @@ export class BlackjackGame implements Game {
                 winnerMemberData.score += totalWinnings;
                 await this.casino.store.savePlayer(winnerMemberData);
                 message += `${player.memberName} wins ${totalWinnings} chips! \n`;
+                sendMessage = true;
             } else if (player.bets[0].stakeForfeit && totalWinnings !== -100) {
                 this.casino.applyForfeit(player.bets[0]);
                 message += `${player.memberName} lost and gets ${FORFEITS[player.bets[0].stakeForfeit].name}! \n`;
+                sendMessage = true;
             }
         }
         this.clear();
@@ -615,7 +618,7 @@ export class BlackjackGame implements Game {
             this.casino.setTextColor("#ffffff");
         }, RESET_TIMEOUT_MS);
 
-        this.conn.SendMessage("Chat", message);
+        if (sendMessage) this.conn.SendMessage("Chat", message);
     }
 
     private onCommandStand = async (
