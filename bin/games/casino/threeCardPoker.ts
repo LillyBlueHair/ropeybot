@@ -73,11 +73,11 @@ const FULLTHREECARDPOKERHELP = `${THREECARDPOKERHELP}
 ${THREECARDPOKERCOMMANDS}
 `;
 
-const TIME_UNTIL_DEAL_MS = 35000;
-// const TIME_UNTIL_DEAL_MS = 6000;
+// const TIME_UNTIL_DEAL_MS = 35000;
+const TIME_UNTIL_DEAL_MS = 6000;
 const BET_CANCEL_THRESHOLD_MS = 1000;
-const AUTO_FOLD_TIMEOUT_MS = 45000;
-// const AUTO_FOLD_TIMEOUT_MS = 10000;
+// const AUTO_FOLD_TIMEOUT_MS = 45000;
+const AUTO_FOLD_TIMEOUT_MS = 10000;
 const RESET_TIMEOUT_MS = 10000; // Time after a game ends before a new game can start
 
 const MAX_PLAYERS = 15; // Don't go over 16 or you don't have enough cards
@@ -852,7 +852,7 @@ export class ThreeCardPokerGame implements Game {
         const rankedCards =
             isStraight && values.includes(14) && values.includes(2)
                 ? [3, 2, 1]
-                : values; // On a wheel the high card is 3 since the Ace counts as 1
+                : values.sort((a, b) => b - a); // On a wheel the high card is 3 since the Ace counts as 1
 
         if (isStraight && isFlush) {
             return { rank: HandRank.StraightFlush, rankedCards };
