@@ -37,6 +37,7 @@ import {
 import { Cocktail, COCKTAILS } from "./casino/cocktails";
 import { Bet, Game } from "./casino/game";
 import { BlackjackGame } from "./casino/blackjack";
+import { ThreeCardPokerGame } from "./casino/threeCardPoker";
 
 const FREE_CHIPS = 20;
 
@@ -109,7 +110,6 @@ export class Casino {
         db: Db,
         config?: CasinoConfig,
     ) {
-        // The default game is roulette
         this.store = new CasinoStore(db);
         this.commandParser = new CommandParser(conn);
         this.game = new BlackjackGame(conn, this);
@@ -745,7 +745,7 @@ ${forfeitsString()}
         const colourLayers = FORFEITS[bet.stakeForfeit].colourLayers;
 
         if (items.length === 1) {
-            const lockTime = FORFEITS[bet.stakeForfeit].lockTimeMs;
+            const lockTime = FORFEITS[bet.stakeForfeit].lockTimeMs * timeMultiplayer;
             if (lockTime) {
                 this.lockedItems.set(
                     bet.memberNumber,
@@ -799,7 +799,7 @@ ${forfeitsString()}
             });
             if (FORFEITS[bet.stakeForfeit].lockTimeMs) {
                 console.log(
-                    `Locking item ${added.Name} for ${FORFEITS[bet.stakeForfeit].lockTimeMs}ms`,
+                    `Locking item ${added.Name} for ${FORFEITS[bet.stakeForfeit].lockTimeMs * timeMultiplayer}ms`,
                 );
                 added.lock(
                     "TimerPasswordPadlock",
@@ -809,7 +809,7 @@ ${forfeitsString()}
                         Hint: "Better luck next time!",
                         RemoveItem: true,
                         RemoveTimer:
-                            Date.now() + FORFEITS[bet.stakeForfeit].lockTimeMs,
+                            Date.now() + FORFEITS[bet.stakeForfeit].lockTimeMs * timeMultiplayer,
                         ShowTimer: true,
                         LockSet: true,
                     },
@@ -858,7 +858,7 @@ ${forfeitsString()}
             return;
         }
         if (args.length < 1) {
-            this.conn.reply(msg, "Usage: /bot game <game>");
+            this.conn.reply(msg, "Usage: /bot game <game> -- available games: roulette, blackjack, threecardpoker");
             return;
         }
         const game = args[0].toLowerCase();
@@ -888,6 +888,21 @@ ${forfeitsString()}
             this.conn.SendMessage(
                 "Chat",
                 `The game has switched to blackjack, please place your bets!`,
+            );
+        } else if (
+            game === "threecardpoker" &&
+            !(this.game instanceof ThreeCardPokerGame)
+        ) {
+            this.conn.SendMessage(
+                "Chat",
+                "After this round the game will switch to three card poker.",
+            );
+            await this.game.endGame();
+            this.game = new ThreeCardPokerGame(this.conn, this);
+            this.conn.reply(msg, "Switched to three card poker.");
+            this.conn.SendMessage(
+                "Chat",
+                `The game has switched to three card poker, please place your bets!`,
             );
         } else {
             this.conn.reply(msg, `Unknown game: ${game}`);

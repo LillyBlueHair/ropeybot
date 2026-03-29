@@ -17,7 +17,7 @@ import {
     API_AppearanceItem,
     AssetGet,
 } from "bc-bot";
-import { set } from "lodash";
+import { sign } from "crypto";
 
 const ThreeCardPokerCOMMANDS = `ThreeCardPoker commands:
 /bot bet <amount> - Bet on the current hand. Odds: 1:1.
@@ -52,12 +52,14 @@ const FULLThreeCardPokerHELP = `${ThreeCardPokerHELP}
 ${ThreeCardPokerCOMMANDS}
 `;
 
-const TIME_UNTIL_DEAL_MS = 35000;
-// const TIME_UNTIL_DEAL_MS = 6000;
+// const TIME_UNTIL_DEAL_MS = 35000;
+const TIME_UNTIL_DEAL_MS = 6000;
 const BET_CANCEL_THRESHOLD_MS = 1000;
-const AUTO_FOLD_TIMEOUT_MS = 45000;
-// const AUTO_FOLD_TIMEOUT_MS = 10000;
+// const AUTO_FOLD_TIMEOUT_MS = 45000;
+const AUTO_FOLD_TIMEOUT_MS = 10000;
 const RESET_TIMEOUT_MS = 10000; // Time after a game ends before a new game can start
+
+const MAX_PLAYERS = 15; // Don't go over 16 or you don't have enough cards
 
 export interface ThreeCardPokerPlayer {
     memberNumber: number;
@@ -289,7 +291,8 @@ export class ThreeCardPokerGame implements Game {
 
         const sign = this.casino.getSign();
         sign.setProperty("Text", "Dealer has");
-        sign.setProperty("Text2", `${this.handToString(this.dealerHand)}`);
+        sign.setProperty("Text2", `${this.handToString(this.dealerHand, false, true)}`);
+        console.log(this.handToString(this.dealerHand, false, true))
         this.casino.setTextColor("#ffffff");
 
         for (const player of this.players) {
@@ -310,7 +313,7 @@ export class ThreeCardPokerGame implements Game {
                 winnerMemberData.score += winnings;
                 await this.casino.store.savePlayer(winnerMemberData);
                 message += `${player.memberName} wins ${winnings} credits\n`;
-            } else if (player.bet.stakeForfeit && winnings !== -1) {
+            } else if (player.bet.stakeForfeit && winnings !== -100) {
                 this.casino.applyForfeit(
                     player.bet,
                     player.bet.status === "playing" ? 1 : 0.5,
@@ -403,6 +406,16 @@ export class ThreeCardPokerGame implements Game {
         if (bet === undefined) {
             return;
         }
+
+        if (this.players.length >= MAX_PLAYERS) {
+            this.conn.SendMessage(
+                "Whisper",
+                "The maximum number of players has been reached, try again next round.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        
 
         const player = await this.casino.store.getPlayer(sender.MemberNumber);
         if (bet.stakeForfeit === undefined) {
@@ -503,7 +516,7 @@ export class ThreeCardPokerGame implements Game {
         if (this.autoFoldTimeout === undefined) {
             this.conn.SendMessage(
                 "Whisper",
-                "You can't hit right now.",
+                "You can't play right now.",
                 sender.MemberNumber,
             );
             return;
@@ -573,7 +586,7 @@ export class ThreeCardPokerGame implements Game {
         if (this.autoFoldTimeout === undefined) {
             this.conn.SendMessage(
                 "Whisper",
-                "You can't hit right now.",
+                "You can't fold right now.",
                 sender.MemberNumber,
             );
             return;
@@ -729,8 +742,9 @@ export class ThreeCardPokerGame implements Game {
             } else if (playerRank < dealerRank) {
                 return 0;
             } else {
+                console.log(playerHighCard, dealerHighCard);
                 if (playerHighCard > dealerHighCard) {
-                    return bet.stake;
+                    return bet.stake * 2;
                 } else if (playerHighCard < dealerHighCard) {
                     return 0;
                 } else {
@@ -763,13 +777,18 @@ export class ThreeCardPokerGame implements Game {
             ]);
         }
 
+        this.willFoldAt = Date.now() + AUTO_FOLD_TIMEOUT_MS;
+        this.showHands(true);
+
         this.autoFoldTimeout = setInterval(() => {
             this.onFoldTimeout();
-        }, AUTO_FOLD_TIMEOUT_MS);
+        }, 1000);
     }
 
     private evaluteHand(hand: Hand): { rank: HandRank; highCard: number } {
-        const values = hand.map((card) => getNumericCardValue(card)).sort();
+        const values = hand
+            .map((card) => getNumericCardValue(card))
+            .sort((a, b) => a - b);
         const suits = hand.map((card) => card.suit).sort();
 
         const uniqueValues = new Set(values);
@@ -782,14 +801,15 @@ export class ThreeCardPokerGame implements Game {
                 ? 3
                 : values[values.length - 1]; // On a wheel the high card is 3 since the Ace counts as 1
 
+        console.log(values, suits, uniqueValues, isStraight, isFlush, highCard);
         if (isStraight && isFlush) {
             return { rank: HandRank.StraightFlush, highCard };
         } else if (uniqueValues.size === 1) {
             return { rank: HandRank.ThreeOfAKind, highCard };
-        } else if (isFlush) {
-            return { rank: HandRank.Flush, highCard };
         } else if (isStraight) {
             return { rank: HandRank.Straight, highCard };
+        } else if (isFlush) {
+            return { rank: HandRank.Flush, highCard };
         } else if (uniqueValues.size === 2) {
             return { rank: HandRank.Pair, highCard };
         } else {
@@ -807,12 +827,12 @@ export class ThreeCardPokerGame implements Game {
         requestingPlayer: ThreeCardPokerPlayer | undefined = undefined,
     ): Promise<string> {
         let outString = dealerHidden
-            ? ".\n"
-            : `Dealer's hand: ${this.handToString(this.dealerHand)}\n`;
+            ? "Dealer's hand: [???] [???] [???]\n"
+            : `Dealer's hand: ${this.handToString(this.dealerHand, true)}\n`;
         for (const player of this.players) {
             const bet = player.bet;
             const hand = this.playerHands.get(bet);
-            const handString = this.handToString(hand!);
+            const handString = this.handToString(hand!, true);
             if (
                 requestingPlayer &&
                 player.memberNumber === requestingPlayer.memberNumber
@@ -825,9 +845,43 @@ export class ThreeCardPokerGame implements Game {
         return outString;
     }
 
-    private handToString(hand: Hand): string {
+    private handToString(hand: Hand, calculated: boolean = false, signFriendly: boolean = false): string {
         if (!hand || hand.length === 0) {
             return "";
+        }
+        if (calculated) {
+            let rank = "";
+            switch (this.evaluteHand(hand).rank) {
+                case HandRank.StraightFlush:
+                    rank = "Straight Flush";
+                    break;
+                case HandRank.ThreeOfAKind:
+                    rank = "Three of a Kind";
+                    break;
+                case HandRank.Flush:
+                    rank = "Flush";
+                    break;
+                case HandRank.Straight:
+                    rank = "Straight";
+                    break;
+                case HandRank.Pair:
+                    rank = "Pair";
+                    break;
+                case HandRank.HighCard:
+                    rank = "High Card";
+                    break;
+                default:
+                    break;
+            }
+            return (
+                hand.map((card) => `[${getCardString(card)}]`).join(", ") +
+                ` (${rank})`
+            );
+        }
+        if (signFriendly) {
+            return hand
+                .map((card) => `${getCardString(card, signFriendly)}`)
+                .join(" ");
         }
         return hand.map((card) => `[${getCardString(card)}]`).join(", ");
     }
