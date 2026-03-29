@@ -245,6 +245,16 @@ export class API_Character {
         return this.chatRoom?.Admin.includes(this.MemberNumber) ?? false;
     }
 
+    public IsRoomWhitelist(): boolean {
+        return this.chatRoom?.Whitelist.includes(this.MemberNumber) ?? false;
+    }
+
+    public IsRoomWhitelistedOrAdmin(): boolean {
+        return this.chatRoom?.Whitelist.includes(this.MemberNumber)
+            ? true
+            : (this.chatRoom?.Admin.includes(this.MemberNumber) ?? false);
+    }
+
     public Tell(msgType: TellType, msg: string): void {
         console.log(`Tell (${msgType}) ${this}: ${msg}`);
         this.connection.SendMessage(msgType, msg, this.data.MemberNumber);
@@ -288,12 +298,13 @@ export class API_Character {
         return upperBody?.Name === "Penis" ? "male" : "female";
     }
 
-    public Kick(): void {
+    public Kick(): Promise<void> {
         this.connection.chatRoomAdmin({
             Action: "Kick",
             MemberNumber: this.MemberNumber,
             Publish: true,
         });
+        return Promise.resolve();
     }
 
     public Ban(): void {
@@ -346,8 +357,8 @@ export class API_Character {
         // See above
         return !Boolean(
             this.Appearance.InventoryGet("ItemMouth") ||
-                this.Appearance.InventoryGet("ItemMouth2") ||
-                this.Appearance.InventoryGet("ItemMouth3"),
+            this.Appearance.InventoryGet("ItemMouth2") ||
+            this.Appearance.InventoryGet("ItemMouth3"),
         );
     }
 

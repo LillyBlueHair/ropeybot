@@ -32,6 +32,8 @@ const BLACKJACKCOMMANDS = `Blackjack commands:
 /bot help - Show this help
 /bot commands - Show all available commands.
 /bot forfeits - Show available forfeits.
+/bot checkforfeits - Shows all forfeits currently applied to you.
+/bot score - Show your current score.
 `;
 
 const BLACKJACKHELP = `Blackjack is a card game where the goal is to get as close to 21 as possible without going over.
@@ -121,7 +123,7 @@ export class BlackjackGame implements Game {
             sign.setProperty("OverridePriority", { Text: 63 });
             sign.setProperty("Text", "Place bets!");
             sign.setProperty("Text2", " ");
-            this.casino.setTextColor("#ffffff");
+            this.casino.setSignColor(["#202020", "Default", "#ffffff"]);
         });
 
         setTimeout(() => {
@@ -131,7 +133,7 @@ export class BlackjackGame implements Game {
             sign.setProperty("OverridePriority", { Text: 63 });
             sign.setProperty("Text", "Place bets!");
             sign.setProperty("Text2", " ");
-            this.casino.setTextColor("#ffffff");
+            this.casino.setSignColor(["#202020", "Default", "#ffffff"]);
 
             this.casino.setBio().catch((e) => {
                 console.error("Failed to set bio.", e);
@@ -175,6 +177,10 @@ export class BlackjackGame implements Game {
                 "Panties",
                 "Suit",
                 "Gloves",
+                "Hat",
+                "HairAccessory1",
+                "HairAccessory2",
+                "HairAccessory3",
             ]);
         }, 500);
     }
@@ -931,7 +937,13 @@ export class BlackjackGame implements Game {
             if (playerHandValue === dealerHandValue) {
                 return -100; // push for forfeits
             }
-            if (playerHandValue === 21 && playerHand.length === 2) {
+            if (
+                playerHandValue === 21 &&
+                playerHand.length === 2 &&
+                this.players.find((p) => p.memberNumber === bet.memberNumber)
+                    .bets.length === 1
+            ) {
+                // only when not split
                 return Math.floor(bet.stake * 1.5);
             }
             if (dealerHandValue > 21) {
@@ -978,7 +990,7 @@ export class BlackjackGame implements Game {
         shuffleDeck(this.deck);
     }
 
-    private initialDeal(): void {
+    private async initialDeal(): Promise<void> {
         this.autoStandTimeout = setInterval(() => {
             this.onStandTimeout();
         }, 1000);
@@ -1013,7 +1025,6 @@ export class BlackjackGame implements Game {
                 );
             }
         }
-
         if (this.calculateHandValue(this.dealerHand) === 21) {
             this.conn.SendMessage(
                 "Chat",
@@ -1028,8 +1039,8 @@ export class BlackjackGame implements Game {
             return;
         }
 
-        if (this.allPlayersDone()) {
-            this.resolveGame();
+        if (await this.allPlayersDone()) {
+            await this.resolveGame();
         }
 
         this.willStandAt = Date.now() + AUTO_STAND_TIMEOUT_MS;

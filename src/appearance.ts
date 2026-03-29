@@ -165,7 +165,7 @@ export class AppearanceType {
         );
 
         removed.setRemoved();
-        removed.queueUpdate();
+        this.character.sendAppearanceUpdate();
     }
 
     public InventoryGet(

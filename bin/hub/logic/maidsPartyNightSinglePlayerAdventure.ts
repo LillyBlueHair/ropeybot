@@ -426,7 +426,7 @@ export class MaidsPartyNightSinglePlayerAdventure extends LoggingLogic {
         ) {
             await this.conn.ChatRoomUpdate({
                 Limit: 10,
-                Locked: true,
+                Access: ["Admin"],
             });
             await this.resetRoom(character);
             this.playerAppearanceStorage =
@@ -466,6 +466,14 @@ export class MaidsPartyNightSinglePlayerAdventure extends LoggingLogic {
                     "Also please tell us how you managed to enter, as it shouldn't have been possible!",
             );
         }
+    }
+    
+    async makeRoomSizeOneMoreThanAdminsPresentAndUnlockRoom() {
+		await this.conn.ChatRoomUpdate({
+			Admin: [this.conn.Player.MemberNumber, this.conn2.Player.MemberNumber, ...SUPERUSERS],
+			Limit: _.clamp(this.conn.chatRoom.characters.filter(c => c.IsRoomAdmin()).length + 1, 2, 10),
+			Access: ["All"]
+		});
     }
 
     /**
@@ -1815,22 +1823,11 @@ export class MaidsPartyNightSinglePlayerAdventure extends LoggingLogic {
      * @param character the current player
      * @param itemSlots an array of all item slots where the player should be freed
      */
-    freePlayerInItemSlots(character: API_Character, itemSlots: string[]) {
+    freePlayerInItemSlots(character: API_Character, itemSlots: AssetGroupName[]) {
         for (const i of itemSlots) {
             character.Appearance.RemoveItem(i);
         }
     }
-
-	/**
-	 * Frees the player from the slots given in the function
-	 * @param character the current player
-	 * @param itemSlots an array of all item slots where the player should be freed
-	 */
-	freePlayerInItemSlots(character: API_Character, itemSlots: AssetGroupName[]) {
-		for (const i of itemSlots) {
-			character.Appearance.RemoveItem(i);
-		}
-	}
 
     /**
      * The room will be cleaned up and reset since we no longer have an active player

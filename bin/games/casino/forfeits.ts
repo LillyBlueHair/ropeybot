@@ -190,7 +190,24 @@ export const FORFEITS: Record<string, Forfeit> = {
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         applyItems: makeChaste.bind(null),
-    } /*
+    },
+    upperpetsuit: {
+        name: "Upper Pet Suit",
+        colourLayers: [0],
+        value: 10,
+        items: () => [AssetGet("ItemArms", "PawPaddedPetsuitArms")],
+        lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
+        lockTimeMs: 20 * 60 * 1000,
+    },
+    lowerpetsuit: {
+        name: "Lower Pet Suit",
+        colourLayers: [0],
+        value: 8,
+        items: () => [AssetGet("ItemLegs", "PawPaddedPetsuitLegs")],
+        lock: AssetGet("ItemLegs", "TimerPasswordPadlock"),
+        lockTimeMs: 20 * 60 * 1000,
+    },
+    /*
     hypnovisor: {
         name: "Hypnotic Visor",
         colourLayers: [2],
@@ -198,7 +215,7 @@ export const FORFEITS: Record<string, Forfeit> = {
         items: () => [AssetGet("ItemHead", "HypnoticVisor")],
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
-    }*/,
+    }*/
 };
 
 interface Service {
@@ -223,6 +240,17 @@ export const SERVICES: Record<string, Service> = {
         name: "Sit in Lilly's lap",
         description: "Enjoy sitting in Lilly's lap for an hour.",
         value: 20000,
+    },
+    sessionlilly: {
+        name: "Session with Lilly",
+        description:
+            "Some time with Lilly in private. Wanna be a cute little pet? Or perhaps an owner for once?~",
+        value: 696900000000,
+    },
+    outfitlilly: {
+        name: "Outfit from Lilly",
+        description: "Let Lilly make an outfit just for you~",
+        value: 69000000,
     },
     /*"massage": {
         name: "Pixie Massage",
@@ -257,15 +285,15 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
             AssetGet("ItemVulva", "PlasticChastityCage2"),
         );
         chastityCage.SetCraft({
-            Name: `Pixie Casino Chastity Cage`,
+            Name: `CC Casino Chastity Cage`,
             Description:
-                `After betting and losing at the Pixie Casino, ${character} has lost the privilege to orgasm. ` +
+                `After betting and losing at the Cotton Candy Casino, ${character} has lost the privilege to orgasm. ` +
                 `This chastity cage will ensure that the rule is followed.`,
         });
         let hairColor =
             character.Appearance.InventoryGet("HairFront").GetColor();
         if (hairColor.length > 1) {
-            hairColor = hairColor[0];
+            hairColor = hairColor[0] as BCColor;
         }
         chastityCage.SetColor([
             "Default",
@@ -286,9 +314,9 @@ function makeChaste(character: API_Character, lockMemberNumber: number): void {
             AssetGet("ItemPelvis", "ModularChastityBelt"),
         );
         chastityBelt.SetCraft({
-            Name: `Pixie Casino Chastity Belt`,
+            Name: `CC Casino Chastity Belt`,
             Description:
-                `After betting and losing at the Pixie Casino, ${character} has lost her privileges to orgasm. ` +
+                `After betting and losing at the Cotton Candy Casino, ${character} has lost her privileges to orgasm. ` +
                 `This chastity belt will ensure that she is kept chaste until her time is up.`,
         });
         chastityBelt.SetColor(
@@ -326,9 +354,9 @@ function makePet(
         AssetGet("ItemArms", "ShinyPetSuit"),
     );
     petSuitItem.SetCraft({
-        Name: `Pixie Casino Pet Suit`,
+        Name: `CC Casino Pet Suit`,
         Description:
-            `A bold but unfortunate bet from ${character} means that they are now an official Pixie Casino Pet, ` +
+            `A bold but unfortunate bet from ${character} means that they are now an official Cotton Candy Casino Pet, ` +
             `here to be adorable for all our patrons. Please enjoy their helplessness!`,
     });
     petSuitItem.SetColor(characterHairColor);
@@ -373,9 +401,9 @@ function makePet(
             LockSet: true,
         });*/
         collar.SetCraft({
-            Name: `Pixie Casino Pet Collar`,
+            Name: `CC Casino Pet Collar`,
             Description:
-                `A bold but unfortunate bet from ${character} means that they are now an official Pixie Casino Pet. ` +
+                `A bold but unfortunate bet from ${character} means that they are now an official Cotton Candy Casino Pet. ` +
                 `This collar will remind them of their place until their time is up.`,
         });
     }

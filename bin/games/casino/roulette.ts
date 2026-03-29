@@ -44,6 +44,8 @@ Available commands:
 /bot help - Show this help
 /bot commands - Show available commands.
 /bot forfeits - Show available forfeits.
+/bot checkforfeits - Shows all forfeits currently applied to you.
+/bot score - Show your current score.
 `;
 
 const ROULETTEHELP = `

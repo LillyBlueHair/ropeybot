@@ -62,7 +62,7 @@ export interface RoomDefinition {
 }
 
 // What the bot advertises as its game version
-const GAMEVERSION = "R122";
+const GAMEVERSION = "R126";
 const LZSTRING_MAGIC = "╬";
 
 class PromiseResolve<T> {
@@ -694,6 +694,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         } finally {
             this.roomCreatePromise = undefined;
         }
+        console.log("ChatRoomCreate emitted", roomDef);
 
         if (result !== "ChatRoomCreated") {
             throw new API_Error(result, "Failed to create room");

@@ -133,10 +133,16 @@ export class Casino {
         this.commandParser.register("buy", this.onCommandBuy);
         this.commandParser.register("vouchers", this.onCommandVouchers);
         this.commandParser.register("give", this.onCommandGive);
+        this.commandParser.register(
+            "checkforfeits",
+            this.onCommandCheckForfeits,
+        );
+        this.commandParser.register("score", this.onCommandScore);
         this.commandParser.register("bonus", this.onCommandBonusRound);
         this.commandParser.register("game", this.onCommandGame);
+        this.commandParser.register("scoreboard", this.onCommandScoreboard);
 
-        this.conn.setItemPermission(ItemPermissionLevel.OwnerOnly);
+        this.conn.setItemPermission(ItemPermissionLevel.OwnerLoverWhitelist);
     }
 
     private onCharacterEntered = async (character: API_Character) => {
@@ -162,6 +168,7 @@ export class Casino {
 
     private onBeep = (beep: ServerAccountBeepResponse) => {
         if (
+            typeof beep?.Message !== "string" ||
             beep.Message.includes("TypingStatus") ||
             beep.Message.includes("ReqRoom")
         ) {
@@ -457,6 +464,18 @@ ${forfeitsString()}
             }
         }
 
+        if (serviceName === "bonus") {
+            if (this.multiplier != 1) {
+                this.conn.reply(msg, "There is already a bonus round active.");
+                return;
+            }
+
+            if (this.game.getBets().length > 0) {
+                this.conn.reply(msg, "There are already bets placed.");
+                return;
+            }
+        }
+
         const player = await this.store.getPlayer(sender.MemberNumber);
         if (player.credits < service.value) {
             this.conn.reply(msg, "You don't have enough chips.");
@@ -469,9 +488,13 @@ ${forfeitsString()}
         if (serviceName === "player") {
             target.Appearance.RemoveItem("ItemDevices");
             if (!target.Appearance.InventoryGet("ItemNeck")) {
-                target.Appearance.AddItem(
-                    AssetGet("ItemNeck", "LeatherCollar"),
+                const collar = target.Appearance.AddItem(
+                    AssetGet("ItemNeck", "LeatherChoker"),
                 );
+                collar.SetCraft({
+                    Name: `${sender}'s Sub`,
+                    Description: `Bought after an unfortunate bet, ${target}'s freedom now belongs to ${sender}.`,
+                });
             }
             target.Appearance.AddItem(
                 AssetGet("ItemNeckRestraints", "CollarLeash"),
@@ -508,6 +531,12 @@ ${forfeitsString()}
                 "Chat",
                 `Please enjoy your cocktail, ${sender}.`,
             );
+        } else if (serviceName === "bonus") {
+            this.multiplier = 2;
+            this.conn.SendMessage(
+                "Chat",
+                `${sender} has bought a ⭐️⭐️⭐️ Bonus round! ⭐️⭐️⭐️ All forfeit bets are worth ${this.multiplier}x their normal value!`,
+            );
         } else {
             await this.store.addPurchase({
                 memberNumber: sender.MemberNumber,
@@ -519,7 +548,7 @@ ${forfeitsString()}
 
             this.conn.SendMessage(
                 "Chat",
-                `${sender} has bought a voucher for ${service.name}! Please contact Ellie to redeem your service.`,
+                `${sender} has bought a voucher for ${service.name}! Please contact Lilly to redeem your service.`,
             );
         }
     };
@@ -539,7 +568,6 @@ ${forfeitsString()}
             this.conn.reply(msg, "No vouchers outstanding");
             return;
         }
-
         this.conn.reply(
             msg,
             purchases
@@ -547,7 +575,7 @@ ${forfeitsString()}
                     if (SERVICES[p.service] === undefined) {
                         return `${p.memberName} (${p.memberNumber}): Unknown service ${p.service}`;
                     }
-                    `${p.memberName} (${p.memberNumber}): ${SERVICES[p.service].name}`;
+                    return `${p.memberName} (${p.memberNumber}): ${SERVICES[p.service].name}`;
                 })
                 .join("\n"),
         );
@@ -601,6 +629,56 @@ ${forfeitsString()}
         );
     };
 
+    private onCommandScore = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (args.length > 0) {
+            if (!sender.IsRoomAdmin()) {
+                this.conn.reply(
+                    msg,
+                    "Only admins can see other people's scores.",
+                );
+                return;
+            }
+
+            const target = this.conn.chatRoom.findCharacter(args[0]);
+            if (!target) {
+                this.conn.reply(msg, "I can't find that person.");
+                return;
+            }
+            const player = await this.store.getPlayer(target.MemberNumber);
+            this.conn.reply(msg, `${target} has a score of ${player.score}.`);
+        } else {
+            const player = await this.store.getPlayer(sender.MemberNumber);
+            this.conn.reply(
+                msg,
+                `${sender}, you have a score of ${player.score}.`,
+            );
+        }
+    };
+
+    private onCommandCheckForfeits = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        let message = "";
+        this.lockedItems.get(sender.MemberNumber)?.forEach((expiry, group) => {
+            const item = sender.Appearance.InventoryGet(group);
+            if (expiry < Date.now()) {
+                this.lockedItems.get(sender.MemberNumber)?.delete(group);
+                return;
+            } else if (item) {
+                message += `${item.Name} (${group}): ${remainingTimeString(expiry)} remaining\n`;
+            } else {
+                message += `${group} (no item found): ${remainingTimeString(expiry)} remaining\n`;
+            }
+        });
+        this.conn.reply(msg, message || "You have no active forfeits.");
+    };
+
     private onCommandBonusRound = async (
         sender: API_Character,
         msg: BC_Server_ChatRoomMessage,
@@ -650,13 +728,18 @@ ${forfeitsString()}
     }
 
     public setTextColor(color: string): void {
-        this.setSignColor(["Default", "Default", color]);
+        let colors = this.getSign().GetColor();
+        if (Array.isArray(colors)) {
+            colors = [...colors];
+        } else {
+            colors = [colors, "Default", "Default"];
+        }
+        colors[colors.length - 1] = color as BCColor;
+        this.getSign().SetColor(colors);
     }
 
     public applyForfeit(bet: Bet): void {
         const char = this.conn.chatRoom.findMember(bet.memberNumber);
-        if (!char) return;
-
         const applyFn = FORFEITS[bet.stakeForfeit].applyItems;
         const items = FORFEITS[bet.stakeForfeit].items(char);
         const colourLayers = FORFEITS[bet.stakeForfeit].colourLayers;
@@ -674,6 +757,8 @@ ${forfeitsString()}
             }
         }
 
+        if (!char) return;
+
         if (applyFn) {
             applyFn(char, this.conn.Player.MemberNumber);
         } else if (items.length === 1) {
@@ -681,7 +766,7 @@ ${forfeitsString()}
                 char.Appearance.InventoryGet("HairFront").GetColor();
             const added = char.Appearance.AddItem(items[0]);
             try {
-                characterHairColor = characterHairColor[0];
+                characterHairColor = characterHairColor[0] as BCColor;
                 let colors: string[] = [];
                 if (colourLayers) {
                     for (let i = 0; i <= Math.max(...colourLayers); i++) {
@@ -706,9 +791,9 @@ ${forfeitsString()}
 
             added.SetDifficulty(20);
             added.SetCraft({
-                Name: `Pixie Casino ${FORFEITS[bet.stakeForfeit].name}`,
+                Name: `CC Casino ${FORFEITS[bet.stakeForfeit].name}`,
                 Description:
-                    "This item is property of Pixie Casino. Better luck next time!",
+                    "This item is property of Cotton Candy Casino. Better luck next time!",
                 MemberName: this.conn.Player.toString(),
                 MemberNumber: this.conn.Player.MemberNumber,
             });
@@ -741,9 +826,15 @@ ${forfeitsString()}
 
     public cheatPunishment(char: API_Character, player: Player): void {
         if (player.cheatStrikes === 1) {
-            char.Tell("Whisper", "Cheating in the casino, hmm?");
+            char.Tell(
+                "Whisper",
+                "Cheating in the casino, hmm? Check your active forfeits with /bot checkforfeits.",
+            );
         } else if (player.cheatStrikes === 2) {
-            char.Tell("Whisper", `Still trying to cheat, ${char}?`);
+            char.Tell(
+                "Whisper",
+                `Still trying to cheat, ${char}? Check your active forfeits with /bot checkforfeits.`,
+            );
         } else {
             const dunceHat = char.Appearance.AddItem(
                 AssetGet("Hat", "CollegeDunce"),
@@ -803,5 +894,21 @@ ${forfeitsString()}
             return;
         }
         this.setBio();
+    };
+
+    private onCommandScoreboard = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (!sender.IsRoomWhitelistedOrAdmin()) {
+            this.conn.reply(msg, "Sorry, you need to be whitelisted");
+            return;
+        }
+        this.setBio();
+        this.conn.reply(
+            msg,
+            "Scoreboard updated, please check my bio for the latest scores.",
+        );
     };
 }

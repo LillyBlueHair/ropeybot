@@ -355,8 +355,11 @@ export class AdministrationLogic extends LogicBase {
                     return respond(`Expected true or false.`);
                 }
                 respond("Ok");
+                if (argv[0] === "true") {
+                    
+                }
                 return connection.ChatRoomUpdate({
-                    Private: argv[0] === "true",
+                    Visibility: argv[0] === "true" ? [] : ["All"],
                 });
             },
         );
@@ -1091,7 +1094,7 @@ Please be nice to other people that want to just enjoy themselves. Thank you!
             ] of this.a_lastActivity.entries()) {
                 if (
                     character.IsRoomAdmin() ||
-                    character.chatRoom.Private ||
+                    character.chatRoom.Visibility.length == 0 ||
                     (this.a_settings
                         .inactivityKickEnabledOnlyBelowFreeSlotsCount !==
                         null &&
