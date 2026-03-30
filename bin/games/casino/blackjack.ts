@@ -937,7 +937,7 @@ export class BlackjackGame implements Game {
         }
         if (bet.stakeForfeit) {
             if (playerHandValue === dealerHandValue) {
-                if (playerHand.length === 2) {
+                if (playerHand.length === 2 && playerHandValue === 21) {
                     if (this.dealerHand.length === 2) {
                         return -100;
                     }
@@ -966,7 +966,8 @@ export class BlackjackGame implements Game {
                     playerHand.length === 2 &&
                     this.players.find(
                         (p) => p.memberNumber === bet.memberNumber,
-                    ).bets.length === 1
+                    ).bets.length === 1 &&
+                    playerHandValue === 21
                 ) {
                     if (this.dealerHand.length === 2) {
                         return bet.stake;
