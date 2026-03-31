@@ -137,8 +137,8 @@ export class ThreeCardPokerGame implements Game {
             const sign = this.casino.getSign();
 
             sign.setProperty("OverridePriority", { Text: 63 });
-            sign.setProperty("Text", "Poker");
-            sign.setProperty("Text2", " ");
+            sign.setProperty("Text", "Playing");
+            sign.setProperty("Text2", "Poker");
             this.casino.setSignColor(["#202020", "Default", "#ffffff"]);
         });
 
@@ -147,8 +147,8 @@ export class ThreeCardPokerGame implements Game {
             const sign = this.casino.getSign();
 
             sign.setProperty("OverridePriority", { Text: 63 });
-            sign.setProperty("Text", "Poker");
-            sign.setProperty("Text2", " ");
+            sign.setProperty("Text", "Playing");
+            sign.setProperty("Text2", "Poker");
             this.casino.setSignColor(["#202020", "Default", "#ffffff"]);
 
             this.casino.setBio().catch((e) => {
@@ -390,8 +390,8 @@ export class ThreeCardPokerGame implements Game {
         this.resetTimeout = setTimeout(() => {
             this.resetTimeout = undefined;
             const sign = this.casino.getSign();
-            sign.setProperty("Text", "Poker");
-            sign.setProperty("Text2", " ");
+            sign.setProperty("Text", "Playing");
+            sign.setProperty("Text2", "Poker");
             this.casino.setTextColor("#ffffff");
         }, RESET_TIMEOUT_MS);
 
