@@ -117,7 +117,7 @@ export class BlackjackGame implements Game {
             const sign = this.casino.getSign();
 
             sign.setProperty("OverridePriority", { Text: 63 });
-            sign.setProperty("Text", "Place bets!");
+            sign.setProperty("Text", "Blackjack");
             sign.setProperty("Text2", " ");
             this.casino.setSignColor(["#202020", "Default", "#ffffff"]);
         });
@@ -127,7 +127,7 @@ export class BlackjackGame implements Game {
             const sign = this.casino.getSign();
 
             sign.setProperty("OverridePriority", { Text: 63 });
-            sign.setProperty("Text", "Place bets!");
+            sign.setProperty("Text", "Blackjack");
             sign.setProperty("Text2", " ");
             this.casino.setSignColor(["#202020", "Default", "#ffffff"]);
 
@@ -613,7 +613,7 @@ export class BlackjackGame implements Game {
         this.resetTimeout = setTimeout(() => {
             this.resetTimeout = undefined;
             const sign = this.casino.getSign();
-            sign.setProperty("Text", "Place bets!");
+            sign.setProperty("Text", "Blackjack");
             sign.setProperty("Text2", " ");
             this.casino.setTextColor("#ffffff");
         }, RESET_TIMEOUT_MS);
@@ -855,7 +855,7 @@ export class BlackjackGame implements Game {
             this.initialDeal();
         } else {
             this.casino.setTextColor("#ffffff");
-            sign.setProperty("Text", "Place bets!");
+            sign.setProperty("Text", "Blackjack");
             sign.setProperty("Text2", `${Math.ceil(timeLeft / 1000)}`);
         }
     }

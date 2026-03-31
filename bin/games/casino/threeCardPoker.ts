@@ -137,7 +137,7 @@ export class ThreeCardPokerGame implements Game {
             const sign = this.casino.getSign();
 
             sign.setProperty("OverridePriority", { Text: 63 });
-            sign.setProperty("Text", "Place bets!");
+            sign.setProperty("Text", "Poker");
             sign.setProperty("Text2", " ");
             this.casino.setSignColor(["#202020", "Default", "#ffffff"]);
         });
@@ -147,7 +147,7 @@ export class ThreeCardPokerGame implements Game {
             const sign = this.casino.getSign();
 
             sign.setProperty("OverridePriority", { Text: 63 });
-            sign.setProperty("Text", "Place bets!");
+            sign.setProperty("Text", "Poker");
             sign.setProperty("Text2", " ");
             this.casino.setSignColor(["#202020", "Default", "#ffffff"]);
 
@@ -220,6 +220,18 @@ export class ThreeCardPokerGame implements Game {
         newPole.Color = ["#AC9A85"];
         this.conn.Player.Appearance.AddItem(newPole);
         return this.conn.Player.Appearance.InventoryGet("ItemDevices");
+    }
+
+    getGameSign(): API_AppearanceItem {
+        let sign = this.conn.Player.Appearance.InventoryGet("ItemMisc");
+        if (!sign) {
+            sign = this.conn.Player.Appearance.AddItem(
+                AssetGet("ItemMisc", "WoodenSign"),
+            );
+            sign.setProperty("Text", "");
+            sign.setProperty("Text2", "");
+        }
+        return sign;
     }
 
     async endGame(): Promise<void> {
@@ -378,7 +390,7 @@ export class ThreeCardPokerGame implements Game {
         this.resetTimeout = setTimeout(() => {
             this.resetTimeout = undefined;
             const sign = this.casino.getSign();
-            sign.setProperty("Text", "Place bets!");
+            sign.setProperty("Text", "Poker");
             sign.setProperty("Text2", " ");
             this.casino.setTextColor("#ffffff");
         }, RESET_TIMEOUT_MS);
@@ -687,7 +699,7 @@ export class ThreeCardPokerGame implements Game {
             this.initialDeal();
         } else {
             this.casino.setTextColor("#ffffff");
-            sign.setProperty("Text", "Place bets!");
+            sign.setProperty("Text", "Poker");
             sign.setProperty("Text2", `${Math.ceil(timeLeft / 1000)}`);
         }
     }
