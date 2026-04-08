@@ -141,6 +141,7 @@ export class Casino {
         this.commandParser.register("bonus", this.onCommandBonusRound);
         this.commandParser.register("game", this.onCommandGame);
         this.commandParser.register("scoreboard", this.onCommandScoreboard);
+        this.commandParser.register("color", this.onCommandColor);
 
         this.conn.setItemPermission(ItemPermissionLevel.OwnerLoverWhitelist);
     }
@@ -750,7 +751,7 @@ ${forfeitsString()}
         color = color[0] as BCColor;
 
         let storeColor = await this.store.getPlayer(bet.memberNumber);
-        if (storeColor.color !== "Default") color = storeColor.color as BCColor;
+        if (storeColor.color !== "default" && storeColor.color) color = storeColor.color as BCColor;
 
         if (items.length === 1) {
             const lockTime =
@@ -769,7 +770,7 @@ ${forfeitsString()}
         if (!char) return;
 
         if (applyFn) {
-            applyFn(char, this.conn.Player.MemberNumber);
+            applyFn(char, this.conn.Player.MemberNumber, color);
         } else if (items.length === 1) {
             const added = char.Appearance.AddItem(items[0]);
             try {
@@ -936,5 +937,38 @@ ${forfeitsString()}
             msg,
             "Scoreboard updated, please check my bio for the latest scores.",
         );
+    };
+
+    private onCommandColor = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (args.length !== 1) {
+            this.conn.SendMessage(
+                "Whisper",
+                "I couldn't understand that command. Try, eg. /bot color #00c8ff",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        let color = args[0].toLowerCase();
+        if (color == "default" || color.match(/^#?([a-f0-9]{6})$/)) {
+            if(color[0] !== "#" && color != "default") color = "#" + color;
+            this.conn.SendMessage(
+                "Whisper",
+                `Your color has been set to ${color}.`,
+                sender.MemberNumber,
+            );
+            let player = await this.store.getPlayer(sender.MemberNumber);
+            player.color = color as BCColor;
+            this.store.savePlayer(player)
+        }else{
+            this.conn.SendMessage(
+                "Whisper",
+                "I couldn't understand that color. Try, eg. /bot color #00c8ff",
+                sender.MemberNumber,
+            );
+        }
     };
 }

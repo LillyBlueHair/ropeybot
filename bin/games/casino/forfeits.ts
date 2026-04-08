@@ -23,7 +23,7 @@ interface Forfeit {
     lock?: BC_AppearanceItem;
     lockTimeMs?: number;
     colourLayers?: number[];
-    applyItems?: (char: API_Character, lockMemberNumber: number) => void;
+    applyItems?: (char: API_Character, lockMemberNumber: number, color) => void;
 }
 
 export const FORFEITS: Record<string, Forfeit> = {

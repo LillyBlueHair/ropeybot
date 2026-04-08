@@ -31,6 +31,7 @@ const THREECARDPOKERCOMMANDS = `ThreeCardPoker commands:
 /bot forfeits - Show available forfeits.
 /bot checkforfeits - Shows all forfeits currently applied to you.
 /bot score - Show your current score.
+/bot color <color or Default> - Change the color of your forfeits. 
 `;
 
 const THREECARDPOKERHELP = `Three Card Poker is a card game where you play against the dealer using a 3-card hand.
@@ -294,7 +295,7 @@ export class ThreeCardPokerGame implements Game {
             if (!/^\d+$/.test(stake)) {
                 this.conn.SendMessage(
                     "Whisper",
-                    "Invalid stake.",
+                    "Invalid stake",
                     senderCharacter.MemberNumber,
                 );
                 return;
@@ -303,7 +304,7 @@ export class ThreeCardPokerGame implements Game {
             if (isNaN(stakeValue) || stakeValue < 1) {
                 this.conn.SendMessage(
                     "Whisper",
-                    "Invalid stake.",
+                    "Invalid stake",
                     senderCharacter.MemberNumber,
                 );
                 return;
@@ -768,7 +769,7 @@ export class ThreeCardPokerGame implements Game {
         }
 
         this.clearBetsForPlayer(sender.MemberNumber);
-        this.conn.reply(msg, "Bet cancelled.");
+        this.conn.SendMessage("Whisper", "Bet cancelled.", sender.MemberNumber);
         this.conn.SendMessage("Chat", `${sender.Name} cancelled their bet.`);
     };
 

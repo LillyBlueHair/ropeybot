@@ -30,6 +30,7 @@ const BLACKJACKCOMMANDS = `Blackjack commands:
 /bot forfeits - Show available forfeits.
 /bot checkforfeits - Shows all forfeits currently applied to you.
 /bot score - Show your current score.
+/bot color <color or Default> - Change the color of your forfeits. 
 `;
 
 const BLACKJACKHELP = `Blackjack is a card game where the goal is to get as close to 21 as possible without going over.
@@ -66,8 +67,8 @@ const TIME_UNTIL_DEAL_MS = 35000;
 // const TIME_UNTIL_DEAL_MS = 6000;
 const BET_CANCEL_THRESHOLD_MS = 1000;
 const AUTO_STAND_TIMEOUT_MS = 45000;
-const SPLIT_TIMEOUT_INCREASE_MS = 10000; // Time added to the auto-stand timeout when a player splits their hand
 // const AUTO_STAND_TIMEOUT_MS = 10000;
+const SPLIT_TIMEOUT_INCREASE_MS = 10000; // Time added to the auto-stand timeout when a player splits their hand
 const RESET_TIMEOUT_MS = 10000; // Time after a game ends before a new game can start
 
 export interface BlackjackPlayer {
@@ -262,7 +263,7 @@ export class BlackjackGame implements Game {
             if (!/^\d+$/.test(stake)) {
                 this.conn.SendMessage(
                     "Whisper",
-                    "Invalid stake.",
+                    "Invalid stake",
                     senderCharacter.MemberNumber,
                 );
                 return;
@@ -271,7 +272,7 @@ export class BlackjackGame implements Game {
             if (isNaN(stakeValue) || stakeValue < 1) {
                 this.conn.SendMessage(
                     "Whisper",
-                    "Invalid stake.",
+                    "Invalid stake",
                     senderCharacter.MemberNumber,
                 );
                 return;
@@ -926,7 +927,7 @@ export class BlackjackGame implements Game {
         }
 
         this.clearBetsForPlayer(sender.MemberNumber);
-        this.conn.reply(msg, "Bet cancelled.");
+        this.conn.SendMessage("Whisper", "Bet cancelled.", sender.MemberNumber);
         this.conn.SendMessage("Chat", `${sender.Name} cancelled their bet.`);
     };
 

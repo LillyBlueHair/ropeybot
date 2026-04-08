@@ -46,6 +46,7 @@ Available commands:
 /bot forfeits - Show available forfeits.
 /bot checkforfeits - Shows all forfeits currently applied to you.
 /bot score - Show your current score.
+/bot color <color or Default> - Change the color of your forfeits. 
 `;
 
 const ROULETTEHELP = `
@@ -263,12 +264,12 @@ export class RouletteGame implements Game {
             stakeForfeit = stake;
         } else {
             if (!/^\d+$/.test(stake)) {
-                this.conn.reply(msg, "Invalid stake.");
+                this.conn.reply(msg, "Invalid stake");
                 return;
             }
             stakeValue = parseInt(stake, 10);
             if (isNaN(stakeValue) || stakeValue < 1) {
-                this.conn.reply(msg, "Invalid stake.");
+                this.conn.reply(msg, "Invalid stake");
                 return;
             }
         }
@@ -470,7 +471,7 @@ export class RouletteGame implements Game {
         }
 
         this.clearBetsForPlayer(sender.MemberNumber);
-        this.conn.reply(msg, "Bet cancelled.");
+        this.conn.SendMessage("Whisper", "Bet cancelled.", sender.MemberNumber);
         this.conn.SendMessage("Chat", `${sender.Name} cancelled their bet.`);
     };
 
