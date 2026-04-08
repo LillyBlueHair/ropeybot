@@ -9,6 +9,7 @@ import {
     getCardString,
     getNumericCardValue,
     shuffleDeck,
+    sortCards,
 } from "./pokerCards";
 import {
     API_Character,
@@ -832,18 +833,21 @@ export class ThreeCardPokerGame implements Game {
         this.deck = createDeck();
         shuffleDeck(this.deck);
 
-        this.dealerHand = [
+        this.dealerHand = sortCards([
             this.deck.pop()!,
             this.deck.pop()!,
             this.deck.pop()!,
-        ];
+        ]);
 
         for (const player of this.players) {
-            this.playerHands.set(player.bet, [
-                this.deck.pop()!,
-                this.deck.pop()!,
-                this.deck.pop()!,
-            ]);
+            this.playerHands.set(
+                player.bet,
+                sortCards([
+                    this.deck.pop()!,
+                    this.deck.pop()!,
+                    this.deck.pop()!,
+                ]),
+            );
         }
 
         this.willFoldAt = Date.now() + AUTO_FOLD_TIMEOUT_MS;

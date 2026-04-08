@@ -1,4 +1,4 @@
-const SUITS = ["Hearts", "Diamonds", "Clubs", "Spades"];
+const SUITS = ["Hearts", "Clubs", "Diamonds", "Spades"];
 const VALUES = [
     "A",
     "2",
@@ -25,6 +25,14 @@ export function createDeck(): Card[] {
         }
     }
     return deck;
+}
+
+export function sortCards(cards: Card[]): Card[] {
+    return cards.sort((a, b) => {
+        const aNum = getNumericCardValue(a);
+        const bNum = getNumericCardValue(b);
+        return aNum - bNum || SUITS.indexOf(a.suit) - SUITS.indexOf(b.suit);
+    });
 }
 
 export function getNumericCardValue(card: Card): number {
