@@ -767,7 +767,8 @@ export class ThreeCardPokerGame implements Game {
         }
 
         this.clearBetsForPlayer(sender.MemberNumber);
-        this.conn.SendMessage("Whisper", "Bet cancelled.", sender.MemberNumber);
+        this.conn.reply(msg, "Bet cancelled.");
+        this.conn.SendMessage("Chat", `${sender.Name} cancelled their bet.`);
     };
 
     getWinnings(
