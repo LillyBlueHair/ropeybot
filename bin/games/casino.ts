@@ -944,6 +944,15 @@ ${forfeitsString()}
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
+        if (args.length === 0) {
+            let player = await this.store.getPlayer(sender.MemberNumber);
+            this.conn.SendMessage(
+                "Whisper",
+                `Your color is currently set to: ${player.color}. If you want to change it, try, eg. /bot color #00c8ff`,
+                sender.MemberNumber,
+            );
+            return;
+        }
         if (args.length !== 1) {
             this.conn.SendMessage(
                 "Whisper",
