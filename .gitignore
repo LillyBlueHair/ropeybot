@@ -3,5 +3,6 @@ config.json
 dist/
 out
 
+.vscode/
 config*.json
 !config.sample.json

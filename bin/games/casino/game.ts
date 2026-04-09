@@ -1,6 +1,4 @@
 import { API_Character, BC_Server_ChatRoomMessage } from "bc-bot";
-import { CasinoStore } from "./casinostore";
-import { RouletteBet } from "./roulette";
 
 export interface Game {
     HELPMESSAGE: string;

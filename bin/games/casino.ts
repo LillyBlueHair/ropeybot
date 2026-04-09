@@ -67,7 +67,7 @@ ${exampleString}
 ℹ️ How To Play
 ==============
 ${helpString}
-🪢 Forfeit Table
+⛓️ Forfeit Table
 ================
 Restraints are for 20 minutes, unless otherwise stated.
 
@@ -751,7 +751,8 @@ ${forfeitsString()}
         color = color[0] as BCColor;
 
         let storeColor = await this.store.getPlayer(bet.memberNumber);
-        if (storeColor.color !== "default" && storeColor.color) color = storeColor.color as BCColor;
+        if (storeColor.color !== "default" && storeColor.color)
+            color = storeColor.color as BCColor;
 
         if (items.length === 1) {
             const lockTime =
@@ -963,7 +964,7 @@ ${forfeitsString()}
         }
         let color = args[0].toLowerCase();
         if (color == "default" || color.match(/^#?([a-f0-9]{6})$/)) {
-            if(color[0] !== "#" && color != "default") color = "#" + color;
+            if (color[0] !== "#" && color != "default") color = "#" + color;
             this.conn.SendMessage(
                 "Whisper",
                 `Your color has been set to ${color}.`,
@@ -971,8 +972,8 @@ ${forfeitsString()}
             );
             let player = await this.store.getPlayer(sender.MemberNumber);
             player.color = color as BCColor;
-            this.store.savePlayer(player)
-        }else{
+            this.store.savePlayer(player);
+        } else {
             this.conn.SendMessage(
                 "Whisper",
                 "I couldn't understand that color. Try, eg. /bot color #00c8ff",
