@@ -6,7 +6,7 @@ export interface Game {
     COMMANDSMESSAGE: string;
     EXAMPLES: string;
 
-    parseBetCommand(
+    parseRaiseCommand(
         senderCharacter: API_Character,
         msg: BC_Server_ChatRoomMessage,
         args: string[],

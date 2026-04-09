@@ -19,7 +19,7 @@ import {
     AssetGet,
 } from "bc-bot";
 
-const THREECARDPOKERCOMMANDS = `ThreeCardPoker commands:
+const THREECARDPOKERCOMMANDS = `Three Card Poker commands:
 /bot bet <amount> - Bet on the current hand. Odds: 1:1.
 /bot play - Play the current hand.
 /bot fold - Fold the current hand.
@@ -93,8 +93,6 @@ export interface ThreeCardPokerPlayer {
 }
 
 export interface ThreeCardPokerBet extends Bet {
-    stake: number;
-    stakeForfeit: string;
     status: "pending" | "folded" | "playing";
 }
 
@@ -249,7 +247,7 @@ export class ThreeCardPokerGame implements Game {
         resolve();
     }
 
-    parseBetCommand(
+    parseRaiseCommand(
         senderCharacter: API_Character,
         msg: BC_Server_ChatRoomMessage,
         args: string[],
@@ -459,7 +457,7 @@ export class ThreeCardPokerGame implements Game {
             return;
         }
 
-        const bet = this.parseBetCommand(sender, msg, args);
+        const bet = this.parseRaiseCommand(sender, msg, args);
         if (bet === undefined) {
             return;
         }

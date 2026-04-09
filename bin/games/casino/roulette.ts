@@ -79,10 +79,6 @@ type RouletteBetKind =
     | "25-36";
 
 export interface RouletteBet extends Bet {
-    memberNumber: number;
-    memberName: string;
-    stake: number;
-    stakeForfeit: string;
     kind: RouletteBetKind;
     number?: number;
 }
@@ -229,7 +225,7 @@ export class RouletteGame implements Game {
         }, 500);
     }
 
-    public parseBetCommand(
+    public parseRaiseCommand(
         senderCharacter: API_Character,
         msg: BC_Server_ChatRoomMessage,
         args: string[],
@@ -352,7 +348,7 @@ export class RouletteGame implements Game {
             return;
         }
 
-        const bet = this.parseBetCommand(sender, msg, args);
+        const bet = this.parseRaiseCommand(sender, msg, args);
         if (bet === undefined) {
             return;
         }
