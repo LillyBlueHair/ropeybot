@@ -18,6 +18,7 @@ import {
     API_AppearanceItem,
     AssetGet,
 } from "bc-bot";
+import { min } from "lodash";
 
 //TODO
 const TEXASHOLDEMCOMMANDS = `Three Card Poker commands:
@@ -79,6 +80,7 @@ export interface TexasHoldemPlayer {
 
 export interface TexasHoldemBet extends Bet {
     stake: number;
+    hadTurn: boolean;
     status: "pending" | "folded" | "waiting";
 }
 
@@ -96,14 +98,15 @@ enum HandRank {
 export class TexasHoldemGame implements Game {
     private casino: Casino;
     private deck: Card[] = [];
-    private dealerHand: Hand = [];
     private playerHands: Map<TexasHoldemBet, Hand> = new Map();
     private willDealAt: number | undefined;
     private willFoldAt: number | undefined;
     private players: TexasHoldemPlayer[] = [];
     private resetTimeout: NodeJS.Timeout | undefined; // after finishing a game
     private dealTimeout: NodeJS.Timeout | undefined; // after first bet until the deal
-    private autoFoldTimeout: NodeJS.Timeout; // after the deal until all players stand
+
+    private river: Card[] = [];
+    private minimumBet: number = 0;
 
     public HELPMESSAGE = FULLTEXASHOLDEMHELP;
     public EXAMPLES = TEXASHOLDEMEXAMPLES;
@@ -118,6 +121,8 @@ export class TexasHoldemGame implements Game {
         this.casino.commandParser.register("raise", this.onCommandRaise);
         this.casino.commandParser.register("check", this.onCommandCheck);
         this.casino.commandParser.register("fold", this.onCommandFold);
+        this.casino.commandParser.register("call", this.onCommandCall);
+        this.casino.commandParser.register("allin", this.onCommandAllin);
         this.casino.commandParser.register("sign", (sender, msg, args) => {
             const sign = this.casino.getSign();
 
@@ -229,6 +234,8 @@ export class TexasHoldemGame implements Game {
         this.casino.commandParser.unregister("raise");
         this.casino.commandParser.unregister("check");
         this.casino.commandParser.unregister("fold");
+        this.casino.commandParser.unregister("call");
+        this.casino.commandParser.unregister("allin");
         this.casino.commandParser.unregister("sign");
         this.clear();
         resolve();
@@ -283,6 +290,7 @@ export class TexasHoldemGame implements Game {
             memberName: senderCharacter.toString(),
             stake: stakeValue,
             stakeForfeit: undefined,
+            hadTurn: false,
             status: "waiting",
         };
     }
@@ -326,19 +334,44 @@ export class TexasHoldemGame implements Game {
             return;
         }
 
-        const player = await this.casino.store.getPlayer(sender.MemberNumber);
-        if (raise.stakeForfeit === undefined) {
-            if (player.credits - raise.stake < 0) {
-                this.conn.SendMessage(
-                    "Whisper",
-                    `You don't have enough chips.`,
-                    sender.MemberNumber,
-                );
-                return;
-            }
-            player.credits -= raise.stake;
-            await this.casino.store.savePlayer(player);
+        const playerStore = await this.casino.store.getPlayer(
+            sender.MemberNumber,
+        );
+        if (playerStore.credits - raise.stake < 0) {
+            this.conn.SendMessage(
+                "Whisper",
+                `You don't have enough chips.`,
+                sender.MemberNumber,
+            );
+            return;
         }
+        playerStore.credits -= raise.stake;
+        await this.casino.store.savePlayer(playerStore);
+        let bet = this.players.find(
+            (b) => b.memberNumber === sender.MemberNumber,
+        ).bet;
+
+        if (bet.stake + raise.stake < this.minimumBet) {
+            this.conn.SendMessage(
+                "Whisper",
+                "To raise you need to bet at least " +
+                    (this.minimumBet - bet.stake) +
+                    " more.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+
+        bet.stake += raise.stake;
+        this.minimumBet = bet.stake;
+        bet.status = "waiting";
+        bet.hadTurn = true;
+        this.conn.SendMessage(
+            "Chat",
+            `${bet.memberName} raises by ${raise.stake} to ${this.minimumBet}.`,
+        );
+        //TODO next player turn
+        // Round cannot be done after a raise
     };
 
     onCommandCheck = async (
@@ -346,14 +379,6 @@ export class TexasHoldemGame implements Game {
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
-        if (this.autoFoldTimeout === undefined) {
-            this.conn.SendMessage(
-                "Whisper",
-                "You can't check right now.",
-                sender.MemberNumber,
-            );
-            return;
-        }
         const player = this.players.find(
             (p) => p.memberNumber === sender.MemberNumber,
         );
@@ -374,16 +399,25 @@ export class TexasHoldemGame implements Game {
             return;
         }
 
-        //TODO check if you can check
+        if (bet.stake !== this.minimumBet) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You cannot check as you need to call at least " +
+                    (this.minimumBet - bet.stake) +
+                    " to " +
+                    this.minimumBet +
+                    ".",
+                sender.MemberNumber,
+            );
+        }
 
         bet.status = "waiting";
+        bet.hadTurn = true;
 
-        this.conn.SendMessage(
-            "Chat",
-            `${player.memberName} checks.`,
-        );
+        this.conn.SendMessage("Chat", `${player.memberName} checks.`);
 
         if (this.allPlayersDone()) this.resolveGame();
+        //TODO next player turn
     };
 
     onCommandFold = async (
@@ -391,15 +425,6 @@ export class TexasHoldemGame implements Game {
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
-        if (this.autoFoldTimeout === undefined) {
-            this.conn.SendMessage(
-                "Whisper",
-                "You can't fold right now.",
-                sender.MemberNumber,
-            );
-            return;
-        }
-
         const player = this.players.find(
             (p) => p.memberNumber === sender.MemberNumber,
         );
@@ -412,7 +437,7 @@ export class TexasHoldemGame implements Game {
                 sender.MemberNumber,
             );
             return;
-        } else if(bet.status === "folded") {
+        } else if (bet.status === "folded") {
             this.conn.SendMessage(
                 "Whisper",
                 "You already folded.",
@@ -422,13 +447,90 @@ export class TexasHoldemGame implements Game {
         }
 
         bet.status = "folded";
+        bet.hadTurn = true;
 
-        this.conn.SendMessage(
-            "Chat",
-            `${player.memberName} folds.`,
-        );
+        this.conn.SendMessage("Chat", `${player.memberName} folds.`);
 
         if (this.allPlayersDone()) this.resolveGame();
+        //TODO next player turn
+    };
+
+    private onCommandCall = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        const player = this.players.find(
+            (p) => p.memberNumber === sender.MemberNumber,
+        );
+
+        const bet = player.bet;
+        if (bet.status === "waiting") {
+            this.conn.SendMessage(
+                "Whisper",
+                "It is not your turn.",
+                sender.MemberNumber,
+            );
+            return;
+        } else if (bet.status === "folded") {
+            this.conn.SendMessage(
+                "Whisper",
+                "You already folded.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+
+        const playerStore = await this.casino.store.getPlayer(
+            sender.MemberNumber,
+        );
+        if (playerStore.credits - (this.minimumBet - bet.stake) < 0) {
+            this.conn.SendMessage(
+                "Whisper",
+                `You don't have enough chips. You'd need to go /bot allin to call.`,
+                sender.MemberNumber,
+            );
+            return;
+        }
+        playerStore.credits -= this.minimumBet - bet.stake;
+        await this.casino.store.savePlayer(playerStore);
+        bet.stake = this.minimumBet;
+
+        bet.status = "waiting";
+        bet.hadTurn = true;
+
+        this.conn.SendMessage("Chat", `${player.memberName} calls.`);
+
+        if (this.allPlayersDone()) this.resolveGame();
+        //TODO next player turn
+    };
+
+    private onCommandAllin = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        const player = this.players.find(
+            (p) => p.memberNumber === sender.MemberNumber,
+        );
+
+        const bet = player.bet;
+        if (bet.status === "waiting") {
+            this.conn.SendMessage(
+                "Whisper",
+                "It is not your turn.",
+                sender.MemberNumber,
+            );
+            return;
+        } else if (bet.status === "folded") {
+            this.conn.SendMessage(
+                "Whisper",
+                "You already folded.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        //TODO All in logic
     };
 
     private onDealTimeout(): void {
@@ -451,8 +553,9 @@ export class TexasHoldemGame implements Game {
     }
 
     private allPlayersDone(): boolean {
-        //TODO
-        return false;
+        return this.players.every(
+            (p) => p.bet.stake === this.minimumBet && p.bet.hadTurn,
+        );
     }
 
     clear(): void {
@@ -467,18 +570,22 @@ export class TexasHoldemGame implements Game {
         for (const player of this.players) {
             this.playerHands.set(
                 player.bet,
-                sortCards([
-                    this.deck.pop()!,
-                    this.deck.pop()!,
-                ]),
+                sortCards([this.deck.pop()!, this.deck.pop()!]),
+            );
+            this.conn.SendMessage(
+                "Whisper",
+                `Your cards are: ${
+                    (this.handToString(this.playerHands.get(player.bet)),
+                    player.memberNumber)
+                }`,
             );
         }
-        //TODO send players their cards
+        this.conn.SendMessage("Chat", "All cards have been dealt.");
     }
 
     private evaluteHand(hand: Hand): { rank: HandRank; rankedCards: number[] } {
         //TODO evaluate with board
-        return { rank: undefined, rankedCards: undefined}
+        return { rank: undefined, rankedCards: undefined };
     }
 
     private async showHands(): Promise<void> {
@@ -489,7 +596,7 @@ export class TexasHoldemGame implements Game {
     private async buildHandString(
         requestingPlayer: TexasHoldemPlayer | undefined = undefined,
     ): Promise<string> {
-        return ""
+        return "";
     }
 
     private handToString(
