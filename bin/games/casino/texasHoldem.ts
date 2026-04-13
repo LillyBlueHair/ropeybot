@@ -1,13 +1,11 @@
 import { resolve } from "path";
 import { waitForCondition } from "../../hub/utils";
-import { Casino, getItemsBlockingForfeit } from "../casino";
-import { FORFEITS } from "./forfeits";
+import { Casino } from "../casino";
 import { Bet, Game } from "./game";
 import {
     Card,
     createDeck,
     getCardString,
-    getNumericCardValue,
     shuffleDeck,
     sortCards,
 } from "./pokerCards";
@@ -18,7 +16,6 @@ import {
     API_AppearanceItem,
     AssetGet,
 } from "bc-bot";
-import { min } from "lodash";
 
 //TODO
 const TEXASHOLDEMCOMMANDS = `Three Card Poker commands:
@@ -81,6 +78,7 @@ export interface TexasHoldemPlayer {
 export interface TexasHoldemBet extends Bet {
     stake: number;
     hadTurn: boolean;
+    allin: boolean;
     status: "pending" | "folded" | "waiting";
 }
 
@@ -290,6 +288,7 @@ export class TexasHoldemGame implements Game {
             memberName: senderCharacter.toString(),
             stake: stakeValue,
             stakeForfeit: undefined,
+            allin: false,
             hadTurn: false,
             status: "waiting",
         };
@@ -530,7 +529,25 @@ export class TexasHoldemGame implements Game {
             );
             return;
         }
-        //TODO All in logic
+
+        const playerStore = await this.casino.store.getPlayer(
+            sender.MemberNumber,
+        );
+
+        bet.stake += playerStore.credits;
+
+        this.conn.SendMessage(
+            "Chat",
+            `${player.memberName} goes all in for ${playerStore.credits} more making a total bet of ${bet.stake}.`,
+        );
+
+        bet.allin = true;
+        bet.status = "waiting";
+        bet.hadTurn = true;
+
+        playerStore.credits = 0;
+        await this.casino.store.savePlayer(playerStore);
+        //TODO Next player
     };
 
     private onDealTimeout(): void {
@@ -550,6 +567,12 @@ export class TexasHoldemGame implements Game {
             sign.setProperty("Text", "Texas Holdem");
             sign.setProperty("Text2", `${Math.ceil(timeLeft / 1000)}`);
         }
+    }
+
+    private getNextPlayer(lastPlayer: API_Character): API_Character {
+        //TODO
+        // this.conn.chatRoom.characters
+        return undefined;
     }
 
     private allPlayersDone(): boolean {
