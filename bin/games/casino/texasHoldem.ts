@@ -17,6 +17,8 @@ import {
     AssetGet,
 } from "bc-bot";
 
+// FLOP; TURN; RIVER
+
 //TODO
 const TEXASHOLDEMCOMMANDS = `Three Card Poker commands:
 

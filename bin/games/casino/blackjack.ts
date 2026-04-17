@@ -1067,6 +1067,7 @@ export class BlackjackGame implements Game {
 
         if (await this.allPlayersDone()) {
             await this.resolveGame();
+            return;
         }
 
         this.willStandAt = Date.now() + AUTO_STAND_TIMEOUT_MS;
