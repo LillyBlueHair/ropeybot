@@ -1039,9 +1039,6 @@ export class BlackjackGame implements Game {
             return 0;
         }
         if (bet.surrendered) {
-            if (bet.stakeForfeit) {
-                return -100;
-            }
             return 0;
         }
         if (bet.stakeForfeit) {
