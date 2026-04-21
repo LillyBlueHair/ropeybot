@@ -22,6 +22,7 @@ const BLACKJACKCOMMANDS = `Blackjack commands:
 /bot stand - Keep your current hand
 /bot double - Double your bet and take one more card. Only available on your first two cards.
 /bot split - Split your hand into two hands if you have two cards of the same value.
+/bot surrender - Surrender your hand and get half of your bet back.
 /bot cancel - Cancel your bet. Only available before any cards are dealt.
 /bot chips - Show your current chip balance.
 /bot give <name or member number> <amount> - Give chips to another player.
@@ -80,6 +81,7 @@ export interface BlackjackPlayer {
 
 export interface BlackjackBet extends Bet {
     standing: boolean;
+    surrendered: boolean;
 }
 
 type Hand = Card[];
@@ -112,6 +114,10 @@ export class BlackjackGame implements Game {
         this.casino.commandParser.register("stand", this.onCommandStand);
         this.casino.commandParser.register("double", this.onCommandDouble);
         this.casino.commandParser.register("split", this.onCommandSplit);
+        this.casino.commandParser.register(
+            "surrender",
+            this.onCommandSurrender,
+        );
         this.casino.commandParser.register("sign", (sender, msg, args) => {
             const sign = this.casino.getSign();
 
@@ -203,6 +209,8 @@ export class BlackjackGame implements Game {
 
     async endGame(): Promise<void> {
         await waitForCondition(() => this.willDealAt === undefined);
+        await waitForCondition(() => this.autoStandTimeout === undefined);
+        await waitForCondition(() => this.autoStandTimeout === undefined);
         // await wait(2000);
 
         this.casino.commandParser.unregister("cancel");
@@ -282,6 +290,7 @@ export class BlackjackGame implements Game {
             stake: stakeValue,
             stakeForfeit,
             standing: false,
+            surrendered: false
         };
     }
 
@@ -530,6 +539,7 @@ export class BlackjackGame implements Game {
             stake: currentBet.stake,
             stakeForfeit: currentBet.stakeForfeit,
             standing: false,
+            surrendered: false,
         });
         const newBet = player.bets[player.bets.length - 1];
         this.playerHands.set(newBet, [hand[1], this.deck.pop()]);
@@ -551,6 +561,91 @@ export class BlackjackGame implements Game {
             "Chat",
             `${sender.toString()} has split their hand! Remaining time has been increased.`,
         );
+        if (this.allPlayersDone()) {
+            this.resolveGame();
+        }
+    };
+
+    private onCommandSurrender = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (this.autoStandTimeout === undefined) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You can't surrender right now.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        const bets = this.getBetsForPlayer(sender.MemberNumber);
+        const player = this.players.find(
+            (b) => b.memberNumber === sender.MemberNumber,
+        );
+        const bet = player.bets[0];
+        if (!bets) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You don't have a bet in play.",
+                sender.MemberNumber,
+            );
+            return;
+        } else if (bet.standing) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You are already standing.",
+                sender.MemberNumber,
+            );
+            return;
+        } else if (this.playerHands.get(bet) === undefined) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You don't have a hand to surrender.",
+                sender.MemberNumber,
+            );
+            return;
+        } else if (player.bets.length > 1) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You can only surrender on your inital cards.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        const hand = this.playerHands.get(bet);
+
+        if (hand.length !== 2) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You can only surrender on your initial hand.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        if (!bet.stakeForfeit) {
+            const playerStore = await this.casino.store.getPlayer(
+                sender.MemberNumber,
+            );
+            playerStore.credits += Math.floor(bet.stake / 2);
+            await this.casino.store.savePlayer(playerStore);
+        } else {
+            this.conn.SendMessage(
+                "Whisper",
+                "You can't surrender a forfeit bet.",
+                sender.MemberNumber,
+            );
+            return;
+        }
+        this.conn.SendMessage(
+            "Whisper",
+            `You surrendered your hand for ${bet.stake} chips.`,
+            sender.MemberNumber,
+        );
+
+        bet.standing = true;
+        bet.surrendered = true;
+        
         if (this.allPlayersDone()) {
             this.resolveGame();
         }
@@ -596,8 +691,11 @@ export class BlackjackGame implements Game {
                 message += `${player.memberName} wins ${totalWinnings} chips! \n`;
                 sendMessage = true;
             } else if (player.bets[0].stakeForfeit && totalWinnings !== -100) {
-                this.casino.applyForfeit(player.bets[0]);
-                message += `${player.memberName} lost and gets ${FORFEITS[player.bets[0].stakeForfeit].name}! \n`;
+                let time =
+                    FORFEITS[player.bets[0].stakeForfeit].lockTimeMs / 1000 / 60;
+                time = player.bets[0].surrendered ? time / 2 : time;
+                this.casino.applyForfeit(player.bets[0], player.bets[0].surrendered ? 0.5 : 1);
+                message += `${player.memberName} lost and gets ${FORFEITS[player.bets[0].stakeForfeit].name} for ${time} Minutes!\n`;
                 sendMessage = true;
             }
         }
