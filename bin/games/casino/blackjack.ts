@@ -290,7 +290,7 @@ export class BlackjackGame implements Game {
             stake: stakeValue,
             stakeForfeit,
             standing: false,
-            surrendered: false
+            surrendered: false,
         };
     }
 
@@ -629,23 +629,17 @@ export class BlackjackGame implements Game {
             );
             playerStore.credits += Math.floor(bet.stake / 2);
             await this.casino.store.savePlayer(playerStore);
-        } else {
-            this.conn.SendMessage(
-                "Whisper",
-                "You can't surrender a forfeit bet.",
-                sender.MemberNumber,
-            );
-            return;
         }
+
         this.conn.SendMessage(
             "Whisper",
-            `You surrendered your hand for ${Math.floor(bet.stake/2)} chips.`,
+            `You surrendered your hand for ${Math.floor(bet.stake / 2)} chips.`,
             sender.MemberNumber,
         );
 
         bet.standing = true;
         bet.surrendered = true;
-        
+
         if (this.allPlayersDone()) {
             this.resolveGame();
         }
@@ -692,9 +686,14 @@ export class BlackjackGame implements Game {
                 sendMessage = true;
             } else if (player.bets[0].stakeForfeit && totalWinnings !== -100) {
                 let time =
-                    FORFEITS[player.bets[0].stakeForfeit].lockTimeMs / 1000 / 60;
+                    FORFEITS[player.bets[0].stakeForfeit].lockTimeMs /
+                    1000 /
+                    60;
                 time = player.bets[0].surrendered ? time / 2 : time;
-                this.casino.applyForfeit(player.bets[0], player.bets[0].surrendered ? 0.5 : 1);
+                this.casino.applyForfeit(
+                    player.bets[0],
+                    player.bets[0].surrendered ? 0.5 : 1,
+                );
                 message += `${player.memberName} lost and gets ${FORFEITS[player.bets[0].stakeForfeit].name} for ${time} Minutes!\n`;
                 sendMessage = true;
             }
@@ -1033,7 +1032,7 @@ export class BlackjackGame implements Game {
         if (playerHandValue > 21) {
             return 0;
         }
-        if(bet.surrendered) {
+        if (bet.surrendered) {
             if (bet.stakeForfeit) {
                 return -100;
             }
