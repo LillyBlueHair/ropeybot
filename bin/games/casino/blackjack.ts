@@ -639,7 +639,7 @@ export class BlackjackGame implements Game {
         }
         this.conn.SendMessage(
             "Whisper",
-            `You surrendered your hand for ${bet.stake} chips.`,
+            `You surrendered your hand for ${Math.floor(bet.stake/2)} chips.`,
             sender.MemberNumber,
         );
 
@@ -1031,6 +1031,12 @@ export class BlackjackGame implements Game {
         let playerHandValue: number = this.calculateHandValue(playerHand);
         let dealerHandValue: number = this.calculateHandValue(this.dealerHand);
         if (playerHandValue > 21) {
+            return 0;
+        }
+        if(bet.surrendered) {
+            if (bet.stakeForfeit) {
+                return -100;
+            }
             return 0;
         }
         if (bet.stakeForfeit) {
