@@ -623,19 +623,25 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        if (!bet.stakeForfeit) {
+        if (bet.stakeForfeit) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You surrendered your forfeit bet for half the time.",
+                sender.MemberNumber,
+            );
+        } else {
             const playerStore = await this.casino.store.getPlayer(
                 sender.MemberNumber,
             );
             playerStore.credits += Math.floor(bet.stake / 2);
             await this.casino.store.savePlayer(playerStore);
-        }
 
-        this.conn.SendMessage(
-            "Whisper",
-            `You surrendered your hand for ${Math.floor(bet.stake / 2)} chips.`,
-            sender.MemberNumber,
-        );
+            this.conn.SendMessage(
+                "Whisper",
+                `You surrendered your hand for ${Math.floor(bet.stake / 2)} chips.`,
+                sender.MemberNumber,
+            );
+        }
 
         bet.standing = true;
         bet.surrendered = true;
