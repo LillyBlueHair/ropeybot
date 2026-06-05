@@ -320,8 +320,8 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         console.log("Socket reconnect attempt");
     };
 
-    private onSocketDisconnect = () => {
-        console.log("Socket disconnected");
+    private onSocketDisconnect = (reason: string) => {
+        console.log("Socket disconnected" + (reason ? `: ${reason}` : ""));
         this.loggedIn = new PromiseResolve<void>();
         this.roomSynced = new PromiseResolve<void>();
     };
