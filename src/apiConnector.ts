@@ -324,6 +324,9 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         console.log("Socket disconnected" + (reason ? `: ${reason}` : ""));
         this.loggedIn = new PromiseResolve<void>();
         this.roomSynced = new PromiseResolve<void>();
+        if (reason === "io client disconnect") {
+            this.sock.connect();
+        }
     };
 
     private onServerInfo = (info: ServerInfoMessage) => {
