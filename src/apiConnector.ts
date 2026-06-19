@@ -324,8 +324,8 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         console.log("Socket disconnected" + (reason ? `: ${reason}` : ""));
         this.loggedIn = new PromiseResolve<void>();
         this.roomSynced = new PromiseResolve<void>();
-        if (reason === "io client disconnect") {
-            console.log("reconnecting attempt on io client disconnect");
+        if (reason === "io server disconnect") {
+            console.log("reconnecting attempt on io server disconnect");
             this.sock.connect();
         }
     };
