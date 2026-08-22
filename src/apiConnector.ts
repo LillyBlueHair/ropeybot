@@ -226,8 +226,18 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
     ): void {
         if (msg.length > ServerChatMessageMaxLength) {
             console.error("Message too long, truncating");
-            this.SendMessage(type, msg.substring(0, ServerChatMessageMaxLength), target, dict);
-            this.SendMessage(type, msg.substring(ServerChatMessageMaxLength), target, dict);
+            this.SendMessage(
+                type,
+                msg.substring(0, ServerChatMessageMaxLength),
+                target,
+                dict,
+            );
+            this.SendMessage(
+                type,
+                msg.substring(ServerChatMessageMaxLength),
+                target,
+                dict,
+            );
             return;
         }
 
