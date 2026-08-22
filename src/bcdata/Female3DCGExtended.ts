@@ -197,27 +197,26 @@ import {
 
 import { E } from "./female3DCG.js";
 
-const InventoryItemHandheldPlushiesSetOptionHook = () => {};
+
 
 /**
  * An enum encapsulating the available extended item archetypes
- * @satisfies {Record<Uppercase<ExtendedArchetype>, ExtendedArchetype>}
  */
-export const ExtendedArchetype = /** @type {const} */ ({
-	MODULAR: "modular",
-	TYPED: "typed",
-	VIBRATING: "vibrating",
-	VARIABLEHEIGHT: "variableheight",
-	TEXT: "text",
-	NOARCH: "noarch",
-});
+// const ExtendedArchetype: Record<Uppercase<ExtendedArchetype>, ExtendedArchetype> = ({
+enum ExtendedArchetype {
+	MODULAR = "modular",
+	TYPED = "typed",
+	VIBRATING = "vibrating",
+	VARIABLEHEIGHT = "variableheight",
+	TEXT = "text",
+	NOARCH = "noarch",
+}
 
 /**
  * An object containing all extended item configurations.
  * @type {ExtendedItemMainConfig}
- * @const
  */
-export var AssetFemale3DCGExtended = {
+export var AssetFemale3DCGExtended: ExtendedItemMainConfig = {
 	BodyUpper: {
 		// NOTE: Switch to the `MODULAR` archetype if we'd want to allow for the simultaneous use of multiple overlays
 		Small: {

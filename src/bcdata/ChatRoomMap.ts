@@ -29,15 +29,6 @@ const Player = {
 };
 
 const ChatRoomPlayerIsAdmin = () => false;
-const ChatRoomMapViewGetConnectivityDirections = (x, y, Condition) => {
-    return {
-        North: 0,
-        South: 0,
-        East: 0,
-        West: 0
-    };
-};
-
 
 // Taken from BC (with just conversion into TS syntax)
 export const ChatRoomMapViewTileList: ChatRoomMapTile[] = [
@@ -98,7 +89,6 @@ export const ChatRoomMapViewTileList: ChatRoomMapTile[] = [
 	{ ID: 2060, Type: "Water", Style: "Shallow", Transparency: 0.3, TransparencyCutoutHeight: 0.5 },
 	{ ID: 2090, Type: "Water", Style: "Lava", Transparency: 0.9, TransparencyCutoutHeight: 0.3, CanEnter: () => Player.Title === "Dragon"},
 ];
-
 
 export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 

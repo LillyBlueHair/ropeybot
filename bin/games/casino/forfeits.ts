@@ -341,7 +341,7 @@ function makeChaste(
                 `After betting and losing at the Cotton Candy Casino, ${character} has lost her privileges to orgasm. ` +
                 `This chastity belt will ensure that she is kept chaste until her time is up.`,
         });
-        chastityBelt.SetColor(color + "");
+        chastityBelt.SetColor(color);
         chastityBelt.setProperty("TypeRecord", {
             a: 1,
             c: 1,

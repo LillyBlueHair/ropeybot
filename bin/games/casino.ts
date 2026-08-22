@@ -1067,13 +1067,16 @@ ${forfeitsString()}
         if (applyFn) {
             applyFn(char, this.conn.Player.MemberNumber, color);
         } else if (items.length === 1) {
+            let characterHairColor =
+                char.Appearance.InventoryGet("HairFront").GetColor();
             const added = char.Appearance.AddItem(items[0]);
             try {
-                let colors: string[] = [];
+                characterHairColor = characterHairColor[0] as BCColor;
+                let colors: BCColor[] = [];
                 if (colourLayers) {
                     for (let i = 0; i <= Math.max(...colourLayers); i++) {
                         if (colourLayers.includes(i)) {
-                            colors.push(color);
+                            colors.push(characterHairColor);
                         } else {
                             colors.push("Default");
                         }

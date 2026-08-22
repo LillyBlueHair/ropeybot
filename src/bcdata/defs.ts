@@ -396,6 +396,7 @@ export function PropertyOpacityValidate(...args: any[]): any {
 	return null;
 };
 
+
 // from ExtendedItem.js (we don't care about the values, but the array needs to be the right size)
 /**
  * The X & Y co-ordinates of each option's button, based on the number to be displayed per page.
@@ -418,66 +419,14 @@ export const ExtendedXY: [number, number][][] = [
 export const ExtendedXYWithoutImages: [number, number][][] = [
     [], //0 placeholder
     [[1385, 450]], //1 option per page
-    [
-        [1260, 450],
-        [1510, 450],
-    ], //2 options per page
-    [
-        [1135, 450],
-        [1385, 450],
-        [1635, 450],
-    ], //3 options per page
-    [
-        [1260, 450],
-        [1510, 450],
-        [1260, 525],
-        [1510, 525],
-    ], //4 options per page
-    [
-        [1135, 450],
-        [1385, 450],
-        [1635, 450],
-        [1260, 525],
-        [1510, 525],
-    ], //5 options per page
-    [
-        [1135, 450],
-        [1385, 450],
-        [1635, 450],
-        [1135, 525],
-        [1385, 525],
-        [1635, 525],
-    ], //6 options per page
-    [
-        [1010, 450],
-        [1260, 450],
-        [1510, 450],
-        [1760, 450],
-        [1135, 525],
-        [1385, 525],
-        [1635, 525],
-    ], //7 options per page
-    [
-        [1010, 450],
-        [1260, 450],
-        [1510, 450],
-        [1760, 450],
-        [1010, 525],
-        [1260, 525],
-        [1510, 525],
-        [1760, 525],
-    ], //8 options per page
-    [
-        [1135, 450],
-        [1385, 450],
-        [1635, 450],
-        [1135, 525],
-        [1385, 525],
-        [1635, 525],
-        [1135, 600],
-        [1385, 600],
-        [1635, 600],
-    ], //9 options per page
+    [[1260, 450], [1510, 450]], //2 options per page
+    [[1135, 450], [1385, 450], [1635, 450]], //3 options per page
+    [[1260, 450], [1510, 450], [1260, 525], [1510, 525]], //4 options per page
+    [[1135, 450], [1385, 450], [1635, 450], [1260, 525], [1510, 525]], //5 options per page
+    [[1135, 450], [1385, 450], [1635, 450], [1135, 525], [1385, 525], [1635, 525]], //6 options per page
+    [[1010, 450], [1260, 450], [1510, 450], [1760, 450], [1135, 525], [1385, 525], [1635, 525]], //7 options per page
+    [[1010, 450], [1260, 450], [1510, 450], [1760, 450], [1010, 525], [1260, 525], [1510, 525], [1760, 525]], //8 options per page
+    [[1135, 450], [1385, 450], [1635, 450], [1135, 525], [1385, 525], [1635, 525], [1135, 600], [1385, 600], [1635, 600]], //9 options per page
 ];
 
 // from TypedItem.js
@@ -508,6 +457,7 @@ export const VibratorModeSet: {STANDARD: "Standard", ADVANCED: "Advanced"} = {
 	STANDARD: "Standard",
 	ADVANCED: "Advanced",
 };
+
 
 /**
  * Parse the passed typed item draw data as passed via the extended item config
@@ -551,6 +501,8 @@ export const PoseAllKneeling: readonly AssetPoseName[] = Object.freeze(["Kneel",
 export const PoseAllStanding: readonly AssetPoseName[] = Object.freeze(["BaseLower", "LegsClosed", "Spread"]);
 
 export const InterfaceTextGet = (x: string) => undefined;
+
+
 
 // from TextItem.js (stubbed)
 export const TextItem = {
