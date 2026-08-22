@@ -548,15 +548,59 @@ export const CommonNoop = undefined;
 export const CommonTime = () => 0;
 
 export const PoseAllKneeling: readonly AssetPoseName[] = Object.freeze(["Kneel", "KneelingSpread"]);
-export const PoseAllStanding: readonly AssetPoseName[] = Object.freeze(["BaseLower", "LegsOpen", "LegsClosed", "Spread"]);
+export const PoseAllStanding: readonly AssetPoseName[] = Object.freeze(["BaseLower", "LegsClosed", "Spread"]);
 
 export const InterfaceTextGet = (x: string) => undefined;
 
 // from TextItem.js (stubbed)
-export const TextItem = undefined;
+export const TextItem = {
+	Init: (..._: any[]) => false,
+	Load: (..._: any[]) => {},
+	Draw: (..._: any[]) => {},
+	Exit: (..._: any[]) => {},
+	PublishAction: (..._: any[]) => {},
+	GenericTextDrawHook: (..._: any[]) => {},
+	GenericTextArcDrawHook: (..._: any[]) => {},
+};
 
 // from Time.js I believe. exists in Timer.js as well(stubbed)
 export const CurrentTime = 0;
 
 // from ChatRoomMapView.js (stubbed)
 export const ChatRoomMapViewGetObjectAtPos = (x: number, y: number): ChatRoomMapObject | null => null;
+
+export function ChatRoomMapViewGetConnectivityDirections(X: number, Y: number, Condition: (X: number, Y: number) => boolean) {
+	return {
+		North: Condition(X, Y - 1),
+		South: Condition(X, Y + 1),
+		East: Condition(X + 1, Y),
+		West: Condition(X - 1, Y)
+	};
+}
+
+//#region addendum, manual updates
+export function InventoryItemHandheldPlushiesSetOptionHook(...args: any[]): any {
+	return null;
+};
+
+// OwnerTimerPadlock.js
+export const InventoryItemMiscOwnerTimerPadlockExitHook = (..._: any[]) => {};
+
+// MistressTimerPadlock.js
+export const InventoryItemMiscMistressTimerPadlockExitHook = (..._: any[]) => {};
+
+// TimerPasswordPadlock.js
+export const InventoryItemMiscTimerPasswordPadlockExitHook = (..._: any[]) => {};
+
+// LoveChastityBelt.js
+export const InventoryItemPelvisLoveChastityBeltDrawHook = (..._: any[]) => {};
+export const InventoryItemPelvisLoveChastityBeltValidateHook = (..._: any[]): any => {};
+
+// FuturisticTrainingBelt.js
+export const AssetsItemPelvisFuturisticTrainingBeltScriptDrawHook = (..._: any[]) => {};
+
+// DynamicDraw.js
+export const DynamicDrawTextEffect = {
+	BURN: "burn",
+};
+//#endregion

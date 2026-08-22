@@ -12,8 +12,8 @@ importers:
         specifier: link:src
         version: link:src
       bc-stubs:
-        specifier: 126.0.0
-        version: 126.0.0
+        specifier: 130.0.0
+        version: 130.0.0
       lodash:
         specifier: ^4.17.23
         version: 4.17.23
@@ -40,8 +40,8 @@ importers:
         specifier: ^20.19.37
         version: 20.19.37
       esbuild:
-        specifier: ^0.19.12
-        version: 0.19.12
+        specifier: ^0.27.2
+        version: 0.27.2
       tsx:
         specifier: ^4.21.0
         version: 4.21.0
@@ -535,79 +535,79 @@ packages:
 
 snapshots:
 
-  '@esbuild/aix-ppc64@0.19.12':
+  '@esbuild/aix-ppc64@0.27.2':
     optional: true
 
   '@esbuild/aix-ppc64@0.27.4':
     optional: true
 
-  '@esbuild/android-arm64@0.19.12':
+  '@esbuild/android-arm@0.27.2':
     optional: true
 
   '@esbuild/android-arm64@0.27.4':
     optional: true
 
-  '@esbuild/android-arm@0.19.12':
+  '@esbuild/darwin-arm64@0.27.2':
     optional: true
 
   '@esbuild/android-arm@0.27.4':
     optional: true
 
-  '@esbuild/android-x64@0.19.12':
+  '@esbuild/freebsd-arm64@0.27.2':
     optional: true
 
   '@esbuild/android-x64@0.27.4':
     optional: true
 
-  '@esbuild/darwin-arm64@0.19.12':
+  '@esbuild/linux-arm64@0.27.2':
     optional: true
 
   '@esbuild/darwin-arm64@0.27.4':
     optional: true
 
-  '@esbuild/darwin-x64@0.19.12':
+  '@esbuild/linux-ia32@0.27.2':
     optional: true
 
   '@esbuild/darwin-x64@0.27.4':
     optional: true
 
-  '@esbuild/freebsd-arm64@0.19.12':
+  '@esbuild/linux-mips64el@0.27.2':
     optional: true
 
   '@esbuild/freebsd-arm64@0.27.4':
     optional: true
 
-  '@esbuild/freebsd-x64@0.19.12':
+  '@esbuild/linux-riscv64@0.27.2':
     optional: true
 
   '@esbuild/freebsd-x64@0.27.4':
     optional: true
 
-  '@esbuild/linux-arm64@0.19.12':
+  '@esbuild/linux-x64@0.27.2':
     optional: true
 
   '@esbuild/linux-arm64@0.27.4':
     optional: true
 
-  '@esbuild/linux-arm@0.19.12':
+  '@esbuild/netbsd-x64@0.27.2':
     optional: true
 
   '@esbuild/linux-arm@0.27.4':
     optional: true
 
-  '@esbuild/linux-ia32@0.19.12':
+  '@esbuild/openbsd-x64@0.27.2':
     optional: true
 
   '@esbuild/linux-ia32@0.27.4':
     optional: true
 
-  '@esbuild/linux-loong64@0.19.12':
+  '@esbuild/sunos-x64@0.27.2':
     optional: true
 
   '@esbuild/linux-loong64@0.27.4':
     optional: true
 
-  '@esbuild/linux-mips64el@0.19.12':
+  '@esbuild/win32-ia32@0.27.2':
     optional: true
 
   '@esbuild/linux-mips64el@0.27.4':
@@ -704,6 +704,7 @@ snapshots:
 
   bc-stubs@126.0.0:
     dependencies:
+      '@total-typescript/ts-reset': 0.6.1
       socket.io-client: 4.6.1
     transitivePeerDependencies:
       - bufferutil
@@ -736,7 +737,7 @@ snapshots:
 
   engine.io-parser@5.0.7: {}
 
-  esbuild@0.19.12:
+  esbuild@0.27.2:
     optionalDependencies:
       '@esbuild/aix-ppc64': 0.19.12
       '@esbuild/android-arm': 0.19.12

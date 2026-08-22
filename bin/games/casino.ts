@@ -1017,7 +1017,7 @@ ${forfeitsString()}
         return sign;
     }
 
-    public setSignColor(colors: [string, string, string]): void {
+    public setSignColor(colors: [BCColor, BCColor, BCColor]): void {
         this.getSign().SetColor(colors);
     }
 
