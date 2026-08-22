@@ -750,7 +750,7 @@ export class BlackjackGame implements Game {
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
-        if (!sender.IsRoomWhitelistedOrAdmin) {
+        if (!sender.IsRoomWhitelistedOrAdmin()) {
             this.conn.reply(
                 msg,
                 "You must be whitelisted or an admin to use this command.",
