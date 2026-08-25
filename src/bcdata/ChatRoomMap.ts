@@ -12,45 +12,41 @@
  * limitations under the License.
  */
 
-import { ChatRoomMapViewGetObjectAtPos, CurrentTime } from "./defs.ts";
+import { ChatRoomMapViewGetObjectAtPos, ChatRoomMapViewGetConnectivityDirections, CurrentTime } from "./defs.ts";
 
 // dummy definitions so the below can be copied from BC as verbatim as possible
 const Player = {
-    MapData: {
-        PrivateState: {
-            HasKeyBronze: false,
-            HasKeySilver: false,
-            HasKeyGold: false,
-        },
-    },
-    Title: "",
-    CanInteract: () => true,
-    HasEffect: (effect) => false,
+	Title: "",
+	MapData: {
+		PrivateState: {
+			HasKeyBronze: false,
+			HasKeySilver: false,
+			HasKeyGold: false,
+		},
+	},
+	HasEffect: (_effect: string) => true,
+	CanInteract: () => true,
 };
 
 const ChatRoomPlayerIsAdmin = () => false;
-const ChatRoomMapViewGetConnectivityDirections = (x, y, Condition) => {
-    return {
-        North: 0,
-        South: 0,
-        East: 0,
-        West: 0
-    };
-};
-
 
 // Taken from BC (with just conversion into TS syntax)
-export const ChatRoomMapViewTileList = [
+export const ChatRoomMapViewTileList: ChatRoomMapTile[] = [
 	{ ID: 100, Type: "Floor", Style: "OakWood" },
 	{ ID: 110, Type: "Floor", Style: "Stone" },
 	{ ID: 115, Type: "Floor", Style: "Pavement" },
 	{ ID: 120, Type: "Floor", Style: "Ceramic" },
+	{ ID: 121, Type: "Floor", Style: "CeramicDark" },
 	{ ID: 130, Type: "Floor", Style: "CarpetPink" },
 	{ ID: 131, Type: "Floor", Style: "CarpetBlue" },
 	{ ID: 132, Type: "Floor", Style: "CarpetRed" },
 	{ ID: 140, Type: "Floor", Style: "Padded" },
 	{ ID: 150, Type: "Floor", Style: "LatexFloor" },
 	{ ID: 160, Type: "Floor", Style: "Tile" },
+	{ ID: 170, Type: "Floor", Style: "HexBlue" },
+	{ ID: 171, Type: "Floor", Style: "HexPurple" },
+	{ ID: 172, Type: "Floor", Style: "Machine" },
+	{ ID: 199, Type: "Floor", Style: "HalfWall", BlockVision: true, CanEnter: () => false, },
 
 	{ ID: 200, Type: "FloorExterior", Style: "Dirt" },
 	{ ID: 210, Type: "FloorExterior", Style: "Grass" },
@@ -76,6 +72,12 @@ export const ChatRoomMapViewTileList = [
 	{ ID: 1080, Type: "Wall", Style: "Padded", BlockVision: true, BlockHearing: true, CanEnter: () => false, },
 	{ ID: 1090, Type: "Wall", Style: "Tile", BlockVision: true, CanEnter: () => false, },
 	{ ID: 1100, Type: "Wall", Style: "Lattice", BlockVision: true, CanEnter: () => false, },
+	{ ID: 1200, Type: "Wall", Style: "HexBlue", BlockVision: true, CanEnter: () => false, },
+	{ ID: 1201, Type: "Wall", Style: "HexPurple", BlockVision: true, CanEnter: () => false, },
+	{ ID: 1202, Type: "Wall", Style: "PipeBlue", BlockVision: true, CanEnter: () => false, },
+	{ ID: 1203, Type: "Wall", Style: "PipePurple", BlockVision: true, CanEnter: () => false, },
+	{ ID: 1204, Type: "Wall", Style: "SteelBlack", BlockVision: true, CanEnter: () => false, },
+	{ ID: 1205, Type: "Wall", Style: "SteelGary", BlockVision: true, CanEnter: () => false, },
 
 	{ ID: 2000, Type: "Water", Style: "Pool", Transparency: 0.5, TransparencyCutoutHeight: 0.45 },
 	{ ID: 2010, Type: "Water", Style: "Sea", Transparency: 0.5, TransparencyCutoutHeight: 0.45 },
@@ -87,7 +89,6 @@ export const ChatRoomMapViewTileList = [
 	{ ID: 2060, Type: "Water", Style: "Shallow", Transparency: 0.3, TransparencyCutoutHeight: 0.5 },
 	{ ID: 2090, Type: "Water", Style: "Lava", Transparency: 0.9, TransparencyCutoutHeight: 0.3, CanEnter: () => Player.Title === "Dragon"},
 ];
-
 
 export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 
@@ -119,6 +120,21 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 	{ ID: 320, Type: "FloorDecorationThemed", Style: "BanzaiTree", Top: -0.1 },
 	{ ID: 350, Type: "FloorDecorationThemed", Style: "MedicalDesk", Top: -0.15 },
 	{ ID: 370, Type: "FloorDecorationThemed", Style: "Toilet", Top: -0.65, Left: 0.05, Height: 1.5, Width: 0.9 },
+	{ ID: 380, Type: "FloorDecorationThemed", Style: "DeskBlue" },
+	{ ID: 381, Type: "FloorDecorationThemed", Style: "DeskPurple" },
+	{ ID: 382, Type: "FloorDecorationThemed", Style: "ConsoleLeft", Top: -0.3, Left: 0, Height: 1.3, Width: 1 },
+	{ ID: 383, Type: "FloorDecorationThemed", Style: "ConsoleRight", Top: -0.3, Left: 0, Height: 1.3, Width: 1 },
+	{ ID: 384, Type: "FloorDecorationThemed", Style: "LongDeskLeft", Top: -0.3, Left: 0, Height: 1.3, Width: 1 },
+	{ ID: 385, Type: "FloorDecorationThemed", Style: "LongDeskRight", Top: -0.3, Left: 0, Height: 1.3, Width: 1 },
+	{ ID: 386, Type: "FloorDecorationThemed", Style: "Cabinet", Top: -0.9, Left: 0, Height: 2, Width: 1 },
+	{ ID: 387, Type: "FloorDecorationThemed", Style: "Television", Top: -0.3, Left: 0, Height: 1.3, Width: 1 },
+	{ ID: 388, Type: "FloorDecorationThemed", Style: "TelevisionBack", Top: -0.3, Left: 0, Height: 1.3, Width: 1 },
+	{ ID: 389, Type: "FloorDecorationThemed", Style: "Wardrobe", Top: -0.9, Left: 0, Height: 2, Width: 1 },
+	{ ID: 390, Type: "FloorDecorationThemed", Style: "StandingBellflowerBanner", Top: -1.1, Left: 0.15, Height: 1.7, Width: 0.7 },
+	{ ID: 391, Type: "FloorDecorationThemed", Style: "BondageClubBanner", Top: -1.1, Left: 0.15, Height: 1.7, Width: 0.7 },
+	{ ID: 392, Type: "FloorDecorationThemed", Style: "VoidOrderBanner", Top: -0.9, Left: 0.13, Height: 1.5, Width: 0.7 },
+	{ ID: 393, Type: "FloorDecorationThemed", Style: "KatanaOnStand", Top: -0.4, Left: 0.1, Height: 1.0, Width: 0.8 },
+	{ ID: 394, Type: "FloorDecorationThemed", Style: "MagicMark", Top: 0.03, Left: 0.05, Height: 0.9, Width: 0.9 },
 
 	{ ID: 500, Type: "FloorDecorationParty", Style: "Blank" },
 	{ ID: 510, Type: "FloorDecorationParty", Style: "BalloonFiveColor", Top: -0.6, Height: 1.5 },
@@ -432,7 +448,8 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 	{ ID: 1070, Type: "FloorItem", Style: "Coffin", Top: -1.2, Height: 1.85, AssetName: "Coffin", AssetGroup: "ItemDevices" },
 	{ ID: 1080, Type: "FloorItem", Style: "TheDisplayFrame", Top: -1, Height: 2, AssetName: "TheDisplayFrame", AssetGroup: "ItemDevices" },
 	{ ID: 1090, Type: "FloorItem", Style: "Pole", Top: -0.85, Height: 1.8, AssetName: "Pole", AssetGroup: "ItemDevices" },
-	{ ID: 1095, Type: "FloorItem", Style: "MedicalBed", Top: -0.82, Left: 0.05, Height: 1.8, Width: 0.90, AssetName: "MedicalBed", AssetGroup: "ItemDevices"},
+	{ ID: 1095, Type: "FloorItem", Style: "MedicalBed", Top: -0.82, Left: 0.05, Height: 1.8, Width: 0.90, AssetName: "MedicalBed", AssetGroup: "ItemDevices" },
+	{ ID: 1096, Type: "FloorItem", Style: "FuturisticCrate", Top: -0.95, Height: 2, AssetName: "FuturisticCrate", AssetGroup: "ItemDevices" },
 
 	{ ID: 1100, Type: "FloorNumber", Style: "Blank" },
 	{ ID: 1110, Type: "FloorNumber", Style: "Number0" },
@@ -493,6 +510,9 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 	{ ID: 2010, Type: "FloorObstacle", Style: "Statue", Top: -1, Height: 2, CanEnter: () => false, },
 	{ ID: 2011, Type: "FloorObstacle", Style: "Knight", Top: -1.25, Left: 0.05, Height: 1.65, Width: 0.75, CanEnter: () => false, },
 	{ ID: 2012, Type: "FloorObstacle", Style: "Samurai", Top: -1.25, Left: 0.05, Height: 1.75, Width: 0.85, CanEnter: () => false, },
+	{ ID: 2013, Type: "FloorObstacle", Style: "Totem", Top: -1, Height: 2, CanEnter: () => false, },
+	{ ID: 2014, Type: "FloorObstacle", Style: "EasterIsland", Top: -1, Height: 2, CanEnter: () => false, },
+	{ ID: 2015, Type: "FloorObstacle", Style: "OrderOfTheVoidTotem", Top: -1, Height: 2, CanEnter: () => false, },
 	{ ID: 2020, Type: "FloorObstacle", Style: "Barrel", Top: -0.5, Height: 1.5, CanEnter: () => false, },
 	{ ID: 2025, Type: "FloorObstacle", Style: "Chest", Top: 0, Height: 1, CanEnter: () => false, },
 	{ ID: 2030, Type: "FloorObstacle", Style: "IronBars", Top: -1, Height: 2, CanEnter: () => false, },
@@ -560,6 +580,10 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 	{ ID: 3275, Type: "WallDecoration", Style: "AirConditioner", Top: 0.27, Height: 0.8 },
 	{ ID: 3280, Type: "WallDecoration", Style: "ShowerHead" },
 	{ ID: 3290, Type: "WallDecoration", Style: "EnemaHead" },
+	{ ID: 3301, Type: "WallDecoration", Style: "MonitorSmall" },
+	{ ID: 3302, Type: "WallDecoration", Style: "MonitorBigLeft" },
+	{ ID: 3303, Type: "WallDecoration", Style: "MonitorBigRight" },
+
 
 	{ ID: 4000, Type: "WallPath", Style: "Blank", CanEnter: function() { return false; } },
 	{ ID: 4010, Type: "WallPath", Style: "WoodOpen", Top: -1, Height: 2, CanEnter: function() { return true; } },
@@ -570,7 +594,18 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 	{ ID: 4015, Type: "WallPath", Style: "WoodLockedGold", OccupiedStyle: "WoodOpen", Top: -1, Height: 2, CanEnter: function() { return Player.MapData.PrivateState.HasKeyGold == true; } },
 	{ ID: 4020, Type: "WallPath", Style: "Metal", OccupiedStyle: "MetalOpen", Top: -1, Height: 2, CanEnter: function() { return true; } },
 	{ ID: 4021, Type: "WallPath", Style: "MetalUp", OccupiedStyle: "MetalOpen", Top: -1, Height: 2, CanEnter: function(Direction) { return Direction === "U" || Direction === "";  } },
-	{ ID: 4022, Type: "WallPath", Style: "MetalDown", OccupiedStyle: "MetalOpen", Top: -1, Height: 2, CanEnter: function(Direction) { return Direction === "D" || Direction === ""; } },
+	{ ID: 4022, Type: "WallPath", Style: "MetalDown", OccupiedStyle: "MetalOpen", Top: -1, Height: 2, CanEnter: function (Direction) { return Direction === "D" || Direction === ""; } },
+	{ ID: 4023, Type: "WallPath", Style: "MetalLockedBronze", OccupiedStyle: "MetalOpen", Top: -1, Height: 2, CanEnter: function () { return Player.MapData.PrivateState.HasKeyBronze == true; } },
+	{ ID: 4024, Type: "WallPath", Style: "MetalLockedSilver", OccupiedStyle: "MetalOpen", Top: -1, Height: 2, CanEnter: function () { return Player.MapData.PrivateState.HasKeySilver == true; } },
+	{ ID: 4025, Type: "WallPath", Style: "MetalLockedGold", OccupiedStyle: "MetalOpen", Top: -1, Height: 2, CanEnter: function () { return Player.MapData.PrivateState.HasKeyGold == true; } },
+	{ ID: 4030, Type: "WallPath", Style: "BrownDoor", OccupiedStyle: "BrownDoorOpen", Top: -0.55, Height: 1.55, Left: 0.06, Width: 0.85, CanEnter: function () { return Player.CanInteract(); } },
+	{ ID: 4031, Type: "WallPath", Style: "BrownDoorOpen", Top: -0.55, Height: 1.55, Left: 0.06, Width: 0.85, CanEnter: function () { return true; } },
+	{ ID: 4032, Type: "WallPath", Style: "RoyalDoor", OccupiedStyle: "RoyalDoorOpen", Top: -0.55, Height: 1.55, Left: 0.06, Width: 0.85, CanEnter: function () { return Player.CanInteract(); } },
+	{ ID: 4033, Type: "WallPath", Style: "RoyalDoorOpen", Top: -0.55, Height: 1.55, Left: 0.06, Width: 0.85, CanEnter: function () { return true; } },
+	{ ID: 4034, Type: "WallPath", Style: "SteelDoor", OccupiedStyle: "SteelDoorOpen", Top: -0.55, Height: 1.55, Left: 0.06, Width: 0.85, CanEnter: function () { return Player.CanInteract(); } },
+	{ ID: 4035, Type: "WallPath", Style: "SteelDoorOpen", Top: -0.55, Height: 1.55, Left: 0.06, Width: 0.85, CanEnter: function () { return true; } },
+	{ ID: 4036, Type: "WallPath", Style: "GrayDoor", OccupiedStyle: "GrayDoorOpen", Top: -0.55, Height: 1.55, Left: 0.06, Width: 0.85, CanEnter: function () { return Player.CanInteract(); } },
+	{ ID: 4037, Type: "WallPath", Style: "GrayDoorOpen", Top: -0.55, Height: 1.55, Left: 0.06, Width: 0.85, CanEnter: function () { return true; } },
 
 
 	{ ID: 5010, Type: "Banners", Style: "Red", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
@@ -578,6 +613,14 @@ export const ChatRoomMapViewObjectList: ChatRoomMapObject[] = [
 	{ ID: 5012, Type: "Banners", Style: "Green", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
 	{ ID: 5013, Type: "Banners", Style: "Yellow", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
 	{ ID: 5014, Type: "Banners", Style: "Black", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
+	{ ID: 5015, Type: "Banners", Style: "PaladinBanner", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
+	{ ID: 5016, Type: "Banners", Style: "ServiOrdinisBanner", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
+	{ ID: 5017, Type: "Banners", Style: "BellflowerBanner", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
+	{ ID: 5018, Type: "Banners", Style: "BondageClub", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
+	{ ID: 5019, Type: "Banners", Style: "Inquisition", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
+	{ ID: 5020, Type: "Banners", Style: "MagesSacrosanctorum", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
+	{ ID: 5021, Type: "Banners", Style: "MaidSorority", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
+	{ ID: 5022, Type: "Banners", Style: "Priesthood", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
+	{ ID: 5023, Type: "Banners", Style: "VoidOrder", Top: 0.25, Left: 0.25, Height: 0.6, Width: 0.50, },
 
 ];
-

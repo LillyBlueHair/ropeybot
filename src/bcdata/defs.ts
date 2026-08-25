@@ -396,6 +396,7 @@ export function PropertyOpacityValidate(...args: any[]): any {
 	return null;
 };
 
+
 // from ExtendedItem.js (we don't care about the values, but the array needs to be the right size)
 /**
  * The X & Y co-ordinates of each option's button, based on the number to be displayed per page.
@@ -418,66 +419,14 @@ export const ExtendedXY: [number, number][][] = [
 export const ExtendedXYWithoutImages: [number, number][][] = [
     [], //0 placeholder
     [[1385, 450]], //1 option per page
-    [
-        [1260, 450],
-        [1510, 450],
-    ], //2 options per page
-    [
-        [1135, 450],
-        [1385, 450],
-        [1635, 450],
-    ], //3 options per page
-    [
-        [1260, 450],
-        [1510, 450],
-        [1260, 525],
-        [1510, 525],
-    ], //4 options per page
-    [
-        [1135, 450],
-        [1385, 450],
-        [1635, 450],
-        [1260, 525],
-        [1510, 525],
-    ], //5 options per page
-    [
-        [1135, 450],
-        [1385, 450],
-        [1635, 450],
-        [1135, 525],
-        [1385, 525],
-        [1635, 525],
-    ], //6 options per page
-    [
-        [1010, 450],
-        [1260, 450],
-        [1510, 450],
-        [1760, 450],
-        [1135, 525],
-        [1385, 525],
-        [1635, 525],
-    ], //7 options per page
-    [
-        [1010, 450],
-        [1260, 450],
-        [1510, 450],
-        [1760, 450],
-        [1010, 525],
-        [1260, 525],
-        [1510, 525],
-        [1760, 525],
-    ], //8 options per page
-    [
-        [1135, 450],
-        [1385, 450],
-        [1635, 450],
-        [1135, 525],
-        [1385, 525],
-        [1635, 525],
-        [1135, 600],
-        [1385, 600],
-        [1635, 600],
-    ], //9 options per page
+    [[1260, 450], [1510, 450]], //2 options per page
+    [[1135, 450], [1385, 450], [1635, 450]], //3 options per page
+    [[1260, 450], [1510, 450], [1260, 525], [1510, 525]], //4 options per page
+    [[1135, 450], [1385, 450], [1635, 450], [1260, 525], [1510, 525]], //5 options per page
+    [[1135, 450], [1385, 450], [1635, 450], [1135, 525], [1385, 525], [1635, 525]], //6 options per page
+    [[1010, 450], [1260, 450], [1510, 450], [1760, 450], [1135, 525], [1385, 525], [1635, 525]], //7 options per page
+    [[1010, 450], [1260, 450], [1510, 450], [1760, 450], [1010, 525], [1260, 525], [1510, 525], [1760, 525]], //8 options per page
+    [[1135, 450], [1385, 450], [1635, 450], [1135, 525], [1385, 525], [1635, 525], [1135, 600], [1385, 600], [1635, 600]], //9 options per page
 ];
 
 // from TypedItem.js
@@ -508,6 +457,7 @@ export const VibratorModeSet: {STANDARD: "Standard", ADVANCED: "Advanced"} = {
 	STANDARD: "Standard",
 	ADVANCED: "Advanced",
 };
+
 
 /**
  * Parse the passed typed item draw data as passed via the extended item config
@@ -548,15 +498,61 @@ export const CommonNoop = undefined;
 export const CommonTime = () => 0;
 
 export const PoseAllKneeling: readonly AssetPoseName[] = Object.freeze(["Kneel", "KneelingSpread"]);
-export const PoseAllStanding: readonly AssetPoseName[] = Object.freeze(["BaseLower", "LegsOpen", "LegsClosed", "Spread"]);
+export const PoseAllStanding: readonly AssetPoseName[] = Object.freeze(["BaseLower", "LegsClosed", "Spread"]);
 
 export const InterfaceTextGet = (x: string) => undefined;
 
+
+
 // from TextItem.js (stubbed)
-export const TextItem = undefined;
+export const TextItem = {
+	Init: (..._: any[]) => false,
+	Load: (..._: any[]) => {},
+	Draw: (..._: any[]) => {},
+	Exit: (..._: any[]) => {},
+	PublishAction: (..._: any[]) => {},
+	GenericTextDrawHook: (..._: any[]) => {},
+	GenericTextArcDrawHook: (..._: any[]) => {},
+};
 
 // from Time.js I believe. exists in Timer.js as well(stubbed)
 export const CurrentTime = 0;
 
 // from ChatRoomMapView.js (stubbed)
 export const ChatRoomMapViewGetObjectAtPos = (x: number, y: number): ChatRoomMapObject | null => null;
+
+export function ChatRoomMapViewGetConnectivityDirections(X: number, Y: number, Condition: (X: number, Y: number) => boolean) {
+	return {
+		North: Condition(X, Y - 1),
+		South: Condition(X, Y + 1),
+		East: Condition(X + 1, Y),
+		West: Condition(X - 1, Y)
+	};
+}
+
+//#region addendum, manual updates
+export function InventoryItemHandheldPlushiesSetOptionHook(...args: any[]): any {
+	return null;
+};
+
+// OwnerTimerPadlock.js
+export const InventoryItemMiscOwnerTimerPadlockExitHook = (..._: any[]) => {};
+
+// MistressTimerPadlock.js
+export const InventoryItemMiscMistressTimerPadlockExitHook = (..._: any[]) => {};
+
+// TimerPasswordPadlock.js
+export const InventoryItemMiscTimerPasswordPadlockExitHook = (..._: any[]) => {};
+
+// LoveChastityBelt.js
+export const InventoryItemPelvisLoveChastityBeltDrawHook = (..._: any[]) => {};
+export const InventoryItemPelvisLoveChastityBeltValidateHook = (..._: any[]): any => {};
+
+// FuturisticTrainingBelt.js
+export const AssetsItemPelvisFuturisticTrainingBeltScriptDrawHook = (..._: any[]) => {};
+
+// DynamicDraw.js
+export const DynamicDrawTextEffect = {
+	BURN: "burn",
+};
+//#endregion

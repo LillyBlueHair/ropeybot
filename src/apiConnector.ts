@@ -62,8 +62,10 @@ export interface RoomDefinition {
 }
 
 // What the bot advertises as its game version
-const GAMEVERSION = "R127";
+const GAMEVERSION = "R130";
 const LZSTRING_MAGIC = "╬";
+
+const ServerChatMessageMaxLength = 2000; // from bc-server
 
 class PromiseResolve<T> {
     public prom: Promise<T>;
@@ -102,6 +104,7 @@ interface ConnectorEvents {
         leaveMessage: string | null,
         intentional: boolean,
     ];
+    RoomUpdate: [obj: ServerChatRoomSyncPropertiesMessage];
 }
 
 export class API_Connector extends EventEmitter<ConnectorEvents> {
@@ -221,10 +224,20 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         target?: number,
         dict?: Record<string, any>[],
     ): void {
-        if (msg.length > 1000) {
+        if (msg.length > ServerChatMessageMaxLength) {
             console.error("Message too long, truncating");
-            this.SendMessage(type, msg.substring(0, 1000), target, dict);
-            this.SendMessage(type, msg.substring(1000), target, dict);
+            this.SendMessage(
+                type,
+                msg.substring(0, ServerChatMessageMaxLength),
+                target,
+                dict,
+            );
+            this.SendMessage(
+                type,
+                msg.substring(ServerChatMessageMaxLength),
+                target,
+                dict,
+            );
             return;
         }
 
@@ -320,10 +333,28 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         console.log("Socket reconnect attempt");
     };
 
-    private onSocketDisconnect = () => {
-        console.log("Socket disconnected");
+    private onSocketDisconnect = (reason: Socket.DisconnectReason) => {
+        console.log(`Socket disconnected: ${reason}`);
+
+        // clean up existing promises and resolve them if any to prevent a stuck await (i.e. disconnect when waiting for roomJoinPromise)
+        if (this.roomJoinPromise) {
+            this.roomJoinPromise.resolve("SocketDisconnected");
+            this.roomJoinPromise = undefined;
+        }
+        if (this.roomCreatePromise) {
+            this.roomCreatePromise.resolve("SocketDisconnected");
+            this.roomCreatePromise = undefined;
+        }
+
         this.loggedIn = new PromiseResolve<void>();
         this.roomSynced = new PromiseResolve<void>();
+
+        if (!this.sock.active) {
+            console.log(
+                `Socket inactive due to "${reason}" disconnect, manual reconnect triggered`,
+            );
+            this.sock.connect();
+        }
     };
 
     private onServerInfo = (info: ServerInfoMessage) => {
@@ -369,6 +400,14 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         delete roomData.Character;
         // @ts-expect-error not part of RoomDefinition
         delete roomData.SourceMemberNumber;
+        /** fixes invalid room data on reconnection @see {@link API_Connector.onChatRoomSyncRoomProperties} */
+        // remove these if they're there. The server will have converted to new
+        // Access / Visibility fields and won't accept a ChatRoomCreate with both
+        // Private/Locked and Access/Visibility
+        // @ts-expect-error not part of RoomDefinition
+        delete roomData.Private;
+        // @ts-expect-error not part of RoomDefinition
+        delete roomData.Locked;
         this.roomJoined = roomData;
         this.roomSynced.resolve();
     };
@@ -399,10 +438,10 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
             `chat room member left with reason ${this.leaveReasons.get(resp.SourceMemberNumber)}`,
             resp,
         );
-        this._chatRoom!.memberLeft(resp.SourceMemberNumber);
         const leftMember = this._chatRoom!.getCharacter(
             resp.SourceMemberNumber,
         );
+        this._chatRoom!.memberLeft(resp.SourceMemberNumber);
         if (!leftMember) return;
 
         const isIntentional =
@@ -436,16 +475,17 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         // a void, we recreate the room with the same settings
         const roomData = structuredClone(resp);
         // @ts-expect-error not part of RoomDefinition
-        delete resp.SourceMemberNumber;
+        delete roomData.SourceMemberNumber;
         // remove these if they're there. The server will have converted to new
         // Access / Visibility fields and won't accept a ChatRoomCreate with both
         // Private/Locked and Access/Visibility
         // @ts-expect-error not part of RoomDefinition
-        delete resp.Private;
+        delete roomData.Private;
         // @ts-expect-error not part of RoomDefinition
-        delete resp.Locked;
+        delete roomData.Locked;
 
         this.roomJoined = roomData;
+        this.emit("RoomUpdate", resp);
     };
 
     private onChatRoomSyncCharacter = (
@@ -650,18 +690,20 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
 
         this.roomJoinPromise = new PromiseResolve();
 
+        let result;
         try {
             this.wrappedSock.emit("ChatRoomJoin", {
                 Name: name,
             });
 
-            const joinResult = await this.roomJoinPromise.prom;
-            if (joinResult !== "JoinedRoom") {
-                console.log("Failed to join room", joinResult);
-                return false;
-            }
+            result = await this.roomJoinPromise.prom;
         } finally {
             this.roomJoinPromise = undefined;
+        }
+
+        if (result !== "JoinedRoom") {
+            console.error("Failed to join room", result);
+            return false;
         }
 
         console.log("Room joined");
@@ -684,7 +726,9 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         console.log("creating room");
         this.roomCreatePromise = new PromiseResolve();
 
-        const admins = [this._player!.MemberNumber, ...roomDef.Admin];
+        const admins = [...roomDef.Admin];
+        if (!admins.includes(this._player!.MemberNumber))
+            admins.unshift(this._player!.MemberNumber);
         let result;
         try {
             this.wrappedSock.emit("ChatRoomCreate", {
@@ -699,7 +743,8 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         console.log("ChatRoomCreate emitted", roomDef);
 
         if (result !== "ChatRoomCreated") {
-            throw new API_Error(result, "Failed to create room");
+            console.error("Failed to create room", result);
+            return false;
         }
 
         console.log("Room created");
@@ -713,14 +758,23 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
 
     public async joinOrCreateRoom(roomDef: RoomDefinition): Promise<void> {
         await this.loggedIn.prom;
+        // store a reference to the current instance of PromiseResolve that was
+        // awaited, acting like a session id
+        const logInSession = this.loggedIn;
 
         // after a void, we can race between creating the room and other players
         // reappearing and creating it, so we need to try both until one works
-        while (true) {
+        //
+        // only continue retrying if this joinOrCreateRoom call is still the
+        // active login session and isn't one that has disconnected already
+        while (logInSession === this.loggedIn) {
             console.log("Trying to join room...", roomDef);
             const joinResult = await this.ChatRoomJoin(roomDef.Name);
             if (joinResult) return;
 
+            // relinquish responsibility to the actual active login session if this
+            // joinOrCreateRoom call is from an old disconnected session
+            if (logInSession !== this.loggedIn) return;
             console.log("Failed to join room, trying to create...", roomDef);
             const createResult = await this.ChatRoomCreate(roomDef);
             if (createResult) return;

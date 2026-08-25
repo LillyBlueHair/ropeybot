@@ -316,8 +316,13 @@ function makeChaste(
                 `After betting and losing at the Cotton Candy Casino, ${character} has lost the privilege to orgasm. ` +
                 `This chastity cage will ensure that the rule is followed.`,
         });
-
-        chastityCage.SetColor(["Default", color + "", color + "", "FFBC00"]);
+        const hairColor =
+            character.Appearance.InventoryGet("HairFront").GetColor();
+        const targetColor: BCColor =
+            hairColor.length > 1
+                ? (hairColor[0] as HexColor)
+                : (hairColor as HexColor);
+        chastityCage.SetColor(["Default", targetColor, targetColor, "#FFBC00"]);
         chastityCage.lock("TimerPasswordPadlock", lockMemberNumber, {
             Password: generatePassword(),
             Hint: "Better luck next time!",
@@ -336,7 +341,7 @@ function makeChaste(
                 `After betting and losing at the Cotton Candy Casino, ${character} has lost her privileges to orgasm. ` +
                 `This chastity belt will ensure that she is kept chaste until her time is up.`,
         });
-        chastityBelt.SetColor(color + "");
+        chastityBelt.SetColor(color);
         chastityBelt.setProperty("TypeRecord", {
             a: 1,
             c: 1,

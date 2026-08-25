@@ -3,6 +3,7 @@
     "license": "Apache-2.0",
     "private": "true",
     "scripts": {
+        "preinstall": "cd src && pnpm install",
         "types": "tsc",
         "prettier": "prettier -c .",
         "compile:bc-bot": "cd src && npm run compile",
@@ -12,18 +13,18 @@
     },
     "dependencies": {
         "bc-bot": "link:src",
-        "bc-stubs": "126.0.0",
         "lodash": "^4.17.23",
         "lz-string": "^1.5.0",
         "mongodb": "^6.21.0",
         "prettier": "^3.8.1",
+        "bc-stubs": "130.0.0",
         "prom-client": "^14.2.0"
     },
     "devDependencies": {
         "@tsconfig/node18": "^18.2.6",
         "@types/lodash": "^4.17.24",
-        "@types/node": "^20.19.37",
-        "esbuild": "^0.19.12",
+        "@types/node": "^20.19.27",
+        "esbuild": "^0.27.2",
         "tsx": "^4.21.0",
         "typescript": "^5.9.3"
     }

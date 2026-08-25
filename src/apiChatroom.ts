@@ -47,6 +47,8 @@ export interface API_Chatroom_Data {
 export function transformToChatRoomData(
     chatRoom: ServerChatRoomData,
 ): API_Chatroom_Data {
+    //@ts-ignore need to remove Private and Locked
+    //FIXME: https://github.com/FriendsOfBC/ropeybot/pull/19/files
     return {
         ...chatRoom,
         Character: chatRoom.Character.map((data) =>
@@ -152,9 +154,9 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
             Publish: true,
         });
     }
-    /* public get Private(): boolean {
-        return this.data.Private;
-    } */
+    public get Private(): boolean {
+        return !this.data.Visibility.includes("All");
+    }
     public get Limit(): number {
         return this.data.Limit;
     }

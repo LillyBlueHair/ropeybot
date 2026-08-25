@@ -12,201 +12,211 @@
  */
 
 import {
-    AssetsClothAccessoryBibAfterDrawHook,
-    AssetsClothCheerleaderTopAfterDrawHook,
-    ModularItemChatSetting,
-    CommonChatTags,
-    FuturisticAccessLoad,
-    FuturisticAccessClick,
-    FuturisticAccessDraw,
-    FuturisticAccessExit,
-    FuturisticAccessValidate,
-    InventoryItemBreastFuturisticBraDrawHook,
-    ExtendedXY,
-    InventoryItemArmsFullLatexSuitDrawHook,
-    InventoryItemArmsFullLatexSuitClickHook,
-    InventoryItemArmsPrisonLockdownSuitClickHook,
-    InventoryItemArmsPrisonLockdownSuitDrawHook,
-    TypedItemChatSetting,
-    InventoryItemArmsTransportJacketLoadHook,
-    InventoryItemArmsTransportJacketDrawHook,
-    InventoryItemArmsTransportJacketExitHook,
-    InventoryItemArmsTransportJacketPublishActionHook,
-    AssetsItemNeckAccessoriesCustomCollarTagAfterDrawHook,
-    InventoryItemNeckAccessoriesCollarNameTagGetDrawData,
-    InventoryItemNeckAccessoriesCollarNameTagPublishActionHook,
-    InventoryItemNeckAccessoriesCollarShockUnitDrawHook,
-    InventoryItemNeckAccessoriesCollarShockUnitClickHook,
-    AssetsItemNeckAccessoriesElectronicTagAfterDrawHook,
-    AssetsItemNeckRestraintsPetPostAfterDrawHook,
-    AssetsItemHeadDroneMaskAfterDrawHook,
-    AssetsItemHoodCanvasHoodAfterDrawHook,
-    AssetsItemDevicesFuturisticCrateScriptDrawHook,
-    AssetsItemDevicesFuckMachineScriptDrawHook,
-    AssetsItemDevicesFuckMachineBeforeDrawHook,
-    PropertyOpacityInit,
-    PropertyOpacityLoad,
-    PropertyOpacityDraw,
-    PropertyOpacityExit,
-    InventoryItemDevicesVacBedDeluxeDrawHook,
-    InventoryItemDevicesLuckyWheelDrawHook,
-    InventoryItemDevicesLuckyWheelInitHook,
-    InventoryItemDevicesLuckyWheelClickHook,
-    InventoryItemDevicesWoodenBoxLoadHook,
-    InventoryItemDevicesWoodenBoxDrawHook,
-    InventoryItemDevicesWoodenBoxExitHook,
-    InventoryItemDevicesWoodenBoxPublishActionHook,
-    AssetsItemDevicesWoodenBoxAfterDrawHook,
-    AssetsItemDevicesDollBoxAfterDrawHook,
-    AssetsItemDevicesPetBowlAfterDrawHook,
-    InventoryItemDevicesKabeshiriWallLoadHook,
-    InventoryItemDevicesKabeshiriWallDrawHook,
-    InventoryItemDevicesKabeshiriWallPublishActionHook,
-    InventoryItemDevicesKabeshiriWallExitHook,
-    AssetsItemDevicesKabeshiriWallAfterDrawHook,
-    InventoryItemButtInflVibeButtPlugDrawHook,
-    InventoryItemVulvaClitAndDildoVibratorbeltDrawHook,
-    InventoryItemVulvaClitAndDildoVibratorbeltSetOptionHook,
-    DialogFocusItem,
-    InventoryItemVulvaLoversVibratorDrawHook,
-    InventoryItemVulvaFuturisticVibratorLoadHook,
-    InventoryItemVulvaFuturisticVibratorDrawHook,
-    InventoryItemVulvaFuturisticVibratorClickHook,
-    InventoryItemVulvaFuturisticVibratorExitHook,
-    AssetsItemVulvaFuturisticVibratorScriptDrawHook,
-    CommonConvertArrayToString,
-    ItemVulvaFuturisticVibratorTriggers,
-    VibratorModeGetDrawData,
-    VibratorModeSet,
-    InventoryItemButtAnalBeads2PublishActionHook,
-    InventoryItemTorsoFuturisticHarnessClickHook,
-    InventoryItemTorsoFuturisticHarnessDrawHook,
-    InventoryItemMouthFuturisticPanelGagClickHook,
-    InventoryItemMouthFuturisticPanelGagDrawHook,
-    AssetsItemMouthFuturisticPanelGagScriptDrawHook,
-    AssetsItemMouthFuturisticPanelGagBeforeDrawHook,
-    AssetsItemMiscWoodenSignAfterDrawHook,
-    AssetsItemPelvisObedienceBeltAfterDrawHook,
-    InventoryItemPelvisSciFiPleasurePantiesClickHook,
-    InventoryItemPelvisSciFiPleasurePantiesDrawHook,
-    InventoryItemPelvisSciFiPleasurePantiesChatPrefix,
-    InventoryItemPelvisLoveChastityBeltSetOptionHook,
-    InventoryItemPelvisLoveChastityBeltDraw,
-    InventoryItemPelvisLoveChastityBeltValidate,
-    InventoryItemPelvisFuturisticTrainingBeltLoadHook,
-    InventoryItemPelvisFuturisticTrainingBeltClickHook,
-    InventoryItemPelvisFuturisticTrainingBeltDrawHook,
-    InventoryItemPelvisFuturisticTrainingBeltExitHook,
-    AssetsItemPelvisFuturisticTrainingBeltScriptDraw,
-    ExtendedXYWithoutImages,
-    AssetsBodyMarkingsBodyWritingsAfterDrawHook,
-    InventoryItemBreastForbiddenChastityBraDrawHook,
-    InventoryItemBreastForbiddenChastityBraClickHook,
-    AssetsItemNeckAccessoriesCollarShockUnitBeforeDrawHook,
-    AssetsItemBreastForbiddenChastityBraScriptDrawHook,
-    PoseAllKneeling,
-    InventoryItemNeckPetSuitShockCollars1DrawHook,
-    InventoryItemNeckPetSuitShockCollars1ClickHook,
-    InventoryItemNeckFuturisticCollarLoadHook,
-    InventoryItemNeckFuturisticCollarDrawHook,
-    InventoryItemNeckFuturisticCollarClickHook,
-    InventoryItemNeckFuturisticCollarExitHook,
-    InventoryItemNeckSlaveCollarLoadHook,
-    InventoryItemNeckSlaveCollarDrawHook,
-    InventoryItemNeckSlaveCollarClickHook,
-    AssetsItemNeckAccessoriesCollarShockUnitScriptDrawHook,
-    InventoryItemNeckAccessoriesCollarAutoShockUnitClickHook,
-    AssetsItemNeckAccessoriesCollarAutoShockUnitBeforeDrawHook,
-    AssetsItemNeckAccessoriesCollarAutoShockUnitScriptDrawHook,
-    PoseAllStanding,
-    InventoryItemDevicesLuckyWheelg0LoadHook,
-    InventoryItemDevicesLuckyWheelg0DrawHook,
-    InventoryItemDevicesLuckyWheelg0ClickHook,
-    InventoryItemDevicesLuckyWheelg0ExitHook,
-    InventoryItemDevicesWheelFortuneLoadHook,
-    CommonNoop,
-    InventoryItemMouthFuturisticPanelGagSetOptionHook,
-    InventoryItemMiscHighSecurityPadlockInitHook,
-    InventoryItemMiscHighSecurityPadlockLoadHook,
-    InventoryItemMiscHighSecurityPadlockDrawHook,
-    InventoryItemMiscHighSecurityPadlockClickHook,
-    InventoryItemMiscHighSecurityPadlockExitHook,
-    InventoryItemMiscIntricatePadlockDrawHook,
-    InventoryItemMiscSafewordPadlockLoadHook,
-    InventoryItemMiscSafewordPadlockDrawHook,
-    InventoryItemMiscSafewordPadlockClickHook,
-    InventoryItemMiscPasswordPadlockExitHook,
-    InventoryItemMiscTimerPadlockDrawHook,
-    InventoryItemMiscTimerPadlockClickHook,
-    InventoryItemMiscMistressPadlockDrawHook,
-    InventoryItemMiscOwnerTimerPadlockDrawHook,
-    InventoryItemMiscOwnerTimerPadlockClickHook,
-    InventoryItemMiscLoversTimerPadlockValidator,
-    InventoryItemMiscPasswordPadlockLoadHook,
-    InventoryItemMiscPasswordPadlockDrawHook,
-    InventoryItemMiscPasswordPadlockClickHook,
-    InterfaceTextGet,
-    InventoryItemMiscOwnerPadlockDrawHook,
-    InventoryItemMiscFamilyPadlockDrawHook,
-    InventoryItemMiscMistressTimerPadlockDrawHook,
-    InventoryItemMiscMistressTimerPadlockClickHook,
-    InventoryItemMiscExclusivePadlockDrawHook,
-    InventoryItemMiscCombinationPadlockLoadHook,
-    InventoryItemMiscCombinationPadlockDrawHook,
-    InventoryItemMiscCombinationPadlockClickHook,
-    InventoryItemMiscCombinationPadlockExitHook,
-    InventoryItemMiscTimerPasswordPadlockLoadHook,
-    InventoryItemMiscTimerPasswordPadlockDrawHook,
-    InventoryItemMiscTimerPasswordPadlockClickHook,
-    InventoryItemPelvisObedienceBelts1DrawHook,
-    InventoryItemPelvisObedienceBelts1ClickHook,
-    PortalLinkRecieverLoadHook,
-    PortalLinkRecieverDrawHook,
-    PortalLinkRecieverClickHook,
-    PortalLinkRecieverExitHook,
-    CommonTime,
-    InventoryItemPelvisModularChastityBeltClickHook,
-    InventoryItemPelvisModularChastityBeltDrawHook,
-    InventoryItemPelvisModularChastityBeltExitHook,
-    InventoryItemPelvisModularChastityBeltScriptDrawHook,
-    InventoryItemPelvisModularChastityBeltVoiceTriggers,
-    InventorySuitLatexCatsuitLoadHook,
-    InventorySuitLatexCatsuitDrawHook,
-    InventorySuitLatexCatsuitExitHook,
-    InventorySuitLatexCatsuitPublishActionHook,
-    PortalLinkTransmitterLoadHook,
-    PortalLinkTransmitterDrawHook,
-    PortalLinkTransmitterClickHook,
-    PortalLinkTransmitterExitHook,
-    InventoryItemNeckAccessoriesCollarAutoShockUnitDrawHook,
-    AssetsFaceMarkingsFaceWritingsAfterDrawHook,
-    ItemHeadDroneMaskValidateHook,
-    TextItem,
+	AssetsClothAccessoryBibAfterDrawHook,
+	AssetsClothCheerleaderTopAfterDrawHook,
+	ModularItemChatSetting,
+	CommonChatTags,
+	FuturisticAccessLoad,
+	FuturisticAccessClick,
+	FuturisticAccessDraw,
+	FuturisticAccessExit,
+	FuturisticAccessValidate,
+	InventoryItemBreastFuturisticBraDrawHook,
+	ExtendedXY,
+	InventoryItemArmsFullLatexSuitDrawHook,
+	InventoryItemArmsFullLatexSuitClickHook,
+	InventoryItemArmsPrisonLockdownSuitClickHook,
+	InventoryItemArmsPrisonLockdownSuitDrawHook,
+	TypedItemChatSetting,
+	InventoryItemArmsTransportJacketLoadHook,
+	InventoryItemArmsTransportJacketDrawHook,
+	InventoryItemArmsTransportJacketExitHook,
+	InventoryItemArmsTransportJacketPublishActionHook,
+	AssetsItemNeckAccessoriesCustomCollarTagAfterDrawHook,
+	InventoryItemNeckAccessoriesCollarNameTagGetDrawData,
+	InventoryItemNeckAccessoriesCollarNameTagPublishActionHook,
+	InventoryItemNeckAccessoriesCollarShockUnitDrawHook,
+	InventoryItemNeckAccessoriesCollarShockUnitClickHook,
+	AssetsItemNeckAccessoriesElectronicTagAfterDrawHook,
+	AssetsItemNeckRestraintsPetPostAfterDrawHook,
+	AssetsItemHeadDroneMaskAfterDrawHook,
+	AssetsItemHoodCanvasHoodAfterDrawHook,
+	AssetsItemDevicesFuturisticCrateScriptDrawHook,
+	AssetsItemDevicesFuckMachineScriptDrawHook,
+	AssetsItemDevicesFuckMachineBeforeDrawHook,
+	PropertyOpacityInit,
+	PropertyOpacityLoad,
+	PropertyOpacityDraw,
+	PropertyOpacityExit,
+	InventoryItemDevicesVacBedDeluxeDrawHook,
+	InventoryItemDevicesLuckyWheelDrawHook,
+	InventoryItemDevicesLuckyWheelInitHook,
+	InventoryItemDevicesLuckyWheelClickHook,
+	InventoryItemDevicesWoodenBoxLoadHook,
+	InventoryItemDevicesWoodenBoxDrawHook,
+	InventoryItemDevicesWoodenBoxExitHook,
+	InventoryItemDevicesWoodenBoxPublishActionHook,
+	AssetsItemDevicesWoodenBoxAfterDrawHook,
+	AssetsItemDevicesDollBoxAfterDrawHook,
+	AssetsItemDevicesPetBowlAfterDrawHook,
+	InventoryItemDevicesKabeshiriWallLoadHook,
+	InventoryItemDevicesKabeshiriWallDrawHook,
+	InventoryItemDevicesKabeshiriWallPublishActionHook,
+	InventoryItemDevicesKabeshiriWallExitHook,
+	AssetsItemDevicesKabeshiriWallAfterDrawHook,
+	InventoryItemButtInflVibeButtPlugDrawHook,
+	InventoryItemVulvaClitAndDildoVibratorbeltDrawHook,
+	InventoryItemVulvaClitAndDildoVibratorbeltSetOptionHook,
+	DialogFocusItem,
+	// UNUSED: InventoryItemVulvaLoversVibratorDrawHook,
+	InventoryItemVulvaFuturisticVibratorLoadHook,
+	InventoryItemVulvaFuturisticVibratorDrawHook,
+	InventoryItemVulvaFuturisticVibratorClickHook,
+	InventoryItemVulvaFuturisticVibratorExitHook,
+	AssetsItemVulvaFuturisticVibratorScriptDrawHook,
+	CommonConvertArrayToString,
+	ItemVulvaFuturisticVibratorTriggers,
+	VibratorModeGetDrawData,
+	VibratorModeSet,
+	InventoryItemButtAnalBeads2PublishActionHook,
+	InventoryItemTorsoFuturisticHarnessClickHook,
+	InventoryItemTorsoFuturisticHarnessDrawHook,
+	InventoryItemMouthFuturisticPanelGagClickHook,
+	InventoryItemMouthFuturisticPanelGagDrawHook,
+	AssetsItemMouthFuturisticPanelGagScriptDrawHook,
+	AssetsItemMouthFuturisticPanelGagBeforeDrawHook,
+	AssetsItemMiscWoodenSignAfterDrawHook,
+	AssetsItemPelvisObedienceBeltAfterDrawHook,
+	InventoryItemPelvisSciFiPleasurePantiesClickHook,
+	InventoryItemPelvisSciFiPleasurePantiesDrawHook,
+	InventoryItemPelvisSciFiPleasurePantiesChatPrefix,
+	InventoryItemPelvisLoveChastityBeltSetOptionHook,
+	// UNUSED: InventoryItemPelvisLoveChastityBeltDraw,
+	// UNUSED: InventoryItemPelvisLoveChastityBeltValidate,
+	InventoryItemPelvisFuturisticTrainingBeltLoadHook,
+	InventoryItemPelvisFuturisticTrainingBeltClickHook,
+	InventoryItemPelvisFuturisticTrainingBeltDrawHook,
+	InventoryItemPelvisFuturisticTrainingBeltExitHook,
+	// UNUSED: AssetsItemPelvisFuturisticTrainingBeltScriptDraw,
+	ExtendedXYWithoutImages,
+	AssetsBodyMarkingsBodyWritingsAfterDrawHook,
+	InventoryItemBreastForbiddenChastityBraDrawHook,
+	InventoryItemBreastForbiddenChastityBraClickHook,
+	AssetsItemNeckAccessoriesCollarShockUnitBeforeDrawHook,
+	AssetsItemBreastForbiddenChastityBraScriptDrawHook,
+	PoseAllKneeling,
+	InventoryItemNeckPetSuitShockCollars1DrawHook,
+	InventoryItemNeckPetSuitShockCollars1ClickHook,
+	InventoryItemNeckFuturisticCollarLoadHook,
+	InventoryItemNeckFuturisticCollarDrawHook,
+	InventoryItemNeckFuturisticCollarClickHook,
+	InventoryItemNeckFuturisticCollarExitHook,
+	InventoryItemNeckSlaveCollarLoadHook,
+	InventoryItemNeckSlaveCollarDrawHook,
+	InventoryItemNeckSlaveCollarClickHook,
+	AssetsItemNeckAccessoriesCollarShockUnitScriptDrawHook,
+	InventoryItemNeckAccessoriesCollarAutoShockUnitClickHook,
+	AssetsItemNeckAccessoriesCollarAutoShockUnitBeforeDrawHook,
+	AssetsItemNeckAccessoriesCollarAutoShockUnitScriptDrawHook,
+	PoseAllStanding,
+	InventoryItemDevicesLuckyWheelg0LoadHook,
+	InventoryItemDevicesLuckyWheelg0DrawHook,
+	InventoryItemDevicesLuckyWheelg0ClickHook,
+	InventoryItemDevicesLuckyWheelg0ExitHook,
+	InventoryItemDevicesWheelFortuneLoadHook,
+	CommonNoop,
+	InventoryItemMouthFuturisticPanelGagSetOptionHook,
+	InventoryItemMiscHighSecurityPadlockInitHook,
+	InventoryItemMiscHighSecurityPadlockLoadHook,
+	InventoryItemMiscHighSecurityPadlockDrawHook,
+	InventoryItemMiscHighSecurityPadlockClickHook,
+	InventoryItemMiscHighSecurityPadlockExitHook,
+	InventoryItemMiscIntricatePadlockDrawHook,
+	InventoryItemMiscSafewordPadlockLoadHook,
+	InventoryItemMiscSafewordPadlockDrawHook,
+	InventoryItemMiscSafewordPadlockClickHook,
+	InventoryItemMiscPasswordPadlockExitHook,
+	InventoryItemMiscTimerPadlockDrawHook,
+	InventoryItemMiscTimerPadlockClickHook,
+	InventoryItemMiscMistressPadlockDrawHook,
+	InventoryItemMiscOwnerTimerPadlockDrawHook,
+	InventoryItemMiscOwnerTimerPadlockClickHook,
+	InventoryItemMiscLoversTimerPadlockValidator,
+	InventoryItemMiscPasswordPadlockLoadHook,
+	InventoryItemMiscPasswordPadlockDrawHook,
+	InventoryItemMiscPasswordPadlockClickHook,
+	InterfaceTextGet,
+	InventoryItemMiscOwnerPadlockDrawHook,
+	InventoryItemMiscFamilyPadlockDrawHook,
+	InventoryItemMiscMistressTimerPadlockDrawHook,
+	InventoryItemMiscMistressTimerPadlockClickHook,
+	InventoryItemMiscExclusivePadlockDrawHook,
+	InventoryItemMiscCombinationPadlockLoadHook,
+	InventoryItemMiscCombinationPadlockDrawHook,
+	InventoryItemMiscCombinationPadlockClickHook,
+	InventoryItemMiscCombinationPadlockExitHook,
+	InventoryItemMiscTimerPasswordPadlockLoadHook,
+	InventoryItemMiscTimerPasswordPadlockDrawHook,
+	InventoryItemMiscTimerPasswordPadlockClickHook,
+	InventoryItemPelvisObedienceBelts1DrawHook,
+	InventoryItemPelvisObedienceBelts1ClickHook,
+	PortalLinkRecieverLoadHook,
+	PortalLinkRecieverDrawHook,
+	PortalLinkRecieverClickHook,
+	PortalLinkRecieverExitHook,
+	CommonTime,
+	InventoryItemPelvisModularChastityBeltClickHook,
+	InventoryItemPelvisModularChastityBeltDrawHook,
+	InventoryItemPelvisModularChastityBeltExitHook,
+	InventoryItemPelvisModularChastityBeltScriptDrawHook,
+	InventoryItemPelvisModularChastityBeltVoiceTriggers,
+	InventorySuitLatexCatsuitLoadHook,
+	InventorySuitLatexCatsuitDrawHook,
+	InventorySuitLatexCatsuitExitHook,
+	InventorySuitLatexCatsuitPublishActionHook,
+	PortalLinkTransmitterLoadHook,
+	PortalLinkTransmitterDrawHook,
+	PortalLinkTransmitterClickHook,
+	PortalLinkTransmitterExitHook,
+	InventoryItemNeckAccessoriesCollarAutoShockUnitDrawHook,
+	AssetsFaceMarkingsFaceWritingsAfterDrawHook,
+	ItemHeadDroneMaskValidateHook,
+	TextItem,
+
+	//#region addendum manual updates
+	InventoryItemHandheldPlushiesSetOptionHook,
+	InventoryItemMiscOwnerTimerPadlockExitHook,
+	InventoryItemMiscMistressTimerPadlockExitHook,
+	InventoryItemMiscTimerPasswordPadlockExitHook,
+	InventoryItemPelvisLoveChastityBeltDrawHook,
+	InventoryItemPelvisLoveChastityBeltValidateHook,
+	AssetsItemPelvisFuturisticTrainingBeltScriptDrawHook,
+	DynamicDrawTextEffect,
+	//#endregion
 } from "./defs.ts";
 
 import { E } from "./female3DCG.js";
 
-const InventoryItemHandheldPlushiesSetOptionHook = () => {};
+
 
 /**
  * An enum encapsulating the available extended item archetypes
- * @satisfies {Record<Uppercase<ExtendedArchetype>, ExtendedArchetype>}
  */
-export const ExtendedArchetype = /** @type {const} */ ({
-	MODULAR: "modular",
-	TYPED: "typed",
-	VIBRATING: "vibrating",
-	VARIABLEHEIGHT: "variableheight",
-	TEXT: "text",
-	NOARCH: "noarch",
-});
+// const ExtendedArchetype: Record<Uppercase<ExtendedArchetype>, ExtendedArchetype> = ({
+enum ExtendedArchetype {
+	MODULAR = "modular",
+	TYPED = "typed",
+	VIBRATING = "vibrating",
+	VARIABLEHEIGHT = "variableheight",
+	TEXT = "text",
+	NOARCH = "noarch",
+}
 
 /**
  * An object containing all extended item configurations.
  * @type {ExtendedItemMainConfig}
- * @const
  */
-export var AssetFemale3DCGExtended = {
+export var AssetFemale3DCGExtended: ExtendedItemMainConfig = {
 	BodyUpper: {
 		// NOTE: Switch to the `MODULAR` archetype if we'd want to allow for the simultaneous use of multiple overlays
 		Small: {
@@ -419,6 +429,42 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // NunHabit
+		JesterHat: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			Modules: [
+				{
+					Name: "LeftPart",
+					Key: "l",
+					Options: [
+						{}, // 0 - No style
+						{}, // 1 - Stripes
+						{}, // 2 - Dots
+						{}, // 3 - Stripes & Dots
+					],
+				},
+				{
+					Name: "TopPart",
+					Key: "t",
+					Options: [
+						{}, // 0 - No style
+						{}, // 1 - Stripes
+						{}, // 2 - Dots
+						{}, // 3 - Stripes & Dots
+					],
+				},
+				{
+					Name: "RightPart",
+					Key: "r",
+					Options: [
+						{}, // 0 - No style
+						{}, // 1 - Stripes
+						{}, // 2 - Dots
+						{}, // 3 - Stripes & Dots
+					],
+				},
+			],
+		}, // JesterHat
 		PirateHat: {
 			Archetype: ExtendedArchetype.MODULAR,
 			ChatTags: [
@@ -457,6 +503,16 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // PirateHat
+		NPCBalloon: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{ Name: "ExclamationMark" },
+				{ Name: "QuestionMark" },
+				{ Name: "Heart" },
+				{ Name: "Arrow" },
+			],
+		}, // NPCBalloon
 	},
 	HandAccessoryLeft: {
 		Rings: {
@@ -518,6 +574,11 @@ export var AssetFemale3DCGExtended = {
 					Name: "Ring",
 					Key: "r",
 					Options: [{}, {}, {}],
+				},
+				{
+					Name: "RingGem",
+					Key: "g",
+					Options: [{}, {}],
 				},
 				{
 					Name: "Pinkie",
@@ -765,6 +826,11 @@ export var AssetFemale3DCGExtended = {
 				Option: "ClothHoodieOption",
 			},
 		}, // Hoodie
+		Transparentraincoat: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Transparent" }, { Name: "Opaque" }],
+		}, // Transparentraincoat
 	},
 	Cloth: {
 		TShirt2: {
@@ -879,6 +945,30 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // CustomTShirt
+		MilitaryFatigue: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Type",
+					Key: "s",
+					Options: [
+						{}, // s0 - Full
+						{}, // s1 - Cropped
+					],
+					DrawImages: true,
+				},
+				{
+					Name: "Camouflage",
+					Key: "c",
+					Options: [
+						{}, // c0 - None
+						{}, // c1 - Normal
+						{}, // c2 - TigerStripe
+					],
+					DrawImages: true,
+				},
+			],
+		}, // MilitaryFatigue
 		ChineseDress2: {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [
@@ -1238,7 +1328,77 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // OffTheShoulderTop
+		BrocadeCloudsSnowEmbroideryQipao: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Yes" }, { Name: "No" }],
+		}, // BrocadeCloudsSnowEmbroideryQipao
+		AllureSidecut: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChangeWhenLocked: false,
+			DrawImages: false,
+			Options: [{ Name: "Default" }, { Name: "Transparent" }],
+		}, // AllureSidecut
+		LittleFormalShirt: {
+			Archetype: "modular",
+			Modules: [{ Name: "Tie", Key: "t", Options: [{}, {}] }],
+		}, // LittleFormalShirt
+		StarryOceanEveningGown: {
+			Archetype: "modular",
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "Mirror",
+					Key: "M",
+					Options: [{}, { DrawOptions: { Mirror: true } }],
+				},
+			],
+		}, // StarryOceanEveningGown
+		CasualDroppedSuit: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{ Name: "Color", Key: "typed", Options: [{}, {}] },
+				{
+					Name: "Side",
+					Key: "M",
+					Options: [{}, { DrawOptions: { Mirror: true } }],
+				},
+			],
+		}, // CasualDroppedSuit
+		WhiteDress: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "HideNipples",
+					Key: "hn",
+					Options: [{ Property: { Hide: ["Nipples"] } }, {}],
+				},
+			],
+		}, // WhiteDress
+		Transparentraincoat: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Transparent" }, { Name: "Opaque" }],
+		}, // Transparentraincoat
 	}, // Cloth
+	Decals: {
+		MissMariasManor: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Default",
+				},
+				{
+					Name: "Version2",
+				},
+				{
+					Name: "Version3",
+				},
+			],
+		},
+	}, // Decals
 	BodyMarkings: {
 		WombTattoos: {
 			Archetype: ExtendedArchetype.MODULAR,
@@ -1735,7 +1895,7 @@ export var AssetFemale3DCGExtended = {
 							HasSubscreen: true,
 							ArchetypeConfig: {
 								Archetype: ExtendedArchetype.TEXT,
-								MaxLength: { Text: 6, Text2: 5, Text3: 3 },
+								MaxLength: { Text: 7, Text2: 6, Text3: 4 },
 								ScriptHooks: {
 									AfterDraw: AssetsFaceMarkingsFaceWritingsAfterDrawHook,
 								},
@@ -1837,6 +1997,40 @@ export var AssetFemale3DCGExtended = {
 			DrawImages: false,
 			Options: [{ Name: "Basic" }, { Name: "Translucent" }],
 		},
+		HairFront76a: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "Strands",
+					Key: "Strands",
+					Options: [{}, {}], // Strands, No Strands
+				},
+				{
+					Name: "Extra",
+					Key: "Extra",
+					Options: [{}, {}, {}], // Braids, Extra, None
+				},
+			],
+		},
+		HairFront76b: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "Strands",
+					Key: "Strands",
+					Options: [{}, {}], // Strands, No Strands
+				},
+				{
+					Name: "Extra",
+					Key: "Extra",
+					Options: [{}, {}, {}], // Braids, Extra, None
+				},
+			],
+		},
 	},
 	HairBack: {
 		HairBack58: {
@@ -1859,6 +2053,16 @@ export var AssetFemale3DCGExtended = {
 			DrawImages: false,
 			Options: [{ Name: "Both" }, { Name: "LeftOnly" }, { Name: "RightOnly" }],
 		}, // HairBack61
+		HairBack61b: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{ Name: "Both" },
+				{ Name: "LeftOnly" },
+				{ Name: "RightOnly" },
+				{ Name: "Behind" },
+			],
+		}, // HairBack61b
 		HairBack65: {
 			Archetype: ExtendedArchetype.TYPED,
 			DrawImages: false,
@@ -2363,12 +2567,11 @@ export var AssetFemale3DCGExtended = {
 					Name: "Zipped",
 					Property: {
 						Block: [
-							"ItemLegs",
 							"ItemPelvis",
 							"ItemButt",
 							"ItemVulva",
 							"ItemVulvaPiercings",
-							"ItemButt",
+							"ItemLegs",
 						],
 						Hide: ["ItemVulvaPiercings", "Panties", "Pussy"],
 						HideItem: [
@@ -2464,7 +2667,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								AllowActivePose: [
 									"BaseLower",
-									"LegsOpen",
 									"LegsClosed",
 									"Kneel",
 									"Hogtied",
@@ -2484,6 +2686,64 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // PVCHobbleSkirt
+		MilitaryPants: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Belt",
+					Key: "b",
+					Options: [
+						{}, // b0 - None
+						{}, // b1 - Strapped
+						{}, // b2 - Overlapped
+					],
+					DrawImages: false,
+				},
+				{
+					Name: "Camouflage",
+					Key: "c",
+					Options: [
+						{}, // c0 - None
+						{}, // c1 - Normal
+						{}, // c2 - TigerStripe
+					],
+					DrawImages: true,
+				},
+			],
+			DrawImages: true,
+			DrawData: {
+				elementData: [
+					{
+						imagePath:
+							"Screens/Inventory/ClothLower/MilitaryPants/BeltPreview.png",
+					}, // Belt
+					{}, //Camoflauge
+				],
+			},
+		}, // MilitaryPants
+		DenimShorts: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "Normal",
+					Property: {
+						Block: [],
+					},
+				},
+				{
+					Name: "Unbuttoned",
+					Property: {
+						Block: [
+							"ItemPelvis",
+							"ItemVulva",
+							"ItemVulvaPiercings",
+							"ItemButt",
+						],
+					},
+				},
+			],
+		}, // DenimShorts
 	}, // ClothLower
 	Socks: {
 		RippedPantyhose: {
@@ -2666,7 +2926,7 @@ export var AssetFemale3DCGExtended = {
 					Property: {
 						Difficulty: 0,
 						SetPose: ["BaseLower", "BackElbowTouch"],
-						AllowActivePose: ["Kneel", "LegsOpen", "LegsClosed"],
+						AllowActivePose: ["Kneel", "LegsClosed"],
 					},
 				},
 				{
@@ -3028,6 +3288,7 @@ export var AssetFemale3DCGExtended = {
 									"ItemVulvaPiercings",
 									"ItemButt",
 								],
+								Attribute: ["GenitaliaCover"],
 								Hide: ["ItemVulvaPiercings", "Pussy"],
 								HideItem: ["ItemButtAnalBeads2"],
 							},
@@ -3569,12 +3830,7 @@ export var AssetFemale3DCGExtended = {
 							// b4 - Full bind plus link legs
 							Property: {
 								SetPose: ["BackElbowTouch"],
-								AllowActivePose: [
-									"BaseLower",
-									"LegsOpen",
-									"LegsClosed",
-									"Kneel",
-								],
+								AllowActivePose: ["BaseLower", "LegsClosed", "Kneel"],
 								Effect: [E.Slow],
 								Difficulty: 9,
 							},
@@ -4633,6 +4889,7 @@ export var AssetFemale3DCGExtended = {
 		}, // NylonRope
 		HempRope: {
 			Archetype: ExtendedArchetype.TYPED,
+			AllowEffect: [E.Leash, E.IsLeashed],
 			ChatTags: [
 				CommonChatTags.SOURCE_CHAR,
 				CommonChatTags.TARGET_CHAR,
@@ -4655,7 +4912,7 @@ export var AssetFemale3DCGExtended = {
 					Expression: [{ Group: "Blush", Name: "Low", Timer: 5 }],
 				},
 				{
-					Name: "RopeCuffs",
+					Name: "RopeCuffsBack",
 					Property: {
 						SetPose: ["BackCuffs"],
 						Difficulty: 1,
@@ -4865,6 +5122,15 @@ export var AssetFemale3DCGExtended = {
 							Chat: "SuspensionChange",
 						},
 					},
+				},
+				{
+					Name: "RopeCuffsFront",
+					Property: {
+						SetPose: ["BaseUpper"],
+						Effect: [E.Leash],
+						Difficulty: 1,
+					},
+					Expression: [{ Group: "Blush", Name: "Low", Timer: 5 }],
 				},
 			],
 			DialogPrefix: {
@@ -6239,7 +6505,50 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 			ChangeWhenLocked: false,
-		},
+		}, // OldGasMask
+		CybertechMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Visor",
+					Key: "v",
+					Options: [{}, {}, {}],
+				},
+				{
+					Name: "Canteen",
+					Key: "c",
+					Options: [{}, { Property: { Effect: [E.GagEasy] } }],
+				},
+				{
+					Name: "Layering",
+					Key: "l",
+					Options: [
+						{},
+						{
+							Property: {
+								OverridePriority: {
+									base: 53,
+									straps: 44,
+									sideAttachments: 53,
+									attachmentPoint: 53,
+									top: 53,
+									exhalationValve: 53,
+									visorOpaque: 52,
+									visorReflection: 53,
+									visorTransparent: 52,
+									visorReflectionTransparent: 53,
+									hypno1: 52,
+									hypno2: 52,
+									tube: 53,
+									canteen: 53,
+									liquid: 53,
+								},
+							},
+						},
+					],
+				},
+			],
+		}, // CybertechMask
 		InflatedBallHood: {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [
@@ -6457,45 +6766,45 @@ export var AssetFemale3DCGExtended = {
 					Key: "v",
 					Options: [
 						{
+							//v0 No Visor
 							Property: {
-								CustomBlindBackground: "",
 								Effect: [],
 							},
-						}, //v0 No Visor
+						},
 						{
+							// v1 Transparent Visor
 							Property: {
-								CustomBlindBackground: "",
 								Effect: [],
 								Tint: [{ Color: 0, Strength: 0.1 }],
 							},
-						}, // v1 Transparent Visor
+						},
 						{
+							// v2 Lightly Tinted Visor
 							Property: {
-								CustomBlindBackground: "",
 								Effect: [E.BlindLight, E.BlockWardrobe],
 								Tint: [{ Color: 0, Strength: 0.2 }],
 							},
-						}, // v2 Lightly Tinted Visor
+						},
 						{
+							// v3 Heavily Tinted Visor
 							Property: {
-								CustomBlindBackground: "",
 								Effect: [E.BlindNormal, E.BlockWardrobe],
 								Tint: [{ Color: 0, Strength: 0.5 }],
 							},
-						}, // v3 Heavily Tinted Visor
+						},
 						{
+							// v4 Opaque Visor
 							Property: {
-								CustomBlindBackground: "",
 								Effect: [E.BlindHeavy, E.BlockWardrobe],
 								Tint: [{ Color: 0, Strength: 1 }],
 							},
-						}, // v4 Opaque Visor
+						},
 						{
+							// v5 Hypnotic Visor
 							Property: {
-								CustomBlindBackground: "HypnoSpiral2",
 								Effect: [E.BlindHeavy, E.BlockWardrobe],
 							},
-						}, // v5 Hypnotic Visor
+						},
 					],
 				},
 				{
@@ -11334,7 +11643,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								Difficulty: 6,
 								SetPose: ["Yoked"],
-								AllowActivePose: [...PoseAllStanding],
 								Block: ["ItemArms"],
 								Effect: [E.BlockWardrobe, E.Block],
 							},
@@ -11344,7 +11652,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								Difficulty: 6,
 								SetPose: ["OverTheHead"],
-								AllowActivePose: [...PoseAllStanding],
 								Block: ["ItemArms"],
 								Effect: [E.BlockWardrobe, E.Block],
 							},
@@ -11355,7 +11662,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								Difficulty: 10,
 								SetPose: ["Yoked"],
-								AllowActivePose: [...PoseAllStanding],
 								Block: ["ItemArms"],
 								Effect: [E.BlockWardrobe, E.Block],
 							},
@@ -11366,7 +11672,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								Difficulty: 10,
 								SetPose: ["OverTheHead"],
-								AllowActivePose: [...PoseAllStanding],
 								Block: ["ItemArms"],
 								Effect: [E.BlockWardrobe, E.Block],
 							},
@@ -11376,7 +11681,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								Difficulty: 12,
 								SetPose: ["Yoked"],
-								AllowActivePose: [...PoseAllStanding],
 								Block: ["ItemArms"],
 								Effect: [E.BlockWardrobe],
 							},
@@ -11432,7 +11736,7 @@ export var AssetFemale3DCGExtended = {
 							AllowLock: true,
 							Property: {
 								Difficulty: 12,
-								SetPose: ["LegsOpen"],
+								SetPose: ["BaseLower"],
 								Block: ["ItemFeet"],
 								Effect: [E.BlockWardrobe],
 								Hide: ["ItemBoots", "Shoes"],
@@ -11457,14 +11761,12 @@ export var AssetFemale3DCGExtended = {
 								Font: "sans-serif",
 								ScriptHooks: {
 									AfterDraw: (...args) =>
-                                        // @ts-ignore
 										TextItem.GenericTextArcDrawHook(...args, {
 											YOffset: 170,
 											XOffset: 185,
 											drawOptions: {
 												fontSize: 20,
 												radius: 60,
-												// @ts-ignore
 												effect: DynamicDrawTextEffect.BURN,
 											},
 										}),
@@ -11886,7 +12188,7 @@ export var AssetFemale3DCGExtended = {
 				{
 					Name: "Stand",
 					AllowSelfSelect: false,
-					Prerequisite: ["CanLegsOpen"],
+					Prerequisite: ["CanBaseLower"],
 				},
 				{
 					Name: "LegsClosed",
@@ -12753,21 +13055,7 @@ export var AssetFemale3DCGExtended = {
 							"ItemArmsBitchSuitExposed",
 							"ItemArmsShinyPetSuit",
 						],
-						Block: [
-							"ItemArms",
-							"ItemBreast",
-							"ItemButt",
-							"ItemFeet",
-							"ItemBoots",
-							"ItemLegs",
-							"ItemMisc",
-							"ItemNipples",
-							"ItemNipplesPiercings",
-							"ItemPelvis",
-							"ItemTorso",
-							"ItemVulva",
-							"ItemVulvaPiercings",
-						],
+						Effect: [E.BlockWardrobe, E.Freeze, E.Enclose],
 					},
 					Random: false,
 				},
@@ -12858,6 +13146,42 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, //XFrame
+		InflatableRestraintBag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChangeWhenLocked: false,
+			Modules: [
+				{
+					Name: "Inflate",
+					DrawImages: false,
+					Key: "o",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Hood",
+					DrawImages: false,
+					Key: "t",
+					Options: [{}, {}],
+				},
+				{
+					Name: "LinkCanister",
+					DrawImages: false,
+					Key: "g",
+					Options: [{}, {}],
+				},
+			],
+			BaselineProperty: { Opacity: 1 },
+			ScriptHooks: {
+				Init: PropertyOpacityInit,
+				Load: PropertyOpacityLoad,
+				Draw: PropertyOpacityDraw,
+				Exit: PropertyOpacityExit,
+			},
+		}, // InflatableRestraintBag
+		LongBag: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Translucent" }, { Name: "Opaque" }],
+		}, // LongBag
 	}, // ItemDevices
 	ItemBoots: {
 		ToeTape: {
@@ -13462,6 +13786,16 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // MysteryBox
+		UsedCondom: {
+			Archetype: "typed",
+			DrawImages: false,
+			Options: [{ Name: "A" }, { Name: "B" }, { Name: "C" }],
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+		}, // UsedCondom
 	}, // ItemVulva
 	ItemVulvaPiercings: {
 		ClitRing: {
@@ -13552,6 +13886,44 @@ export var AssetFemale3DCGExtended = {
 			],
 			DrawImages: false,
 		}, // UrethralSound
+		ModularVulvaPiercings: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Fastening",
+					Key: "f", //Fastening
+					DrawImages: false,
+					Options: [
+						{}, //f0 - No Fastening
+						{
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva"],
+							},
+						}, //f1 - Barbells
+						{
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva"],
+							},
+						}, //f2 - Rings
+					],
+				},
+				{
+					Name: "Shield",
+					Key: "s", //Shield
+					DrawImages: false,
+					Options: [
+						{}, //s0 - No
+						{
+							Property: {
+								Effect: [E.Chaste],
+							},
+						}, //s1 - Yes
+					],
+				},
+			],
+		},
 	}, // ItemVulvaPiercings
 	ItemButt: {
 		WolfTail3: {
@@ -13697,7 +14069,7 @@ export var AssetFemale3DCGExtended = {
 				{
 					Name: "ChainShort",
 					Property: {
-						Effect: [E.Freeze, E.IsChained],
+						Effect: [E.Freeze, E.IsChained, E.MapImmobile],
 						SetPose: ["Kneel"],
 					},
 					Random: false,
@@ -13706,7 +14078,7 @@ export var AssetFemale3DCGExtended = {
 					Name: "ChainLong",
 					Prerequisite: ["NotSuspended"],
 					Property: {
-						Effect: [E.Tethered, E.IsChained],
+						Effect: [E.Tethered, E.IsChained, E.MapImmobile],
 					},
 					Random: false,
 				},
@@ -13919,6 +14291,17 @@ export var AssetFemale3DCGExtended = {
 		VibeHeartPiercings: {
 			Archetype: ExtendedArchetype.VIBRATING,
 		}, // VibeHeartPiercings
+		PiercingNameBadge: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			ChangeWhenLocked: false,
+			DrawImages: false,
+			Options: [{ Name: "RightNipple" }, { Name: "LeftNipple" }],
+		}, // PiercingNameBadge
 	}, // ItemNipplesPiercings
 	ItemNipples: {
 		ChainClamp: {
@@ -15008,6 +15391,18 @@ export var AssetFemale3DCGExtended = {
 				AssetName: "CustomizableFluffyEars1",
 			},
 		},
+		Antenna: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{ Name: "Right" },
+				{ Name: "RightGlowing" },
+				{ Name: "Left" },
+				{ Name: "LeftGlowing" },
+				{ Name: "LeftRight" },
+				{ Name: "LeftRightGlowing" },
+			],
+		}, // Antenna
 	}, // HairAccessory1
 	HairAccessory2: {
 		ElfEars: {
@@ -16191,6 +16586,30 @@ export var AssetFemale3DCGExtended = {
 						Effect: [E.OpenMouth],
 					},
 				},
+				{
+					Name: "WiffleGag",
+					Property: {
+						Effect: [E.BlockMouth],
+					},
+				},
+				{
+					Name: "BitGag",
+					Property: {
+						Effect: [E.BlockMouth],
+					},
+				},
+				{
+					Name: "LargeBallGag",
+					Property: {
+						Effect: [E.BlockMouth],
+					},
+				},
+				{
+					Name: "LargeRingGag",
+					Property: {
+						Effect: [E.OpenMouth],
+					},
+				},
 			],
 			DialogPrefix: {
 				Header: "SelectGagType",
@@ -16499,6 +16918,29 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		},
+		BallGag2: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "StrapType",
+					Key: "s",
+					Options: [
+						{}, // s0 Basic Strap
+						{}, // s1 Head Harness 1
+					],
+				},
+				{
+					Name: "BallType",
+					Key: "b",
+					Options: [
+						{ Property: { Effect: [E.GagLight] } }, // b0 Regular Size
+						{ Property: { Effect: [E.GagMedium] } }, // b1 Large Size
+						{ Property: { Effect: [E.GagHeavy] } }, // b2 XL Size
+					],
+				},
+			],
+		},
 	}, // ItemMouth
 	ItemMouth2: {
 		ClothGag: {
@@ -16695,6 +17137,16 @@ export var AssetFemale3DCGExtended = {
 				Option: "ItemMouthBishopGag",
 			},
 		}, // BishopGag
+		BallGag2: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag2" },
+			DialogPrefix: {
+				Header: "ItemMouthBallGag2Select",
+				Module: "ItemMouthBallGag2Module",
+				Option: "ItemMouthBallGag2Option",
+				Chat: "ItemMouthBallGag2Set",
+			},
+		},
 	}, // ItemMouth2
 	ItemMouth3: {
 		ClothGag: {
@@ -16883,6 +17335,16 @@ export var AssetFemale3DCGExtended = {
 				Option: "ItemMouthBishopGag",
 			},
 		}, // BishopGag
+		BallGag2: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag2" },
+			DialogPrefix: {
+				Header: "ItemMouthBallGag2Select",
+				Module: "ItemMouthBallGag2Module",
+				Option: "ItemMouthBallGag2Option",
+				Chat: "ItemMouthBallGag2Set",
+			},
+		},
 	}, // ItemMouth3
 	Mask: {
 		BunnyMask1: {
@@ -17235,6 +17697,70 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // DroneMask
+		CybertechMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Visor",
+					Key: "v",
+					Options: [{}, {}, {}],
+				},
+				{
+					Name: "Canteen",
+					Key: "c",
+					Options: [{}, { Property: { Effect: [E.GagEasy] } }],
+				},
+				{
+					Name: "Layering",
+					Key: "l",
+					Options: [
+						{
+							Property: {
+								OverridePriority: {
+									base: 44,
+									straps: 44,
+									nose: 42,
+									sideAttachments: 44,
+									attachmentPoint: 44,
+									top: 44,
+									exhalationValve: 44,
+									visorOpaque: 43,
+									visorReflection: 44,
+									visorTransparent: 43,
+									visorReflectionTransparent: 44,
+									hypno1: 43,
+									hypno2: 43,
+									tube: 44,
+									canteen: 44,
+									liquid: 44,
+								},
+							},
+						},
+						{
+							Property: {
+								OverridePriority: {
+									base: 53,
+									straps: 44,
+									sideAttachments: 53,
+									attachmentPoint: 53,
+									top: 53,
+									exhalationValve: 53,
+									visorOpaque: 52,
+									visorReflection: 53,
+									visorTransparent: 52,
+									visorReflectionTransparent: 53,
+									hypno1: 52,
+									hypno2: 52,
+									tube: 53,
+									canteen: 53,
+									liquid: 53,
+								},
+							},
+						},
+					],
+				},
+			],
+		}, // CybertechMask
 		RubberMask: {
 			Archetype: ExtendedArchetype.MODULAR,
 			Modules: [
@@ -18011,7 +18537,7 @@ export var AssetFemale3DCGExtended = {
 				{
 					Name: "Narrow",
 					Property: {
-						SetPose: ["LegsOpen"],
+						SetPose: ["BaseLower"],
 					},
 				},
 				{
@@ -18249,7 +18775,7 @@ export var AssetFemale3DCGExtended = {
 					Name: "LegsOpen",
 					Property: {
 						Difficulty: 2,
-						SetPose: ["LegsOpen"],
+						SetPose: ["BaseLower"],
 						SelfUnlock: true,
 					},
 				},
@@ -18452,7 +18978,7 @@ export var AssetFemale3DCGExtended = {
 							// r3 - Strap Limiter
 							Property: {
 								AllowActivePose: [
-									"LegsOpen",
+									"BaseLower",
 									"LegsClosed",
 									"Kneel",
 									"AllFours",
@@ -18465,7 +18991,7 @@ export var AssetFemale3DCGExtended = {
 						{
 							// r4 - Spread Bar Stand
 							Property: {
-								SetPose: ["LegsOpen"],
+								SetPose: ["BaseLower"],
 								AllowActivePose: ["Kneel"],
 								Effect: [E.BlockWardrobe, E.Freeze, E.MapImmobile],
 								Difficulty: 7,
@@ -18707,6 +19233,7 @@ export var AssetFemale3DCGExtended = {
 			ScriptHooks: {
 				Draw: InventoryItemMiscOwnerTimerPadlockDrawHook,
 				Click: InventoryItemMiscOwnerTimerPadlockClickHook,
+				Exit: InventoryItemMiscOwnerTimerPadlockExitHook,
 			},
 			BaselineProperty: {
 				RemoveItem: false,
@@ -18729,6 +19256,7 @@ export var AssetFemale3DCGExtended = {
 						...args,
 						InventoryItemMiscLoversTimerPadlockValidator,
 					),
+				Exit: (...args) => InventoryItemMiscOwnerTimerPadlockExitHook(...args),
 			},
 		}, // LoversTimerPadlock
 		OwnerPadlock: {
@@ -18756,6 +19284,7 @@ export var AssetFemale3DCGExtended = {
 			ScriptHooks: {
 				Draw: InventoryItemMiscMistressTimerPadlockDrawHook,
 				Click: InventoryItemMiscMistressTimerPadlockClickHook,
+				Exit: InventoryItemMiscMistressTimerPadlockExitHook,
 			},
 			BaselineProperty: {
 				RemoveItem: false,
@@ -18792,7 +19321,7 @@ export var AssetFemale3DCGExtended = {
 				Load: InventoryItemMiscTimerPasswordPadlockLoadHook,
 				Draw: InventoryItemMiscTimerPasswordPadlockDrawHook,
 				Click: InventoryItemMiscTimerPasswordPadlockClickHook,
-				Exit: InventoryItemMiscPasswordPadlockExitHook,
+				Exit: InventoryItemMiscTimerPasswordPadlockExitHook,
 			},
 			BaselineProperty: {
 				Password: "PASSWORD",
@@ -19422,8 +19951,8 @@ export var AssetFemale3DCGExtended = {
 			BaselineProperty: { ShowText: true },
 			ScriptHooks: {
 				SetOption: InventoryItemPelvisLoveChastityBeltSetOptionHook,
-				Draw: InventoryItemPelvisLoveChastityBeltDraw,
-				Validate: InventoryItemPelvisLoveChastityBeltValidate,
+				Draw: InventoryItemPelvisLoveChastityBeltDrawHook,
+				Validate: InventoryItemPelvisLoveChastityBeltValidateHook,
 				Click: (...args) => {
 					InventoryItemPelvisSciFiPleasurePantiesClickHook(...args, false);
 				},
@@ -19441,7 +19970,7 @@ export var AssetFemale3DCGExtended = {
 				Draw: InventoryItemPelvisFuturisticTrainingBeltDrawHook,
 				Exit: InventoryItemPelvisFuturisticTrainingBeltExitHook,
 				Validate: FuturisticAccessValidate,
-				ScriptDraw: AssetsItemPelvisFuturisticTrainingBeltScriptDraw,
+				ScriptDraw: AssetsItemPelvisFuturisticTrainingBeltScriptDrawHook,
 			},
 			BaselineProperty: {
 				ShowText: false,
@@ -20303,7 +20832,6 @@ export var AssetFemale3DCGExtended = {
 							"ItemButt",
 							"ItemVulva",
 							"ItemVulvaPiercings",
-							"ItemButt",
 						],
 						HideItem: [
 							"ItemButtAnalBeads2",
@@ -20349,6 +20877,26 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // PullDownPanties
+		RoyalDiaper: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "None",
+				},
+				{
+					Name: "Simple",
+				},
+				{
+					Name: "HisMajesty",
+				},
+				{
+					Name: "HerMajesty",
+				},
+				{
+					Name: "Lock",
+				},
+			],
+		}, // RoyalDiaper
 	}, // Panties
 	Glasses: {
 		EyePatch1: {
@@ -21146,6 +21694,33 @@ export var AssetFemale3DCGExtended = {
 				Chat: "ClothFishnetTopSet",
 			},
 		}, // FishnetTop
+		GlossyBodystocking: {
+			Archetype: "modular",
+			DrawImages: false,
+			Modules: [
+				{ Name: "HandStyle", Key: "h", Options: [{}, {}, {}, {}] },
+				{ Name: "TailorStyle", Key: "m", Options: [{}, {}, {}, {}, {}] },
+				{ Name: "ChestStyle", Key: "b", Options: [{}, {}] },
+			],
+		}, // GlossyBodystocking
+		TransparentBunnyGirl: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "MiddleTrans",
+					Property: { Opacity: [0.4, 1, 1, 1, 1, 1, 1] },
+				},
+				{
+					Name: "OverallTrans",
+					Property: { Opacity: [0.4, 0, 1, 1, 1, 1, 1] },
+				},
+				{
+					Name: "Opaque",
+					Property: { Opacity: [1, 1, 1, 1, 1, 1, 1] },
+				},
+			],
+		}, // TransparentBunnyGirl
 	}, // Suit
 	SuitLower: {
 		MaleSeamlessCatsuit: {
@@ -21349,6 +21924,19 @@ export var AssetFemale3DCGExtended = {
 				Validate: FuturisticAccessValidate,
 			},
 		}, // FuturisticMask
+		CybertechMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "ItemHood",
+				AssetName: "CybertechMask",
+			},
+			DialogPrefix: {
+				Header: "ItemHoodCybertechMaskSelect",
+				Module: "ItemHoodCybertechMaskModule",
+				Option: "ItemHoodCybertechMaskOption",
+				Chat: "ItemHoodCybertechMaskSet",
+			},
+		}, // CybertechMask
 		InteractiveVisor: {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [
@@ -21400,48 +21988,18 @@ export var AssetFemale3DCGExtended = {
 					Name: "Background",
 					Key: "b",
 					Options: [
-						//CustomBlindBackground: {"None" : "SynthWave", "FreeVR" : "SynthWave", "Gaming" : "Dungeon", "Off" : "", "AR" : ""},
-						{
-							// b0 - Passthrough
-							Property: {
-								CustomBlindBackground: "",
-							},
-						},
-						{
-							// b1 - SynthWave
-							Property: {
-								CustomBlindBackground: "SynthWave",
-								Effect: [],
-							},
-						},
-						{
-							// b2 - Dungeon
-							Property: {
-								CustomBlindBackground: "Dungeon",
-								Effect: [],
-							},
-						},
-						{
-							// b3 - SciFiCell
-							Property: {
-								CustomBlindBackground: "SciFiCell",
-								Effect: [],
-							},
-						},
-						{
-							// b4 - AncientRuins
-							Property: {
-								CustomBlindBackground: "AncientRuins",
-								Effect: [],
-							},
-						},
-						{
-							// b5 - HypnoticSpiral
-							Property: {
-								CustomBlindBackground: "HypnoticSpiral",
-								Effect: [],
-							},
-						},
+						// b0 - None
+						{},
+						// b1 - SynthWave
+						{},
+						// b2 - Dungeon
+						{},
+						// b3 - SciFiCell
+						{},
+						// b4 - AncientRuins
+						{},
+						// b5 - HypnoticSpiral
+						{},
 					],
 				},
 				{
@@ -21549,7 +22107,6 @@ export var AssetFemale3DCGExtended = {
 								Font: "sans-serif",
 								ScriptHooks: {
 									AfterDraw: (...args) =>
-										// @ts-ignore
 										TextItem.GenericTextDrawHook(...args, {
 											YOffset: 10,
 											drawOptions: { fontSize: 12 },
@@ -22320,6 +22877,48 @@ export var AssetFemale3DCGExtended = {
 				Npc: "InventoryItemNoseNoseRingNPCReaction",
 			},
 		}, // NoseRing
+		NoseShackle: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Shackle",
+					Key: "s",
+					DrawImages: true,
+					Options: [
+						{ Property: { Difficulty: 11 } }, //s_0 - Single
+						{ Property: { Difficulty: 13 } }, //s_1 - Double
+					],
+				},
+				{
+					Name: "Attachment",
+					Key: "a",
+					DrawImages: true,
+					Options: [
+						{}, //a_0 - None
+						{
+							Prerequisite: ["NotSuspended"],
+							Property: {
+								Effect: [E.Tethered, E.IsChained],
+							},
+						}, //a_1 - Chainlong
+						{
+							Prerequisite: ["NotSuspended"],
+							Property: {
+								SetPose: ["Kneel"],
+								AllowActivePose: [...PoseAllKneeling],
+								Effect: [E.Freeze, E.IsChained],
+							},
+						}, //a_2 - Chainshort
+						{
+							Prerequisite: ["NotSuspended"],
+							Property: {
+								Effect: [E.Leash],
+							},
+						}, //a_3 - Leash
+					],
+				},
+			],
+		}, // NoseShackle
 	}, // ItemNose
 	Wings: {
 		SteampunkWings: {
@@ -22334,6 +22933,38 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // SteampunkWings
+		SeraphWings: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Wing1",
+					Key: "show1",
+					DrawImages: false,
+					Options: [
+						{}, //show1_0 - Show
+						{}, //show1_1 - Hide
+					],
+				},
+				{
+					Name: "Wing2",
+					Key: "show2",
+					DrawImages: false,
+					Options: [
+						{}, //show2_0 - Show
+						{}, //show2_1 - Hide
+					],
+				},
+				{
+					Name: "Wing3",
+					Key: "show3",
+					DrawImages: false,
+					Options: [
+						{}, //show3_0 - Show
+						{}, //show3_1 - Hide
+					],
+				},
+			],
+		}, // SeraphWings
 		DragonWings: {
 			Archetype: ExtendedArchetype.TYPED,
 			DrawImages: true,
@@ -22349,6 +22980,24 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // DragonWings
+		Spider: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{ Name: "Biped" },
+				{
+					Name: "Arachnid",
+					Property: {
+						Hide: ["Pussy", "BodyLower"],
+						OverrideHeight: {
+							Height: -200,
+							Priority: 21,
+							HeightRatioProportion: 0,
+						},
+					},
+				},
+			],
+		}, // Spider
 	}, // Wings
 	ItemHandheld: {
 		Smartphone: {
@@ -22468,6 +23117,27 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // Uchiwa
+		CustomPaddle: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "CustomText",
+					Key: "c",
+					DrawImages: false,
+					Options: [
+						{}, // c0 - Blank
+						{}, // c1 - Brat
+						{}, // c2 - Hearts
+						{}, // c3 - Owned
+						{}, // c4 - Pet
+						{}, // c5 - Slave
+						{}, // c6 - Slut
+						{}, // c7 - Toy
+						{}, // c8 - Bitch
+					],
+				},
+			],
+		}, // Custom Paddle
 		Cigarette: {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [
@@ -22642,6 +23312,15 @@ export var AssetFemale3DCGExtended = {
 						{}, // Psyker
 						{}, // Dante
 						{}, // Sarah Jade Kelly
+						{}, // Wolfie
+						{}, // Vi
+						{}, // Neddle
+						{}, // Mist
+						{}, // Milim
+						{}, // Lisa3
+						{}, // Kirumi
+						{}, // AlexCarameii
+						{}, // KatrinaThunder
 					],
 					DrawData: {
 						elementData: [
@@ -22696,6 +23375,35 @@ export var AssetFemale3DCGExtended = {
 								imagePath:
 									"Assets/Female3DCG/ItemHandheld/Plushie_SarahJadeKelly.png",
 							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Wolfie.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Vi.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Neddle.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Mist.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Milim.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Lisa3.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Kirumi.png",
+							},
+							{
+								imagePath:
+									"Assets/Female3DCG/ItemHandheld/Plushie_AlexCarameii.png",
+							},
+							{
+								imagePath:
+									"Assets/Female3DCG/ItemHandheld/Plushie_KatrinaThunder.png",
+							},
 						],
 					},
 				},
@@ -22715,6 +23423,7 @@ export var AssetFemale3DCGExtended = {
 						{}, // Amy
 						{}, // Arelia
 						{}, // Dawn
+						{}, // Bella
 					],
 					DrawData: {
 						elementData: [
@@ -22739,6 +23448,7 @@ export var AssetFemale3DCGExtended = {
 								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Arelia.png",
 							},
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Dawn.png" },
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Bella.png" },
 						],
 					},
 				},
@@ -22758,6 +23468,10 @@ export var AssetFemale3DCGExtended = {
 						{}, // Zoi
 						{}, // Takao
 						{}, // Carol
+						{}, // Brioche
+						{}, // Flare
+						{}, // Lara
+						{}, // Kitty
 					],
 					DrawData: {
 						elementData: [
@@ -22781,6 +23495,12 @@ export var AssetFemale3DCGExtended = {
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Zoi.png" },
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Takao.png" },
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Carol.png" },
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Brioche.png",
+							},
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Flare.png" },
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Lara.png" },
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Kitty.png" },
 						],
 					},
 				},
@@ -22808,11 +23528,17 @@ export var AssetFemale3DCGExtended = {
 					Options: [
 						{}, // off
 						{}, // Nel
+						{}, // Fallen
+						{}, // Reina
 					],
 					DrawData: {
 						elementData: [
 							{ imagePath: "Screens/Inventory/ItemHandheld/Plushies/None.png" },
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Nel.png" },
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Fallen.png",
+							},
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Reina.png" },
 						],
 					},
 				},
@@ -22837,6 +23563,59 @@ export var AssetFemale3DCGExtended = {
 									"Assets/Female3DCG/ItemHandheld/Plushie_Jennifer.png",
 							},
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Tsuki.png" },
+						],
+					},
+				},
+				{
+					Name: "SakisDen",
+					Key: "SakisDen",
+					DrawImages: true,
+					Options: [
+						{}, // off
+						{}, // Saki
+					],
+					DrawData: {
+						elementData: [
+							{ imagePath: "Screens/Inventory/ItemHandheld/Plushies/None.png" },
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Saki.png" },
+						],
+					},
+				},
+				{
+					Name: "SarahsWorld",
+					Key: "SarahsWorld",
+					DrawImages: true,
+					Options: [
+						{}, // Off
+						{}, // Sarah
+						{}, // Samantha
+					],
+					DrawData: {
+						elementData: [
+							{ imagePath: "Screens/Inventory/ItemHandheld/Plushies/None.png" },
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Sarah.png" },
+							{
+								imagePath:
+									"Assets/Female3DCG/ItemHandheld/Plushie_Samantha.png",
+							},
+						],
+					},
+				},
+				{
+					Name: "DollMakerClub",
+					Key: "DollMakerClub",
+					DrawImages: true,
+					Options: [
+						{}, // Off
+						{}, // Courtney
+					],
+					DrawData: {
+						elementData: [
+							{ imagePath: "Screens/Inventory/ItemHandheld/Plushies/None.png" },
+							{
+								imagePath:
+									"Assets/Female3DCG/ItemHandheld/Plushie_Courtney.png",
+							},
 						],
 					},
 				},
@@ -22903,6 +23682,29 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // DragonPlush
+		Chocolate: {
+			Archetype: "modular",
+			DrawImages: false,
+			Modules: [{ Name: "Type", Key: "p", Options: [{}, {}, {}, {}] }],
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+		}, // Chocolate
+		Laptop: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{ Name: "Closed" },
+				{ Name: "Open", Property: { OverridePriority: 35 } },
+			],
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+		}, // Laptop
 	}, // ItemHandheld
 	EyeShadow: {
 		Running: {

@@ -1,6 +1,6 @@
 {
     "name": "bc-bot",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "license": "Apache-2.0",
     "description": "A node-based bot framework for BC",
     "repository": {
@@ -19,7 +19,7 @@
     },
     "dependencies": {
         "@socket.io/component-emitter": "^3.1.2",
-        "bc-stubs": "^126.0.0",
+        "bc-stubs": "130.0.0",
         "lz-string": "^1.5.0",
         "prettier": "^3.8.1",
         "socket.io-client": "^4.8.3"
