@@ -915,10 +915,11 @@ export class BlackjackGame implements Game {
             const handString = await this.buildHandString(true, player);
             this.conn.SendMessage(
                 "Whisper",
-                `You are standing on hand ${originalHand} and are now playing hand ${player.playingHand + 1}. \n${handString}`,
+                `You are standing on hand ${originalHand} and are now playing hand ${player.playingHand + 1}.\n${handString}`,
                 sender.MemberNumber,
             );
         } else {
+            player.playingHand++;
             const handString = await this.buildHandString(true, player);
             this.conn.SendMessage(
                 "Whisper",
@@ -1437,7 +1438,7 @@ export class BlackjackGame implements Game {
     ): Promise<string> {
         const dealerValue = this.calculateHandValue(this.dealerHand);
         const dealerHandString = dealerHidden
-            ? `[${getCardString(this.dealerHand[0])}] [???]`
+            ? `[${getCardString(this.dealerHand[0])}], [???]`
             : this.handToString(this.dealerHand);
         let string = `Dealer's hand: ${dealerHandString} (${dealerHidden ? "???" : dealerValue})\n`;
         for (const player of this.players) {
