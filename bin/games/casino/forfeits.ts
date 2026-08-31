@@ -118,6 +118,7 @@ export const FORFEITS: Record<string, Forfeit> = {
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         applyItems: (character: API_Character, lockMemberNumber: number) => {
+            //TODO CAGE COLOR?
             const cage = character.Appearance.AddItem(
                 AssetGet("ItemDevices", "Kennel"),
             );
@@ -270,7 +271,7 @@ export const SERVICES: Record<string, Service> = {
     }, */
     outfitlisa: {
         name: "Outfit from Lisa",
-        description: "Let Lisa (201046) make an outfit just for you~",
+        description: "Let Lisa (201046) make an outfit just for you~ (Be aware that Lisa is quite busy these days and therefore hardly around)",
         value: 500,
         offeringPlayer: 201046,
     },

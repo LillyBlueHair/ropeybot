@@ -677,13 +677,6 @@ export class BlackjackGame implements Game {
                 sender.MemberNumber,
             );
             return;
-        } else if (player.bets.length > 1) {
-            this.conn.SendMessage(
-                "Whisper",
-                "You can only surrender on your inital cards.",
-                sender.MemberNumber,
-            );
-            return;
         }
         const hand = this.playerHands.get(bet);
 
@@ -848,7 +841,7 @@ export class BlackjackGame implements Game {
                 winnerMemberData.credits += totalWinnings;
                 winnerMemberData.score += totalWinnings;
                 await this.casino.store.savePlayer(winnerMemberData);
-                message += `${player.memberName} wins ${totalWinnings} chips! \n`;
+                message += `${player.memberName} wins ${totalWinnings} chips!\n`;
                 sendMessage = true;
             }
         }
@@ -923,7 +916,7 @@ export class BlackjackGame implements Game {
             const handString = await this.buildHandString(true, player);
             this.conn.SendMessage(
                 "Whisper",
-                `You are standing. \n${handString}`,
+                `You are standing.\n${handString}`,
                 sender.MemberNumber,
             );
         }
