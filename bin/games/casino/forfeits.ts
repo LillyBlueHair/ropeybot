@@ -94,11 +94,10 @@ export const FORFEITS: Record<string, Forfeit> = {
     },
     armbinder: {
         name: "Armbinder",
-        colourLayers: [0],
         value: 10,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
-        items: () => [AssetGet("ItemArms", "ShinyArmbinder")],
+        items: () => [AssetGet("ItemArms", "LeatherArmbinder")],
     },
     yoke: {
         name: "Yoke",
