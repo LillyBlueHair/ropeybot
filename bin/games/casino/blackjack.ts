@@ -710,6 +710,14 @@ export class BlackjackGame implements Game {
 
         bet.standing = true;
         bet.surrendered = true;
+        if(bets.length > ++player.playingHand){
+            this.conn.SendMessage(
+                "Whisper",
+                `You are now playing Hand ${player.playingHand+1}\n${await this.buildHandString(true, player)}`,
+                sender.MemberNumber,
+            );
+        }
+
 
         if (this.allPlayersDone()) {
             this.resolveGame();
