@@ -29,14 +29,14 @@ export interface Forfeit {
 export const FORFEITS: Record<string, Forfeit> = {
     boots: {
         name: "Boots",
-        value: 5,
+        value: 15,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         items: () => [AssetGet("ItemBoots", "BalletHeels")],
     },
     legbinder: {
         name: "Leg binder",
-        value: 7,
+        value: 17,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         colourLayers: [0],
@@ -44,14 +44,14 @@ export const FORFEITS: Record<string, Forfeit> = {
     },
     frogtie: {
         name: "Frogtie straps",
-        value: 8,
+        value: 21,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         items: () => [AssetGet("ItemLegs", "FrogtieStraps")],
     },
     gag: {
         name: "Gag",
-        value: 7,
+        value: 25,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         colourLayers: [0],
@@ -63,14 +63,14 @@ export const FORFEITS: Record<string, Forfeit> = {
     },
     blindfold: {
         name: "Blindfold",
-        value: 7,
+        value: 25,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         items: () => [AssetGet("ItemHead", "LatexBlindfold")],
     },
     mittens: {
         name: "Mittens",
-        value: 9,
+        value: 18,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         colourLayers: [0],
@@ -82,7 +82,7 @@ export const FORFEITS: Record<string, Forfeit> = {
     },
     paws: {
         name: "Paws",
-        value: 9,
+        value: 18,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         colourLayers: [0],
@@ -94,21 +94,21 @@ export const FORFEITS: Record<string, Forfeit> = {
     },
     armbinder: {
         name: "Armbinder",
-        value: 10,
+        value: 24,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         items: () => [AssetGet("ItemArms", "LeatherArmbinder")],
     },
     yoke: {
         name: "Yoke",
-        value: 10,
+        value: 24,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         items: () => [AssetGet("ItemArms", "Yoke")],
     },
     cage: {
         name: "Cage",
-        value: 30,
+        value: 60,
         items: () => {
             const cage = AssetGet("ItemDevices", "Kennel");
             cage.Property = { TypeRecord: { d: 1, p: 1 } };
@@ -135,13 +135,13 @@ export const FORFEITS: Record<string, Forfeit> = {
     },
     pet: {
         name: "Pet",
-        value: 12,
+        value: 44,
         items: () => [AssetGet("ItemArms", "ShinyPetSuit")],
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         applyItems: makePet.bind(null, 0),
     },
-    pet1hour: {
+    /*pet1hour: {
         name: "Pet: 1 hour",
         value: 15,
         items: () => [AssetGet("ItemArms", "ShinyPetSuit")],
@@ -172,10 +172,10 @@ export const FORFEITS: Record<string, Forfeit> = {
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 4 * 60 * 60 * 1000,
         applyItems: makePet.bind(null, 4),
-    },
+    },*/
     chastity: {
         name: "Chastity",
-        value: 15,
+        value: 18,
         items: (sender) => {
             if (!sender || !sender.Appearance) {
                 return [AssetGet("ItemPelvis", "ModularChastityBelt")];
@@ -194,7 +194,7 @@ export const FORFEITS: Record<string, Forfeit> = {
     upperpetsuit: {
         name: "Upper Pet Suit",
         colourLayers: [0],
-        value: 10,
+        value: 24,
         items: () => [AssetGet("ItemArms", "PawPaddedPetsuitArms")],
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
@@ -202,7 +202,7 @@ export const FORFEITS: Record<string, Forfeit> = {
     lowerpetsuit: {
         name: "Lower Pet Suit",
         colourLayers: [0],
-        value: 8,
+        value: 20,
         items: () => [AssetGet("ItemLegs", "PawPaddedPetsuitLegs")],
         lock: AssetGet("ItemLegs", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
@@ -239,7 +239,7 @@ export const SERVICES: Record<string, Service> = {
     player: {
         name: "Buy a caged player",
         description: "Why waste their misfortune?",
-        value: 100,
+        value: Math.ceil(FORFEITS["cage"].value * 2.5),
         commandExample: "/bot buy player <name or member number>",
     },
     restraint: {
@@ -270,7 +270,8 @@ export const SERVICES: Record<string, Service> = {
     }, */
     outfitlisa: {
         name: "Outfit from Lisa",
-        description: "Let Lisa (201046) make an outfit just for you~ (Be aware that Lisa is quite busy these days and therefore hardly around)",
+        description:
+            "Let Lisa (201046) make an outfit just for you~ (Be aware that Lisa is quite busy these days and therefore hardly around)",
         value: 500,
         offeringPlayer: 201046,
     },
