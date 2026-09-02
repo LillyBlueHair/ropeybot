@@ -152,6 +152,8 @@ export class Casino {
         this.commandParser.register("scoreboard", this.onCommandScoreboard);
         this.commandParser.register("color", this.onCommandColor);
         this.commandParser.register("refund", this.onCommandRefund);
+        this.commandParser.register("getstrikes", this.onCommandGetStrikes);
+        this.commandParser.register("resetstrikes", this.onCommandResetStrikes);
         this.commandParser.register(
             "markcompleted",
             this.onCommandMarkCompleted,
@@ -759,6 +761,84 @@ ${forfeitsString()}
         }
     };
 
+    private onCommandGetStrikes = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (!sender.IsRoomAdmin()) {
+            this.conn.reply(msg, "Sorry, you need to be an admin");
+            return;
+        }
+
+        if (args.length < 1) {
+            this.conn.reply(
+                msg,
+                "Please add the name/number of the player whose strikes you want to see",
+            );
+            return;
+        }
+        const target = this.conn.chatRoom.findCharacter(args[0]);
+        if (!target) {
+            this.conn.reply(
+                msg,
+                "I can't find that person. (They need to be in the room)",
+            );
+            return;
+        }
+
+        const player = await this.store.getPlayer(target.MemberNumber);
+        this.conn.reply(
+            msg,
+            `${target} (${target.MemberNumber}) has ${player.cheatStrikes} strikes`,
+        );
+    };
+
+    private onCommandResetStrikes = async (
+        sender: API_Character,
+        msg: BC_Server_ChatRoomMessage,
+        args: string[],
+    ) => {
+        if (!sender.IsRoomAdmin()) {
+            this.conn.reply(msg, "Sorry, you need to be an admin");
+            return;
+        }
+
+        if (args.length < 1) {
+            this.conn.reply(
+                msg,
+                "Please add the name/number of the player whose strikes you want to reset",
+            );
+            return;
+        }
+        const target = this.conn.chatRoom.findCharacter(args[0]);
+        if (!target) {
+            this.conn.reply(
+                msg,
+                "I can't find that person. (They need to be in the room)",
+            );
+            return;
+        }
+
+        let strikes = 0;
+        if (args.length == 2 && args[1]) {
+            strikes = Number.parseInt(args[1]);
+            if (isNaN(strikes)) {
+                this.conn.reply(msg, "Invalid amount of strikes.");
+                return;
+            }
+        }
+
+        const player = await this.store.getPlayer(target.MemberNumber);
+        player.cheatStrikes = strikes;
+
+        await this.store.savePlayer(player);
+        this.conn.reply(
+            msg,
+            `Successfully reset ${target} (${target.MemberNumber}) strikes to ${strikes}`,
+        );
+    };
+
     private onCommandRefund = async (
         sender: API_Character,
         msg: BC_Server_ChatRoomMessage,
@@ -1067,16 +1147,13 @@ ${forfeitsString()}
         if (applyFn) {
             applyFn(char, this.conn.Player.MemberNumber, color);
         } else if (items.length === 1) {
-            let characterHairColor =
-                char.Appearance.InventoryGet("HairFront").GetColor();
             const added = char.Appearance.AddItem(items[0]);
             try {
-                characterHairColor = characterHairColor[0] as BCColor;
                 let colors: BCColor[] = [];
                 if (colourLayers) {
                     for (let i = 0; i <= Math.max(...colourLayers); i++) {
                         if (colourLayers.includes(i)) {
-                            colors.push(characterHairColor);
+                            colors.push(color);
                         } else {
                             colors.push("Default");
                         }

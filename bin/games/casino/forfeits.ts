@@ -94,11 +94,10 @@ export const FORFEITS: Record<string, Forfeit> = {
     },
     armbinder: {
         name: "Armbinder",
-        colourLayers: [0],
         value: 10,
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
-        items: () => [AssetGet("ItemArms", "ShinyArmbinder")],
+        items: () => [AssetGet("ItemArms", "LeatherArmbinder")],
     },
     yoke: {
         name: "Yoke",
@@ -118,6 +117,7 @@ export const FORFEITS: Record<string, Forfeit> = {
         lock: AssetGet("ItemMisc", "TimerPasswordPadlock"),
         lockTimeMs: 20 * 60 * 1000,
         applyItems: (character: API_Character, lockMemberNumber: number) => {
+            //TODO CAGE COLOR?
             const cage = character.Appearance.AddItem(
                 AssetGet("ItemDevices", "Kennel"),
             );
@@ -270,7 +270,7 @@ export const SERVICES: Record<string, Service> = {
     }, */
     outfitlisa: {
         name: "Outfit from Lisa",
-        description: "Let Lisa (201046) make an outfit just for you~",
+        description: "Let Lisa (201046) make an outfit just for you~ (Be aware that Lisa is quite busy these days and therefore hardly around)",
         value: 500,
         offeringPlayer: 201046,
     },
@@ -316,13 +316,7 @@ function makeChaste(
                 `After betting and losing at the Cotton Candy Casino, ${character} has lost the privilege to orgasm. ` +
                 `This chastity cage will ensure that the rule is followed.`,
         });
-        const hairColor =
-            character.Appearance.InventoryGet("HairFront").GetColor();
-        const targetColor: BCColor =
-            hairColor.length > 1
-                ? (hairColor[0] as HexColor)
-                : (hairColor as HexColor);
-        chastityCage.SetColor(["Default", targetColor, targetColor, "#FFBC00"]);
+        chastityCage.SetColor(["Default", color, color, "#FFBC00"]);
         chastityCage.lock("TimerPasswordPadlock", lockMemberNumber, {
             Password: generatePassword(),
             Hint: "Better luck next time!",
