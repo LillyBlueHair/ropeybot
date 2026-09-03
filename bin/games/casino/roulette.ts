@@ -600,32 +600,72 @@ export class RouletteGame implements Game {
     }
 
     private getWinnings(winningNumber: number, bet: RouletteBet): number {
-        if (bet.kind === "single" && bet.number === winningNumber) {
-            return bet.stake * 36;
-        } else if (
-            (bet.kind === "red" && rouletteColors[winningNumber] == "Red") ||
-            (bet.kind === "black" &&
-                rouletteColors[winningNumber] == "Black") ||
-            (bet.kind === "even" &&
-                winningNumber !== 0 &&
-                winningNumber % 2 === 0) ||
-            (bet.kind === "odd" && winningNumber % 2 === 1) ||
-            (bet.kind === "1-18" &&
-                winningNumber >= 1 &&
-                winningNumber <= 18) ||
-            (bet.kind === "19-36" && winningNumber >= 19 && winningNumber <= 36)
-        ) {
-            return bet.stake * 2;
-        } else if (
-            (bet.kind === "1-12" &&
-                winningNumber >= 1 &&
-                winningNumber <= 12) ||
-            (bet.kind === "13-24" &&
-                winningNumber >= 13 &&
-                winningNumber <= 24) ||
-            (bet.kind === "25-36" && winningNumber >= 25 && winningNumber <= 36)
-        ) {
-            return bet.stake * 3;
+        if (bet.stakeForfeit) {
+            if (bet.kind === "single" && bet.number === winningNumber) {
+                return bet.stake * 35;
+            } else if (
+                (bet.kind === "red" &&
+                    rouletteColors[winningNumber] == "Red") ||
+                (bet.kind === "black" &&
+                    rouletteColors[winningNumber] == "Black") ||
+                (bet.kind === "even" &&
+                    winningNumber !== 0 &&
+                    winningNumber % 2 === 0) ||
+                (bet.kind === "odd" && winningNumber % 2 === 1) ||
+                (bet.kind === "1-18" &&
+                    winningNumber >= 1 &&
+                    winningNumber <= 18) ||
+                (bet.kind === "19-36" &&
+                    winningNumber >= 19 &&
+                    winningNumber <= 36)
+            ) {
+                return bet.stake;
+            } else if (
+                (bet.kind === "1-12" &&
+                    winningNumber >= 1 &&
+                    winningNumber <= 12) ||
+                (bet.kind === "13-24" &&
+                    winningNumber >= 13 &&
+                    winningNumber <= 24) ||
+                (bet.kind === "25-36" &&
+                    winningNumber >= 25 &&
+                    winningNumber <= 36)
+            ) {
+                return bet.stake * 2;
+            }
+        } else {
+            if (bet.kind === "single" && bet.number === winningNumber) {
+                return bet.stake * 36;
+            } else if (
+                (bet.kind === "red" &&
+                    rouletteColors[winningNumber] == "Red") ||
+                (bet.kind === "black" &&
+                    rouletteColors[winningNumber] == "Black") ||
+                (bet.kind === "even" &&
+                    winningNumber !== 0 &&
+                    winningNumber % 2 === 0) ||
+                (bet.kind === "odd" && winningNumber % 2 === 1) ||
+                (bet.kind === "1-18" &&
+                    winningNumber >= 1 &&
+                    winningNumber <= 18) ||
+                (bet.kind === "19-36" &&
+                    winningNumber >= 19 &&
+                    winningNumber <= 36)
+            ) {
+                return bet.stake * 2;
+            } else if (
+                (bet.kind === "1-12" &&
+                    winningNumber >= 1 &&
+                    winningNumber <= 12) ||
+                (bet.kind === "13-24" &&
+                    winningNumber >= 13 &&
+                    winningNumber <= 24) ||
+                (bet.kind === "25-36" &&
+                    winningNumber >= 25 &&
+                    winningNumber <= 36)
+            ) {
+                return bet.stake * 3;
+            }
         }
     }
 
