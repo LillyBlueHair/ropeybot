@@ -770,7 +770,10 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         while (logInSession === this.loggedIn) {
             console.log("Trying to join room...", roomDef);
             const joinResult = await this.ChatRoomJoin(roomDef.Name);
-            if (joinResult) return;
+            if (joinResult) {
+                await this.restoreRoomAdmins(roomDef);
+                return;
+            }
 
             // relinquish responsibility to the actual active login session if this
             // joinOrCreateRoom call is from an old disconnected session
@@ -781,6 +784,24 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
 
             await wait(3000);
         }
+    }
+
+    private async restoreRoomAdmins(roomDef: RoomDefinition): Promise<void> {
+        const admins = [this.Player.MemberNumber, ...roomDef.Admin];
+        const currentAdmins = new Set(this.chatRoom?.Admin ?? []);
+        const desiredAdmins = new Set(admins);
+
+        await Promise.all([
+            // Promote users who should be admins but aren't
+            ...[...desiredAdmins]
+                .filter((user) => !currentAdmins.has(user))
+                .map((user) => this.chatRoom!.promoteAdmin(user)),
+
+            // Demote users who are admins but shouldn't be
+            ...[...currentAdmins]
+                .filter((user) => !desiredAdmins.has(user))
+                .map((user) => this.chatRoom!.demoteAdmin(user)),
+        ]);
     }
 
     public ChatRoomLeave() {
