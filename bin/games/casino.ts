@@ -201,7 +201,8 @@ export class Casino {
         if (
             typeof beep?.Message !== "string" ||
             beep.Message.includes("TypingStatus") ||
-            beep.Message.includes("ReqRoom")
+            beep.Message.includes("ReqRoom") ||
+            beep.BeepType.includes("LCPlayerInfo")
         ) {
             return;
         }
