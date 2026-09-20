@@ -361,12 +361,7 @@ export class ThreeCardPokerGame implements Game {
             );
 
             if (winnings > 0) {
-                const winnerMemberData = await this.casino.store.getPlayer(
-                    player.memberNumber,
-                );
-                winnerMemberData.credits += winnings;
-                winnerMemberData.score += winnings;
-                await this.casino.store.savePlayer(winnerMemberData);
+                await this.casino.store.addWinnings(player.memberNumber, winnings);
                 message += `${player.memberName} wins ${winnings} chips\n`;
                 sendMessage = true;
             } else if (player.bet.stakeForfeit && winnings !== -100) {
