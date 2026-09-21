@@ -199,10 +199,19 @@ export function InventoryItemPelvisFuturisticTrainingBeltDrawHook(...args: any[]
 export function InventoryItemPelvisFuturisticTrainingBeltExitHook(...args: any[]): any {
 	return null;
 }
+export function AssetsItemPelvisFuturisticTrainingBeltScriptDrawHook(...args: any[]): any {
+	return null;
+}
 export function InventoryItemPelvisFuturisticTrainingBeltLoadHook(...args: any[]): any {
 	return null;
 }
 export function InventoryItemPelvisLoveChastityBeltSetOptionHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemPelvisLoveChastityBeltDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemPelvisLoveChastityBeltValidateHook(...args: any[]): any {
 	return null;
 }
 export function InventoryItemPelvisSciFiPleasurePantiesClickHook(...args: any[]): any {
@@ -236,6 +245,18 @@ export function InventoryItemVulvaFuturisticVibratorLoadHook(...args: any[]): an
 	return null;
 }
 export function InventoryItemVulvaLoversVibratorDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemVulvaTechnoChastityCageClickHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemVulvaTechnoChastityCageDrawHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemVulvaTechnoChastityCageExitHook(...args: any[]): any {
+	return null;
+}
+export function InventoryItemVulvaChastityCageScriptDrawHook(...args: any[]): any {
 	return null;
 }
 export function InventoryItemNeckAccessoriesCollarAutoShockUnitDraw(...args: any[]): any {
@@ -302,6 +323,9 @@ export function InventoryItemMiscOwnerTimerPadlockDrawHook(...args: any[]): any 
 export function InventoryItemMiscOwnerTimerPadlockClickHook(...args: any[]): any {
 	return null;
 };
+export function InventoryItemMiscOwnerTimerPadlockExitHook(...args: any[]): any {
+	return null;
+};
 export function InventoryItemMiscLoversTimerPadlockValidator(...args: any[]): any {
 	return null;
 };
@@ -321,6 +345,9 @@ export function InventoryItemMiscMistressTimerPadlockDrawHook(...args: any[]): a
 	return null;
 };
 export function InventoryItemMiscMistressTimerPadlockClickHook(...args: any[]): any {
+	return null;
+};
+export function InventoryItemMiscMistressTimerPadlockExitHook(...args: any[]): any {
 	return null;
 };
 export function InventoryItemMiscFamilyPadlockDrawHook(...args: any[]): any {
@@ -350,6 +377,9 @@ export function InventoryItemMiscTimerPasswordPadlockDrawHook(...args: any[]): a
 export function InventoryItemMiscTimerPasswordPadlockClickHook(...args: any[]): any {
 	return null;
 };
+export function InventoryItemMiscTimerPasswordPadlockExitHook(...args: any[]): any {
+	return null;
+};
 
 export const InventoryItemPelvisLoveChastityBeltDraw = undefined;
 export const InventoryItemPelvisLoveChastityBeltValidate = undefined;
@@ -365,6 +395,7 @@ export const InventoryItemPelvisModularChastityBeltDrawHook = undefined;
 export const InventoryItemPelvisModularChastityBeltExitHook = undefined;
 export const InventoryItemPelvisModularChastityBeltScriptDrawHook = undefined;
 export const InventoryItemPelvisModularChastityBeltVoiceTriggers = [];
+export const InventoryItemVulvaTechnoChastityCageVoiceTriggers = [];
 export const InventorySuitLatexCatsuitLoadHook = undefined;
 export const InventorySuitLatexCatsuitDrawHook = undefined;
 export const InventorySuitLatexCatsuitExitHook = undefined;
@@ -373,6 +404,11 @@ export const PortalLinkTransmitterLoadHook = undefined;
 export const PortalLinkTransmitterDrawHook = undefined;
 export const PortalLinkTransmitterClickHook = undefined;
 export const PortalLinkTransmitterExitHook = undefined;
+
+export const DynamicDrawTextEffect = {
+	BURN: "burn",
+};
+
 
 export const FuturisticAccessLoad = undefined;
 export const FuturisticAccessClick = undefined;
@@ -548,7 +584,7 @@ export const CommonNoop = undefined;
 export const CommonTime = () => 0;
 
 export const PoseAllKneeling: readonly AssetPoseName[] = Object.freeze(["Kneel", "KneelingSpread"]);
-export const PoseAllStanding: readonly AssetPoseName[] = Object.freeze(["BaseLower", "LegsOpen", "LegsClosed", "Spread"]);
+export const PoseAllStanding: readonly AssetPoseName[] = Object.freeze(["TapedHands" , "BaseUpper" , "BackBoxTie" , "BackCuffs" , "BackElbowTouch" , "OverTheHead" , "Yoked" , "BaseLower" , "Kneel" , "KneelingSpread" , "LegsClosed", "Spread", "Hogtied" , "AllFours" , "Suspension"]);
 
 export const InterfaceTextGet = (x: string) => undefined;
 

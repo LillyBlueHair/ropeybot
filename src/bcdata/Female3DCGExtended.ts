@@ -182,11 +182,23 @@ import {
     AssetsFaceMarkingsFaceWritingsAfterDrawHook,
     ItemHeadDroneMaskValidateHook,
     TextItem,
+	InventoryItemMiscOwnerTimerPadlockExitHook,
+	InventoryItemMiscMistressTimerPadlockExitHook,
+	InventoryItemMiscTimerPasswordPadlockExitHook,
+	InventoryItemVulvaChastityCageScriptDrawHook,
+	InventoryItemVulvaTechnoChastityCageClickHook,
+	InventoryItemVulvaTechnoChastityCageDrawHook,
+	InventoryItemVulvaTechnoChastityCageExitHook,
+	InventoryItemVulvaTechnoChastityCageVoiceTriggers,
+	DynamicDrawTextEffect,
+	AssetsItemPelvisFuturisticTrainingBeltScriptDrawHook,
+	InventoryItemPelvisLoveChastityBeltDrawHook,
+	InventoryItemPelvisLoveChastityBeltValidateHook,
 } from "./defs.ts";
 
 import { E } from "./female3DCG.js";
 
-const InventoryItemHandheldPlushiesSetOptionHook = () => {};
+export const InventoryItemHandheldPlushiesSetOptionHook = () => {};
 
 /**
  * An enum encapsulating the available extended item archetypes
@@ -207,6 +219,18 @@ export const ExtendedArchetype = /** @type {const} */ ({
  * @const
  */
 export var AssetFemale3DCGExtended = {
+	ItemScript: {
+		// Mark as an extended item in order to declare its customizable baseline properties (important for `Item` -> `ItemBundle` conversion)
+		Script: {
+			Archetype: ExtendedArchetype.NOARCH,
+			BaselineProperty: {
+				Hide: [],
+				Block: [],
+				UnHide: [],
+				HideItem: [],
+			},
+		}, // Script
+	},
 	BodyUpper: {
 		// NOTE: Switch to the `MODULAR` archetype if we'd want to allow for the simultaneous use of multiple overlays
 		Small: {
@@ -419,6 +443,42 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // NunHabit
+		JesterHat: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			Modules: [
+				{
+					Name: "LeftPart",
+					Key: "l",
+					Options: [
+						{}, // 0 - No style
+						{}, // 1 - Stripes
+						{}, // 2 - Dots
+						{}, // 3 - Stripes & Dots
+					],
+				},
+				{
+					Name: "TopPart",
+					Key: "t",
+					Options: [
+						{}, // 0 - No style
+						{}, // 1 - Stripes
+						{}, // 2 - Dots
+						{}, // 3 - Stripes & Dots
+					],
+				},
+				{
+					Name: "RightPart",
+					Key: "r",
+					Options: [
+						{}, // 0 - No style
+						{}, // 1 - Stripes
+						{}, // 2 - Dots
+						{}, // 3 - Stripes & Dots
+					],
+				},
+			],
+		}, // JesterHat
 		PirateHat: {
 			Archetype: ExtendedArchetype.MODULAR,
 			ChatTags: [
@@ -457,7 +517,28 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // PirateHat
-	},
+		NPCBalloon: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{ Name: "ExclamationMark" },
+				{ Name: "QuestionMark" },
+				{ Name: "Heart" },
+				{ Name: "Arrow" },
+			],
+		}, // NPCBalloon
+		WitchHat: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "HairMasking",
+					Key: "z",
+					DrawImages: false,
+					Options: [{}, {}],
+				},
+			],
+		}, // WitchHat
+	}, // Hat
 	HandAccessoryLeft: {
 		Rings: {
 			Archetype: ExtendedArchetype.MODULAR,
@@ -518,6 +599,11 @@ export var AssetFemale3DCGExtended = {
 					Name: "Ring",
 					Key: "r",
 					Options: [{}, {}, {}],
+				},
+				{
+					Name: "RingGem",
+					Key: "g",
+					Options: [{}, {}],
 				},
 				{
 					Name: "Pinkie",
@@ -733,6 +819,94 @@ export var AssetFemale3DCGExtended = {
 		},
 	},
 	ClothOuter: {
+		CheerleaderTop: {
+			Archetype: ExtendedArchetype.TEXT,
+			MaxLength: { Text: 8 },
+			CopyConfig: {
+				GroupName: "Cloth",
+				AssetName: "CheerleaderTop",
+			},
+		}, // CheerleaderTop
+		WhiteDress: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "Cloth",
+				AssetName: "WhiteDress",
+			},
+		}, // WhiteDress
+		LatexHobbleDress: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "Cloth",
+				AssetName: "LatexHobbleDress",
+			},
+		}, // LatexHobbleDress
+		StarryOceanEveningGown: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "Cloth",
+				AssetName: "StarryOceanEveningGown",
+			},
+		}, // StarryOceanEveningGown
+		SlaveRags: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "Cloth",
+				AssetName: "SlaveRags",
+			},
+		}, // SlaveRags
+		MilitaryFatigue: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "Cloth",
+				AssetName: "MilitaryFatigue",
+			},
+		}, // MilitaryFatigue
+		OffTheShoulderTop: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: {
+				GroupName: "Cloth",
+				AssetName: "OffTheShoulderTop",
+			},
+		}, // OffTheShoulderTop
+		MeshTop: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "Cloth",
+				AssetName: "MeshTop",
+			},
+		}, // Mesh Top
+		LittleFormalShirt: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "Cloth", AssetName: "LittleFormalShirt" },
+		}, // LittleFormalShirt
+		Jacket: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "Cloth", AssetName: "Jacket" },
+		}, // Jacket
+		FishnetTop: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "Cloth", AssetName: "FishnetTop" },
+		}, // FishnetTop
+		AllureSidecut: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "Cloth", AssetName: "AllureSidecut" },
+		}, // AllureSidecut
+		ChineseDress2: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "Cloth", AssetName: "ChineseDress2" },
+		}, // ChineseDress2
+		BrocadeCloudsSnowEmbroideryQipao: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: {
+				GroupName: "Cloth",
+				AssetName: "BrocadeCloudsSnowEmbroideryQipao",
+			},
+		}, // BrocadeCloudsSnowEmbroideryQipao
+		CasualDroppedSuit: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "Cloth", AssetName: "CasualDroppedSuit" },
+		}, // CasualDroppedSuit
 		JacketHoodie: {
 			Archetype: ExtendedArchetype.MODULAR,
 			Modules: [
@@ -765,8 +939,32 @@ export var AssetFemale3DCGExtended = {
 				Option: "ClothHoodieOption",
 			},
 		}, // Hoodie
+		Transparentraincoat: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Transparent" }, { Name: "Opaque" }],
+		}, // Transparentraincoat
 	},
 	Cloth: {
+		CuteBikini1: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "SexyBikini1", GroupName: "Bra" },
+		}, // CuteBikini1
+		SexyBikini1: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: {
+				AssetName: "SexyBikini1",
+				GroupName: "Bra",
+			},
+		}, // SexyBikini1
+		Swimsuit1: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "Swimsuit1", GroupName: "Bra" },
+		}, // Swimsuit1
+		SportSwimsuit: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { AssetName: "SportSwimsuit", GroupName: "Bra" },
+		}, // SportSwimsuit
 		TShirt2: {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [
@@ -879,6 +1077,35 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // CustomTShirt
+		MilitaryFatigue: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Type",
+					Key: "s",
+					Options: [
+						{}, // s0 - Full
+						{}, // s1 - Cropped
+					],
+					DrawImages: true,
+				},
+				{
+					Name: "Camouflage",
+					Key: "c",
+					Options: [
+						{}, // c0 - None
+						{}, // c1 - Normal
+						{}, // c2 - TigerStripe
+					],
+					DrawImages: true,
+				},
+			],
+			DialogPrefix: {
+				Header: "ClothMilitaryFatigueSelect",
+				Option: "ClothMilitaryFatigueOption",
+				Module: "ClothMilitaryFatigueModule",
+			},
+		}, // MilitaryFatigue
 		ChineseDress2: {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [
@@ -892,6 +1119,10 @@ export var AssetFemale3DCGExtended = {
 					Name: "Pink",
 				},
 			],
+			DialogPrefix: {
+				Header: "ClothChineseDress2Select",
+				Option: "ClothChineseDress2",
+			},
 		}, // ChineseDress2
 		LatexLacedSuit: {
 			Archetype: ExtendedArchetype.TYPED,
@@ -955,6 +1186,10 @@ export var AssetFemale3DCGExtended = {
 					},
 				},
 			],
+			DialogPrefix: {
+				Header: "ClothJacketSelect",
+				Option: "ClothJacket",
+			},
 		}, // Jacket
 		SlaveRags: {
 			Archetype: ExtendedArchetype.MODULAR,
@@ -979,6 +1214,11 @@ export var AssetFemale3DCGExtended = {
 					],
 				},
 			],
+			DialogPrefix: {
+				Header: "ClothSlaveRagsSelect",
+				Option: "ClothSlaveRagsOption",
+				Module: "ClothSlaveRagsModule",
+			},
 		}, //SlaveRags
 		Hoodie: {
 			Archetype: ExtendedArchetype.MODULAR,
@@ -1108,6 +1348,12 @@ export var AssetFemale3DCGExtended = {
 					],
 				},
 			],
+			DialogPrefix: {
+				Header: "ClothFishnetTopSelect",
+				Module: "ClothFishnetTopModule",
+				Option: "ClothFishnetTopOption",
+				Chat: "ClothFishnetTopSet",
+			},
 		}, // FishnetTop
 		MeshTop: {
 			Archetype: ExtendedArchetype.MODULAR,
@@ -1139,6 +1385,12 @@ export var AssetFemale3DCGExtended = {
 					],
 				},
 			],
+			DialogPrefix: {
+				Header: "ClothMeshTopSelect",
+				Module: "ClothMeshTopModule",
+				Option: "ClothMeshTopOption",
+				Chat: "ClothMeshTopSet",
+			},
 		}, // MeshTop
 		CorsetDress: {
 			Archetype: ExtendedArchetype.TYPED,
@@ -1226,6 +1478,11 @@ export var AssetFemale3DCGExtended = {
 					],
 				},
 			],
+			DialogPrefix: {
+				Header: "ClothLatexHobbleDressSelect",
+				Option: "ClothLatexHobbleDressOption",
+				Module: "ClothLatexHobbleDressModule",
+			},
 		}, // LatexHobbleDress
 		OffTheShoulderTop: {
 			Archetype: ExtendedArchetype.TYPED,
@@ -1237,9 +1494,115 @@ export var AssetFemale3DCGExtended = {
 					Name: "Right",
 				},
 			],
+			DialogPrefix: {
+				Header: "ClothOffTheShoulderTopSelect",
+				Option: "ClothOffTheShoulderTop",
+			},
 		}, // OffTheShoulderTop
+		BrocadeCloudsSnowEmbroideryQipao: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Yes" }, { Name: "No" }],
+			DialogPrefix: {
+				Header: "ClothBrocadeCloudsSnowEmbroideryQipaoSelect",
+				Option: "ClothBrocadeCloudsSnowEmbroideryQipao",
+			},
+		}, // BrocadeCloudsSnowEmbroideryQipao
+		AllureSidecut: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChangeWhenLocked: false,
+			DrawImages: false,
+			Options: [{ Name: "Default" }, { Name: "Transparent" }],
+			DialogPrefix: {
+				Header: "ClothAllureSidecutSelect",
+				Option: "ClothAllureSidecut",
+			},
+		}, // AllureSidecut
+		LittleFormalShirt: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [{ Name: "Tie", Key: "t", Options: [{}, {}] }],
+			DialogPrefix: {
+				Option: "ClothLittleFormalShirtOption",
+				Header: "ClothLittleFormalShirtSelect",
+				Module: "ClothLittleFormalShirtModule",
+			},
+		}, // LittleFormalShirt
+		StarryOceanEveningGown: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "Mirror",
+					Key: "M",
+					Options: [{}, { DrawOptions: { Mirror: true } }],
+				},
+			],
+			DialogPrefix: {
+				Header: "ClothStarryOceanEveningGownSelect",
+				Option: "ClothStarryOceanEveningGownOption",
+				Module: "ClothStarryOceanEveningGownModule",
+			},
+		}, // StarryOceanEveningGown
+		CasualDroppedSuit: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{ Name: "Color", Key: "typed", Options: [{}, {}] },
+				{
+					Name: "Side",
+					Key: "M",
+					Options: [{}, { DrawOptions: { Mirror: true } }],
+				},
+			],
+			DialogPrefix: {
+				Header: "ClothCasualDroppedSuitSelect",
+				Option: "ClothCasualDroppedSuitOption",
+				Module: "ClothCasualDroppedSuitModule",
+			},
+		}, // CasualDroppedSuit
+		WhiteDress: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "HideNipples",
+					Key: "hn",
+					Options: [{ Property: { Hide: ["Nipples"] } }, {}],
+				},
+			],
+			DialogPrefix: {
+				Header: "ClothWhiteDressSelect",
+				Option: "ClothWhiteDressOption",
+				Module: "ClothWhiteDressModule",
+			},
+		}, // WhiteDress
+		Transparentraincoat: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Transparent" }, { Name: "Opaque" }],
+		}, // Transparentraincoat
 	}, // Cloth
+	Decals: {
+		MissMariasManor: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "Default",
+				},
+				{
+					Name: "Version2",
+				},
+				{
+					Name: "Version3",
+				},
+			],
+		},
+	}, // Decals
 	BodyMarkings: {
+		NavelBar1: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemTorso", AssetName: "NavelBar1" },
+		}, // NavelBar1
 		WombTattoos: {
 			Archetype: ExtendedArchetype.MODULAR,
 			ChatSetting: ModularItemChatSetting.PER_MODULE,
@@ -1632,6 +1995,10 @@ export var AssetFemale3DCGExtended = {
 				Chat: "BodyMarkingsSplattersSet",
 			},
 		},
+		BabyPowderDust: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [{ Name: "Light" }, { Name: "Heavy" }],
+		},
 		FacePaints: {
 			Archetype: ExtendedArchetype.MODULAR,
 			ChatSetting: ModularItemChatSetting.PER_MODULE,
@@ -1685,6 +2052,12 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		},
+		FaceCrests: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			DrawImages: true,
+			CopyConfig: { GroupName: "FaceMarkings", AssetName: "FaceCrests" },
+		}, //FaceCrests
 	},
 	FaceMarkings: {
 		FaceWritings: {
@@ -1735,7 +2108,7 @@ export var AssetFemale3DCGExtended = {
 							HasSubscreen: true,
 							ArchetypeConfig: {
 								Archetype: ExtendedArchetype.TEXT,
-								MaxLength: { Text: 6, Text2: 5, Text3: 3 },
+								MaxLength: { Text: 7, Text2: 6, Text3: 4 },
 								ScriptHooks: {
 									AfterDraw: AssetsFaceMarkingsFaceWritingsAfterDrawHook,
 								},
@@ -1771,8 +2144,71 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // Animal Noses
+		FaceCrests: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			DrawImages: true,
+			Modules: [
+				{
+					Name: "Outer",
+					Key: "o",
+					Options: [{}, {}, {}, {}, {}, {}, {}], // none, carved, fins, boomerang, headpiece, circuits, dots
+				},
+				{
+					Name: "Middle",
+					Key: "m",
+					Options: [{}, {}, {}, {}, {}, {}, {}], // none, pincers, open heart, jaws, crown, fangs, aquatic
+				},
+				{
+					Name: "Center",
+					Key: "c",
+					Options: [{}, {}, {}, {}, {}, {}, {}, {}], // none, chevron, arrow, dots, diamond, oval, open heart, closed heart
+				},
+				{
+					Name: "Special",
+					Key: "s",
+					Options: [{}, {}, {}, {}], // none, waves, wings, shell
+				},
+				{
+					Name: "Glow",
+					Key: "g",
+					Options: [{}, {}], // off, on
+				},
+				{
+					Name: "Holo",
+					Key: "h",
+					Options: [{}, {}], // off, on
+				},
+				{
+					Name: "Layering",
+					Key: "l",
+					Options: [
+						{
+							Property: {
+								OverridePriority: 45,
+							}, // Above mask layers
+						},
+						{
+							Property: {
+								OverridePriority: 8,
+							}, // Below eye layers
+						},
+					], // Mask Layer (45), Face Layer (8)
+				},
+			],
+		}, // Face Crests
 	},
 	HairFront: {
+		HairFront56: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Type_1" }, { Name: "Type_2" }, { Name: "Type_3" }],
+		},
+		HairFront56b: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Type_1" }, { Name: "Type_2" }],
+		},
 		HairFront60: {
 			Archetype: ExtendedArchetype.TYPED,
 			DrawImages: false,
@@ -1837,6 +2273,40 @@ export var AssetFemale3DCGExtended = {
 			DrawImages: false,
 			Options: [{ Name: "Basic" }, { Name: "Translucent" }],
 		},
+		HairFront76a: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "Strands",
+					Key: "Strands",
+					Options: [{}, {}], // Strands, No Strands
+				},
+				{
+					Name: "Extra",
+					Key: "Extra",
+					Options: [{}, {}, {}], // Braids, Extra, None
+				},
+			],
+		},
+		HairFront76b: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "Strands",
+					Key: "Strands",
+					Options: [{}, {}], // Strands, No Strands
+				},
+				{
+					Name: "Extra",
+					Key: "Extra",
+					Options: [{}, {}, {}], // Braids, Extra, None
+				},
+			],
+		},
 	},
 	HairBack: {
 		HairBack58: {
@@ -1859,6 +2329,16 @@ export var AssetFemale3DCGExtended = {
 			DrawImages: false,
 			Options: [{ Name: "Both" }, { Name: "LeftOnly" }, { Name: "RightOnly" }],
 		}, // HairBack61
+		HairBack61b: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{ Name: "Both" },
+				{ Name: "LeftOnly" },
+				{ Name: "RightOnly" },
+				{ Name: "Behind" },
+			],
+		}, // HairBack61b
 		HairBack65: {
 			Archetype: ExtendedArchetype.TYPED,
 			DrawImages: false,
@@ -2316,6 +2796,19 @@ export var AssetFemale3DCGExtended = {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [{ Name: "None" }, { Name: "Choker" }],
 		}, //RuffledCollar
+		DollHandle: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "B" }, { Name: "S" }, { Name: "T" }],
+		}, // DollHandle
+		Epaulet: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{ Name: "Cord", Key: "c", Options: [{}, {}] },
+				{ Name: "Side", Key: "t", Options: [{}, {}, {}] },
+			],
+		}, // Epaulet
 	}, // ClothAccessory
 	ClothLower: {
 		PantBoots: {
@@ -2363,12 +2856,11 @@ export var AssetFemale3DCGExtended = {
 					Name: "Zipped",
 					Property: {
 						Block: [
-							"ItemLegs",
 							"ItemPelvis",
 							"ItemButt",
 							"ItemVulva",
 							"ItemVulvaPiercings",
-							"ItemButt",
+							"ItemLegs",
 						],
 						Hide: ["ItemVulvaPiercings", "Panties", "Pussy"],
 						HideItem: [
@@ -2464,7 +2956,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								AllowActivePose: [
 									"BaseLower",
-									"LegsOpen",
 									"LegsClosed",
 									"Kneel",
 									"Hogtied",
@@ -2484,6 +2975,71 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // PVCHobbleSkirt
+		MilitaryPants: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Belt",
+					Key: "b",
+					Options: [
+						{}, // b0 - None
+						{}, // b1 - Strapped
+						{}, // b2 - Overlapped
+					],
+					DrawImages: false,
+				},
+				{
+					Name: "Camouflage",
+					Key: "c",
+					Options: [
+						{}, // c0 - None
+						{}, // c1 - Normal
+						{}, // c2 - TigerStripe
+					],
+					DrawImages: true,
+				},
+			],
+			DrawImages: true,
+			DrawData: {
+				elementData: [
+					{
+						imagePath:
+							"Screens/Inventory/ClothLower/MilitaryPants/BeltPreview.png",
+					}, // Belt
+					{}, //Camoflauge
+				],
+			},
+		}, // MilitaryPants
+		DenimShorts: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "Normal",
+					Property: {
+						Hide: ["Pussy"],
+						HideItem: [
+							"ItemVulvaPlasticChastityCage2",
+							"ItemVulvaPlasticChastityCage1",
+							"ItemVulvaTechnoChastityCage",
+							"ItemVulvaFlatChastityCage",
+							"ItemVulvaBallspreader",
+							"ItemVulvaChastityPouch",
+							"ItemVulvaFullCasingCage",
+						],
+						Block: [
+							"ItemPelvis",
+							"ItemVulva",
+							"ItemVulvaPiercings",
+							"ItemButt",
+						],
+					},
+				},
+				{
+					Name: "Unbuttoned",
+				},
+			],
+		}, // DenimShorts
 	}, // ClothLower
 	Socks: {
 		RippedPantyhose: {
@@ -2666,7 +3222,7 @@ export var AssetFemale3DCGExtended = {
 					Property: {
 						Difficulty: 0,
 						SetPose: ["BaseLower", "BackElbowTouch"],
-						AllowActivePose: ["Kneel", "LegsOpen", "LegsClosed"],
+						AllowActivePose: ["Kneel", "LegsClosed"],
 					},
 				},
 				{
@@ -3028,6 +3584,7 @@ export var AssetFemale3DCGExtended = {
 									"ItemVulvaPiercings",
 									"ItemButt",
 								],
+								Attribute: ["GenitaliaCover"],
 								Hide: ["ItemVulvaPiercings", "Pussy"],
 								HideItem: ["ItemButtAnalBeads2"],
 							},
@@ -3296,7 +3853,7 @@ export var AssetFemale3DCGExtended = {
 						{
 							// a2- Arms side
 							Property: {
-								AllowActivePose: ["BackElbowTouch"],
+								AllowActivePose: ["BackElbowTouch", "AllFours"],
 							},
 						},
 					],
@@ -3319,8 +3876,6 @@ export var AssetFemale3DCGExtended = {
 					Property: {
 						Block: [
 							"ItemPelvis",
-							"ItemTorso",
-							"ItemTorso2",
 							"ItemLegs",
 							"ItemFeet",
 							"ItemHands",
@@ -3355,8 +3910,6 @@ export var AssetFemale3DCGExtended = {
 					Property: {
 						Block: [
 							"ItemPelvis",
-							"ItemTorso",
-							"ItemTorso2",
 							"ItemLegs",
 							"ItemFeet",
 							"ItemHands",
@@ -3569,12 +4122,7 @@ export var AssetFemale3DCGExtended = {
 							// b4 - Full bind plus link legs
 							Property: {
 								SetPose: ["BackElbowTouch"],
-								AllowActivePose: [
-									"BaseLower",
-									"LegsOpen",
-									"LegsClosed",
-									"Kneel",
-								],
+								AllowActivePose: ["BaseLower", "LegsClosed", "Kneel"],
 								Effect: [E.Slow],
 								Difficulty: 9,
 							},
@@ -3729,7 +4277,6 @@ export var AssetFemale3DCGExtended = {
 					Name: "Behind",
 					Property: {
 						SetPose: ["BackCuffs"],
-						Effect: [E.Block],
 						Difficulty: 3,
 					},
 				},
@@ -3737,7 +4284,6 @@ export var AssetFemale3DCGExtended = {
 					Name: "Overhead",
 					Property: {
 						SetPose: ["OverTheHead"],
-						Effect: [E.Block],
 						Difficulty: 3,
 					},
 				},
@@ -4633,6 +5179,7 @@ export var AssetFemale3DCGExtended = {
 		}, // NylonRope
 		HempRope: {
 			Archetype: ExtendedArchetype.TYPED,
+			AllowEffect: [E.Leash, E.IsLeashed],
 			ChatTags: [
 				CommonChatTags.SOURCE_CHAR,
 				CommonChatTags.TARGET_CHAR,
@@ -4655,7 +5202,7 @@ export var AssetFemale3DCGExtended = {
 					Expression: [{ Group: "Blush", Name: "Low", Timer: 5 }],
 				},
 				{
-					Name: "RopeCuffs",
+					Name: "RopeCuffsBack",
 					Property: {
 						SetPose: ["BackCuffs"],
 						Difficulty: 1,
@@ -4865,6 +5412,15 @@ export var AssetFemale3DCGExtended = {
 							Chat: "SuspensionChange",
 						},
 					},
+				},
+				{
+					Name: "RopeCuffsFront",
+					Property: {
+						SetPose: ["BaseUpper"],
+						Effect: [E.Leash],
+						Difficulty: 1,
+					},
+					Expression: [{ Group: "Blush", Name: "Low", Timer: 5 }],
 				},
 			],
 			DialogPrefix: {
@@ -6239,7 +6795,81 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 			ChangeWhenLocked: false,
-		},
+		}, // OldGasMask
+		CybertechMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Visor",
+					Key: "v",
+					Options: [{}, {}, {}],
+				},
+				{
+					Name: "Canteen",
+					Key: "c",
+					Options: [{}, { Property: { Effect: [E.GagEasy] } }],
+				},
+				{
+					Name: "Layering",
+					Key: "l",
+					Options: [
+						{
+							Property: {
+								OverridePriority: {
+									base: 45,
+									nose: 44,
+									straps: 44,
+									sideAttachments: 45,
+									attachmentPoint: 45,
+									top: 45,
+									filter: 46,
+									tubes: 46,
+									exhalationValve: 45,
+									visorOpaque: 44,
+									visorReflection: 45,
+									visorTransparent: 44,
+									visorReflectionTransparent: 45,
+									hypno1: 44,
+									hypno2: 44,
+									tube: 44,
+									canteen: 45,
+									liquid: 46,
+								},
+							},
+						},
+						{
+							Property: {
+								OverridePriority: {
+									base: 53,
+									nose: 44,
+									straps: 44,
+									sideAttachments: 53,
+									attachmentPoint: 53,
+									top: 52,
+									filter: 54,
+									tubes: 54,
+									exhalationValve: 53,
+									visorOpaque: 52,
+									visorReflection: 53,
+									visorTransparent: 52,
+									visorReflectionTransparent: 53,
+									hypno1: 52,
+									hypno2: 52,
+									tube: 53,
+									canteen: 53,
+									liquid: 53,
+								},
+							},
+						},
+					],
+				},
+				{
+					Name: "Attachments",
+					Key: "at",
+					Options: [{}, {}, {}],
+				},
+			],
+		}, // CybertechMask
 		InflatedBallHood: {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [
@@ -10364,6 +10994,10 @@ export var AssetFemale3DCGExtended = {
 		}, // TransparentLatexHood
 	}, // ItemHood
 	Jewelry: {
+		NavelBar1: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemTorso", AssetName: "NavelBar1" },
+		}, // NavelBar1
 		JewelrySet: {
 			Archetype: ExtendedArchetype.MODULAR,
 			Modules: [
@@ -10435,6 +11069,11 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, //JewelrySet
+		AnkletA: {
+			Archetype: "modular",
+			DrawImages: false,
+			Modules: [{ Name: "Style", Key: "s", Options: [{}, {}] }],
+		}, // AnkletA
 	}, // Jewelry
 	Eyebrows: {
 		Eyebrows2: {
@@ -11334,7 +11973,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								Difficulty: 6,
 								SetPose: ["Yoked"],
-								AllowActivePose: [...PoseAllStanding],
 								Block: ["ItemArms"],
 								Effect: [E.BlockWardrobe, E.Block],
 							},
@@ -11344,7 +11982,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								Difficulty: 6,
 								SetPose: ["OverTheHead"],
-								AllowActivePose: [...PoseAllStanding],
 								Block: ["ItemArms"],
 								Effect: [E.BlockWardrobe, E.Block],
 							},
@@ -11355,7 +11992,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								Difficulty: 10,
 								SetPose: ["Yoked"],
-								AllowActivePose: [...PoseAllStanding],
 								Block: ["ItemArms"],
 								Effect: [E.BlockWardrobe, E.Block],
 							},
@@ -11366,7 +12002,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								Difficulty: 10,
 								SetPose: ["OverTheHead"],
-								AllowActivePose: [...PoseAllStanding],
 								Block: ["ItemArms"],
 								Effect: [E.BlockWardrobe, E.Block],
 							},
@@ -11376,7 +12011,6 @@ export var AssetFemale3DCGExtended = {
 							Property: {
 								Difficulty: 12,
 								SetPose: ["Yoked"],
-								AllowActivePose: [...PoseAllStanding],
 								Block: ["ItemArms"],
 								Effect: [E.BlockWardrobe],
 							},
@@ -11432,7 +12066,7 @@ export var AssetFemale3DCGExtended = {
 							AllowLock: true,
 							Property: {
 								Difficulty: 12,
-								SetPose: ["LegsOpen"],
+								SetPose: ["BaseLower"],
 								Block: ["ItemFeet"],
 								Effect: [E.BlockWardrobe],
 								Hide: ["ItemBoots", "Shoes"],
@@ -11457,14 +12091,13 @@ export var AssetFemale3DCGExtended = {
 								Font: "sans-serif",
 								ScriptHooks: {
 									AfterDraw: (...args) =>
-                                        // @ts-ignore
+										// @ts-expect-error
 										TextItem.GenericTextArcDrawHook(...args, {
 											YOffset: 170,
 											XOffset: 185,
 											drawOptions: {
 												fontSize: 20,
 												radius: 60,
-												// @ts-ignore
 												effect: DynamicDrawTextEffect.BURN,
 											},
 										}),
@@ -11474,6 +12107,7 @@ export var AssetFemale3DCGExtended = {
 					],
 				},
 			],
+			BaselineProperty: { Text: "" },
 		},
 		Sybian: {
 			Archetype: ExtendedArchetype.VIBRATING,
@@ -11886,7 +12520,7 @@ export var AssetFemale3DCGExtended = {
 				{
 					Name: "Stand",
 					AllowSelfSelect: false,
-					Prerequisite: ["CanLegsOpen"],
+					Prerequisite: ["CanBaseLower"],
 				},
 				{
 					Name: "LegsClosed",
@@ -12753,21 +13387,7 @@ export var AssetFemale3DCGExtended = {
 							"ItemArmsBitchSuitExposed",
 							"ItemArmsShinyPetSuit",
 						],
-						Block: [
-							"ItemArms",
-							"ItemBreast",
-							"ItemButt",
-							"ItemFeet",
-							"ItemBoots",
-							"ItemLegs",
-							"ItemMisc",
-							"ItemNipples",
-							"ItemNipplesPiercings",
-							"ItemPelvis",
-							"ItemTorso",
-							"ItemVulva",
-							"ItemVulvaPiercings",
-						],
+						Effect: [E.BlockWardrobe, E.Freeze, E.Enclose],
 					},
 					Random: false,
 				},
@@ -12858,6 +13478,42 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, //XFrame
+		InflatableRestraintBag: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChangeWhenLocked: false,
+			Modules: [
+				{
+					Name: "Inflate",
+					DrawImages: false,
+					Key: "o",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Hood",
+					DrawImages: false,
+					Key: "t",
+					Options: [{}, {}],
+				},
+				{
+					Name: "LinkCanister",
+					DrawImages: false,
+					Key: "g",
+					Options: [{}, {}],
+				},
+			],
+			BaselineProperty: { Opacity: 1 },
+			ScriptHooks: {
+				Init: PropertyOpacityInit,
+				Load: PropertyOpacityLoad,
+				Draw: PropertyOpacityDraw,
+				Exit: PropertyOpacityExit,
+			},
+		}, // InflatableRestraintBag
+		LongBag: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Translucent" }, { Name: "Opaque" }],
+		}, // LongBag
 	}, // ItemDevices
 	ItemBoots: {
 		ToeTape: {
@@ -13165,6 +13821,111 @@ export var AssetFemale3DCGExtended = {
 		}, // SingleBalletBoot
 	}, // ItemBoots
 	ItemVulva: {
+		TechnoChastityCage: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.DEST_CHAR_NAME,
+				CommonChatTags.ASSET_NAME,
+			],
+			ChangeWhenLocked: false,
+			Modules: [
+				{
+					Name: "CageType",
+					Key: "t",
+					Options: [
+						{}, // 0 - Standard
+						{}, // 1 - Small
+						{}, // 2 - Nub
+					],
+				},
+				{
+					Name: "Arousal",
+					DrawImages: false,
+					Key: "a",
+					Options: [
+						{}, //e0 - Off
+						{}, //e1 - On
+					],
+				},
+				{
+					Name: "Intensity",
+					Key: "i",
+					DrawImages: false,
+					Options: [
+						{ Property: { Intensity: -1, Effect: ["Egged"] } }, // i0 - Turn Off
+						{ Property: { Intensity: 0, Effect: ["Egged", "Vibrating"] } }, // i1 - Low
+						{ Property: { Intensity: 1, Effect: ["Egged", "Vibrating"] } }, // i2 - Medium
+						{ Property: { Intensity: 2, Effect: ["Egged", "Vibrating"] } }, // i3 - High
+						{ Property: { Intensity: 3, Effect: ["Egged", "Vibrating"] } }, // i4 - Maximum
+					],
+				},
+				{
+					Name: "ShockModule",
+					Key: "s",
+					DrawImages: false,
+					Options: [
+						{ Property: { ShockLevel: 0 } }, // s0 - Off
+						{ Property: { ShockLevel: 0 } }, // s1 - Level 1
+						{ Property: { ShockLevel: 1 } }, // s2 - Level 2
+						{ Property: { ShockLevel: 2 } }, // s3 - Level 3
+					],
+					DrawData: {
+						elementData: [
+							{ position: ExtendedXYWithoutImages[8][0] },
+							{ position: ExtendedXYWithoutImages[8][1] },
+							{ position: ExtendedXYWithoutImages[8][2] },
+							{ position: ExtendedXYWithoutImages[8][3] },
+						],
+					},
+				},
+				{
+					Name: "OrgasmLock",
+					Key: "o",
+					DrawImages: false,
+					Options: [
+						{}, // o0 - Normal
+						{ Property: { Effect: ["DenialMode"] } }, // o1 - Edge
+						{ Property: { Effect: ["DenialMode", "RuinOrgasms"] } }, // o2 - Deny
+					],
+				},
+				{
+					Name: "VoiceControl",
+					Key: "v",
+					DrawImages: false,
+					Options: [
+						{}, //v0 - Off
+						{}, //v1 - On
+					],
+				},
+			],
+			BaselineProperty: {
+				TriggerCount: 0,
+				OrgasmCount: 0,
+				RuinedOrgasmCount: 0,
+				TimeWorn: CommonTime(),
+				TimeSinceLastOrgasm: CommonTime(),
+				ShowText: true,
+				ShockLevel: 0,
+				PunishOrgasm: false,
+				PunishStandup: false,
+				PunishStruggle: false,
+				PunishStruggleOther: false,
+				AccessMode: "",
+				ShowShrinkText: true,
+				ArousalLvl: "Horny",
+				TriggerValues: CommonConvertArrayToString(
+					InventoryItemVulvaTechnoChastityCageVoiceTriggers,
+				),
+			},
+			ScriptHooks: {
+				Click: InventoryItemVulvaTechnoChastityCageClickHook,
+				Draw: InventoryItemVulvaTechnoChastityCageDrawHook,
+				Exit: InventoryItemVulvaTechnoChastityCageExitHook,
+				ScriptDraw: InventoryItemVulvaChastityCageScriptDrawHook,
+			},
+		},
 		ClitSuctionCup: {
 			Archetype: ExtendedArchetype.TYPED,
 			ChatTags: [CommonChatTags.SOURCE_CHAR, CommonChatTags.DEST_CHAR],
@@ -13462,6 +14223,16 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // MysteryBox
+		UsedCondom: {
+			Archetype: "typed",
+			DrawImages: false,
+			Options: [{ Name: "A" }, { Name: "B" }, { Name: "C" }],
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+		}, // UsedCondom
 	}, // ItemVulva
 	ItemVulvaPiercings: {
 		ClitRing: {
@@ -13528,6 +14299,30 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // RoundClitPiercings
+		Catheter: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "Length",
+					Key: "l",
+					DrawImages: false,
+					Options: [
+						{}, // l0 - long
+						{}, // l1 - short
+					],
+				},
+				{
+					Name: "OpenEnded",
+					Key: "o",
+					DrawImages: false,
+					Options: [
+						{}, // o0 - open
+						{ Property: { Effect: ["DenialMode", "RuinOrgasms"] } }, // o1 - closed
+					],
+				},
+			],
+		},
 		VibeHeartClitPiercing: {
 			Archetype: ExtendedArchetype.VIBRATING,
 		}, // VibeHeartClitPiercing
@@ -13552,6 +14347,41 @@ export var AssetFemale3DCGExtended = {
 			],
 			DrawImages: false,
 		}, // UrethralSound
+		ModularVulvaPiercings: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChangeWhenLocked: false,
+			Modules: [
+				{
+					Name: "Fastening",
+					Key: "f", //Fastening
+					DrawImages: false,
+					Options: [
+						{}, //f0 - No Fastening
+						{
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva"],
+							},
+						}, //f1 - Barbells
+						{
+							Property: {
+								Effect: [E.Chaste],
+								Block: ["ItemVulva"],
+							},
+						}, //f2 - Rings
+					],
+				},
+				{
+					Name: "Shield",
+					Key: "s", //Shield
+					DrawImages: false,
+					Options: [
+						{}, //s0 - No
+						{}, //s1 - Yes
+					],
+				},
+			],
+		},
 	}, // ItemVulvaPiercings
 	ItemButt: {
 		WolfTail3: {
@@ -13697,7 +14527,7 @@ export var AssetFemale3DCGExtended = {
 				{
 					Name: "ChainShort",
 					Property: {
-						Effect: [E.Freeze, E.IsChained],
+						Effect: [E.Freeze, E.IsChained, E.MapImmobile],
 						SetPose: ["Kneel"],
 					},
 					Random: false,
@@ -13706,7 +14536,7 @@ export var AssetFemale3DCGExtended = {
 					Name: "ChainLong",
 					Prerequisite: ["NotSuspended"],
 					Property: {
-						Effect: [E.Tethered, E.IsChained],
+						Effect: [E.Tethered, E.IsChained, E.MapImmobile],
 					},
 					Random: false,
 				},
@@ -13919,6 +14749,17 @@ export var AssetFemale3DCGExtended = {
 		VibeHeartPiercings: {
 			Archetype: ExtendedArchetype.VIBRATING,
 		}, // VibeHeartPiercings
+		PiercingNameBadge: {
+			Archetype: ExtendedArchetype.TYPED,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			ChangeWhenLocked: false,
+			DrawImages: false,
+			Options: [{ Name: "RightNipple" }, { Name: "LeftNipple" }],
+		}, // PiercingNameBadge
 	}, // ItemNipplesPiercings
 	ItemNipples: {
 		ChainClamp: {
@@ -14177,6 +15018,10 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // BarrelCorset
+		HeavyLatexCorset: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemTorso", AssetName: "HeavyLatexCorset" },
+		}, // HeavyLatexCorset
 	}, // Corset
 	ItemTorso: {
 		HeavyLatexCorset: {
@@ -14308,6 +15153,15 @@ export var AssetFemale3DCGExtended = {
 						Attribute: ["IsHipHarness"],
 					},
 				},
+				{
+					Name: "Unity",
+					BondageLevel: 8,
+					Property: {
+						Difficulty: 8,
+						Effect: [E.CrotchRope],
+						Attribute: ["IsHipHarness"],
+					},
+				},
 			],
 			DialogPrefix: {
 				Header: "SelectRopeBondage",
@@ -14374,6 +15228,11 @@ export var AssetFemale3DCGExtended = {
 					],
 				},
 			],
+			DialogPrefix: {
+				Option: "ItemTorsoNavelBar1Option",
+				Header: "ItemTorsoNavelBar1Select",
+				Module: "ItemTorsoNavelBar1Module",
+			},
 		}, // NavelBar1
 		SteelBelt: {
 			Archetype: ExtendedArchetype.MODULAR,
@@ -14833,6 +15692,113 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // ZipperLeatherBoots
+		PrintedCrocs: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{ Name: "PlainColor" },
+				{ Name: "Pattern1" },
+				{ Name: "Pattern2" },
+				{ Name: "Pattern3" },
+			],
+		}, // PrintedCrocs
+		MaryJaneShoes: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Style",
+					Key: "l",
+					DrawImages: false,
+					Options: [{}, {}],
+				},
+			],
+		}, // MaryJaneShoes
+		ToeRing: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChangeWhenLocked: false,
+			Modules: [
+				{
+					Name: "RightLittleToeRing",
+					DrawImages: false,
+					Key: "R5",
+					Options: [{}, {}],
+				},
+				{
+					Name: "RightFourthToeRing",
+					DrawImages: false,
+					Key: "R4",
+					Options: [{}, {}],
+				},
+				{
+					Name: "RightMiddleToeRing",
+					DrawImages: false,
+					Key: "R3",
+					Options: [{}, {}],
+				},
+				{
+					Name: "RightSecondToeRing",
+					DrawImages: false,
+					Key: "R2",
+					Options: [{}, {}],
+				},
+				{
+					Name: "RightBigToeRing",
+					DrawImages: false,
+					Key: "R1",
+					Options: [{}, {}],
+				},
+				{
+					Name: "LeftBigToeRing",
+					DrawImages: false,
+					Key: "L1",
+					Options: [{}, {}],
+				},
+				{
+					Name: "LeftSecondToeRing",
+					DrawImages: false,
+					Key: "L2",
+					Options: [{}, {}],
+				},
+				{
+					Name: "LeftMiddleToeRing",
+					DrawImages: false,
+					Key: "L3",
+					Options: [{}, {}],
+				},
+				{
+					Name: "LeftFourthToeRing",
+					DrawImages: false,
+					Key: "L4",
+					Options: [{}, {}],
+				},
+				{
+					Name: "LeftLittleToeRing",
+					DrawImages: false,
+					Key: "L5",
+					Options: [{}, {}],
+				},
+			],
+			DrawData: {
+				elementData: [
+					.../** @type {{position:[number,number]}[]} */ (
+						Array.from({ length: 5 }).map((_, idx) => ({
+							position: [
+								1135 + 250 * (idx % 3),
+								450 + 75 * Math.floor(idx / 3),
+							],
+						}))
+					),
+					.../** @type {{position:[number,number]}[]} */ (
+						Array.from({ length: 5 }).map((_, idx) => ({
+							position: [
+								1135 + 250 * (idx % 3),
+								450 + 75 * 3 + 75 * Math.floor(idx / 3),
+							],
+						}))
+					),
+				],
+				itemsPerPage: 10,
+			},
+		}, // ToeRing
 	}, // Shoes
 	HairAccessory1: {
 		ElfEars: {
@@ -15008,6 +15974,23 @@ export var AssetFemale3DCGExtended = {
 				AssetName: "CustomizableFluffyEars1",
 			},
 		},
+		Antenna: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{ Name: "Right" },
+				{ Name: "RightGlowing" },
+				{ Name: "Left" },
+				{ Name: "LeftGlowing" },
+				{ Name: "LeftRight" },
+				{ Name: "LeftRightGlowing" },
+			],
+		}, // Antenna
+		TongqianHairpin: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [{ Name: "Position", Key: "m", Options: [{}, {}, {}] }],
+		}, // TongqianHairpin
 	}, // HairAccessory1
 	HairAccessory2: {
 		ElfEars: {
@@ -15156,6 +16139,22 @@ export var AssetFemale3DCGExtended = {
 				Chat: "BallGagMouthSet",
 			},
 		}, // WiffleGag
+		PacifierClip: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [
+				{
+					Name: "PacifierIn",
+				},
+				{
+					Name: "PacifierOut",
+				},
+			],
+			DialogPrefix: {
+				Header: "SelectGagType",
+				Option: "BallGagMouthType",
+				Chat: "BallGagMouthSet",
+			},
+		}, // PacifierClip
 		BallGag: {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [
@@ -15504,6 +16503,7 @@ export var AssetFemale3DCGExtended = {
 			DialogPrefix: {
 				Header: "BigMouthSelectMouthStyle",
 				Option: "BigMouthMouthStyle",
+				Chat: "ItemMouthBigMouthSet",
 			},
 		}, // BigMouth
 		FuturisticMuzzle: {
@@ -16191,6 +17191,30 @@ export var AssetFemale3DCGExtended = {
 						Effect: [E.OpenMouth],
 					},
 				},
+				{
+					Name: "WiffleGag",
+					Property: {
+						Effect: [E.BlockMouth],
+					},
+				},
+				{
+					Name: "BitGag",
+					Property: {
+						Effect: [E.BlockMouth],
+					},
+				},
+				{
+					Name: "LargeBallGag",
+					Property: {
+						Effect: [E.BlockMouth],
+					},
+				},
+				{
+					Name: "LargeRingGag",
+					Property: {
+						Effect: [E.OpenMouth],
+					},
+				},
 			],
 			DialogPrefix: {
 				Header: "SelectGagType",
@@ -16216,6 +17240,11 @@ export var AssetFemale3DCGExtended = {
 					},
 				},
 			],
+			DialogPrefix: {
+				Header: "ItemMouthGenitalGagSelect",
+				Option: "ItemMouthGenitalGag",
+				Chat: "ItemMouthGenitalGagSet",
+			},
 			DrawImages: false,
 		}, // GenitalGag
 		PremiumMuzzle: {
@@ -16499,6 +17528,29 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		},
+		BallGag2: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "StrapType",
+					Key: "s",
+					Options: [
+						{}, // s0 Basic Strap
+						{}, // s1 Head Harness 1
+					],
+				},
+				{
+					Name: "BallType",
+					Key: "b",
+					Options: [
+						{ Property: { Effect: [E.GagLight] } }, // b0 Regular Size
+						{ Property: { Effect: [E.GagMedium] } }, // b1 Large Size
+						{ Property: { Effect: [E.GagHeavy] } }, // b2 XL Size
+					],
+				},
+			],
+		},
 	}, // ItemMouth
 	ItemMouth2: {
 		ClothGag: {
@@ -16512,6 +17564,10 @@ export var AssetFemale3DCGExtended = {
 		WiffleGag: {
 			Archetype: ExtendedArchetype.TYPED,
 			CopyConfig: { GroupName: "ItemMouth", AssetName: "WiffleGag" },
+		},
+		PacifierClip: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PacifierClip" },
 		},
 		BallGag: {
 			Archetype: ExtendedArchetype.TYPED,
@@ -16695,6 +17751,16 @@ export var AssetFemale3DCGExtended = {
 				Option: "ItemMouthBishopGag",
 			},
 		}, // BishopGag
+		BallGag2: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag2" },
+			DialogPrefix: {
+				Header: "ItemMouthBallGag2Select",
+				Module: "ItemMouthBallGag2Module",
+				Option: "ItemMouthBallGag2Option",
+				Chat: "ItemMouthBallGag2Set",
+			},
+		},
 	}, // ItemMouth2
 	ItemMouth3: {
 		ClothGag: {
@@ -16708,6 +17774,10 @@ export var AssetFemale3DCGExtended = {
 		WiffleGag: {
 			Archetype: ExtendedArchetype.TYPED,
 			CopyConfig: { GroupName: "ItemMouth", AssetName: "WiffleGag" },
+		},
+		PacifierClip: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "PacifierClip" },
 		},
 		BallGag: {
 			Archetype: ExtendedArchetype.TYPED,
@@ -16883,6 +17953,16 @@ export var AssetFemale3DCGExtended = {
 				Option: "ItemMouthBishopGag",
 			},
 		}, // BishopGag
+		BallGag2: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { GroupName: "ItemMouth", AssetName: "BallGag2" },
+			DialogPrefix: {
+				Header: "ItemMouthBallGag2Select",
+				Module: "ItemMouthBallGag2Module",
+				Option: "ItemMouthBallGag2Option",
+				Chat: "ItemMouthBallGag2Set",
+			},
+		},
 	}, // ItemMouth3
 	Mask: {
 		BunnyMask1: {
@@ -17235,6 +18315,80 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // DroneMask
+		CybertechMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Visor",
+					Key: "v",
+					Options: [{}, {}, {}],
+				},
+				{
+					Name: "Canteen",
+					Key: "c",
+					Options: [{}, { Property: { Effect: [E.GagEasy] } }],
+				},
+				{
+					Name: "Layering",
+					Key: "l",
+					Options: [
+						{
+							Property: {
+								OverridePriority: {
+									base: 45,
+									nose: 44,
+									straps: 44,
+									sideAttachments: 45,
+									attachmentPoint: 45,
+									top: 45,
+									filter: 46,
+									tubes: 46,
+									exhalationValve: 45,
+									visorOpaque: 44,
+									visorReflection: 45,
+									visorTransparent: 44,
+									visorReflectionTransparent: 45,
+									hypno1: 44,
+									hypno2: 44,
+									tube: 44,
+									canteen: 45,
+									liquid: 46,
+								},
+							},
+						},
+						{
+							Property: {
+								OverridePriority: {
+									base: 53,
+									nose: 44,
+									straps: 44,
+									sideAttachments: 53,
+									attachmentPoint: 53,
+									top: 52,
+									filter: 54,
+									tubes: 54,
+									exhalationValve: 53,
+									visorOpaque: 52,
+									visorReflection: 53,
+									visorTransparent: 52,
+									visorReflectionTransparent: 53,
+									hypno1: 52,
+									hypno2: 52,
+									tube: 53,
+									canteen: 53,
+									liquid: 53,
+								},
+							},
+						},
+					],
+				},
+				{
+					Name: "Attachments",
+					Key: "at",
+					Options: [{}, {}, {}],
+				},
+			],
+		}, // CybertechMask
 		RubberMask: {
 			Archetype: ExtendedArchetype.MODULAR,
 			Modules: [
@@ -18011,7 +19165,7 @@ export var AssetFemale3DCGExtended = {
 				{
 					Name: "Narrow",
 					Property: {
-						SetPose: ["LegsOpen"],
+						SetPose: ["BaseLower"],
 					},
 				},
 				{
@@ -18249,7 +19403,7 @@ export var AssetFemale3DCGExtended = {
 					Name: "LegsOpen",
 					Property: {
 						Difficulty: 2,
-						SetPose: ["LegsOpen"],
+						SetPose: ["BaseLower"],
 						SelfUnlock: true,
 					},
 				},
@@ -18452,7 +19606,7 @@ export var AssetFemale3DCGExtended = {
 							// r3 - Strap Limiter
 							Property: {
 								AllowActivePose: [
-									"LegsOpen",
+									"BaseLower",
 									"LegsClosed",
 									"Kneel",
 									"AllFours",
@@ -18465,7 +19619,7 @@ export var AssetFemale3DCGExtended = {
 						{
 							// r4 - Spread Bar Stand
 							Property: {
-								SetPose: ["LegsOpen"],
+								SetPose: ["BaseLower"],
 								AllowActivePose: ["Kneel"],
 								Effect: [E.BlockWardrobe, E.Freeze, E.MapImmobile],
 								Difficulty: 7,
@@ -18667,6 +19821,10 @@ export var AssetFemale3DCGExtended = {
 				Draw: InventoryItemMiscTimerPadlockDrawHook,
 				Click: InventoryItemMiscTimerPadlockClickHook,
 			},
+			BaselineProperty: {
+				RemoveItem: false,
+				RemoveTimer: 0,
+			},
 		}, // TimerPadlock
 		PasswordPadlock: {
 			Archetype: ExtendedArchetype.NOARCH,
@@ -18707,10 +19865,12 @@ export var AssetFemale3DCGExtended = {
 			ScriptHooks: {
 				Draw: InventoryItemMiscOwnerTimerPadlockDrawHook,
 				Click: InventoryItemMiscOwnerTimerPadlockClickHook,
+				Exit: InventoryItemMiscOwnerTimerPadlockExitHook,
 			},
 			BaselineProperty: {
 				RemoveItem: false,
 				ShowTimer: true,
+				RemoveTimer: 0,
 				EnableRandomInput: false,
 				MemberNumberList: [],
 			},
@@ -18729,6 +19889,7 @@ export var AssetFemale3DCGExtended = {
 						...args,
 						InventoryItemMiscLoversTimerPadlockValidator,
 					),
+				Exit: (...args) => InventoryItemMiscOwnerTimerPadlockExitHook(...args),
 			},
 		}, // LoversTimerPadlock
 		OwnerPadlock: {
@@ -18756,10 +19917,12 @@ export var AssetFemale3DCGExtended = {
 			ScriptHooks: {
 				Draw: InventoryItemMiscMistressTimerPadlockDrawHook,
 				Click: InventoryItemMiscMistressTimerPadlockClickHook,
+				Exit: InventoryItemMiscMistressTimerPadlockExitHook,
 			},
 			BaselineProperty: {
 				RemoveItem: false,
 				ShowTimer: true,
+				RemoveTimer: 0,
 				EnableRandomInput: false,
 				MemberNumberList: [],
 			},
@@ -18792,13 +19955,14 @@ export var AssetFemale3DCGExtended = {
 				Load: InventoryItemMiscTimerPasswordPadlockLoadHook,
 				Draw: InventoryItemMiscTimerPasswordPadlockDrawHook,
 				Click: InventoryItemMiscTimerPasswordPadlockClickHook,
-				Exit: InventoryItemMiscPasswordPadlockExitHook,
+				Exit: InventoryItemMiscTimerPasswordPadlockExitHook,
 			},
 			BaselineProperty: {
 				Password: "PASSWORD",
 				Hint: "Take a guess...",
 				LockSet: false,
 				RemoveItem: false,
+				RemoveTimer: 0,
 				ShowTimer: true,
 				EnableRandomInput: false,
 				MemberNumberList: [],
@@ -19422,8 +20586,8 @@ export var AssetFemale3DCGExtended = {
 			BaselineProperty: { ShowText: true },
 			ScriptHooks: {
 				SetOption: InventoryItemPelvisLoveChastityBeltSetOptionHook,
-				Draw: InventoryItemPelvisLoveChastityBeltDraw,
-				Validate: InventoryItemPelvisLoveChastityBeltValidate,
+				Draw: InventoryItemPelvisLoveChastityBeltDrawHook,
+				Validate: InventoryItemPelvisLoveChastityBeltValidateHook,
 				Click: (...args) => {
 					InventoryItemPelvisSciFiPleasurePantiesClickHook(...args, false);
 				},
@@ -19441,7 +20605,7 @@ export var AssetFemale3DCGExtended = {
 				Draw: InventoryItemPelvisFuturisticTrainingBeltDrawHook,
 				Exit: InventoryItemPelvisFuturisticTrainingBeltExitHook,
 				Validate: FuturisticAccessValidate,
-				ScriptDraw: AssetsItemPelvisFuturisticTrainingBeltScriptDraw,
+				ScriptDraw: AssetsItemPelvisFuturisticTrainingBeltScriptDrawHook,
 			},
 			BaselineProperty: {
 				ShowText: false,
@@ -19875,12 +21039,12 @@ export var AssetFemale3DCGExtended = {
 						},
 						{
 							// v1 - With wand
-							Property: { Difficulty: 2 },
+							Property: { Difficulty: 2, Effect: [E.Egged] },
 						},
 						// v2 to v6 - Wand intensity
-						{ Property: { Intensity: 0, Effect: [E.Vibrating] } }, // v2 - Low
-						{ Property: { Intensity: 1, Effect: [E.Vibrating] } }, // v3 - Mid-Low
-						{ Property: { Intensity: 2, Effect: [E.Vibrating] } }, // v4 - Medium
+						{ Property: { Intensity: 0, Effect: [E.Egged, E.Vibrating] } }, // v2 - Low
+						{ Property: { Intensity: 1, Effect: [E.Egged, E.Vibrating] } }, // v3 - Mid-Low
+						{ Property: { Intensity: 2, Effect: [E.Egged, E.Vibrating] } }, // v4 - Medium
 						{ Property: { Intensity: 2, Effect: [E.Egged, E.Vibrating] } }, // v5 - High
 						{ Property: { Intensity: 3, Effect: [E.Egged, E.Vibrating] } }, // v6 - Maximum
 					],
@@ -20078,6 +21242,48 @@ export var AssetFemale3DCGExtended = {
 				Npc: "ItemEarsHeadphonePlugs",
 			},
 		}, // HeadphoneEarPlugs
+		CTHeadset: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Glow",
+					Key: "g",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Ears",
+					Key: "e",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Mic",
+					Key: "m",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Noisecancel",
+					Key: "nc",
+					Options: [
+						{},
+						{
+							Property: {
+								Effect: [E.DeafLight],
+							},
+						},
+						{
+							Property: {
+								Effect: [E.DeafHeavy],
+							},
+						},
+						{
+							Property: {
+								Effect: [E.DeafTotal],
+							},
+						},
+					],
+				},
+			],
+		}, // CTHeadset
 		Headphones: {
 			Archetype: ExtendedArchetype.TYPED,
 			CopyConfig: { AssetName: "HeadphoneEarPlugs" },
@@ -20208,18 +21414,16 @@ export var AssetFemale3DCGExtended = {
 					Name: "Dull",
 				},
 			],
-		}, // ChineseDress2
+			DialogPrefix: {
+				Option: "BraSwimsuit1",
+				Header: "BraSwimsuit1Select",
+			},
+		}, // Swimsuit1
 		MeshTop: {
 			Archetype: ExtendedArchetype.MODULAR,
 			CopyConfig: {
 				GroupName: "Cloth",
 				AssetName: "MeshTop",
-			},
-			DialogPrefix: {
-				Header: "ClothMeshTopSelect",
-				Module: "ClothMeshTopModule",
-				Option: "ClothMeshTopOption",
-				Chat: "ClothMeshTopSet",
 			},
 		}, //Mesh Top
 		SportSwimsuit: {
@@ -20235,7 +21439,12 @@ export var AssetFemale3DCGExtended = {
 					],
 				},
 			],
-		}, //Sport Bra
+			DialogPrefix: {
+				Header: "BraSportSwimsuitSelect",
+				Module: "BraSportSwimsuitModule",
+				Option: "BraSportSwimsuitOption",
+			},
+		}, //SportSwimsuit
 	}, // Bra
 	Panties: {
 		Diapers4: {
@@ -20303,7 +21512,6 @@ export var AssetFemale3DCGExtended = {
 							"ItemButt",
 							"ItemVulva",
 							"ItemVulvaPiercings",
-							"ItemButt",
 						],
 						HideItem: [
 							"ItemButtAnalBeads2",
@@ -20349,6 +21557,44 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // PullDownPanties
+		RoyalDiaper: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Design",
+					Key: "d",
+					Options: [
+						{
+							//d0 - plain white
+							Property: { DefaultColor: "#f9f9f9" },
+						},
+						{
+							//d1 - ABU AlphaGatorz
+							Property: { DefaultColor: "Default" },
+						},
+						{
+							//d2 - ABU BunnyHopps
+							Property: { DefaultColor: "Default" },
+						},
+						{
+							//d2 - LilComforts LacyLove
+							Property: { DefaultColor: "Default" },
+						},
+					],
+				},
+				{
+					Name: "Motiv",
+					Key: "m",
+					Options: [
+						{}, //m0 - None
+						{}, //m1 - Simple
+						{}, //m2 - His Majesty
+						{}, //m3 - HerMajesty
+						{}, //m4 - Lock
+					],
+				},
+			],
+		}, // RoyalDiaper
 	}, // Panties
 	Glasses: {
 		EyePatch1: {
@@ -20597,6 +21843,24 @@ export var AssetFemale3DCGExtended = {
 			],
 			DrawImages: false,
 		}, // Monocle
+		FaceCrests: {
+			Archetype: ExtendedArchetype.MODULAR,
+			ChatSetting: ModularItemChatSetting.PER_MODULE,
+			DrawImages: true,
+			DrawData: {
+				elementData: [
+					{ position: ExtendedXY[7][0] },
+					{ position: ExtendedXY[7][1] },
+					{ position: ExtendedXY[7][2] },
+					{ position: ExtendedXY[7][3] },
+					{ position: ExtendedXY[7][4] },
+					{ position: ExtendedXY[7][5] },
+					{ position: ExtendedXY[7][6] },
+				],
+				itemsPerPage: 7,
+			},
+			CopyConfig: { GroupName: "FaceMarkings", AssetName: "FaceCrests" },
+		}, //FaceCrests
 	}, // Glasses
 	Bracelet: {
 		Band1: {
@@ -20783,6 +22047,16 @@ export var AssetFemale3DCGExtended = {
 			DrawImages: false,
 			Options: [{ Name: "Leftleg" }, { Name: "Rightleg" }, { Name: "Both" }],
 		}, // LaceLegRing
+		XLegStraps: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Both" }, { Name: "Leftleg" }, { Name: "Rightleg" }],
+		}, // XLegStraps
+		LaceLegStrap: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [{ Name: "Both" }, { Name: "Leftleg" }, { Name: "Rightleg" }],
+		}, // LaceLegStrap
 	}, // Garters
 	AnkletRight: {
 		LegFur: {
@@ -21040,6 +22314,25 @@ export var AssetFemale3DCGExtended = {
 		}, // RuffledCollar
 	}, // Necklace
 	Suit: {
+		CuteBikini1: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "SexyBikini1", GroupName: "Bra" },
+		}, // CuteBikini1
+		SexyBikini1: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: {
+				AssetName: "SexyBikini1",
+				GroupName: "Bra",
+			},
+		}, // SexyBikini1
+		Swimsuit1: {
+			Archetype: ExtendedArchetype.TYPED,
+			CopyConfig: { AssetName: "Swimsuit1", GroupName: "Bra" },
+		}, // Swimsuit1
+		SportSwimsuit: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: { AssetName: "SportSwimsuit", GroupName: "Bra" },
+		}, // SportSwimsuit
 		Catsuit: {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [
@@ -21094,6 +22387,38 @@ export var AssetFemale3DCGExtended = {
 				PublishAction: InventorySuitLatexCatsuitPublishActionHook,
 			},
 		}, // LatexCatsuit
+		DiaperSuit: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Text",
+					Key: "e",
+					Options: [
+						{
+							HasSubscreen: true,
+							ArchetypeConfig: {
+								Archetype: ExtendedArchetype.TEXT,
+								MaxLength: { Text: 11 },
+								Font: "Impact",
+								ScriptHooks: {
+									AfterDraw: (...args) =>
+										// @ts-expect-error
+										TextItem.GenericTextArcDrawHook(...args, {
+											XOffset: 52,
+											YOffset: 45,
+											drawOptions: {
+												fontSize: 15,
+												radius: 120,
+												effect: DynamicDrawTextEffect.BURN,
+											},
+										}),
+								},
+							},
+						},
+					],
+				},
+			],
+		}, // LatexCatsuit
 		SeamlessCatsuit: {
 			Archetype: ExtendedArchetype.TYPED,
 			CopyConfig: { GroupName: "Suit", AssetName: "Catsuit" },
@@ -21139,13 +22464,34 @@ export var AssetFemale3DCGExtended = {
 		FishnetTop: {
 			Archetype: ExtendedArchetype.MODULAR,
 			CopyConfig: { GroupName: "Cloth", AssetName: "FishnetTop" },
-			DialogPrefix: {
-				Header: "ClothFishnetTopSelect",
-				Module: "ClothFishnetTopModule",
-				Option: "ClothFishnetTopOption",
-				Chat: "ClothFishnetTopSet",
-			},
 		}, // FishnetTop
+		GlossyBodystocking: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{ Name: "HandStyle", Key: "h", Options: [{}, {}, {}, {}] },
+				{ Name: "TailorStyle", Key: "m", Options: [{}, {}, {}, {}, {}] },
+				{ Name: "ChestStyle", Key: "b", Options: [{}, {}] },
+			],
+		}, // GlossyBodystocking
+		TransparentBunnyGirl: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{
+					Name: "MiddleTrans",
+					Property: { Opacity: [0.4, 1, 1, 1, 1, 1, 1] },
+				},
+				{
+					Name: "OverallTrans",
+					Property: { Opacity: [0.4, 0, 1, 1, 1, 1, 1] },
+				},
+				{
+					Name: "Opaque",
+					Property: { Opacity: [1, 1, 1, 1, 1, 1, 1] },
+				},
+			],
+		}, // TransparentBunnyGirl
 	}, // Suit
 	SuitLower: {
 		MaleSeamlessCatsuit: {
@@ -21349,6 +22695,19 @@ export var AssetFemale3DCGExtended = {
 				Validate: FuturisticAccessValidate,
 			},
 		}, // FuturisticMask
+		CybertechMask: {
+			Archetype: ExtendedArchetype.MODULAR,
+			CopyConfig: {
+				GroupName: "ItemHood",
+				AssetName: "CybertechMask",
+			},
+			DialogPrefix: {
+				Header: "ItemHoodCybertechMaskSelect",
+				Module: "ItemHoodCybertechMaskModule",
+				Option: "ItemHoodCybertechMaskOption",
+				Chat: "ItemHoodCybertechMaskSet",
+			},
+		}, // CybertechMask
 		InteractiveVisor: {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [
@@ -21397,54 +22756,6 @@ export var AssetFemale3DCGExtended = {
 			Archetype: ExtendedArchetype.MODULAR,
 			Modules: [
 				{
-					Name: "Background",
-					Key: "b",
-					Options: [
-						//CustomBlindBackground: {"None" : "SynthWave", "FreeVR" : "SynthWave", "Gaming" : "Dungeon", "Off" : "", "AR" : ""},
-						{
-							// b0 - Passthrough
-							Property: {
-								CustomBlindBackground: "",
-							},
-						},
-						{
-							// b1 - SynthWave
-							Property: {
-								CustomBlindBackground: "SynthWave",
-								Effect: [],
-							},
-						},
-						{
-							// b2 - Dungeon
-							Property: {
-								CustomBlindBackground: "Dungeon",
-								Effect: [],
-							},
-						},
-						{
-							// b3 - SciFiCell
-							Property: {
-								CustomBlindBackground: "SciFiCell",
-								Effect: [],
-							},
-						},
-						{
-							// b4 - AncientRuins
-							Property: {
-								CustomBlindBackground: "AncientRuins",
-								Effect: [],
-							},
-						},
-						{
-							// b5 - HypnoticSpiral
-							Property: {
-								CustomBlindBackground: "HypnoticSpiral",
-								Effect: [],
-							},
-						},
-					],
-				},
-				{
 					// Use `BlindTotal` for VR avatars to ensure that the `thin` property never reduces the blindness level below `BlindHeavy`,
 					// as lowering it any more will result in visual oddities related to partial blindness
 					Name: "Function",
@@ -21459,6 +22770,7 @@ export var AssetFemale3DCGExtended = {
 						{
 							// f1 - Off
 							Property: {
+								CustomBlindBackground: "",
 								Effect: [E.BlindHeavy, E.BlockWardrobe],
 							},
 						},
@@ -21475,6 +22787,66 @@ export var AssetFemale3DCGExtended = {
 							},
 						},
 					],
+				},
+				{
+					Name: "Background",
+					Key: "b",
+					Options: [
+						{
+							// b0 - Passthrough
+							Property: {
+								CustomBlindBackground: undefined,
+							},
+						},
+						{
+							// b1 - SynthWave
+							Property: {
+								CustomBlindBackground: "SynthWave",
+							},
+						},
+						{
+							// b2 - Dungeon
+							Property: {
+								CustomBlindBackground: "Dungeon",
+							},
+						},
+						{
+							// b3 - SciFiCell
+							Property: {
+								CustomBlindBackground: "SciFiCell",
+							},
+						},
+						{
+							// b4 - AncientRuins
+							Property: {
+								CustomBlindBackground: "AncientRuins",
+							},
+						},
+						{
+							// b5 - HypnoticSpiral
+							Property: {
+								CustomBlindBackground: "HypnoticSpiral",
+							},
+						},
+						{
+							// b6 - Black
+							Property: {
+								CustomBlindBackground: "",
+							},
+						},
+					],
+					DrawData: {
+						// Shuffle "b6 - Black" back into the 2nd spot
+						elementData: [
+							{ position: ExtendedXY[7][0] },
+							{ position: ExtendedXY[7][2] },
+							{ position: ExtendedXY[7][3] },
+							{ position: ExtendedXY[7][4] },
+							{ position: ExtendedXY[7][5] },
+							{ position: ExtendedXY[7][6] },
+							{ position: ExtendedXY[7][1] },
+						],
+					},
 				},
 				{
 					Name: "Game",
@@ -21549,7 +22921,7 @@ export var AssetFemale3DCGExtended = {
 								Font: "sans-serif",
 								ScriptHooks: {
 									AfterDraw: (...args) =>
-										// @ts-ignore
+										// @ts-expect-error
 										TextItem.GenericTextDrawHook(...args, {
 											YOffset: 10,
 											drawOptions: { fontSize: 12 },
@@ -22320,6 +23692,48 @@ export var AssetFemale3DCGExtended = {
 				Npc: "InventoryItemNoseNoseRingNPCReaction",
 			},
 		}, // NoseRing
+		NoseShackle: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Shackle",
+					Key: "s",
+					DrawImages: true,
+					Options: [
+						{ Property: { Difficulty: 11 } }, //s_0 - Single
+						{ Property: { Difficulty: 13 } }, //s_1 - Double
+					],
+				},
+				{
+					Name: "Attachment",
+					Key: "a",
+					DrawImages: true,
+					Options: [
+						{}, //a_0 - None
+						{
+							Prerequisite: ["NotSuspended"],
+							Property: {
+								Effect: [E.Tethered, E.IsChained],
+							},
+						}, //a_1 - Chainlong
+						{
+							Prerequisite: ["NotSuspended"],
+							Property: {
+								SetPose: ["Kneel"],
+								AllowActivePose: [...PoseAllKneeling],
+								Effect: [E.Freeze, E.IsChained],
+							},
+						}, //a_2 - Chainshort
+						{
+							Prerequisite: ["NotSuspended"],
+							Property: {
+								Effect: [E.Leash],
+							},
+						}, //a_3 - Leash
+					],
+				},
+			],
+		}, // NoseShackle
 	}, // ItemNose
 	Wings: {
 		SteampunkWings: {
@@ -22334,6 +23748,38 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // SteampunkWings
+		SeraphWings: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "Wing1",
+					Key: "show1",
+					DrawImages: false,
+					Options: [
+						{}, //show1_0 - Show
+						{}, //show1_1 - Hide
+					],
+				},
+				{
+					Name: "Wing2",
+					Key: "show2",
+					DrawImages: false,
+					Options: [
+						{}, //show2_0 - Show
+						{}, //show2_1 - Hide
+					],
+				},
+				{
+					Name: "Wing3",
+					Key: "show3",
+					DrawImages: false,
+					Options: [
+						{}, //show3_0 - Show
+						{}, //show3_1 - Hide
+					],
+				},
+			],
+		}, // SeraphWings
 		DragonWings: {
 			Archetype: ExtendedArchetype.TYPED,
 			DrawImages: true,
@@ -22349,6 +23795,24 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // DragonWings
+		Spider: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{ Name: "Biped" },
+				{
+					Name: "Arachnid",
+					Property: {
+						Hide: ["Pussy", "BodyLower"],
+						OverrideHeight: {
+							Height: -200,
+							Priority: 21,
+							HeightRatioProportion: 0,
+						},
+					},
+				},
+			],
+		}, // Spider
 	}, // Wings
 	ItemHandheld: {
 		Smartphone: {
@@ -22468,6 +23932,27 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // Uchiwa
+		CustomPaddle: {
+			Archetype: ExtendedArchetype.MODULAR,
+			Modules: [
+				{
+					Name: "CustomText",
+					Key: "c",
+					DrawImages: false,
+					Options: [
+						{}, // c0 - Blank
+						{}, // c1 - Brat
+						{}, // c2 - Hearts
+						{}, // c3 - Owned
+						{}, // c4 - Pet
+						{}, // c5 - Slave
+						{}, // c6 - Slut
+						{}, // c7 - Toy
+						{}, // c8 - Bitch
+					],
+				},
+			],
+		}, // Custom Paddle
 		Cigarette: {
 			Archetype: ExtendedArchetype.TYPED,
 			Options: [
@@ -22642,6 +24127,15 @@ export var AssetFemale3DCGExtended = {
 						{}, // Psyker
 						{}, // Dante
 						{}, // Sarah Jade Kelly
+						{}, // Wolfie
+						{}, // Vi
+						{}, // Neddle
+						{}, // Mist
+						{}, // Milim
+						{}, // Lisa3
+						{}, // Kirumi
+						{}, // AlexCarameii
+						{}, // KatrinaThunder
 					],
 					DrawData: {
 						elementData: [
@@ -22696,6 +24190,35 @@ export var AssetFemale3DCGExtended = {
 								imagePath:
 									"Assets/Female3DCG/ItemHandheld/Plushie_SarahJadeKelly.png",
 							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Wolfie.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Vi.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Neddle.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Mist.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Milim.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Lisa3.png",
+							},
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Kirumi.png",
+							},
+							{
+								imagePath:
+									"Assets/Female3DCG/ItemHandheld/Plushie_AlexCarameii.png",
+							},
+							{
+								imagePath:
+									"Assets/Female3DCG/ItemHandheld/Plushie_KatrinaThunder.png",
+							},
 						],
 					},
 				},
@@ -22715,6 +24238,7 @@ export var AssetFemale3DCGExtended = {
 						{}, // Amy
 						{}, // Arelia
 						{}, // Dawn
+						{}, // Bella
 					],
 					DrawData: {
 						elementData: [
@@ -22739,6 +24263,7 @@ export var AssetFemale3DCGExtended = {
 								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Arelia.png",
 							},
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Dawn.png" },
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Bella.png" },
 						],
 					},
 				},
@@ -22758,6 +24283,10 @@ export var AssetFemale3DCGExtended = {
 						{}, // Zoi
 						{}, // Takao
 						{}, // Carol
+						{}, // Brioche
+						{}, // Flare
+						{}, // Lara
+						{}, // Kitty
 					],
 					DrawData: {
 						elementData: [
@@ -22781,6 +24310,12 @@ export var AssetFemale3DCGExtended = {
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Zoi.png" },
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Takao.png" },
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Carol.png" },
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Brioche.png",
+							},
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Flare.png" },
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Lara.png" },
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Kitty.png" },
 						],
 					},
 				},
@@ -22808,11 +24343,19 @@ export var AssetFemale3DCGExtended = {
 					Options: [
 						{}, // off
 						{}, // Nel
+						{}, // Fallen
+						{}, // Reina
+						{}, // Viola
 					],
 					DrawData: {
 						elementData: [
 							{ imagePath: "Screens/Inventory/ItemHandheld/Plushies/None.png" },
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Nel.png" },
+							{
+								imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Fallen.png",
+							},
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Reina.png" },
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Viola.png" },
 						],
 					},
 				},
@@ -22837,6 +24380,59 @@ export var AssetFemale3DCGExtended = {
 									"Assets/Female3DCG/ItemHandheld/Plushie_Jennifer.png",
 							},
 							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Tsuki.png" },
+						],
+					},
+				},
+				{
+					Name: "SakisDen",
+					Key: "SakisDen",
+					DrawImages: true,
+					Options: [
+						{}, // off
+						{}, // Saki
+					],
+					DrawData: {
+						elementData: [
+							{ imagePath: "Screens/Inventory/ItemHandheld/Plushies/None.png" },
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Saki.png" },
+						],
+					},
+				},
+				{
+					Name: "SarahsWorld",
+					Key: "SarahsWorld",
+					DrawImages: true,
+					Options: [
+						{}, // Off
+						{}, // Sarah
+						{}, // Samantha
+					],
+					DrawData: {
+						elementData: [
+							{ imagePath: "Screens/Inventory/ItemHandheld/Plushies/None.png" },
+							{ imagePath: "Assets/Female3DCG/ItemHandheld/Plushie_Sarah.png" },
+							{
+								imagePath:
+									"Assets/Female3DCG/ItemHandheld/Plushie_Samantha.png",
+							},
+						],
+					},
+				},
+				{
+					Name: "DollMakerClub",
+					Key: "DollMakerClub",
+					DrawImages: true,
+					Options: [
+						{}, // Off
+						{}, // Courtney
+					],
+					DrawData: {
+						elementData: [
+							{ imagePath: "Screens/Inventory/ItemHandheld/Plushies/None.png" },
+							{
+								imagePath:
+									"Assets/Female3DCG/ItemHandheld/Plushie_Courtney.png",
+							},
 						],
 					},
 				},
@@ -22903,6 +24499,87 @@ export var AssetFemale3DCGExtended = {
 				},
 			],
 		}, // DragonPlush
+		Chocolate: {
+			Archetype: "modular",
+			DrawImages: false,
+			Modules: [{ Name: "Type", Key: "p", Options: [{}, {}, {}, {}] }],
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+		}, // Chocolate
+		Laptop: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			Options: [
+				{ Name: "Closed" },
+				{ Name: "Open", Property: { OverridePriority: 35 } },
+			],
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+		}, // Laptop
+		R18Baton: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			Options: [
+				{
+					Name: "1",
+					Property: { AllowActivity: ["PenetrateItem", "SpankItem"] },
+				},
+				{
+					Name: "2",
+					Property: {
+						AllowActivity: ["MasturbateItem", "PenetrateItem", "SpankItem"],
+					},
+				},
+			],
+		}, // R18Baton
+		GrilledSausage: {
+			Archetype: ExtendedArchetype.TYPED,
+			Options: [{ Name: "FiveSpiceJuicyFlavor" }, { Name: "SmokyHoneyFlavor" }],
+		}, // GrilledSausage
+		Foldingfan: {
+			Archetype: ExtendedArchetype.MODULAR,
+			DrawImages: false,
+			Modules: [
+				{
+					Name: "OpenFan",
+					Key: "n",
+					Options: [{}, {}],
+				},
+				{
+					Name: "Pattern",
+					Key: "p",
+					Options: [{}, {}, {}, {}, {}, {}, {}],
+				},
+			],
+		}, // Foldingfan
+		Oilpaperumbrella: {
+			Archetype: ExtendedArchetype.TYPED,
+			DrawImages: false,
+			ChatTags: [
+				CommonChatTags.SOURCE_CHAR,
+				CommonChatTags.DEST_CHAR,
+				CommonChatTags.ASSET_NAME,
+			],
+			Options: [
+				{ Name: "NoPattern" },
+				{ Name: "Flower1" },
+				{ Name: "Flower2" },
+				{ Name: "Landscape" },
+				{ Name: "Bamboo" },
+				{ Name: "Cartoon" },
+			],
+		}, // Oilpaperumbrella
 	}, // ItemHandheld
 	EyeShadow: {
 		Running: {
