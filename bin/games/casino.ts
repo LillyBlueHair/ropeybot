@@ -201,7 +201,8 @@ export class Casino {
         if (
             typeof beep?.Message !== "string" ||
             beep.Message.includes("TypingStatus") ||
-            beep.Message.includes("ReqRoom")
+            beep.Message.includes("ReqRoom") ||
+            beep.BeepType.includes("LCPlayerInfo")
         ) {
             return;
         }
@@ -348,7 +349,7 @@ ${forfeitsString()}
             const player = await this.store.getPlayer(sender.MemberNumber);
             this.conn.reply(
                 msg,
-                `${sender}, you have ${player.credits} chips${sender.MemberNumber === 78366 ? ` (${Math.floor(player.credits / 100)} Lillys)` : ""}.`,
+                `${sender}, you have ${player.credits} chips${sender.MemberNumber === 78366 ? ` (${Math.floor(player.credits / (FORFEITS["cage"].value * 2.5))} Lillys)` : ""}.`,
             );
         }
     };
