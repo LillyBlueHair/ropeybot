@@ -263,30 +263,34 @@ export class RouletteGame implements Game {
             }
         }
 
-        let stop = false;
-        this.bets
-            .filter((b) => b.memberNumber === senderCharacter.MemberNumber)
-            .forEach((b) => {
-                if (b.stakeForfeit !== undefined) {
-                    getSlotsNeededByForfeit(
-                        FORFEITS[b.stakeForfeit].items(senderCharacter),
-                    ).forEach((s) => {
-                        if (
-                            getSlotsNeededByForfeit(
-                                FORFEITS[stakeForfeit].items(senderCharacter),
-                            ).includes(s)
-                        ) {
-                            this.conn.reply(
-                                msg,
-                                "You already have a bet for the required slot in play.",
-                            );
-                            stop = true;
-                            return;
-                        }
-                    });
-                }
-            });
-        if (stop) return;
+        if (FORFEITS[stake] !== undefined) {
+            let stop = false;
+            this.bets
+                .filter((b) => b.memberNumber === senderCharacter.MemberNumber)
+                .forEach((b) => {
+                    if (b.stakeForfeit !== undefined) {
+                        getSlotsNeededByForfeit(
+                            FORFEITS[b.stakeForfeit].items(senderCharacter),
+                        ).forEach((s) => {
+                            if (
+                                getSlotsNeededByForfeit(
+                                    FORFEITS[stakeForfeit].items(
+                                        senderCharacter,
+                                    ),
+                                ).includes(s)
+                            ) {
+                                this.conn.reply(
+                                    msg,
+                                    "You already have a bet for the required slot in play.",
+                                );
+                                stop = true;
+                                return;
+                            }
+                        });
+                    }
+                });
+            if (stop) return;
+        }
 
         switch (betKind) {
             case "red":

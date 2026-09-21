@@ -374,17 +374,6 @@ export class TexasHoldemGame implements Game {
             return;
         }
 
-        const playerStore = await this.casino.store.getPlayer(
-            sender.MemberNumber,
-        );
-        if (playerStore.credits - raise.stake < 0) {
-            this.conn.SendMessage(
-                "Whisper",
-                `You don't have enough chips.`,
-                sender.MemberNumber,
-            );
-            return;
-        }
         const spent = await this.casino.store.trySpendCredits(
             sender.MemberNumber,
             raise.stake,
@@ -532,17 +521,6 @@ export class TexasHoldemGame implements Game {
             return;
         }
 
-        const playerStore = await this.casino.store.getPlayer(
-            sender.MemberNumber,
-        );
-        if (playerStore.credits - (this.minimumBet - bet.stake) < 0) {
-            this.conn.SendMessage(
-                "Whisper",
-                `You don't have enough chips. You'd need to go /bot allin to call.`,
-                sender.MemberNumber,
-            );
-            return;
-        }
         const callAmount = this.minimumBet - bet.stake;
         const spent = await this.casino.store.trySpendCredits(
             sender.MemberNumber,

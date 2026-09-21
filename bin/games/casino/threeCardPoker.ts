@@ -491,16 +491,7 @@ export class ThreeCardPokerGame implements Game {
             return;
         }
 
-        const player = await this.casino.store.getPlayer(sender.MemberNumber);
         if (bet.stakeForfeit === undefined) {
-            if (player.credits - bet.stake * 2 < 0) {
-                this.conn.SendMessage(
-                    "Whisper",
-                    `You don't have enough chips (Remember that you need double your bet so you can play).`,
-                    sender.MemberNumber,
-                );
-                return;
-            }
             const spent = await this.casino.store.trySpendCredits(
                 sender.MemberNumber,
                 bet.stake,
@@ -550,7 +541,7 @@ export class ThreeCardPokerGame implements Game {
                 this.conn.SendMessage(
                     "Whisper",
                     `You can't bet that forfeit because you've blocked: ${blocked.map((i) => i.Name).join(", ")}.`,
-                    player.memberNumber,
+                    sender.MemberNumber,
                 );
                 return;
             }
@@ -566,6 +557,9 @@ export class ThreeCardPokerGame implements Game {
                     .get(sender.MemberNumber)
                     ?.get(forfeitItem.Group)
             ) {
+                const player = await this.casino.store.getPlayer(
+                    sender.MemberNumber,
+                );
                 console.log(
                     `CHEATER DETECTED: ${sender} tried to bet ${bet.stakeForfeit} which should be locked`,
                 );
