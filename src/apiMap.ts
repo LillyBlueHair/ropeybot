@@ -34,7 +34,7 @@ function mapTileByName(name: string, type?: string): ChatRoomMapTile | null {
             (tile) =>
                 (type === undefined || tile.Type === type) &&
                 tile.Style === name,
-        ) ?? null
+        ) as ChatRoomMapTile ?? null
     );
 }
 

@@ -12090,7 +12090,6 @@ export var AssetFemale3DCGExtended = {
 								Font: "sans-serif",
 								ScriptHooks: {
 									AfterDraw: (...args) =>
-										// @ts-expect-error
 										TextItem.GenericTextArcDrawHook(...args, {
 											YOffset: 170,
 											XOffset: 185,
@@ -22401,7 +22400,6 @@ export var AssetFemale3DCGExtended = {
 								Font: "Impact",
 								ScriptHooks: {
 									AfterDraw: (...args) =>
-										// @ts-expect-error
 										TextItem.GenericTextArcDrawHook(...args, {
 											XOffset: 52,
 											YOffset: 45,
@@ -22920,7 +22918,6 @@ export var AssetFemale3DCGExtended = {
 								Font: "sans-serif",
 								ScriptHooks: {
 									AfterDraw: (...args) =>
-										// @ts-expect-error
 										TextItem.GenericTextDrawHook(...args, {
 											YOffset: 10,
 											drawOptions: { fontSize: 12 },

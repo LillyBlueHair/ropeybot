@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import { ChatRoomMapViewGetObjectAtPos, ChatRoomMapViewGetConnectivityDirections, CurrentTime } from "./defs.ts";
+import { ChatRoomMapViewGetObjectAtPos, CurrentTime } from "./defs.ts";
 
 // dummy definitions so the below can be copied from BC as verbatim as possible
 const Player = {

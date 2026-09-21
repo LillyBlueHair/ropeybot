@@ -199,19 +199,10 @@ export function InventoryItemPelvisFuturisticTrainingBeltDrawHook(...args: any[]
 export function InventoryItemPelvisFuturisticTrainingBeltExitHook(...args: any[]): any {
 	return null;
 }
-export function AssetsItemPelvisFuturisticTrainingBeltScriptDrawHook(...args: any[]): any {
-	return null;
-}
 export function InventoryItemPelvisFuturisticTrainingBeltLoadHook(...args: any[]): any {
 	return null;
 }
 export function InventoryItemPelvisLoveChastityBeltSetOptionHook(...args: any[]): any {
-	return null;
-}
-export function InventoryItemPelvisLoveChastityBeltDrawHook(...args: any[]): any {
-	return null;
-}
-export function InventoryItemPelvisLoveChastityBeltValidateHook(...args: any[]): any {
 	return null;
 }
 export function InventoryItemPelvisSciFiPleasurePantiesClickHook(...args: any[]): any {
@@ -323,9 +314,6 @@ export function InventoryItemMiscOwnerTimerPadlockDrawHook(...args: any[]): any 
 export function InventoryItemMiscOwnerTimerPadlockClickHook(...args: any[]): any {
 	return null;
 };
-export function InventoryItemMiscOwnerTimerPadlockExitHook(...args: any[]): any {
-	return null;
-};
 export function InventoryItemMiscLoversTimerPadlockValidator(...args: any[]): any {
 	return null;
 };
@@ -345,9 +333,6 @@ export function InventoryItemMiscMistressTimerPadlockDrawHook(...args: any[]): a
 	return null;
 };
 export function InventoryItemMiscMistressTimerPadlockClickHook(...args: any[]): any {
-	return null;
-};
-export function InventoryItemMiscMistressTimerPadlockExitHook(...args: any[]): any {
 	return null;
 };
 export function InventoryItemMiscFamilyPadlockDrawHook(...args: any[]): any {
@@ -377,9 +362,6 @@ export function InventoryItemMiscTimerPasswordPadlockDrawHook(...args: any[]): a
 export function InventoryItemMiscTimerPasswordPadlockClickHook(...args: any[]): any {
 	return null;
 };
-export function InventoryItemMiscTimerPasswordPadlockExitHook(...args: any[]): any {
-	return null;
-};
 
 export const InventoryItemPelvisLoveChastityBeltDraw = undefined;
 export const InventoryItemPelvisLoveChastityBeltValidate = undefined;
@@ -405,9 +387,6 @@ export const PortalLinkTransmitterDrawHook = undefined;
 export const PortalLinkTransmitterClickHook = undefined;
 export const PortalLinkTransmitterExitHook = undefined;
 
-export const DynamicDrawTextEffect = {
-	BURN: "burn",
-};
 
 
 export const FuturisticAccessLoad = undefined;
