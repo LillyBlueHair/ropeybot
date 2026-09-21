@@ -723,9 +723,14 @@ export class RouletteGame implements Game {
                     bets: [],
                 };
                 playerWinnings.winnings += winnings;
-                playerWinnings.bets.push(
-                    bet.kind === "single" ? `${bet.number}` : bet.kind,
-                );
+                if (
+                    !playerWinnings.bets.includes(
+                        bet.kind === "single" ? `${bet.number}` : bet.kind,
+                    )
+                )
+                    playerWinnings.bets.push(
+                        bet.kind === "single" ? `${bet.number}` : bet.kind,
+                    );
                 winningsByPlayer.set(bet.memberNumber, playerWinnings);
             } else if (bet.stakeForfeit) {
                 this.casino.applyForfeit(bet);
