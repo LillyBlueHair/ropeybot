@@ -202,21 +202,20 @@ export const InventoryItemHandheldPlushiesSetOptionHook = () => {};
 
 /**
  * An enum encapsulating the available extended item archetypes
- * @satisfies {Record<Uppercase<ExtendedArchetype>, ExtendedArchetype>}
  */
-export const ExtendedArchetype = /** @type {const} */ ({
-	MODULAR: "modular",
-	TYPED: "typed",
-	VIBRATING: "vibrating",
-	VARIABLEHEIGHT: "variableheight",
-	TEXT: "text",
-	NOARCH: "noarch",
-});
+// const ExtendedArchetype: Record<Uppercase<ExtendedArchetype>, ExtendedArchetype> = ({
+enum ExtendedArchetype {
+	MODULAR = "modular",
+	TYPED = "typed",
+	VIBRATING = "vibrating",
+	VARIABLEHEIGHT = "variableheight",
+	TEXT = "text",
+	NOARCH = "noarch",
+}
 
 /**
  * An object containing all extended item configurations.
  * @type {ExtendedItemMainConfig}
- * @const
  */
 export var AssetFemale3DCGExtended = {
 	ItemScript: {
@@ -7087,45 +7086,45 @@ export var AssetFemale3DCGExtended = {
 					Key: "v",
 					Options: [
 						{
+							//v0 No Visor
 							Property: {
-								CustomBlindBackground: "",
 								Effect: [],
 							},
-						}, //v0 No Visor
+						},
 						{
+							// v1 Transparent Visor
 							Property: {
-								CustomBlindBackground: "",
 								Effect: [],
 								Tint: [{ Color: 0, Strength: 0.1 }],
 							},
-						}, // v1 Transparent Visor
+						},
 						{
+							// v2 Lightly Tinted Visor
 							Property: {
-								CustomBlindBackground: "",
 								Effect: [E.BlindLight, E.BlockWardrobe],
 								Tint: [{ Color: 0, Strength: 0.2 }],
 							},
-						}, // v2 Lightly Tinted Visor
+						},
 						{
+							// v3 Heavily Tinted Visor
 							Property: {
-								CustomBlindBackground: "",
 								Effect: [E.BlindNormal, E.BlockWardrobe],
 								Tint: [{ Color: 0, Strength: 0.5 }],
 							},
-						}, // v3 Heavily Tinted Visor
+						},
 						{
+							// v4 Opaque Visor
 							Property: {
-								CustomBlindBackground: "",
 								Effect: [E.BlindHeavy, E.BlockWardrobe],
 								Tint: [{ Color: 0, Strength: 1 }],
 							},
-						}, // v4 Opaque Visor
+						},
 						{
+							// v5 Hypnotic Visor
 							Property: {
-								CustomBlindBackground: "HypnoSpiral2",
 								Effect: [E.BlindHeavy, E.BlockWardrobe],
 							},
-						}, // v5 Hypnotic Visor
+						},
 					],
 				},
 				{

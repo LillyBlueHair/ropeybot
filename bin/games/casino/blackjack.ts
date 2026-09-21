@@ -111,6 +111,8 @@ export class BlackjackGame implements Game {
 
     private maxBetsPerPlayer = 1;
 
+    private midRoundShuffleOccured = false;
+
     constructor(
         private conn: API_Connector,
         casino: Casino,
@@ -380,7 +382,7 @@ export class BlackjackGame implements Game {
             return;
         }
         const hand = this.playerHands.get(bet);
-        hand.push(this.deck.pop());
+        hand.push(this.drawCard());
         const playerValue = this.calculateHandValue(hand);
         if (playerValue > 20) {
             bet.standing = true; // Player automatically stands after busting or on 21
@@ -398,6 +400,18 @@ export class BlackjackGame implements Game {
             this.resolveGame();
         }
     };
+
+    private drawCard(): Card {
+        if (this.deck.length <= 0) {
+            this.createShoe(1);
+            this.conn.SendMessage(
+                "Chat",
+                "Due to the deck running out a new deck has been shuffled for the round to be played to the end.",
+            );
+            this.midRoundShuffleOccured = true;
+        }
+        return this.deck.pop();
+    }
 
     private onCommandDouble = async (
         sender: API_Character,
@@ -480,7 +494,7 @@ export class BlackjackGame implements Game {
             return;
         }
         currentBet.stake *= 2; // Double the stake
-        hand.push(this.deck.pop());
+        hand.push(this.drawCard());
         currentBet.standing = true;
         if (player.bets.length > player.playingHand + 1) {
             while (player.bets[player.playingHand]?.standing) {
@@ -610,8 +624,8 @@ export class BlackjackGame implements Game {
         });
         currentBet.isSplit = true;
         const newBet = player.bets[player.bets.length - 1];
-        this.playerHands.set(newBet, [hand[1], this.deck.pop()]);
-        hand[1] = this.deck.pop();
+        this.playerHands.set(newBet, [hand[1], this.drawCard()]);
+        hand[1] = this.drawCard();
         if (this.calculateHandValue(hand) > 20) {
             currentBet.standing = true; // Player automatically stands on 21
         }
@@ -683,13 +697,6 @@ export class BlackjackGame implements Game {
                 sender.MemberNumber,
             );
             return;
-        } else if (player.bets.length > 1) {
-            this.conn.SendMessage(
-                "Whisper",
-                "You can only surrender on your inital cards.",
-                sender.MemberNumber,
-            );
-            return;
         }
         const hand = this.playerHands.get(bet);
 
@@ -723,6 +730,13 @@ export class BlackjackGame implements Game {
 
         bet.standing = true;
         bet.surrendered = true;
+        if (bets.length > ++player.playingHand) {
+            this.conn.SendMessage(
+                "Whisper",
+                `You are now playing Hand ${player.playingHand + 1}\n${await this.buildHandString(true, player)}`,
+                sender.MemberNumber,
+            );
+        }
 
         if (this.allPlayersDone()) {
             this.resolveGame();
@@ -770,7 +784,7 @@ export class BlackjackGame implements Game {
         msg: BC_Server_ChatRoomMessage,
         args: string[],
     ) => {
-        if (!sender.IsRoomWhitelistedOrAdmin) {
+        if (!sender.IsRoomWhitelistedOrAdmin()) {
             this.conn.reply(
                 msg,
                 "You must be whitelisted or an admin to use this command.",
@@ -809,7 +823,7 @@ export class BlackjackGame implements Game {
         clearTimeout(this.autoStandTimeout);
         this.autoStandTimeout = undefined;
         while (this.calculateHandValue(this.dealerHand) < 17) {
-            this.dealerHand.push(this.deck.pop());
+            this.dealerHand.push(this.drawCard());
         }
         await this.showHands(false);
         let message = `Dealer has a hand of ${this.calculateHandValue(this.dealerHand)}\n`;
@@ -919,14 +933,15 @@ export class BlackjackGame implements Game {
             const handString = await this.buildHandString(true, player);
             this.conn.SendMessage(
                 "Whisper",
-                `You are standing on hand ${originalHand} and are now playing hand ${player.playingHand + 1}. \n${handString}`,
+                `You are standing on hand ${originalHand} and are now playing hand ${player.playingHand + 1}.\n${handString}`,
                 sender.MemberNumber,
             );
         } else {
+            player.playingHand++;
             const handString = await this.buildHandString(true, player);
             this.conn.SendMessage(
                 "Whisper",
-                `You are standing. \n${handString}`,
+                `You are standing.\n${handString}`,
                 sender.MemberNumber,
             );
         }
@@ -1378,7 +1393,8 @@ export class BlackjackGame implements Game {
         }, 1000);
         if (
             this.deck.length <
-            this.players.reduce((a, b) => a + b.bets.length, 0) * 7 + 5
+                this.players.reduce((a, b) => a + b.bets.length, 0) * 7 + 5 ||
+            this.midRoundShuffleOccured
         ) {
             this.conn.SendMessage(
                 "Chat",
@@ -1389,11 +1405,12 @@ export class BlackjackGame implements Game {
                     this.players.reduce((a, b) => a + b.bets.length, 0),
                 ),
             );
+            this.midRoundShuffleOccured = false;
         }
-        this.dealerHand = [this.deck.pop(), this.deck.pop()];
+        this.dealerHand = [this.drawCard(), this.drawCard()];
         for (const player of this.players) {
             for (const bet of player.bets) {
-                this.playerHands.set(bet, [this.deck.pop(), this.deck.pop()]);
+                this.playerHands.set(bet, [this.drawCard(), this.drawCard()]);
                 if (this.calculateHandValue(this.playerHands.get(bet)) === 21) {
                     bet.standing = true; // Automatically stand on blackjack
                     this.conn.SendMessage(
@@ -1449,7 +1466,7 @@ export class BlackjackGame implements Game {
     ): Promise<string> {
         const dealerValue = this.calculateHandValue(this.dealerHand);
         const dealerHandString = dealerHidden
-            ? `[${getCardString(this.dealerHand[0])}] [???]`
+            ? `[${getCardString(this.dealerHand[0])}], [???]`
             : this.handToString(this.dealerHand);
         let string = `Dealer's hand: ${dealerHandString} (${dealerHidden ? "???" : dealerValue})\n`;
         for (const player of this.players) {

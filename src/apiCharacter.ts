@@ -39,6 +39,8 @@ export interface API_Character_Data {
     MemberNumber: number;
     ActivePose: readonly AssetPoseName[];
     WhiteList: number[];
+    BlackList: ServerAccountDataSynced["BlackList"];
+    Reputation: NonNullable<ServerAccountDataSynced["Reputation"]>;
     OnlineSharedSettings: CharacterOnlineSharedSettings;
     ItemPermission: ItemPermissionLevel;
     FriendList: number[];
@@ -82,6 +84,7 @@ export function transformToCharacterData(
     }
     return {
         ...character,
+        Reputation: character.Reputation ?? [],
         Nickname: character.Nickname ?? "",
         Description: character.Description ?? "",
         Appearance: character.Appearance ?? [],
@@ -141,6 +144,9 @@ export class API_Character {
             return { Name: p };
         });
     }
+    public get BlackList(): API_Character_Data["BlackList"] {
+        return this.data.BlackList;
+    }
     public get WhiteList(): number[] {
         return this.data.WhiteList;
     }
@@ -169,6 +175,16 @@ export class API_Character {
     public unwhitelist(): void {
         this.manageWhitelist("remove", this.MemberNumber);
     }
+
+    // #region Other Misc Character Info
+    public get Dominance() {
+        if (!this.data.Reputation.length) return 0;
+        return (
+            this.data.Reputation.find((r) => r.Type === "Dominant")?.Value ?? 0
+        );
+    }
+    // #endregion
+
     // #region Online Shared Settings
 
     public get OnlineSharedSettings(): CharacterOnlineSharedSettings {
@@ -424,11 +440,19 @@ export class API_Character {
     }
 
     public sendItemUpdate(data: BC_AppearanceItem): void {
+        // ref: ChatRoomCharacterItemUpdate() in BC code
+        const item = this.Appearance.InventoryGet(data.Group)?.getData();
         this.connection.updateCharacterItem({
             Target: this.MemberNumber,
-            ...data,
-            Color: data.Color ?? [],
+            Group: data.Group,
+            Name: item != null ? item.Name : undefined,
+            Color: item != null && item.Color != null ? item.Color : "Default",
             Difficulty: data.Difficulty ?? 0,
+            Property:
+                item != null && item.Property != null
+                    ? item.Property
+                    : undefined,
+            Craft: item != null && item.Craft != null ? item.Craft : undefined,
         });
     }
 
