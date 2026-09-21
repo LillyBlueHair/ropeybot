@@ -1,5 +1,13 @@
 //f@ts-check
 "use strict";
+
+const PoseType = {
+	HIDE: "Hide",
+	DEFAULT: "",
+};
+const PoseAllKneeling = ["Kneel", "KneelingSpread"];
+const PoseAllStanding = ["BaseLower", "LegsClosed", "Spread"];
+
 // *** Item value guidelines ***
 // First, check if there's a similar item and use that price.  If there isn't, use the real price in US dollars
 // If it's an item that can only used once in real life (duct tape), raise the price a lot (you buy a great quantity of it)
