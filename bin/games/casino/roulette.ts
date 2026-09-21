@@ -388,16 +388,15 @@ export class RouletteGame implements Game {
             return;
         }
 
-        const player = await this.casino.store.getPlayer(sender.MemberNumber);
-
         if (bet.stakeForfeit === undefined) {
-            if (player.credits - bet.stake < 0) {
+            const spent = await this.casino.store.trySpendCredits(
+                sender.MemberNumber,
+                bet.stake,
+            );
+            if (!spent) {
                 this.conn.reply(msg, `You don't have enough chips.`);
                 return;
             }
-
-            player.credits -= bet.stake;
-            await this.casino.store.savePlayer(player);
         } else {
             const blockers = getItemsBlockingForfeit(
                 sender,
@@ -449,6 +448,9 @@ export class RouletteGame implements Game {
                     .get(sender.MemberNumber)
                     ?.get(forfeitItem.Group)
             ) {
+                const player = await this.casino.store.getPlayer(
+                    sender.MemberNumber,
+                );
                 console.log(
                     `CHEATER DETECTED: ${sender} tried to bet ${bet.stakeForfeit} which should be locked`,
                 );
@@ -706,16 +708,37 @@ export class RouletteGame implements Game {
 
         await wait(2000);
 
+        const winningsByPlayer = new Map<
+            number,
+            { memberName: string; winnings: number; bets: string[] }
+        >();
         for (const bet of this.getBets()) {
-            let winnings = this.getWinnings(winningNumber, bet);
+            const winnings = this.getWinnings(winningNumber, bet);
             if (winnings > 0) {
-                await this.casino.store.addWinnings(bet.memberNumber, winnings);
-
-                message += `\n${bet.memberName} wins ${winnings} chips from ${bet.kind === "single" ? bet.number : bet.kind}!`;
+                const playerWinnings = winningsByPlayer.get(
+                    bet.memberNumber,
+                ) ?? {
+                    memberName: bet.memberName,
+                    winnings: 0,
+                    bets: [],
+                };
+                playerWinnings.winnings += winnings;
+                playerWinnings.bets.push(
+                    bet.kind === "single" ? `${bet.number}` : bet.kind,
+                );
+                winningsByPlayer.set(bet.memberNumber, playerWinnings);
             } else if (bet.stakeForfeit) {
                 this.casino.applyForfeit(bet);
                 message += `\n${bet.memberName} lost from ${bet.kind === "single" ? bet.number : bet.kind} and gets: ${FORFEITS[bet.stakeForfeit].name}!`;
             }
+        }
+
+        for (const [
+            memberNumber,
+            { memberName, winnings, bets },
+        ] of winningsByPlayer) {
+            await this.casino.store.addWinnings(memberNumber, winnings);
+            message += `\n${memberName} wins ${winnings} chips from ${bets.join(", ")}!`;
         }
 
         this.casino.multiplier = 1;

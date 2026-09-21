@@ -361,7 +361,10 @@ export class ThreeCardPokerGame implements Game {
             );
 
             if (winnings > 0) {
-                await this.casino.store.addWinnings(player.memberNumber, winnings);
+                await this.casino.store.addWinnings(
+                    player.memberNumber,
+                    winnings,
+                );
                 message += `${player.memberName} wins ${winnings} chips\n`;
                 sendMessage = true;
             } else if (player.bet.stakeForfeit && winnings !== -100) {
@@ -498,8 +501,18 @@ export class ThreeCardPokerGame implements Game {
                 );
                 return;
             }
-            player.credits -= bet.stake;
-            await this.casino.store.savePlayer(player);
+            const spent = await this.casino.store.trySpendCredits(
+                sender.MemberNumber,
+                bet.stake,
+            );
+            if (!spent) {
+                this.conn.SendMessage(
+                    "Whisper",
+                    `You don't have enough chips (Remember that you need double your bet so you can play).`,
+                    sender.MemberNumber,
+                );
+                return;
+            }
         } else {
             const blockers = getItemsBlockingForfeit(
                 sender,
@@ -634,8 +647,18 @@ export class ThreeCardPokerGame implements Game {
                 return;
             }
 
-            playerStore.credits -= bet.stake;
-            await this.casino.store.savePlayer(playerStore);
+            const spent = await this.casino.store.trySpendCredits(
+                sender.MemberNumber,
+                bet.stake,
+            );
+            if (!spent) {
+                this.conn.SendMessage(
+                    "Whisper",
+                    "You don't have enough chips.",
+                    sender.MemberNumber,
+                );
+                return;
+            }
             bet.stake *= 2;
         }
 

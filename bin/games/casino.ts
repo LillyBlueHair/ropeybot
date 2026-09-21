@@ -438,8 +438,14 @@ ${forfeitsString()}
             return;
         }
 
-        player.credits -= restraint.value * 4;
-        await this.store.savePlayer(player);
+        const spent = await this.store.trySpendCredits(
+            sender.MemberNumber,
+            restraint.value * 4,
+        );
+        if (!spent) {
+            this.conn.reply(msg, "You don't have enough chips.");
+            return;
+        }
 
         sender.Appearance.RemoveItem(restraint.items(sender)[0].Group);
 
@@ -593,8 +599,14 @@ ${forfeitsString()}
             return;
         }
 
-        player.credits -= serviceValue;
-        await this.store.savePlayer(player);
+        const spent = await this.store.trySpendCredits(
+            sender.MemberNumber,
+            serviceValue,
+        );
+        if (!spent) {
+            this.conn.reply(msg, "You don't have enough chips.");
+            return;
+        }
 
         if (serviceName === "player") {
             target.Appearance.RemoveItem("ItemDevices");
@@ -912,8 +924,14 @@ ${forfeitsString()}
 
         const targetPlayer = await this.store.getPlayer(target.MemberNumber);
 
-        sourcePlayer.credits -= amount;
-        await this.store.savePlayer(sourcePlayer);
+        const spent = await this.store.trySpendCredits(
+            sender.MemberNumber,
+            amount,
+        );
+        if (!spent) {
+            this.conn.reply(msg, "You don't have enough chips.");
+            return;
+        }
         targetPlayer.credits += amount;
         await this.store.savePlayer(targetPlayer);
 
@@ -1042,7 +1060,7 @@ ${forfeitsString()}
         const colourLayers = FORFEITS[bet.stakeForfeit].colourLayers;
         let color = char?.Appearance?.InventoryGet("HairFront")?.GetColor();
         if (!color) color = "Default";
-        if(Array.isArray(color)) color = color[0] as BCColor;
+        if (Array.isArray(color)) color = color[0] as BCColor;
         else color = color as BCColor;
 
         let storeColor = await this.store.getPlayer(bet.memberNumber);

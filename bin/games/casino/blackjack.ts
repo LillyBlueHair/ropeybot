@@ -467,8 +467,18 @@ export class BlackjackGame implements Game {
             return;
         }
 
-        playerStore.credits -= currentBet.stake;
-        await this.casino.store.savePlayer(playerStore);
+        const spent = await this.casino.store.trySpendCredits(
+            sender.MemberNumber,
+            currentBet.stake,
+        );
+        if (!spent) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You don't have enough chips to double down.",
+                sender.MemberNumber,
+            );
+            return;
+        }
         currentBet.stake *= 2; // Double the stake
         hand.push(this.deck.pop());
         currentBet.standing = true;
@@ -577,8 +587,18 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        playerStore.credits -= currentBet.stake;
-        await this.casino.store.savePlayer(playerStore);
+        const spent = await this.casino.store.trySpendCredits(
+            sender.MemberNumber,
+            currentBet.stake,
+        );
+        if (!spent) {
+            this.conn.SendMessage(
+                "Whisper",
+                "You don't have enough chips to split.",
+                sender.MemberNumber,
+            );
+            return;
+        }
         player.bets.push({
             memberNumber: sender.MemberNumber,
             memberName: sender.toString(),
@@ -828,7 +848,10 @@ export class BlackjackGame implements Game {
                 totalWinnings += winnings;
             }
             if (totalWinnings > 0) {
-                await this.casino.store.addWinnings(player.memberNumber, totalWinnings);
+                await this.casino.store.addWinnings(
+                    player.memberNumber,
+                    totalWinnings,
+                );
                 message += `${player.memberName} wins ${totalWinnings} chips! \n`;
                 sendMessage = true;
             }
@@ -1015,8 +1038,18 @@ export class BlackjackGame implements Game {
                 return;
             }
 
-            player.credits -= bet.stake;
-            await this.casino.store.savePlayer(player);
+            const spent = await this.casino.store.trySpendCredits(
+                sender.MemberNumber,
+                bet.stake,
+            );
+            if (!spent) {
+                this.conn.SendMessage(
+                    "Whisper",
+                    `You don't have enough chips.`,
+                    sender.MemberNumber,
+                );
+                return;
+            }
         } else {
             const blockers = getItemsBlockingForfeit(
                 sender,
