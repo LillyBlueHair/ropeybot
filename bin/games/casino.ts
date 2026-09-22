@@ -1451,12 +1451,7 @@ ${forfeitsString()}
             return;
         }
 
-        this.conn.SendMessage(
-            "Chat",
-            `The vote is over. The game will switch to ${winningGame} after this round or stay if this is the game already running.`,
-        );
-        const switched = await this.switchGame(winningGame);
-        if (!switched) {
+        if (this.isCurrentGame(winningGame)) {
             this.conn.SendMessage(
                 "Chat",
                 "The vote selected the current game. The current game will stay.",
@@ -1465,21 +1460,30 @@ ${forfeitsString()}
         }
         this.conn.SendMessage(
             "Chat",
+            `The vote is over. The game will switch to ${winningGame} after this round.`,
+        );
+
+        await this.switchGame(winningGame);
+        this.conn.SendMessage(
+            "Chat",
             `The game has switched to ${winningGame}, please place your bets!`,
         );
         await this.setBio();
     };
 
-    private switchGame = async (game: CasinoGameName): Promise<boolean> => {
+    private isCurrentGame(game: CasinoGameName): boolean {
         if (
             (game === "roulette" && this.game instanceof RouletteGame) ||
             (game === "blackjack" && this.game instanceof BlackjackGame) ||
             (game === "threecardpoker" &&
                 this.game instanceof ThreeCardPokerGame)
         ) {
-            return false;
+            return true;
         }
+        return false;
+    }
 
+    private switchGame = async (game: CasinoGameName): Promise<boolean> => {
         await this.game.endGame();
         if (game === "roulette") {
             this.game = new RouletteGame(this.conn, this);
