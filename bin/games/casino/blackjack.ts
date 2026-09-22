@@ -35,6 +35,7 @@ const BLACKJACKCOMMANDS = `Blackjack commands:
 /bot checkforfeits - Shows all forfeits currently applied to you.
 /bot score - Show your current score.
 /bot color <color or Default> - Change the color of your forfeits. 
+/bot vote <roulette|blackjack|threecardpoker> - Vote for a game to be played
 `;
 
 const BLACKJACKHELP = `Blackjack is a card game where the goal is to get as close to 21 as possible without going over.
@@ -469,17 +470,6 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        const playerStore = await this.casino.store.getPlayer(
-            sender.MemberNumber,
-        );
-        if (playerStore.credits < currentBet.stake) {
-            this.conn.SendMessage(
-                "Whisper",
-                "You don't have enough chips to double down.",
-                sender.MemberNumber,
-            );
-            return;
-        }
 
         const spent = await this.casino.store.trySpendCredits(
             sender.MemberNumber,
@@ -586,17 +576,6 @@ export class BlackjackGame implements Game {
             this.conn.SendMessage(
                 "Whisper",
                 "You can't split a forfeit bet.",
-                sender.MemberNumber,
-            );
-            return;
-        }
-        const playerStore = await this.casino.store.getPlayer(
-            sender.MemberNumber,
-        );
-        if (playerStore.credits < currentBet.stake) {
-            this.conn.SendMessage(
-                "Whisper",
-                "You don't have enough chips to split.",
                 sender.MemberNumber,
             );
             return;
@@ -1041,18 +1020,7 @@ export class BlackjackGame implements Game {
             return;
         }
 
-        const player = await this.casino.store.getPlayer(sender.MemberNumber);
-
         if (bet.stakeForfeit === undefined) {
-            if (player.credits - bet.stake < 0) {
-                this.conn.SendMessage(
-                    "Whisper",
-                    `You don't have enough chips.`,
-                    sender.MemberNumber,
-                );
-                return;
-            }
-
             const spent = await this.casino.store.trySpendCredits(
                 sender.MemberNumber,
                 bet.stake,
@@ -1103,7 +1071,7 @@ export class BlackjackGame implements Game {
                 this.conn.SendMessage(
                     "Whisper",
                     `You can't bet that forfeit because you've blocked: ${blocked.map((i) => i.Name).join(", ")}.`,
-                    player.memberNumber,
+                    sender.MemberNumber,
                 );
                 return;
             }
@@ -1119,6 +1087,9 @@ export class BlackjackGame implements Game {
                     .get(sender.MemberNumber)
                     ?.get(forfeitItem.Group)
             ) {
+                const player = await this.casino.store.getPlayer(
+                    sender.MemberNumber,
+                );
                 console.log(
                     `CHEATER DETECTED: ${sender} tried to bet ${bet.stakeForfeit} which should be locked`,
                 );

@@ -32,6 +32,7 @@ const THREECARDPOKERCOMMANDS = `Three Card Poker commands:
 /bot checkforfeits - Shows all forfeits currently applied to you.
 /bot score - Show your current score.
 /bot color <color or Default> - Change the color of your forfeits. 
+/bot vote <roulette|blackjack|threecardpoker> - Vote for a game to be played
 `;
 
 const THREECARDPOKERHELP = `Three Card Poker is a card game where you play against the dealer using a 3-card hand.
@@ -491,16 +492,7 @@ export class ThreeCardPokerGame implements Game {
             return;
         }
 
-        const player = await this.casino.store.getPlayer(sender.MemberNumber);
         if (bet.stakeForfeit === undefined) {
-            if (player.credits - bet.stake * 2 < 0) {
-                this.conn.SendMessage(
-                    "Whisper",
-                    `You don't have enough chips (Remember that you need double your bet so you can play).`,
-                    sender.MemberNumber,
-                );
-                return;
-            }
             const spent = await this.casino.store.trySpendCredits(
                 sender.MemberNumber,
                 bet.stake,
@@ -550,7 +542,7 @@ export class ThreeCardPokerGame implements Game {
                 this.conn.SendMessage(
                     "Whisper",
                     `You can't bet that forfeit because you've blocked: ${blocked.map((i) => i.Name).join(", ")}.`,
-                    player.memberNumber,
+                    sender.MemberNumber,
                 );
                 return;
             }
@@ -566,6 +558,9 @@ export class ThreeCardPokerGame implements Game {
                     .get(sender.MemberNumber)
                     ?.get(forfeitItem.Group)
             ) {
+                const player = await this.casino.store.getPlayer(
+                    sender.MemberNumber,
+                );
                 console.log(
                     `CHEATER DETECTED: ${sender} tried to bet ${bet.stakeForfeit} which should be locked`,
                 );
