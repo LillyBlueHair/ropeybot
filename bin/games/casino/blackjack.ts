@@ -35,6 +35,7 @@ const BLACKJACKCOMMANDS = `Blackjack commands:
 /bot checkforfeits - Shows all forfeits currently applied to you.
 /bot score - Show your current score.
 /bot color <color or Default> - Change the color of your forfeits. 
+/bot vote <roulette|blackjack|threecardpoker> - Vote for a game to be played
 `;
 
 const BLACKJACKHELP = `Blackjack is a card game where the goal is to get as close to 21 as possible without going over.
