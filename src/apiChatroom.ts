@@ -232,6 +232,10 @@ export class API_Chatroom extends EventEmitter<ChatRoomEvents> {
         this.characterCache.set(char.MemberNumber, char);
     }
 
+    public setPlayer(player: API_PlayerCharacter): void {
+        this.cacheCharacter(player as unknown as API_Character);
+    }
+
     private characterFromCache(data: API_Character_Data) {
         let char = this.characterCache.get(data.MemberNumber);
         if (!char) {

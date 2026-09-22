@@ -369,6 +369,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
         }
         const charData = resp as unknown as API_Character_Data;
         this._player = new API_PlayerCharacter(charData, this);
+        if (this._chatRoom) this._chatRoom.setPlayer(this._player);
         this.loggedIn.resolve();
     };
 
@@ -392,6 +393,7 @@ export class API_Connector extends EventEmitter<ConnectorEvents> {
             this._chatRoom = new API_Chatroom(chatRoom, this, this._player!);
         } else {
             this._chatRoom.update(chatRoom);
+            if (this._player) this._chatRoom.setPlayer(this._player);
         }
         const roomData = { ...resp };
         // @ts-expect-error not part of RoomDefinition
