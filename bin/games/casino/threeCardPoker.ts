@@ -790,19 +790,26 @@ export class ThreeCardPokerGame implements Game {
             return;
         }
 
-        if (!this.getBetsForPlayer(sender.MemberNumber)[0].stakeForfeit) {
+        const bets = this.getBetsForPlayer(sender.MemberNumber);
+        const chipBets = bets.filter((b) => !b.stakeForfeit);
+        if (chipBets.length > 0) {
+            let totalChipsRefunded = 0;
+
+            chipBets.forEach((b) => {
+                totalChipsRefunded += b.stake;
+            });
             const player = await this.casino.store.getPlayer(
                 sender.MemberNumber,
             );
-
-            this.getBetsForPlayer(sender.MemberNumber).forEach((b) => {
-                player.credits += b.stake;
-            });
+            player.credits += totalChipsRefunded;
             await this.casino.store.savePlayer(player);
         }
 
         this.clearBetsForPlayer(sender.MemberNumber);
-        this.conn.SendMessage("Chat", `${sender.Name} cancelled their bet.`);
+        this.conn.SendMessage(
+            "Chat",
+            `${sender.Name} cancelled their bet"}.`,
+        );
     };
 
     getWinnings(

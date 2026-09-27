@@ -26,7 +26,7 @@ const BLACKJACKCOMMANDS = `Blackjack commands:
 /bot double - Double your bet and take one more card. Only available on your first two cards.
 /bot split - Split your hand into two hands if you have two cards of the same value.
 /bot surrender - Surrender your hand and get half of your bet back.
-/bot cancel - Cancel your bet. Only available before any cards are dealt.
+/bot cancel [all] - Cancel your bet, or all bets. Only available before any cards are dealt.
 /bot chips - Show your current chip balance.
 /bot give <name or member number> <amount> - Give chips to another player.
 /bot help - Show this help
@@ -1208,15 +1208,35 @@ export class BlackjackGame implements Game {
             );
             return;
         }
-        if (this.getBetsForPlayer(sender.MemberNumber).length === 1) {
-            if (!this.getBetsForPlayer(sender.MemberNumber)[0].stakeForfeit) {
+
+        const bets = this.getBetsForPlayer(sender.MemberNumber);
+        if (args[0]?.toLowerCase() === "all") {
+            const chipBets = bets.filter((b) => !b.stakeForfeit);
+            if (chipBets.length > 0) {
+                let totalChipsRefunded = 0;
+                chipBets.forEach((b) => {
+                    totalChipsRefunded += b.stake;
+                });
                 const player = await this.casino.store.getPlayer(
                     sender.MemberNumber,
                 );
+                player.credits += totalChipsRefunded;
+                await this.casino.store.savePlayer(player);
+            }
 
-                this.getBetsForPlayer(sender.MemberNumber).forEach((b) => {
-                    player.credits += b.stake;
-                });
+            this.clearBetsForPlayer(sender.MemberNumber);
+            this.conn.SendMessage(
+                "Chat",
+                `${sender.Name} cancelled all their bets.`,
+            );
+            return;
+        }
+        if (bets.length === 1) {
+            if (!bets[0].stakeForfeit) {
+                const player = await this.casino.store.getPlayer(
+                    sender.MemberNumber,
+                );
+                player.credits += bets[0].stake;
                 await this.casino.store.savePlayer(player);
             }
 
@@ -1226,24 +1246,21 @@ export class BlackjackGame implements Game {
                 `${sender.Name} cancelled their bet.`,
             );
         } else {
-            if (args.length !== 1 || !args[0].match(/\d+/)) {
+            if (args.length !== 1 || !args[0].match(/^\d+$/)) {
                 let betText = "";
                 let i = 1;
-                this.getBetsForPlayer(sender.MemberNumber).forEach((b) => {
+                bets.forEach((b) => {
                     betText += `${i++}: bet for ${b.stakeForfeit ?? b.stake + " chips"}\n`;
                 });
                 this.conn.SendMessage(
                     "Whisper",
-                    `As you have more than one bet you need to specify which one you'd like to cancel by adding the Number of the bet:\n${betText}`,
+                    `As you have more than one bet you need to specify which one you'd like to cancel by adding the Number of the bet ot typing all:\n${betText}`,
                     sender.MemberNumber,
                 );
                 return;
             } else {
                 let index: number = parseInt(args[0]) - 1;
-                if (
-                    index < 0 ||
-                    this.getBetsForPlayer(sender.MemberNumber).length < index
-                ) {
+                if (index < 0 || index >= bets.length) {
                     this.conn.SendMessage(
                         "Whisper",
                         `You don't have an ${index}-th bet.`,
@@ -1251,7 +1268,7 @@ export class BlackjackGame implements Game {
                     );
                     return;
                 }
-                const bet = this.getBetsForPlayer(sender.MemberNumber)[index];
+                const bet = bets[index];
                 if (!bet.stakeForfeit) {
                     const player = await this.casino.store.getPlayer(
                         sender.MemberNumber,
