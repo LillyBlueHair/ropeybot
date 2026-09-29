@@ -845,7 +845,7 @@ export class BlackjackGame implements Game {
                     player.memberNumber,
                     totalWinnings,
                 );
-                message += `${player.memberName} wins ${totalWinnings} chips! \n`;
+                message += `${player.memberName} wins ${totalWinnings} ${player.memberNumber === 40406 ? "Mochis" : "chips"}! \n`;
                 sendMessage = true;
             }
         }
