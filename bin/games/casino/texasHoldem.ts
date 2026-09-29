@@ -381,7 +381,7 @@ export class TexasHoldemGame implements Game {
         if (!spent) {
             this.conn.SendMessage(
                 "Whisper",
-                `You don't have enough chips.`,
+                `You don't have enough ${sender.MemberNumber === 40406 ? "Mochis" : "chips"}.`,
                 sender.MemberNumber,
             );
             return;
@@ -529,7 +529,7 @@ export class TexasHoldemGame implements Game {
         if (!spent) {
             this.conn.SendMessage(
                 "Whisper",
-                `You don't have enough chips. You'd need to go /bot allin to call.`,
+                `You don't have enough ${sender.MemberNumber === 40406 ? "Mochis" : "chips"}. You'd need to go /bot allin to call.`,
                 sender.MemberNumber,
             );
             return;

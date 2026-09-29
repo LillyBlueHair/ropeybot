@@ -478,7 +478,7 @@ export class BlackjackGame implements Game {
         if (!spent) {
             this.conn.SendMessage(
                 "Whisper",
-                "You don't have enough chips to double down.",
+                `You don't have enough ${sender.MemberNumber === 40406 ? "Mochis" : "chips"} to double down.`,
                 sender.MemberNumber,
             );
             return;
@@ -587,7 +587,7 @@ export class BlackjackGame implements Game {
         if (!spent) {
             this.conn.SendMessage(
                 "Whisper",
-                "You don't have enough chips to split.",
+                `You don't have enough ${sender.MemberNumber === 40406 ? "Mochis" : "chips"} to split.`,
                 sender.MemberNumber,
             );
             return;
@@ -702,7 +702,7 @@ export class BlackjackGame implements Game {
 
             this.conn.SendMessage(
                 "Whisper",
-                `You surrendered your hand for ${Math.floor(bet.stake / 2)} chips.`,
+                `You surrendered your hand for ${Math.floor(bet.stake / 2)} ${sender.MemberNumber === 40406 ? "Mochis" : "chips"}.`,
                 sender.MemberNumber,
             );
         }
@@ -934,17 +934,6 @@ export class BlackjackGame implements Game {
             this.players
                 .find((b) => b.memberNumber === bet.memberNumber)
                 ?.bets.push(bet);
-            if (bet.stakeForfeit) {
-                this.conn.SendMessage(
-                    "Chat",
-                    `${bet.memberName} bets ${FORFEITS[bet.stakeForfeit].name} for ${bet.stake} chips`,
-                );
-            } else {
-                this.conn.SendMessage(
-                    "Chat",
-                    `${bet.memberName} bets ${bet.stake} chips`,
-                );
-            }
         } else {
             this.players.push({
                 memberNumber: bet.memberNumber,
@@ -952,17 +941,17 @@ export class BlackjackGame implements Game {
                 playingHand: 0, // first hand played
                 bets: [bet],
             });
-            if (bet.stakeForfeit) {
-                this.conn.SendMessage(
-                    "Chat",
-                    `${bet.memberName} bets ${FORFEITS[bet.stakeForfeit].name} for ${bet.stake} chips`,
-                );
-            } else {
-                this.conn.SendMessage(
-                    "Chat",
-                    `${bet.memberName} bets ${bet.stake} chips`,
-                );
-            }
+        }
+        if (bet.stakeForfeit) {
+            this.conn.SendMessage(
+                "Chat",
+                `${bet.memberName} bets ${FORFEITS[bet.stakeForfeit].name} for ${bet.stake} ${bet.memberNumber === 40406 ? "Mochis" : "chips"}`,
+            );
+        } else {
+            this.conn.SendMessage(
+                "Chat",
+                `${bet.memberName} bets ${bet.stake} ${bet.memberNumber === 40406 ? "Mochis" : "chips"}`,
+            );
         }
     }
 
@@ -1028,7 +1017,7 @@ export class BlackjackGame implements Game {
             if (!spent) {
                 this.conn.SendMessage(
                     "Whisper",
-                    `You don't have enough chips.`,
+                    `You don't have enough ${sender.MemberNumber === 40406 ? "Mochis" : "chips"}.`,
                     sender.MemberNumber,
                 );
                 return;
@@ -1250,7 +1239,7 @@ export class BlackjackGame implements Game {
                 let betText = "";
                 let i = 1;
                 bets.forEach((b) => {
-                    betText += `${i++}: bet for ${b.stakeForfeit ?? b.stake + " chips"}\n`;
+                    betText += `${i++}: bet for ${b.stakeForfeit ?? b.stake + ` ${b.memberNumber === 40406 ? "Mochis" : "chips"}`}\n`;
                 });
                 this.conn.SendMessage(
                     "Whisper",
@@ -1280,7 +1269,7 @@ export class BlackjackGame implements Game {
                 this.clearBetForPlayer(sender.MemberNumber, index);
                 this.conn.SendMessage(
                     "Chat",
-                    `${sender.Name} cancelled their bet for ${bet.stakeForfeit ?? bet.stake + " chips"}.`,
+                    `${sender.Name} cancelled their bet for ${bet.stakeForfeit ?? bet.stake + ` ${bet.memberNumber === 40406 ? "Mochis" : "chips"}`}.`,
                 );
             }
         }

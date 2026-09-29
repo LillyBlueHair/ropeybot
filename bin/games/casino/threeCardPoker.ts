@@ -366,7 +366,7 @@ export class ThreeCardPokerGame implements Game {
                     player.memberNumber,
                     winnings,
                 );
-                message += `${player.memberName} wins ${winnings} chips\n`;
+                message += `${player.memberName} wins ${winnings} ${player.memberNumber === 40406 ? "Mochis" : "chips"}\n`;
                 sendMessage = true;
             } else if (player.bet.stakeForfeit && winnings !== -100) {
                 this.casino.applyForfeit(
@@ -408,12 +408,12 @@ export class ThreeCardPokerGame implements Game {
         if (bet.stakeForfeit) {
             this.conn.SendMessage(
                 "Chat",
-                `${bet.memberName} bets ${FORFEITS[bet.stakeForfeit].name} for ${bet.stake} chips`,
+                `${bet.memberName} bets ${FORFEITS[bet.stakeForfeit].name} for ${bet.stake} ${bet.memberNumber === 40406 ? "Mochis" : "chips"}`,
             );
         } else {
             this.conn.SendMessage(
                 "Chat",
-                `${bet.memberName} bets ${bet.stake} chips`,
+                `${bet.memberName} bets ${bet.stake} ${bet.memberNumber === 40406 ? "Mochis" : "chips"}`,
             );
         }
     }
@@ -500,7 +500,7 @@ export class ThreeCardPokerGame implements Game {
             if (!spent) {
                 this.conn.SendMessage(
                     "Whisper",
-                    `You don't have enough chips (Remember that you need double your bet so you can play).`,
+                    `You don't have enough ${sender.MemberNumber === 40406 ? "Mochis" : "chips"} (Remember that you need double your bet so you can play).`,
                     sender.MemberNumber,
                 );
                 return;
@@ -636,7 +636,7 @@ export class ThreeCardPokerGame implements Game {
             if (playerStore.credits < bet.stake) {
                 this.conn.SendMessage(
                     "Whisper",
-                    "You don't have enough chips.",
+                    `You don't have enough ${sender.MemberNumber === 40406 ? "Mochis" : "chips"}.`,
                     sender.MemberNumber,
                 );
                 return;
@@ -649,7 +649,7 @@ export class ThreeCardPokerGame implements Game {
             if (!spent) {
                 this.conn.SendMessage(
                     "Whisper",
-                    "You don't have enough chips.",
+                    `You don't have enough ${sender.MemberNumber === 40406 ? "Mochis" : "chips"}.`,
                     sender.MemberNumber,
                 );
                 return;
@@ -806,10 +806,7 @@ export class ThreeCardPokerGame implements Game {
         }
 
         this.clearBetsForPlayer(sender.MemberNumber);
-        this.conn.SendMessage(
-            "Chat",
-            `${sender.Name} cancelled their bet"}.`,
-        );
+        this.conn.SendMessage("Chat", `${sender.Name} cancelled their bet"}.`);
     };
 
     getWinnings(

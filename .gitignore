@@ -6,5 +6,3 @@ out
 .vscode/
 config*.json
 !config.sample.json
-
-.github/copilot-instructions.md

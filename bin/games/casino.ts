@@ -197,12 +197,12 @@ export class Casino {
             await this.store.savePlayer(player);
             character.Tell(
                 "Whisper",
-                `Welcome to the Casino, ${character}! Here are your ${FREE_CHIPS} free chips for today. See my bio for how to play. Good luck!`,
+                `Welcome to the Casino, ${character}! Here are your ${FREE_CHIPS} free ${character.MemberNumber === 40406 ? "Mochis" : "chips"} for today. See my bio for how to play. Good luck!`,
             );
         } else {
             character.Tell(
                 "Whisper",
-                `Welcome back, ${character}. ${remainingTimeString(nextFreeChipsAt)} until your next free chips. See my bio for how to play.`,
+                `Welcome back, ${character}. ${remainingTimeString(nextFreeChipsAt)} until your next free ${character.MemberNumber === 40406 ? "Mochis" : "chips"}. See my bio for how to play.`,
             );
         }
     };
@@ -354,12 +354,15 @@ ${forfeitsString()}
                 return;
             }
             const player = await this.store.getPlayer(target.MemberNumber);
-            this.conn.reply(msg, `${target} has ${player.credits} chips.`);
+            this.conn.reply(
+                msg,
+                `${target} has ${player.credits} ${player.memberNumber === 40406 ? "Mochis" : "chips"}.`,
+            );
         } else {
             const player = await this.store.getPlayer(sender.MemberNumber);
             this.conn.reply(
                 msg,
-                `${sender}, you have ${player.credits} chips${sender.MemberNumber === 78366 ? ` (${Math.floor(player.credits / (FORFEITS["cage"].value * 2.5))} Lillys)` : ""}.`,
+                `${sender}, you have ${player.credits} ${player.memberNumber === 40406 ? "Mochis" : "chips"}${sender.MemberNumber === 78366 ? ` (${Math.floor(player.credits / (FORFEITS["cage"].value * 2.5))} Lillys)` : ""}.`,
             );
         }
     };
@@ -372,7 +375,7 @@ ${forfeitsString()}
             makeBio(
                 topPlayers
                     .map((player, idx) => {
-                        return `${idx + 1}. ${player.name} (${player.memberNumber}): ${player.score} chips won`;
+                        return `${idx + 1}. ${player.name} (${player.memberNumber}): ${player.score} ${player.memberNumber === 40406 ? "Mochis" : "chips"} won`;
                     })
                     .join("\n"),
                 this.game.EXAMPLES,
@@ -426,7 +429,10 @@ ${forfeitsString()}
 
         const player = await this.store.getPlayer(sender.MemberNumber);
         if (player.credits < restraint.value * 4) {
-            this.conn.reply(msg, "You don't have enough chips.");
+            this.conn.reply(
+                msg,
+                `You don't have enough ${player.memberNumber === 40406 ? "Mochis" : "chips"}.`,
+            );
             return;
         }
 
@@ -456,7 +462,10 @@ ${forfeitsString()}
             restraint.value * 4,
         );
         if (!spent) {
-            this.conn.reply(msg, "You don't have enough chips.");
+            this.conn.reply(
+                msg,
+                `You don't have enough ${player.memberNumber === 40406 ? "Mochis" : "chips"}.`,
+            );
             return;
         }
 
@@ -608,7 +617,10 @@ ${forfeitsString()}
             }
         }
         if (player.credits < serviceValue) {
-            this.conn.reply(msg, "You don't have enough chips.");
+            this.conn.reply(
+                msg,
+                `You don't have enough ${player.memberNumber === 40406 ? "Mochis" : "chips"}.`,
+            );
             return;
         }
 
@@ -617,7 +629,10 @@ ${forfeitsString()}
             serviceValue,
         );
         if (!spent) {
-            this.conn.reply(msg, "You don't have enough chips.");
+            this.conn.reply(
+                msg,
+                `You don't have enough ${player.memberNumber === 40406 ? "Mochis" : "chips"}.`,
+            );
             return;
         }
 
@@ -1003,13 +1018,19 @@ ${forfeitsString()}
             return;
         }
         if (target.MemberNumber === sender.MemberNumber) {
-            this.conn.reply(msg, "You can't give yourself chips.");
+            this.conn.reply(
+                msg,
+                `You can't give yourself ${sender.MemberNumber === 40406 ? "Mochis" : "chips"}.`,
+            );
             return;
         }
 
         const sourcePlayer = await this.store.getPlayer(sender.MemberNumber);
         if (sourcePlayer.credits < amount) {
-            this.conn.reply(msg, "You don't have enough chips.");
+            this.conn.reply(
+                msg,
+                `You don't have enough ${sender.MemberNumber === 40406 ? "Mochis" : "chips"}.`,
+            );
             return;
         }
 
@@ -1020,7 +1041,10 @@ ${forfeitsString()}
             amount,
         );
         if (!spent) {
-            this.conn.reply(msg, "You don't have enough chips.");
+            this.conn.reply(
+                msg,
+                `You don't have enough ${sender.MemberNumber === 40406 ? "Mochis" : "chips"}.`,
+            );
             return;
         }
         targetPlayer.credits += amount;

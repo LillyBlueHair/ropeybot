@@ -338,24 +338,24 @@ export class RouletteGame implements Game {
             if (bet.kind === "single") {
                 this.conn.SendMessage(
                     "Chat",
-                    `${bet.memberName} bets ${FORFEITS[bet.stakeForfeit].name} for ${bet.stake} chips on ${bet.number}`,
+                    `${bet.memberName} bets ${FORFEITS[bet.stakeForfeit].name} for ${bet.stake} ${bet.memberNumber === 40406 ? "Mochis" : "chips"} on ${bet.number}`,
                 );
             } else {
                 this.conn.SendMessage(
                     "Chat",
-                    `${bet.memberName} bets ${FORFEITS[bet.stakeForfeit].name} for ${bet.stake} chips on ${bet.kind}`,
+                    `${bet.memberName} bets ${FORFEITS[bet.stakeForfeit].name} for ${bet.stake} ${bet.memberNumber === 40406 ? "Mochis" : "chips"} on ${bet.kind}`,
                 );
             }
         } else {
             if (bet.kind === "single") {
                 this.conn.SendMessage(
                     "Chat",
-                    `${bet.memberName} bets ${bet.stake} chips on ${bet.number}`,
+                    `${bet.memberName} bets ${bet.stake} ${bet.memberNumber === 40406 ? "Mochis" : "chips"} on ${bet.number}`,
                 );
             } else {
                 this.conn.SendMessage(
                     "Chat",
-                    `${bet.memberName} bets ${bet.stake} chips on ${bet.kind}`,
+                    `${bet.memberName} bets ${bet.stake} ${bet.memberNumber === 40406 ? "Mochis" : "chips"} on ${bet.kind}`,
                 );
             }
         }
@@ -399,7 +399,10 @@ export class RouletteGame implements Game {
                 bet.stake,
             );
             if (!spent) {
-                this.conn.reply(msg, `You don't have enough chips.`);
+                this.conn.reply(
+                    msg,
+                    `You don't have enough ${bet.memberNumber === 40406 ? "Mochis" : "chips"}.`,
+                );
                 return;
             }
         } else {
@@ -508,7 +511,7 @@ export class RouletteGame implements Game {
                 });
                 const player = await this.casino.store.getPlayer(
                     sender.MemberNumber,
-                );                
+                );
                 player.credits += totalChipsRefunded;
                 await this.casino.store.savePlayer(player);
             }
@@ -539,7 +542,7 @@ export class RouletteGame implements Game {
                 let betText = "";
                 let i = 1;
                 bets.forEach((b) => {
-                    betText += `${i++}: ${b.kind === "single" ? b.number : b.kind} for ${b.stakeForfeit ?? b.stake + " chips"}\n`;
+                    betText += `${i++}: ${b.kind === "single" ? b.number : b.kind} for ${b.stakeForfeit ?? b.stake + ` ${b.memberNumber === 40406 ? "Mochis" : "chips"}`}\n`;
                 });
                 this.conn.SendMessage(
                     "Whisper",
@@ -805,7 +808,7 @@ export class RouletteGame implements Game {
             { memberName, winnings, bets },
         ] of winningsByPlayer) {
             await this.casino.store.addWinnings(memberNumber, winnings);
-            message += `\n${memberName} wins ${winnings} chips from ${bets.join(", ")}!`;
+            message += `\n${memberName} wins ${winnings} ${memberNumber === 40406 ? "Mochis" : "chips"} from ${bets.join(", ")}!`;
         }
 
         this.casino.multiplier = 1;
